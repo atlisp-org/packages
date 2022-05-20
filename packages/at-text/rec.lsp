@@ -1,0 +1,135 @@
+
+;;标注文字加圆框
+(defun c:tt (/ box-pts en ss text-mid-pt text-r)
+  (defun sf-dxf (ename code / ent lst a)
+    (if (= (type code) 'LIST)
+	(progn
+	  (setq ent (entget ename)
+		lst '()
+		)
+	  (foreach a code
+		   (setq lst (cons (list a (cdr (assoc a ent))) lst))
+		   )
+	  (reverse lst)
+	  )
+      (if (= code -3)
+	  (cdr (assoc code (entget ename '("*"))))
+	(cdr (assoc code (entget ename)))
+	)
+      )
+    )
+  (defun sf-get-dimMtext ( diment / blockname ent entdata)
+    (setq blockname (cdr (assoc 2 (entget diment))))
+    (setq ent (tblobjname "block" blockname)
+	  ent (entnext ent)
+	  )
+    (if ent
+	(progn
+	  (setq entdata (entget ent))
+	  (while (/= (cdr (assoc 0 entdata)) "MTEXT")
+	    (setq ent (entnext ent)
+		  entdata (entget ent)
+		  )
+	    )
+	  )
+      )
+    ent
+    )
+  (defun sf-TextBox (EN / ENX L B R N W H J O)
+    (cond
+     ((= 'VLA-OBJECT (type en))
+      (setq enx (entget (vlax-vla-object->ename en)))
+      )
+     ((= 'ename (type en)) (setq enx (entget en)))
+     ((= 'list (type en)) (setq enx en))
+     )
+    (setq l
+	  (cond
+	   ((= "TEXT" (cdr (assoc 0 enx)))
+	    (setq b (cdr (assoc 10 enx))
+		  r (cdr (assoc 50 enx))
+		  l (textbox enx)
+		  n (cdr (assoc 210 enx))
+		  )
+	    (list
+	     (list (caar l) (cadar l))
+	     (list (caadr l) (cadar l))
+	     (list (caadr l) (cadadr l))
+	     (list (caar l) (cadadr l))
+	     )
+	    )
+	   ((= "MTEXT" (cdr (assoc 0 enx)))
+	    (setq n (cdr (assoc 210 enx))
+		  b (trans (cdr (assoc 10 enx)) 0 n)
+		  r (angle '(0.0 0.0 0.0) (trans (cdr (assoc 11 enx)) 0 n))
+		  w (cdr (assoc 42 enx))
+		  h (cdr (assoc 43 enx))
+		  j (cdr (assoc 71 enx))
+		  o (list
+		     (cond
+		      ((member j '(2 5 8)) (/ w -2.0))
+		      ((member j '(3 6 9)) (- w))
+		      (0.0)
+		      )
+		     (cond
+		      ((member j '(1 2 3)) (- h))
+		      ((member j '(4 5 6)) (/ h -2.0))
+		      (0.0)
+		      )
+		     )
+		  )
+	    (list
+	     (list (car o) (cadr o))
+	     (list (+ (car o) w) (cadr o))
+	     (list (+ (car o) w) (+ (cadr o) h))
+	     (list (car o) (+ (cadr o) h))
+	     )
+	    )
+	   )
+	  )
+    (setq l
+	  ((lambda (m)
+	     (mapcar
+	      '(lambda (p)
+		 (mapcar '+
+			 (mapcar '(lambda (r) (apply '+ (mapcar '* r p))) m)
+			 b
+			 )
+		 )
+	      l
+	      )
+	     )
+	   (list
+	    (list (cos r) (sin (- r)) 0.0)
+	    (list (sin r) (cos r) 0.0)
+	    '(0.0 0.0 1.0)
+	    )
+	   )
+	  )
+    (mapcar '(lambda (x) (trans x n 0)) l)
+    )
+  (defun sf-entmake-circle (pts r color)
+    (if (/= (type (car pts)) 'LIST)
+	(entmake (list '(0 . "CIRCLE") (cons 62 color) (cons 10 pts) (cons 40 r)))
+      (foreach x pts (entmake (list '(0 . "CIRCLE") (cons 62 color) (cons 10 x) (cons 40 r))))
+      )
+    )
+  
+;;;;------------------------------------------------------------------------------------
+  
+  (setq ss (ssget '((0 . "DIMENSION")))
+	ss-enlst (vl-remove-if-not (function (lambda (x) (equal (type x) 'ename))) (mapcar 'cadr (ssnamex ss)))
+	)
+  (mapcar '(lambda (x)
+	     (setq text-mid-pt (sf-dxf x 11)
+		   en (sf-get-dimMtext x)
+		   box-pts (sf-TextBox en)
+		   dis 1
+		   text-R (+ dis (* 0.5 (distance (car box-pts) (cadr box-pts))))
+		   )
+	     (sf-entmake-circle text-mid-pt text-R 1)
+	     )
+	  ss-enlst
+	  )
+  (princ)
+  )

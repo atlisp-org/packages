@@ -1,0 +1,157 @@
+#+title: Git 使用说明-极简版
+
+* Git
+  Git（读音为/gɪt/）是一个开源的分布式版本控制系统，可以有效、高速地处理从很小到非常大的项目版本管理。
+* 下载安装
+  链接：[[https://pan.baidu.com/s/1rpfm3pLYIU3wS1V4gXLN0w?pwd=zgl5]]
+  提取码：zgl5
+
+  双击 PortableGit.7z.exe 安装 Git，记住安装位置。一般是解压到安装文件所在文件夹下的 PortableGit 这个文件夹下。
+* Git 准备
+  进入 PortableGit 文件夹，双击 git-bash.exe 打开 终端命令行。
+
+  \$ 是命令提示符，不需要输入这个 \$ , 直接输入后面的命令。
+
+  输入命令 =cd= 回车，进入你的用户文件夹。 终端显示类似  =Administrator@XXX MINGW64 ~=
+
+  ~ 是你的用户文件夹的缩写。
+
+#+BEGIN_SRC 
+Administrator@XXX MINGW64 / (Master)
+$ cd
+Administrator@XXX MINGW64 ~
+$ pwd
+/c/Users/Administrator
+Administrator@XXX MINGW64 ~
+$
+#+END_SRC
+
+** 设置你的 Git 用户名和邮箱
+
+#+BEGIN_SRC 
+$ git config --global user.email "你的邮箱"
+$ git config --global user.name  "yourname"
+#+END_SRC
+
+* Git fork 指南
+  本文以 =@lisp/@lisp函数库= 为例，说明如何 fork =@lisp/@lisp函数库= 并作为贡献者提交代码
+
+** 克隆项目
+   打开网址: https://gitee.com/atlisp/atlisp-lib
+
+   在 Github/Gitee 上 *fork* (浏览器右上角)想要参与的项目仓库 =@lisp/@lisp函数库= (https://gitee.com/atlisp/atlisp-lib), 
+
+   *fork* 后会复制到你自己的项目中 yourname/@lisp函数库 (https://gitee.com/yourname/atlisp-lib)
+   
+   yourname 代指 您在 Gitee 上的账号名
+   
+   在本地电脑 打开 =git-base.exe= , git clone 自己的项目
+#+BEGIN_SRC 
+$  git clone https://gitee.com/yourname/atlisp-lib.git
+#+END_SRC
+   或者
+#+BEGIN_SRC 
+$ git clone git@gitee.com:yourname/atlisp-lib.git
+#+END_SRC
+
+   一系列提示后。在你的用户主文件夹下，会出现一个 atlisp-lib 的文件夹。
+   
+   这个文件夹下的内容就是 @lisp函数库 的所有源代码和说明文件。
+
+   进入本地代码仓库目录
+
+#+BEGIN_SRC 
+$ cd atlisp-lib
+#+END_SRC
+
+** 建立上游仓库地址
+
+   也就是 @lisp/@lisp函数库的 地址。
+#+BEGIN_SRC 
+$ git remote -v
+$ git remote add upstream https://gitee.com/atlisp/atlisp-lib.git
+#+END_SRC
+
+** 增加代码，提交代码, 持续交付
+   *以后从这里重复执行 持续开发与提交代码，为 @lisp 代码仓库做出贡献。*
+   
+*** 拉取代码
+    
+    将远程仓库的所有的分支 *fetch* 下来,并且合并到本地仓库
+#+BEGIN_SRC 
+$ git fetch upstream 
+$ git merge upstream/main
+#+END_SRC
+   或合并执行，pull = fetch + merge
+#+BEGIN_SRC 
+$ git pull upstream main 
+#+END_SRC
+*** 增加代码
+   然后是你本地的一顿 编辑，改代码，调试等。感觉代码没什么问题了。就将改动的代码加入到你的本地仓库。
+
+   =message= 是你本次改动的标记，用对你有意义的文字代替。
+#+BEGIN_SRC 
+$  git add * 
+$  git commit -m "message" 
+#+END_SRC
+*** 持续交付   
+   提交推送到自己的远程仓库 =yourname/@lisp函数库=
+#+BEGIN_SRC 
+$ git push origin main 
+#+END_SRC
+   
+   如果你有权限提交到上游仓库。提交推送到上游仓库 =@lisp/@lisp函数库=
+#+BEGIN_SRC 
+$ git push upstream main 
+#+END_SRC
+   
+   如果没有权限，请在 gitee/gethub 上新建 Pull Request 请求。
+
+   等待项目管理员会审核你提交的代码，如果合适就会同意合并，这样你的代码就会出现在  =@lisp/@lisp函数库= 中。
+
+   返回到  *以后从这里重复执行 持续开发与提交代码，为 @lisp 代码仓库做出贡献。* 重复执行。
+   
+#+BEGIN_QUOTE
+本地仓库: 存储在本地电脑的代码仓库
+
+远程仓库: 存储在Gitee/github上你的帐号中的代码仓库
+
+上游仓库：存储在Gitee/github上你的 fork 的 *@lisp* 帐号中的代码仓库
+#+END_QUOTE
+* Git 日常功能
+** 查看 代码更改记录
+   按 空格 向后翻页 ， 按 q 退出。
+#+BEGIN_SRC 
+$ git log
+#+END_SRC
+
+** 从网络更新代码版本
+#+BEGIN_SRC 
+$ git pull 
+#+END_SRC
+** 更改代码
+打开 vscode, notepad++ 等编辑器，查改代码。保存。
+
+** 管理代码仓库
+   查看更改的文件
+#+BEGIN_SRC 
+$ git status
+#+END_SRC
+
+** 将更改的文件加入代码仓库
+#+BEGIN_SRC 
+$ git add . 
+$ git commit -m "更改内容说明"
+#+END_SRC
+
+** 将新版本的代码提交到网络仓库。
+   按提示输入 Gitee 的账户名和密码。
+
+#+BEGIN_SRC 
+$ git push 
+#+END_SRC
+
+* 后记
+  最后请记得 加星 star 收藏 代码仓库 以及 关注所有动态
+
+

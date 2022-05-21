@@ -1,8 +1,0 @@
-(@:add-menu "连线定位" "半匹配字" "KL1")
-(@:add-menu "连线定位" "全匹配字" "KL2")
-(@:add-menu "连线定位" "番号连线" "KL4")
-(@:add-menu "连线定位" "标注连线" "KL3")
-(@:add-menu "连线定位" "自动选择" "ZDX")
-(@:add-menu "快速文字" "文字合併" "WZHB2")
-(@:add-menu "快速文字" "文字方向" "torient")
-(@:add-menu "快速文字" " 全删" "KLE")

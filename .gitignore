@@ -1,4 +1,6 @@
 *~
+*.arx
+*.dll
 *.bak
 *.csv
 *.cui

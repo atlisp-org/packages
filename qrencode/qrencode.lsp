@@ -27,9 +27,17 @@
   (princ)
   )
 (defun qrencode:mkpline(pt col)
-  (entmake (list '(0 . "LWPOLYLINE") '(100 . "AcDbEntity") '(100 . "AcDbPolyline") (cons 420 col) (cons 90 2) (cons 10 pt) (cons 10 (polar pt 0 1))(cons 43 1)))
+  (entmake (list '(0 . "LWPOLYLINE")
+		 '(100 . "AcDbEntity")
+		 '(100 . "AcDbPolyline")
+		 (cons 420 col)
+		 (cons 90 2)
+		 (cons 10 pt)
+		 (cons 10 (polar pt 0 (@:get-config 'qrencode:scale)))
+		 (cons 43 (@:get-config 'qrencode:scale))))
+  (entlast)
   )
-(defun qrencode:make(str / wscript stdout wsreturn outstr pt n k lst ptbase)
+(defun qrencode:make(str / wscript stdout wsreturn outstr pt n k lst ptbase ents pt-ins)
   (if (null (findfile (strcat @:*prefix* "bin\\QRencodeForLisp.exe")))
       (progn
 	(@:down-file "bin/QRencodeForLisp.exe")
@@ -43,15 +51,26 @@
   (setq lst(read outstr))
   (if lst
       (progn
+	(setq ents nil)
 	(setq ptbase (getpoint "请输入二维码绘制位置:"))
+	(setq ents (cons 
+		    (entity:make-rectangle (setq pt-ins (polar ptbase (* 0.5 pi) (* (@:get-config 'qrencode:scale) 0.5)))
+					   (polar (polar ptbase (* 1.75 pi) (* (@:get-config 'qrencode:scale) (length (car lst)) (sqrt 2.0)))
+						  (* 0.5 pi)(* (@:get-config 'qrencode:scale) 0.5)))
+		    ents))
 	(foreach n lst
 		 (setq pt ptbase)
-		 (foreach k n          
-			  (if (= k 1) (qrencode:mkpline pt 0) (qrencode:mkpline pt 16777215))
-			  (setq pt(polar pt 0 1))
-			  )        
-		 (setq ptbase(polar ptbase (* pi 1.5) 1))
+		 (foreach k n
+			  (setq ents (cons 
+				      (if (= k 1)
+					  (qrencode:mkpline pt 0) (qrencode:mkpline pt 16777215))
+				      ents))
+			  (setq pt (polar pt 0 (@:get-config 'qrencode:scale)))
+			  )
+		 (setq ptbase(polar ptbase (* pi 1.5) (@:get-config 'qrencode:scale)))
 		 )
+	(entity:block ents (strcat "qr-" (@:timestamp)) pt-ins)
+	;; draw box 
 	)
     )
   (princ)

@@ -2,7 +2,7 @@
         (:FULL-NAME . "QR二维码生成")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.5")
+        (:VERSION . "0.0.6")
         (:LOCALE . "chs")
         (:CATEGORY . "图档管理")
         (:REQUIRED . "base")

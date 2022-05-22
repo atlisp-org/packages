@@ -34,7 +34,17 @@ $ git config --global user.name  "yourname"
 #+END_SRC
 
 * Git fork 指南
-  本文以 =@lisp/@lisp函数库= 为例，说明如何 fork =@lisp/@lisp函数库= 并作为贡献者提交代码
+  本文以 =@lisp/@lisp函数库= 为例，说明如何 *fork* =@lisp/@lisp函数库= 并作为贡献者提交代码
+  
+#+BEGIN_QUOTE
+远程仓库地址有两种连接方式,命令行中两种写法都可以。
+
+SSH方式可以设置证书，实现无密码登录，执行过程中不用输入密码。
+
+http方式: https://gitee.com/yournmae/atlisp-lib.git
+
+SSH 方式: git@gitee.com:yourname/atlisp-lib.git
+#+END_QUOTE
 
 ** 克隆项目
    打开网址: https://gitee.com/atlisp/atlisp-lib
@@ -45,13 +55,17 @@ $ git config --global user.name  "yourname"
    
    yourname 代指 您在 Gitee 上的账号名
    
-   在本地电脑 打开 =git-base.exe= , git clone 自己的项目
+   当然，你也可以不 *fork* , 直接使用  =@lisp/@lisp函数库= (https://gitee.com/atlisp/atlisp-lib)。
+
+   在本地电脑 打开 =git-base.exe= , git clone 自己的项目，下面两种方式任选一种。
 #+BEGIN_SRC 
-$  git clone https://gitee.com/yourname/atlisp-lib.git
-#+END_SRC
-   或者
-#+BEGIN_SRC 
+$ git clone https://gitee.com/yourname/atlisp-lib.git
 $ git clone git@gitee.com:yourname/atlisp-lib.git
+#+END_SRC
+   或者直接从 @lisp 克隆(不用 fork),适合较小的改动。
+#+BEGIN_SRC 
+$ git clone https://gitee.com/atlisp/atlisp-lib.git
+$ git clone git@gitee.com:atlisp/atlisp-lib.git
 #+END_SRC
 
    一系列提示后。在你的用户主文件夹下，会出现一个 atlisp-lib 的文件夹。
@@ -64,9 +78,12 @@ $ git clone git@gitee.com:yourname/atlisp-lib.git
 $ cd atlisp-lib
 #+END_SRC
 
-** 建立上游仓库地址
+** 增加上游仓库地址 
+
+   直接从 @lisp 克隆/拉取 的本地仓库，不用执行该过程。
 
    也就是 @lisp/@lisp函数库的 地址。
+
 #+BEGIN_SRC 
 $ git remote -v
 $ git remote add upstream https://gitee.com/atlisp/atlisp-lib.git
@@ -77,7 +94,7 @@ $ git remote add upstream https://gitee.com/atlisp/atlisp-lib.git
    
 *** 拉取代码
     
-    将远程仓库的所有的分支 *fetch* 下来,并且合并到本地仓库
+    将上游仓库的所有的分支 *fetch* 下来,并且合并到本地仓库
 #+BEGIN_SRC 
 $ git fetch upstream 
 $ git merge upstream/main
@@ -86,6 +103,13 @@ $ git merge upstream/main
 #+BEGIN_SRC 
 $ git pull upstream main 
 #+END_SRC
+    
+   直接从 @lisp (无fork) 克隆/拉取(clone/pull)的本地仓库，不用输入 upstream 及后面的内容
+#+BEGIN_SRC 
+$ git pull
+#+END_SRC
+  
+
 *** 增加代码
    然后是你本地的一顿 编辑，改代码，调试等。感觉代码没什么问题了。就将改动的代码加入到你的本地仓库。
 
@@ -100,16 +124,16 @@ $  git commit -m "message"
 $ git push origin main 
 #+END_SRC
    
-   如果你有权限提交到上游仓库。提交推送到上游仓库 =@lisp/@lisp函数库=
+   提交到上游仓库。提交推送到上游仓库 =@lisp/@lisp函数库=
+
+   直接克隆/拉取(clone/pull) @lisp 的本地仓库,不用执行该步骤。
 #+BEGIN_SRC 
 $ git push upstream main 
 #+END_SRC
    
-   如果没有权限，请在 gitee/gethub 上新建 Pull Request 请求。
-
    等待项目管理员会审核你提交的代码，如果合适就会同意合并，这样你的代码就会出现在  =@lisp/@lisp函数库= 中。
 
-   返回到  *以后从这里重复执行 持续开发与提交代码，为 @lisp 代码仓库做出贡献。* 重复执行。
+   回跳到  *拉取代码* 重复执行，以持续交付。
    
 #+BEGIN_QUOTE
 本地仓库: 存储在本地电脑的代码仓库
@@ -118,6 +142,7 @@ $ git push upstream main
 
 上游仓库：存储在Gitee/github上你的 fork 的 *@lisp* 帐号中的代码仓库
 #+END_QUOTE
+
 * Git 日常功能
 ** 查看 代码更改记录
    按 空格 向后翻页 ， 按 q 退出。

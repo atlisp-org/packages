@@ -1,0 +1,1 @@
+(@:def-pkg '((:NAME . "block-view") (:FULL-NAME . "BlockView") (:AUTHOR . "VitalGG") (:EMAIL . "vitalgg@gmail.com") (:VERSION . "0.0.8") (:LOCALE . "CHS") (:CATEGORY . "图块相关") (:REQUIRED . "opendcl") (:OPENSOURCE . 0) (:DESCRIPTION . "块预览,。版权属于原作者。本站管理VitalGG只是封装一下。") (:URL . "http://atlisp.cn") (:FILES "block-view" "BlockView" "BlockView.odcl")))

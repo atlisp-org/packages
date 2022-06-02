@@ -1,29 +1,29 @@
 #+title: Git 使用说明-极简版
 
 * Git
-  Git（读音为/gɪt/）是一个开源的分布式版本控制系统，可以有效、高速地处理从很小到非常大的项目版本管理。
+Git（读音为/gɪt/）是一个开源的分布式版本控制系统，可以有效、高速地处理从很小到非常大的项目版本管理。
 * 下载安装
-  链接：[[https://pan.baidu.com/s/1rpfm3pLYIU3wS1V4gXLN0w?pwd=zgl5]]
-  提取码：zgl5
+链接：[[https://pan.baidu.com/s/1rpfm3pLYIU3wS1V4gXLN0w?pwd=zgl5]]
+提取码：zgl5
 
-  双击 PortableGit.7z.exe 安装 Git，记住安装位置。一般是解压到安装文件所在文件夹下的 PortableGit 这个文件夹下。
+双击 PortableGit.7z.exe 安装 Git，记住安装位置。一般是解压到安装文件所在文件夹下的 PortableGit 这个文件夹下。
 * 准备 Git 环境
-  进入 PortableGit 文件夹，双击 git-bash.exe 打开 终端命令行。
+进入 PortableGit 文件夹，双击 git-bash.exe 打开 终端命令行。
 
-  \$ 是命令提示符，不需要输入这个 \$ , 直接输入后面的命令。
+\$ 是命令提示符，不需要输入这个 \$ , 直接输入后面的命令。
 
-  输入命令 =cd= 回车，进入你的用户文件夹。 终端显示类似  =Administrator@XXX MINGW64 ~=
+输入命令 =cd= 回车，进入你的用户文件夹。 终端显示类似  =Administrator@XXX MINGW64 ~=
 
-  ~ 是你的用户文件夹的缩写。
+~ 是你的用户文件夹的缩写。
 
-#+BEGIN_SRC shell
-Administrator@XXX MINGW64 / (Master)
-$ cd
-Administrator@XXX MINGW64 ~
-$ pwd
-/c/Users/Administrator
-Administrator@XXX MINGW64 ~
-$
+#+BEGIN_SRC bash
+  Administrator@XXX MINGW64 / (Master)
+  $ cd
+  Administrator@XXX MINGW64 ~
+  $ pwd
+  /c/Users/Administrator
+  Administrator@XXX MINGW64 ~
+  $
 #+END_SRC
 
 ** 设置你的 Git 用户名和邮箱
@@ -35,7 +35,7 @@ $ git config --global user.name  "yourname"
 
 * 使用 Git 贡献您的代码
 
-  本文以 =@lisp/@lisp函数库= 为例，说明如何 *fork* =@lisp/@lisp函数库= 并作为贡献者提交代码
+本文以 =@lisp/@lisp函数库= 为例，说明如何 *fork* =@lisp/@lisp函数库= 并作为贡献者提交代码
   
 #+BEGIN_QUOTE
 远程仓库地址有两种连接方式,命令行中两种写法都可以。
@@ -59,61 +59,61 @@ SSH 方式: git@gitee.com:yourname/atlisp-lib.git
 *** 首次使用：克隆 =clone= @lisp函数库
 
 #+BEGIN_SRC mermaid
-graph TD;
-A[Gitee:atlisp/atlisp-lib]--> | git clone | C(本地仓库 atlisp-lib);
+  graph TD;
+      A[Gitee:atlisp/atlisp-lib]--> | git clone | C(本地仓库 atlisp-lib);
 #+END_SRC
 
 #+BEGIN_SRC bash
-git clone git@gitee.com:atlisp/atlisp-lib.git
+  git clone git@gitee.com:atlisp/atlisp-lib.git
 #+END_SRC
 
 *** 重复执行，持续贡献您的代码
-    拉取pull 写/改代码 提交 push
+拉取pull 写/改代码 提交 push
 
 #+BEGIN_SRC mermaid
-graph TD;
-A[Gitee:atlisp/atlisp-lib]--> | git pull | C(本地仓库 atlisp-lib);
-C-->|git push|A;
+  graph TD;
+      A[Gitee:atlisp/atlisp-lib]--> | git pull | C(本地仓库 atlisp-lib);
+      C-->|git push|A;
 #+END_SRC
 
 #+BEGIN_SRC sh
-cd atlisp-lib
-git pull 
-# 修改本地仓库中的代码
-git add .
-git commit -m "message"
-git push
+  cd atlisp-lib
+  git pull 
+  # 修改本地仓库中的代码
+  git add .
+  git commit -m "message"
+  git push
 #+END_SRC
 
-    push 后等待管理员 Pull Requets 你的提交。
+push 后等待管理员 Pull Requets 你的提交。
 
 
 ** 使用 git 交付代码为@lisp提供贡献 (fork)
 *** 建立分支: fork @lisp函数库
 
 #+BEGIN_SRC mermaid
-graph TD;
-A[Gitee:atlisp/atlisp-lib]-->|fork|B[Gitee:yourname/atlisp-lib]
-B --> | git clone | C(本地仓库 atlisp-lib);
+  graph TD;
+      A[Gitee:atlisp/atlisp-lib]-->|fork|B[Gitee:yourname/atlisp-lib]
+      B --> | git clone | C(本地仓库 atlisp-lib);
 #+END_SRC
 
-   打开网址: https://gitee.com/atlisp/atlisp-lib
+打开网址: https://gitee.com/atlisp/atlisp-lib
 
-   在 Github/Gitee 上 *fork* (浏览器右上角)想要参与的项目仓库 =@lisp/@lisp函数库= (https://gitee.com/atlisp/atlisp-lib), 
+在 Github/Gitee 上 *fork* (浏览器右上角)想要参与的项目仓库 =@lisp/@lisp函数库= (https://gitee.com/atlisp/atlisp-lib), 
 
-   *fork* 后会复制到你自己的项目中 yourname/@lisp函数库 (https://gitee.com/yourname/atlisp-lib)
+*fork* 后会复制到你自己的项目中 yourname/@lisp函数库 (https://gitee.com/yourname/atlisp-lib)
    
-   yourname 代指 您在 Gitee 上的账号名
+yourname 代指 您在 Gitee 上的账号名
    
 *** 首次使用：克隆 =clone= 你的 远程仓库中的 @lisp函数库
 
 #+BEGIN_SRC mermaid
-graph TD;
-A[Gitee:atlisp/atlisp-lib]-->|fork|B[Gitee:yourname/atlisp-lib]
-B --> | git clone | C(本地仓库 atlisp-lib);
+  graph TD;
+      A[Gitee:atlisp/atlisp-lib]-->|fork|B[Gitee:yourname/atlisp-lib]
+      B --> | git clone | C(本地仓库 atlisp-lib);
 #+END_SRC
 
-    克隆并设置上游仓库
+克隆并设置上游仓库
 #+BEGIN_SRC 
 git clone git@gitee.com:yourname/atlisp-lib.git
 cd atlisp-lib
@@ -121,30 +121,30 @@ git remote add upstream http://gitee.com/atlisp/atlisp-lib.git
 #+END_SRC
 
 *** 持续交付到远程仓库
-    本过程为交付到你的 Gitee 远程仓库 yourname/atlisp-lib
+本过程为交付到你的 Gitee 远程仓库 yourname/atlisp-lib
 
 #+BEGIN_SRC mermaid
-graph TD;
-A[Gitee:yourname/atlisp-lib]--> | git pull | C(本地仓库 atlisp-lib);
-C-->|git push|A;
+  graph TD;
+      A[Gitee:yourname/atlisp-lib]--> | git pull | C(本地仓库 atlisp-lib);
+      C-->|git push|A;
 #+END_SRC
 
 #+BEGIN_SRC shell
-cd atlisp-lib
-git pull 
-# 用编辑器修改代码
-git add .
-git commit -m "message"
-git push
+  cd atlisp-lib
+  git pull 
+  # 用编辑器修改代码
+  git add .
+  git commit -m "message"
+  git push
 #+END_SRC
 
 *** 持续交付到上游仓库 Pull Requests
-    本过程为交付 (Pull Requests) 到 @lisp 上游仓库 atlisp/atlisp-lib
+本过程为交付 (Pull Requests) 到 @lisp 上游仓库 atlisp/atlisp-lib
 
 #+BEGIN_SRC mermaid
-graph TD;
-A[Gitee:atlisp/atlisp-lib] --> | git pull upstream main| C(本地仓库 atlisp-lib);
-C-->|git push upstream main| A;
+  graph TD;
+      A[Gitee:atlisp/atlisp-lib] --> | git pull upstream main| C(本地仓库 atlisp-lib);
+      C-->|git push upstream main| A;
 #+END_SRC
 
 #+BEGIN_SRC 
@@ -156,11 +156,11 @@ git commit -m "message"
 git push upstream main
 #+END_SRC
 
-    等待管理员 Pull Requets 你的提交。
+等待管理员 Pull Requets 你的提交。
 
 * Git 日常功能
 ** =log= 查看 代码更改记录
-   按 空格 向后翻页 ， 按 q 退出。
+按 空格 向后翻页 ， 按 q 退出。
 #+BEGIN_SRC 
 $ git log
 #+END_SRC
@@ -173,7 +173,7 @@ $ git pull
 打开 vscode, notepad++ 等编辑器，查改代码。保存。
 
 ** =status= 查看仓库状态
-   查看更改的文件
+查看更改的文件
 #+BEGIN_SRC 
 $ git status
 #+END_SRC
@@ -185,12 +185,12 @@ $ git commit -m "更改内容说明"
 #+END_SRC
 
 ** =push= 将新版本的代码提交到网络仓库。
-   按提示输入 Gitee 的账户名和密码。
+按提示输入 Gitee 的账户名和密码。
 #+BEGIN_SRC 
 $ git push 
 #+END_SRC
 
 * 后记
-  最后请记得 加星 star 收藏 代码仓库 以及 关注所有动态
+最后请记得 加星 star 收藏 代码仓库 以及 关注所有动态
 
 

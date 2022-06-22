@@ -1,14 +1,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
+;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; å®šä¹‰é…ç½®é¡¹ 'flange:first ç”¨äº åº”ç”¨åŒ… flange çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
-;;(@:define-config 'flange:first "æˆ‘æ˜¯é…ç½®é¡¹ flange:first çš„å€¼" "è¿™ä¸ªé…ç½®é¡¹çš„ç”¨é€”è¯´æ˜ã€‚")
-;; (@:get-config 'flange:first) ;; è·å–é…ç½®é¡¶çš„å€¼
-;; (@:set-config 'flange:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
-;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå•
+;; ¶¨ÒåÅäÖÃÏî 'flange:first ÓÃÓÚ Ó¦ÓÃ°ü flange µÄ µÚÒ»¸öÅäÖÃÏî first 
+;;(@:define-config 'flange:first "ÎÒÊÇÅäÖÃÏî flange:first µÄÖµ" "Õâ¸öÅäÖÃÏîµÄÓÃÍ¾ËµÃ÷¡£")
+;; (@:get-config 'flange:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
+;; (@:set-config 'flange:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
+;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥
 
 (defun flange:make (pt-c DN Dw Dd Ds n t1 / ents)
-  "pt-c ä¸­å¿ƒç‚¹ DN å…¬ç§°ç›´å¾„(å†…å¾„),Dwå¤–å¾„ï¼ŒDd,èºä¸é—´è·,Ds èºä¸ç›´å¾„,n èºä¸ä¸ªæ•°ï¼Œt1åšåº¦"
+  "pt-c ÖĞĞÄµã DN ¹«³ÆÖ±¾¶(ÄÚ¾¶),DwÍâ¾¶£¬Dd,ÂİË¿¼ä¾à,Ds ÂİË¿Ö±¾¶,n ÂİË¿¸öÊı£¬t1ºñ¶È"
   (push-var)
   (setvar "osmode" 0)
   (if (tblsearch "block" (strcat "Flange-DN" (itoa DN)))
@@ -33,13 +33,29 @@
   (pop-var)
   )
 
-
 (defun flange:draw ()
-  (@:help (strcat "ä»å‚æ•°è¡¨ä¸­è¯»å…¥æ•°æ®ï¼Œç»˜åˆ¶æ³•å…°"))
-  ;;å®ç°ä»£ç 
-  (setq pt-c (getpoint "åœ†å¿ƒ"))
-  (setq para '("DN10" 90 60 14	4 14))
+  (@:help (strcat "´Ó²ÎÊı±íÖĞ¶ÁÈëÊı¾İ£¬»æÖÆ·¨À¼"))
+  ;;ÊµÏÖ´úÂë
+  ;; ¼ÓÔØ²ÎÊı
+  (setq paras nil)
+  (if (findfile (strcat (@:package-path "flange") "data.lst"))
+      (progn
+	(setq fp (open(strcat (@:package-path "flange") "data.lst")"r"))
+	(while (setq str-l (read-line fp))
+	  (if(="DN" (substr str-l 1 2))
+	      (setq paras (cons 
+			   (string:to-list str-l "\t")
+			   paras))))
+	;; ÏÔÊ¾½çÃæ£¬Ñ¡Ôñ²ÎÊı¡£
+	(setq paras (reverse paras))
+	(setq para (assoc 
+		    (ui:select "ÇëÑ¡ÔñĞÍºÅ"
+			       (mapcar 'car paras))
+		    paras)
+		    )
 
-  (flange:make pt-c (atoi (substr (nth 0 para) 3)) (nth 1 para) (nth 2 para)(nth 3 para) (nth 4 para)(nth 5 para))
-  )
+	(setq pt-c (getpoint "µãÑ¡Òª»æÖÆµÄÎ»ÖÃ×ø±ê:"))
+	(setq para (mapcar 'read para))
+	(flange:make pt-c (atoi (substr (vl-symbol-name (nth 0 para)) 3)) (nth 1 para) (nth 2 para)(nth 3 para) (nth 4 para)(nth 5 para))
+	)))
  

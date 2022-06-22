@@ -10,4 +10,5 @@
         (:DESCRIPTION . "·¨À¼»æÍ¼¹¤¾ß¡£")
         (:URL . "http://atlisp.cn")
         (:FILES "flange"
+		"data.lst"
             "menus")))

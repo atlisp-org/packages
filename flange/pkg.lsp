@@ -2,7 +2,7 @@
         (:FULL-NAME . "法兰工具")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.2")
+        (:VERSION . "0.0.4")
         (:LOCALE . "chs")
         (:CATEGORY . "管道")
         (:REQUIRED . "base")
@@ -10,5 +10,5 @@
         (:DESCRIPTION . "法兰绘图工具。")
         (:URL . "http://atlisp.cn")
         (:FILES "flange"
-		"data.lst"
+            "data.lst"
             "menus")))

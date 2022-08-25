@@ -1,4 +1,4 @@
-;;;感谢fxsm为我们做的这个转化表达式为lisp函数的程序
+;;; 感谢fxsm为我们做的这个转化表达式为lisp函数的程序
 (defun formula->lisp (str / lst format1 format1_1 Fsxm-Apply
 			 format2 format3 format4 ln lg sqr ASIN
 			 acos tan ctan sin2 cos2 tan2

@@ -60,7 +60,7 @@
 	   folder
 	   (vl-directory-files folder "*.pdf" 1))
       (progn
-	(@:patch-pgp-shell)
+	;;(@:patch-pgp-shell)
 	(setq files "*.pdf")
 	(setq filetmp "merge-tmp.pdf")
 	(setq filename-bk "merge-all.pdf")

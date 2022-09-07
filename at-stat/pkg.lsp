@@ -2,7 +2,7 @@
         (:FULL-NAME . "统计表格")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.4")
+        (:VERSION . "0.0.5")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")

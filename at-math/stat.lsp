@@ -23,7 +23,7 @@
 	(stat:stat
 	 (mapcar (function
 		  (lambda (x)
-		   (if (= block-name (block:get-effectivename x))
+		   (if (wcmatch (block:get-effectivename x) block-name)
 		       (cdr (assoc attribute-name (block:get-attributes x)))
 		       )))
 		 (pickset:to-list (ssget '((0 . "insert"))))))))

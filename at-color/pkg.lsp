@@ -1,15 +1,11 @@
-(@:def-pkg 
-'((:name . "at-color")
-  (:full-name . "@lisp颜色")
-  (:author . "VitalGG")
-  (:email . "vitalgg@gmail.com")
-  (:version . "0.0.7")
-  (:locale . "CHS")
-  (:category . "颜色相关")
-  (:opensource . 0) 
-  (:description . "改对象或图层颜色,去真彩色")
-  (:url . "http://atlisp.cn")
-  (:files . ("at-color"
-              ;; you can add file name that you will included in the package.
-              ;; lsp file must not input extand name.
-              ))))
+(@:def-pkg '((:NAME . "at-color")
+        (:FULL-NAME . "@lisp颜色")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.8")
+        (:LOCALE . "CHS")
+        (:CATEGORY . "颜色相关")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "改对象或图层颜色,去真彩色")
+        (:URL . "http://atlisp.cn")
+        (:FILES "at-color")))

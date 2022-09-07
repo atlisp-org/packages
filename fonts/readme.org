@@ -1,0 +1,16 @@
+#+TITLE: 常用字体库
+* 本包为常用的CAD字体 
+  以下为当前可下载的字体列表
+
+  - @@hztxt.shx : 用于在打开dwg文件时，无缺省字体的首选。
+  - Gbcbig.shx
+  - hztxt.shx
+  - romans.shx
+  - txt.shx
+  - China.shx :  中文双线字体
+  - gbhzfs.shx  
+  - Pkpmeng.shx 
+  - Tssdchn.shx : 探索者汉字字体。
+  - Tssdeng.shx : 探索者英文单线字体。钢筋符号。
+  - Tssdeng2.shx : 探索者英文双线字体。钢筋符号。
+

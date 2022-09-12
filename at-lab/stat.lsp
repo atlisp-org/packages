@@ -1,15 +1,35 @@
 (@:add-menu "@试验室" "统计光缆" '(@lab:stat-line))
-(defun to-pair(str / pair res)
-  (foreach a (string:auto-split str)
-	   (if (string:numberp a)
-	       (setq res
-		     (cons 
+(defun @lab:stat-line (/ res res1 to-pair get-slave)
+  (@:help (strcat "统计汇总 `文字数字文字数字文字数字...' 格式的单行文本字符串\n"
+		  "文字须是全汉字，或全英文，且文字之间及文字与数字之间不能有空格。\m"
+		  "数字须是半角数字字符，目前不支持带正负号的数字。"
+		  ))
+  (defun to-pair(str / pair res)
+    (foreach a (string:auto-split str)
+	     (if (string:numberp a)
+		 (setq res
+		       (cons 
 			(cons
 			 pre-a (atof a))
 			res))
 	       (setq pre-a a)))
-  res)
-(defun @lab:stat-line (/ res res1 )
+    res)
+  (defun get-slave (title%)
+    (mapcar (function
+	     (lambda (x)
+	       (to-pair
+		(entity:getdxf x 1))))
+	    (pickset:to-list
+	     (ssget "C"
+		    (polar (entity:getdxf title% 10)
+			   pi
+			   (entity:getdxf title% 40))
+		    (polar (entity:getdxf title% 10)
+			   (* 0.5 pi)
+			   (* 1.5
+			      (entity:getdxf title% 40)))
+		    '((0 . "text")(1 . "*管道*"))))))
+    
   (push-var)
   (setvar "osmode" 0)
   (setq res nil)
@@ -20,39 +40,14 @@
 		     (subst
 		      (cons (entity:getdxf title% 1)
 			    (append (cdr (assoc (entity:getdxf title% 1) res))
-				    (mapcar (function
-					     (lambda (x)
-					       (to-pair
-					       (entity:getdxf x 1))))
-					    (pickset:to-list
-					     (ssget "C"
-						    (polar (entity:getdxf title% 10)
-							   pi
-							   (entity:getdxf title% 40))
-						    (polar (entity:getdxf title% 10)
-							   (* 0.5 pi)
-							   (* 1.5
-							      (entity:getdxf title% 40)))
-						    '((0 . "text")(1 . "*管道*")))))))
+				    (get-slave title%)
+				    ))
 		      (assoc (entity:getdxf title% 1) res)
 		      res))
 	     (setq res
 		 (cons 
 		  (cons (entity:getdxf title% 1)
-			(mapcar (function
-				 (lambda (x)
-				   (to-pair
-				    (entity:getdxf x 1))))
-				(pickset:to-list
-				 (ssget "C"
-					(polar (entity:getdxf title% 10)
-					       pi
-					       (entity:getdxf title% 40))
-					(polar (entity:getdxf title% 10)
-					       (* 0.5 pi)
-					       (* 1.5
-						  (entity:getdxf title% 40)))
-					'((0 . "text")(1 . "*管道*"))))))
+			(get-slave title%))
 		  res))
 	     ))
   ;; summary

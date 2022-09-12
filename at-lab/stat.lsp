@@ -1,9 +1,9 @@
 (@:add-menu "@试验室" "统计光缆" '(@lab:stat-line))
 (defun @lab:stat-line (/ res res1 to-pair get-slave)
-  (@:help (strcat "统计汇总 `文字数字文字数字文字数字...' 格式的单行文本字符串\n"
-		  "文字须是全汉字，或全英文，且文字之间及文字与数字之间不能有空格。\m"
-		  "数字须是半角数字字符，目前不支持带正负号的数字。"
-		  ))
+  (@:help (list "统计汇总 `文字数字文字数字文字数字...' 格式的单行文本字符串"
+		"文字须是全汉字，或全英文，且文字之间及文字与数字之间不能有空格."
+		"数字须是半角数字字符，目前不支持带正负号的数字。"
+		))
   (defun to-pair(str / pair res)
     (foreach a (string:auto-split str)
 	     (if (string:numberp a)

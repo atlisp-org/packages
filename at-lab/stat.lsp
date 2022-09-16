@@ -28,7 +28,7 @@
 			   (* 0.5 pi)
 			   (* 1.5
 			      (entity:getdxf title% 40)))
-		    '((0 . "text")(1 . "*管道*"))))))
+		    '((0 . "text")(1 . "*管道*,*架空*,*引上*"))))))
     
   (push-var)
   (setvar "osmode" 0)

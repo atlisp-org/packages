@@ -12,4 +12,6 @@
 		("绘线查找" (@text:find-from-line))
 		("生成表格" (@text:text2table))
 		("格式数字" (@text:menu-format-number))
+		("朗读文本" (@text:menu-speak))
 		)))
+(@:define-hotkey "tts" "(@text:menu-speak)")

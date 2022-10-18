@@ -1,0 +1,21 @@
+(setq at-nlp:*verb*
+      '(("绘制" . "entity:make-")
+	("创建" . "entity:make-")
+	("选择" . "ssget")
+	("选中" . "ssget")))
+(setq at-nlp:*entity*
+      '(("圆弧" . "arc")
+	("圆" . "circle")
+	("直线" . "line")
+	("线段" . "line")
+	("多段线" . "lwpl")
+	("矩形" . "rectange")
+	("长方形" . "rectange")
+	))
+(setq at-nlp:*attribute*
+      '(("半径" . "rad")
+	("圆心" . "cen")
+	("中心" . "cen")
+	("长" . "long")
+	("宽" . "width")
+	))

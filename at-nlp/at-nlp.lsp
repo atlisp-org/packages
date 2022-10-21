@@ -46,7 +46,7 @@
 		    (setq res x)
 		    (foreach
 		     verb (append at-nlp:*verb* at-nlp:*entity*
-				  at-nlp:*attribute*
+				  at-nlp:*attribute* at-nlp:*color*
 				  at-nlp:*bool* at-nlp:*prep*)
 		     (if (null flag)
 		     (cond
@@ -71,3 +71,52 @@
 	  lst-str))
   )
   
+(defun at-nlp:gen-code (res-corpus / res)
+  (setq res (mapcar '(lambda(x)
+		       (if (cddr x)
+			   (cons (cddr x)
+				 (cadr x))
+			 x)
+			 )
+		    res-corpus))
+  (princ res)
+  (defun parse-attribute (att / lst-att )
+    (while (setq att (member (assoc 'attribute att) att))
+      (if (and (= 'compare (car (nth 1 att)))
+	       (null (cadr (nth 2 att))))
+	  (setq lst-att
+		(cons
+		 (cons (cdr (assoc 'attribute att))
+		       (read (car (nth 2 att))))
+		 lst-att))
+	(setq lst-att
+	      (cons 
+	       (cons (cdr (assoc 'attribute att))
+		     (read (car (nth 1 att))))
+	       lst-att))
+	)
+      (setq att (cddr att))
+      )
+    lst-att)
+		  
+  (print (parse-attribute res))
+  (cond
+   ((= (read (cdr (assoc 'verb res))) 'ssget)
+    (list
+     'sssetfirst
+     nil
+     (append
+      (list 'ssget)
+      (if (= "x" (cdr (assoc 'prep res)))
+	  (list (cdr (assoc 'prep res))))
+      (list 
+       (cons 'quote
+	     (list
+	      (append
+	       (if (cdr (assoc 'entity res))
+		   (list (cons 0 (cdr (assoc 'entity res)))))
+	       (if (cdr (assoc 'color res))
+		   (list (cons 62 (cdr (assoc 'color res)))))
+	       (parse-attribute res)
+	       ))))))
+    )))

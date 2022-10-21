@@ -25,12 +25,24 @@
 	'(lambda(x)
 	   (cons (car x) (cons (cdr x) 
 			       'attribute)))
-      '(("半径" . "rad")
-	("圆心" . "cen")
-	("中心" . "cen")
+      '(("半径" . 40)
+	("圆心" . 10)
+	("中心" . 10)
 	("长" . "long")
 	("宽" . "width")
+	("色号" . 62)
 	)))
+(setq at-nlp:*color*
+       (mapcar
+	'(lambda(x)
+	   (cons (car x) (cons (cdr x) 
+			       'color)))
+	'(("红" . 1)
+	  ("黄" . 2)
+	  ("绿" . 3)
+	  ("青" . 4)
+	  ("蓝" . 5)
+	  )))
 (setq at-nlp:*bool*
              (mapcar
        '(lambda(x)
@@ -47,4 +59,5 @@
 			      'prep)))
       '(("的" . "prep")
 	("了" . "prep")
+	("所有" . "x")
 	)))

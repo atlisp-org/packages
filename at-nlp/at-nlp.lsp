@@ -80,6 +80,16 @@
 			 )
 		    res-corpus))
   (@:debug "INFO" (vl-prin1-to-string res))
+  (defun dxf-pair (dxf str)
+    (cond
+     ((> 0 dxf 9)
+      (cons dxf str))
+     ((> 40 dxf 99)
+      (cons dxf (atof str)))
+     ((= 10 dxf)
+      (cons dxf (point:2d->3d(mapcar 'atof (string:to-list str ",")))))
+     (t 
+      (cons dxf str))))
   (defun parse-attribute (att / lst-att )
     (while (setq att (member (assoc 'attribute att) att))
       (if (and (= 'compare (car (nth 1 att)))
@@ -88,8 +98,8 @@
 	   ((= "=" (cdr (nth 1 att)))
 	    (setq lst-att
 		  (cons
-		   (cons (cdr (assoc 'attribute att))
-			 (read (car (nth 2 att))))
+		   (dxf-pair (cdr (assoc 'attribute att))
+			     (car (nth 2 att)))
 		   lst-att))
 	    )
 	   (t
@@ -97,17 +107,19 @@
 		  (cons
 		   (cons -4 "<AND")
 		   (cons
-		    (cons -4 (cdr (nth 1 att)))
+		    (if (= (cdr (assoc 'attribute att)) 10)
+			(cons -4 (strcat (cdr (nth 1 att))","(cdr (nth 1 att))","(cdr (nth 1 att))))
+		      (cons -4 (cdr (nth 1 att))))
 		    (cons
-		     (cons (cdr (assoc 'attribute att))
-			   (read (car (nth 2 att))))
+		     (dxf-pair (cdr (assoc 'attribute att))
+			       (car (nth 2 att)))
 		     (cons (cons -4 "AND>")
 			   lst-att)))))
 	    ))
 	(setq lst-att
 	      (cons 
-	       (cons (cdr (assoc 'attribute att))
-		     (read (car (nth 1 att))))
+	       (dxf-pair (cdr (assoc 'attribute att))
+			 (car (nth 1 att)))
 	       lst-att))
 	)
       (setq att (cddr att))

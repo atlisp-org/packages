@@ -79,16 +79,31 @@
 			 x)
 			 )
 		    res-corpus))
-  (princ res)
+  (@:debug "INFO" (vl-prin1-to-string res))
   (defun parse-attribute (att / lst-att )
     (while (setq att (member (assoc 'attribute att) att))
       (if (and (= 'compare (car (nth 1 att)))
 	       (null (cadr (nth 2 att))))
-	  (setq lst-att
-		(cons
-		 (cons (cdr (assoc 'attribute att))
-		       (read (car (nth 2 att))))
-		 lst-att))
+	  (cond
+	   ((= "=" (cdr (nth 1 att)))
+	    (setq lst-att
+		  (cons
+		   (cons (cdr (assoc 'attribute att))
+			 (read (car (nth 2 att))))
+		   lst-att))
+	    )
+	   (t
+	    (setq lst-att
+		  (cons
+		   (cons -4 "<AND")
+		   (cons
+		    (cons -4 (cdr (nth 1 att)))
+		    (cons
+		     (cons (cdr (assoc 'attribute att))
+			   (read (car (nth 2 att))))
+		     (cons (cons -4 "AND>")
+			   lst-att)))))
+	    ))
 	(setq lst-att
 	      (cons 
 	       (cons (cdr (assoc 'attribute att))
@@ -99,7 +114,7 @@
       )
     lst-att)
 		  
-  (print (parse-attribute res))
+  (@:debug "INFO" (vl-prin1-to-string (parse-attribute res)))
   (cond
    ((= (read (cdr (assoc 'verb res))) 'ssget)
     (list

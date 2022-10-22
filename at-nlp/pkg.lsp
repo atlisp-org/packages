@@ -2,7 +2,7 @@
         (:FULL-NAME . "◊‘»ª”Ô—‘Ωªª•")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.11")
+        (:VERSION . "0.0.12")
         (:LOCALE . "zh")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")

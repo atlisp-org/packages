@@ -78,6 +78,48 @@
 	       x)
 	     )
 	  res-corpus))
+(defun at-nlp:parse-attribute (att / lst-att )
+  (if (assoc 'color att)
+      (setq lst-att
+	    (cons 
+	     (dxf-pair 62
+		       (itoa (cdr (assoc 'color att))))
+	     lst-att)))
+  (while (setq att (member (assoc 'attribute att) att))
+    (if (and (= 'compare (car (nth 1 att)))
+	     (null (cadr (nth 2 att))))
+	(cond
+	 ((= "=" (cdr (nth 1 att)))
+	  (setq lst-att
+		(cons
+		 (dxf-pair (cdr (assoc 'attribute att))
+			   (car (nth 2 att)))
+		 lst-att))
+	  )
+	 (t
+	  (setq lst-att
+		(cons
+		 (cons -4 "<AND")
+		   (cons
+		    (if (= (cdr (assoc 'attribute att)) 10)
+			(cons -4 (strcat (cdr (nth 1 att))","(cdr (nth 1 att))",*"))
+		      (cons -4 (cdr (nth 1 att))))
+		    (cons
+		     (dxf-pair (cdr (assoc 'attribute att))
+			       (car (nth 2 att)))
+		     (cons (cons -4 "AND>")
+			   lst-att)))))
+	    ))
+	(setq lst-att
+	      (cons 
+	       (dxf-pair (cdr (assoc 'attribute att))
+			 (car (nth 1 att)))
+	       lst-att))
+	)
+      (setq att (cddr att))
+      )
+    lst-att)
+
 (defun at-nlp:gen-code (res-corpus / res)
   (setq res (at-nlp:lst-sym res-corpus))
   (@:debug "INFO" (vl-prin1-to-string res))
@@ -112,55 +154,22 @@
       (cons dxf (point:2d->3d(mapcar 'atof (string:to-list str ",")))))
      (t 
       (cons dxf str))))
-  (defun parse-attribute (att / lst-att )
-    (while (setq att (member (assoc 'attribute att) att))
-      (if (and (= 'compare (car (nth 1 att)))
-	       (null (cadr (nth 2 att))))
-	  (cond
-	   ((= "=" (cdr (nth 1 att)))
-	    (setq lst-att
-		  (cons
-		   (dxf-pair (cdr (assoc 'attribute att))
-			     (car (nth 2 att)))
-		   lst-att))
-	    )
-	   (t
-	    (setq lst-att
-		  (cons
-		   (cons -4 "<AND")
-		   (cons
-		    (if (= (cdr (assoc 'attribute att)) 10)
-			(cons -4 (strcat (cdr (nth 1 att))","(cdr (nth 1 att))",*"))
-		      (cons -4 (cdr (nth 1 att))))
-		    (cons
-		     (dxf-pair (cdr (assoc 'attribute att))
-			       (car (nth 2 att)))
-		     (cons (cons -4 "AND>")
-			   lst-att)))))
-	    ))
-	(setq lst-att
-	      (cons 
-	       (dxf-pair (cdr (assoc 'attribute att))
-			 (car (nth 1 att)))
-	       lst-att))
-	)
-      (setq att (cddr att))
-      )
-    lst-att)
-  ;; 更新选择集
+    ;; 更新选择集
   (defun at-nlp:entmod (res / att-pairs)
-    (setq att-pairs (parse-attribute res))
+    (setq att-pairs (at-nlp:parse-attribute res))
     (mapcar 'entmod 
 	    (mapcar '(lambda(lst-ent)
 		       (foreach att-pair att-pairs
-				(setq lst-ent (subst att-pair (assoc (car att-pair) lst-ent) lst-ent)))
+				(if (assoc (car att-pair) lst-ent)
+				    (setq lst-ent (subst att-pair (assoc (car att-pair) lst-ent) lst-ent))
+				  (setq lst-ent (append lst-ent (list att-pair)))
+				  ))
 		       lst-ent)
 		    (mapcar 'entget (pickset:to-list tmp-ss)))
 	    ))
   ;; (@:debug "INFO" (vl-prin1-to-string (parse-attribute res)))
   (cond
    ((= (read (cdr (assoc 'verb res))) 'ssget)
-    
     (list
      'sssetfirst
      nil
@@ -175,9 +184,7 @@
 		    (append
 		     (if (cdr (assoc 'entity res))
 			 (list (cons 0 (cdr (assoc 'entity res)))))
-		     (if (cdr (assoc 'color res))
-			 (list (cons 62 (cdr (assoc 'color res)))))
-		     (parse-attribute res)
+		     (at-nlp:parse-attribute res)
 		     )))))))
     )
    ;;(entmod (subst  

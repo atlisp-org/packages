@@ -9,6 +9,7 @@
 	 ("选中" . "ssget")
 	 ("修改" . "entmod")
 	 ("更改" . "entmod")
+	 ("改" . "entmod")
 	 )))
 (setq at-nlp:*entity*
       (mapcar

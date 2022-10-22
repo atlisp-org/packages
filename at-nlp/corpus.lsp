@@ -61,6 +61,23 @@
 	 ("绿" . 3)
 	 ("青" . 4)
 	 ("蓝" . 5)
+	 ("洋红" . 6)
+	 ("白" . 7)
+	 ("灰" . 8)
+	 ("浅灰" . 9)
+	 )))
+(setq at-nlp:*linetype*
+      (mapcar
+       '(lambda(x)
+	  (cons (car x) (cons (cdr x) 
+			      'linetype)))
+       '(("实线" . "Continuous")
+	 ("虚线" . "HIDDEN")
+	 ("点划线" . "DASHDOT")
+	 ("点线" . "DOT")
+	 ("双点划线" . "DIVIDE")
+	 ("热力管" . "HOT_WATER_SUPPLY")
+	 ("气体管" . "GAS_LINE")
 	 )))
 (setq at-nlp:*compare*
       (mapcar

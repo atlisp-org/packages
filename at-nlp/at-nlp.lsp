@@ -70,15 +70,16 @@
 		x))
 	  lst-str))
   )
-  
+(defun at-nlp:lst-sym (res-corpus)
+  (mapcar '(lambda(x)
+	     (if (cddr x)
+		 (cons (cddr x)
+		       (cadr x))
+	       x)
+	     )
+	  res-corpus))
 (defun at-nlp:gen-code (res-corpus / res)
-  (setq res (mapcar '(lambda(x)
-		       (if (cddr x)
-			   (cons (cddr x)
-				 (cadr x))
-			 x)
-			 )
-		    res-corpus))
+  (setq res (at-nlp:lst-sym res-corpus))
   (@:debug "INFO" (vl-prin1-to-string res))
   (defun dxf-pair (dxf str)
     (cond
@@ -146,25 +147,42 @@
       (setq att (cddr att))
       )
     lst-att)
-		  
+  ;; 更新选择集
+  (defun at-nlp:entmod (res / att-pairs)
+    (setq att-pairs (parse-attribute res))
+    (mapcar 'entmod 
+	    (mapcar '(lambda(lst-ent)
+		       (foreach att-pair att-pairs
+				(setq lst-ent (subst att-pair (assoc (car att-pair) lst-ent) lst-ent)))
+		       lst-ent)
+		    (mapcar 'entget (pickset:to-list tmp-ss)))
+	    ))
   ;; (@:debug "INFO" (vl-prin1-to-string (parse-attribute res)))
   (cond
    ((= (read (cdr (assoc 'verb res))) 'ssget)
+    
     (list
      'sssetfirst
      nil
-     (append
-      (list 'ssget)
-      (if (= "x" (cdr (assoc 'prep res)))
-	  (list (cdr (assoc 'prep res))))
-      (list 
-       (cons 'quote
-	     (list
-	      (append
-	       (if (cdr (assoc 'entity res))
-		   (list (cons 0 (cdr (assoc 'entity res)))))
-	       (if (cdr (assoc 'color res))
-		   (list (cons 62 (cdr (assoc 'color res)))))
-	       (parse-attribute res)
-	       ))))))
-    )))
+     (list 'setq 'tmp-ss
+	   (append
+	    (list 'ssget)
+	    (if (= "x" (cdr (assoc 'prep res)))
+		(list (cdr (assoc 'prep res))))
+	    (list 
+	     (cons 'quote
+		   (list
+		    (append
+		     (if (cdr (assoc 'entity res))
+			 (list (cons 0 (cdr (assoc 'entity res)))))
+		     (if (cdr (assoc 'color res))
+			 (list (cons 62 (cdr (assoc 'color res)))))
+		     (parse-attribute res)
+		     )))))))
+    )
+   ;;(entmod (subst  
+   ((= (read (cdr (assoc 'verb res))) 'entmod)
+    (cons 'at-nlp:entmod
+	  (list (cons 'quote (list res))))
+    )
+   ))

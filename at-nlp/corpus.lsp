@@ -6,7 +6,10 @@
        '(("绘制" . "entity:make-")
 	 ("创建" . "entity:make-")
 	 ("选择" . "ssget")
-	 ("选中" . "ssget"))))
+	 ("选中" . "ssget")
+	 ("修改" . "entmod")
+	 ("更改" . "entmod")
+	 )))
 (setq at-nlp:*entity*
       (mapcar
        '(lambda(x)

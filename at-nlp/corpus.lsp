@@ -58,7 +58,7 @@
 	 ("青" . 4)
 	 ("蓝" . 5)
 	 )))
-(setq at-nlp:*bool*
+(setq at-nlp:*compare*
       (mapcar
        '(lambda(x)
 	  (cons (car x) (cons (cdr x)
@@ -71,8 +71,18 @@
 	 ("不小于" . ">=")
 	 ("不等于" . "/=")
 	 ("不大于" . "<=")
+	 
 	 ("=" . "=")
 	 ("为" . "=")
+	 )))
+(setq at-nlp:*bool*
+      (mapcar
+       '(lambda(x)
+	  (cons (car x) (cons (cdr x)
+			      'bool)))
+       '(("且" . "and")
+	 ("或" . "or")
+	 ("不" . "not")
 	 )))
 (setq at-nlp:*prep*
       (mapcar

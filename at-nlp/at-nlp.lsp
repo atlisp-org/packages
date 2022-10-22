@@ -47,7 +47,7 @@
 		    (foreach
 		     verb (append at-nlp:*verb* at-nlp:*entity*
 				  at-nlp:*attribute* at-nlp:*color*
-				  at-nlp:*bool* at-nlp:*prep*)
+				  at-nlp:*bool* at-nlp:*compare* at-nlp:*prep*)
 		     (if (null flag)
 		     (cond
 		      ((= (car verb) x)
@@ -82,11 +82,32 @@
   (@:debug "INFO" (vl-prin1-to-string res))
   (defun dxf-pair (dxf str)
     (cond
-     ((> 0 dxf 9)
+     ((or (<= 0 dxf 9)
+	  (<= 100 dxf 101)
+	  (<= 300 dxf 309)
+	  (<= 410 dxf 419)
+	  (<= 430 dxf 439)
+	  (<= 470 dxf 479)
+	  (<= 999 dxf 1009))
       (cons dxf str))
-     ((> 40 dxf 99)
+     ((or (<= 40 dxf 59)
+	  (<= 110 dxf 149)
+	  (<= 210 dxf 239)
+	  (<= 460 dxf 469)
+	  (<= 1010 dxf 1059)
+	  )
       (cons dxf (atof str)))
-     ((= 10 dxf)
+     ((or (<= 60 dxf 99)
+	  (<= 160 dxf 179)
+	  (<= 270 dxf 289)
+	  (<= 370 dxf 389)
+	  (<= 400 dxf 409)
+	  (<= 420 dxf 429)
+	  (<= 440 dxf 459)
+	  (<= 1060 dxf 1071)
+	  )
+      (cons dxf (atoi str)))
+     ((<= 10 dxf 39)
       (cons dxf (point:2d->3d(mapcar 'atof (string:to-list str ",")))))
      (t 
       (cons dxf str))))
@@ -108,7 +129,7 @@
 		   (cons -4 "<AND")
 		   (cons
 		    (if (= (cdr (assoc 'attribute att)) 10)
-			(cons -4 (strcat (cdr (nth 1 att))","(cdr (nth 1 att))","(cdr (nth 1 att))))
+			(cons -4 (strcat (cdr (nth 1 att))","(cdr (nth 1 att))",*"))
 		      (cons -4 (cdr (nth 1 att))))
 		    (cons
 		     (dxf-pair (cdr (assoc 'attribute att))
@@ -126,7 +147,7 @@
       )
     lst-att)
 		  
-  (@:debug "INFO" (vl-prin1-to-string (parse-attribute res)))
+  ;; (@:debug "INFO" (vl-prin1-to-string (parse-attribute res)))
   (cond
    ((= (read (cdr (assoc 'verb res))) 'ssget)
     (list

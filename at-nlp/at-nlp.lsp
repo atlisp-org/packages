@@ -2,14 +2,13 @@
 ;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 向系统中添加菜单 
-(@:add-menu "@试验室" "自然语言交互" '(at-nlp:about))
+(@:add-menu "@NLP" "关于NLP" '(at-nlp:about))
 (defun at-nlp:about ()
   (@:help (strcat "使用自然语言与 CAD 进行交互，如 绘图，修改颜色等\n"
 		  "NLP的初始尝试。\n"
-		  "示例:\n 绘制半径为10的圆\n"
-		  "绘制直径为10的圆\n"
+		  "示例:\n 选择所有坐标大于0,0的图元\n"
 		  "选择所有半径等于5的圆\n"
-		  "修改直径为20\n"
+		  "修改直径为200\n"
 		  "修改为绿色\n"
 		  ))
   ;; 以下部分为你为实现某一功能所编写的代码。
@@ -170,8 +169,9 @@
 				  (setq lst-ent (append lst-ent (list att-pair)))
 				  ))
 		       lst-ent)
-		    (mapcar 'entget (pickset:to-list tmp-ss)))
-	    ))
+		    (mapcar 'entget (pickset:to-list (ssget "I"))))
+	    )
+    (command "regen"))
   ;; (@:debug "INFO" (vl-prin1-to-string (parse-attribute res)))
   (cond
    ((string-equal (cdr (assoc 'verb res)) "ssget")

@@ -2,7 +2,7 @@
         (:FULL-NAME . "@ ‘—È “")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.21")
+        (:VERSION . "0.0.23")
         (:LOCALE . "chs")
         (:CATEGORY . "Experiment")
         (:REQUIRED . "base")
@@ -16,4 +16,5 @@
             "rec-tube"
             "dyn-adjust"
             "summary-data"
-            "stat")))
+            "stat"
+            "array")))

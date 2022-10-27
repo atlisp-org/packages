@@ -30,6 +30,7 @@
 	 ("参照" . "insert")
 	 ("多段线" . "*polyline")
 	 ("标注" . "dimension")
+	 ("点" . "point")
 	 ("矩形" . "rectange")
 	 ("长方形" . "rectange")
 	 )))

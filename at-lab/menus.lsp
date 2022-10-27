@@ -5,4 +5,5 @@
     ("绘制矩形管" "(@lab:rec-tube)")
     ("动态调整" "(@lab:dyn-adjust)")
     ("汇总信息" "(@lab:summary-data)")
+    ("梅花布圆" "(@lab:array-circle)")
     )))

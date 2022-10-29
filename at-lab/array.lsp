@@ -37,7 +37,7 @@
   (@:set-config  '@lab:disy (cdr (assoc "disy" res)))
   (@:set-config  '@lab:r (cdr (assoc "r" res)))
   (setq pt-start (getpoint (@:speak "ÇëÊäÈë×óÏÂ½Ç:")))
-  (setq pt-end (getpoint (@:speak "ÇëÊäÈëÓÒÉÏ½Ç:")))
+  (setq pt-end (getcorner pt-start (@:speak "ÇëÊäÈëÓÒÉÏ½Ç:")))
   (array-circle pt-start pt-end
 		(cdr (assoc "disx" res))
 		(cdr (assoc "disy" res))

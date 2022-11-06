@@ -167,6 +167,6 @@
 	     (entity:make-text (@:to-string atom%)
 			       pt1
 			       350 0 0.8 0 "RB")
-	     (setq pt1 (polar pt1 (* 1.5 pi) 500))
+	     (setq pt1 (polar pt1 (* 1.5 pi) (* 5 (@:get-config '@:draw-scale))))
 	     ))
    (t (alert "没有发现计算结果。"))))

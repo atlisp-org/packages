@@ -1,3 +1,5 @@
+;; 承台类型每种高度一致，根据平面图所标注的承台面标高，自动一次性识别并设置承台内桩编号的Z坐标值。
+
 (@:add-menu "@试验室" "文字改z" '(at-lab:set-z))
 (@:define-config '@lab:zblkname "A$C*" "桩体名，支持通配符")
 (defun at-lab:set-z ()

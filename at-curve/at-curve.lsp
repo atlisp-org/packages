@@ -23,16 +23,17 @@
    nil
    nil
    0 0))
-  
+
+
 (defun at-curve:area (/ lst-curve pts)
-  (@:help '("标注曲线多段线的的闭合面积"))
-  (@:prompt "请选择多段线:")
-  (setq lst-curve (pickset:to-list (ssget '((0 . "LWPOLYLINE")))))
+  (@:help '("标注曲线的的闭合面积"))
+  (@:prompt "请选择闭合曲线:")
+  (setq lst-curve (pickset:to-list (ssget '((0 . "*POLYLINE,circle,ellipse,spline,region")))))
   (foreach
    curve lst-curve
    (entity:make-text
     (rtos (vla-get-area (e2o curve)) 2 3)
-    (point:centroid (curve:pline-3dpoints curve))
+    (point:2d->3d (point:centroid (curve:get-points curve)))
     (* 2.5 (@:get-config '@:draw-scale))
     0 0.72 0 "mm"))
   (princ)

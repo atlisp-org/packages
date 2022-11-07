@@ -4,8 +4,11 @@
 (@:add-menus
  '("曲线工具"
    ("双线互连" (at-curve:join))
-   ("曲线面积" (at-curve:area))))
+   ("曲线面积" (at-curve:area))
+   ("曲线长度" (at-curve:length)))
 
+ )
+(@:define-config '@curve:types "*POLYLINE,circle,arc,ellipse,spline,region" "可操作的曲线的图元类型")
 (defun at-curve:join (/ l1 l2 pts1 pts2)
   (@:help "选择两条线，从最近端点连接成一条.")
   (setq curves (pickset:to-list(ssget '((0 . "*line")))))
@@ -28,13 +31,31 @@
 (defun at-curve:area (/ lst-curve pts)
   (@:help '("标注曲线的的闭合面积"))
   (@:prompt "请选择闭合曲线:")
-  (setq lst-curve (pickset:to-list (ssget '((0 . "*POLYLINE,circle,ellipse,spline,region")))))
+  (setq lst-curve (pickset:to-list (ssget (list (cons 0 (@:get-config '@curve:types))))))
   (foreach
    curve lst-curve
-   (entity:make-text
-    (rtos (vla-get-area (e2o curve)) 2 3)
-    (point:2d->3d (point:centroid (curve:get-points curve)))
-    (* 2.5 (@:get-config '@:draw-scale))
-    0 0.72 0 "mm"))
+   (entity:putdxf
+    (entity:make-text
+     (rtos (vla-get-area (e2o curve)) 2 3)
+     (point:2d->3d (point:centroid (curve:get-points curve)))
+     (* 2.5 (@:get-config '@:draw-scale))
+     0 0.72 0 "mm")
+    62 1))
+  (princ)
+  )
+(defun at-curve:length (/ lst-curve pts)
+  (@:help '("在曲线的中点,标注曲线的长度"))
+  (@:prompt "请选择曲线:")
+  (setq lst-curve (pickset:to-list (ssget (list (cons 0 (@:get-config '@curve:types))))))
+  (foreach
+   curve lst-curve
+   (entity:putdxf
+    (entity:make-text
+     (rtos (curve:length (e2o curve)) 2 3)
+     (point:2d->3d (curve:midpoint curve))
+     (* 2.5 (@:get-config '@:draw-scale))
+     0 0.72 0 "mm")
+    62 1)
+   )
   (princ)
   )

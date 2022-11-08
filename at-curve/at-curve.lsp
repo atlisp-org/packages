@@ -5,8 +5,9 @@
  '("曲线工具"
    ("双线互连" (at-curve:join))
    ("曲线面积" (at-curve:area))
-   ("曲线长度" (at-curve:length)))
-
+   ("曲线长度" (at-curve:length))
+   ("垂线缺口" (at-curve:notch))
+   )
  )
 (@:define-config '@curve:types "*POLYLINE,circle,arc,ellipse,spline,region" "可操作的曲线的图元类型")
 (defun at-curve:join (/ l1 l2 pts1 pts2)

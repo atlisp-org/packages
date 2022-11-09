@@ -38,7 +38,7 @@
 						(entity:getdxf line% 11)))))
 			(while (> ang pi)(setq ang (- ang pi)))
 			
-			(if (equal ang (* 0.5 pi) 0.0001)
+			(if (equal ang (* 0.5 pi) 0.07)
 			    (progn
 			      (entity:putdxf line% 10
 					     (polar pt-a
@@ -88,7 +88,7 @@
 						(entity:getdxf line% 11)))))
 			(while (> ang  pi)(setq ang (- ang pi)))
 			
-			(if (equal ang (* 0.5 pi) 0.0001)
+			(if (equal ang (* 0.5 pi) 0.07)
 			    (progn
 			      (if (> (distance (entity:getdxf l2 10) pt-b)
 				     (* 0.5 width))

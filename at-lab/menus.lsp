@@ -6,4 +6,6 @@
     ("动态调整"  (@lab:dyn-adjust))
     ("汇总信息"  (@lab:summary-data))
     ("梅花布圆"  (@lab:array-circle))
+    ("分隔字串" (@lab:split-text))
+    ("专用汇总" (@lab:summary-lst))
     )))

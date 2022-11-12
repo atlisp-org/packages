@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp文本")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "1.0.23")
+        (:VERSION . "1.0.24")
         (:DESCRIPTION . "@lisp常用文本操作工具。功能有文字对齐、加前后缀、多个单选文本的排版等。")
         (:CATEGORY . "文本")
         (:URL . "http://atlisp.cn")
@@ -12,4 +12,5 @@
             "inc-word"
             "table"
             "speak"
-            "menu")))
+            "menu"
+            "string-to-table")))

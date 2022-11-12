@@ -2,7 +2,7 @@
         (:FULL-NAME . "@ ‘—È “")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.25")
+        (:VERSION . "0.0.27")
         (:LOCALE . "chs")
         (:CATEGORY . "Experiment")
         (:REQUIRED . "base")
@@ -18,4 +18,5 @@
             "summary-data"
             "stat"
             "array"
-            "z-value")))
+            "z-value"
+            "split-text")))

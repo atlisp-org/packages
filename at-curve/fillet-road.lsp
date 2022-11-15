@@ -1,11 +1,15 @@
+(@:define-config '@curve:radius 30.0 "自动圆角的半径")
+(@:define-config '@curve:maxlength-corner 80.0 "自动圆角的原始倒角最大线长")
+(@:define-config '@curve:max-angle "110.0" "自动圆角的道路转角最大角度")
+(@:define-config '@curve:min-angle "70.0" "自动圆角的道路转角最小角度")
 
-(setq rad 30.0
-      maxlength-corner 80.0
-      max-angle (* (/ 12.0 18.0) pi)
-      min-angle (* (/  6.0 18.0) pi)
-      )
-(defun at-curve:fillet (ent / segs res n1 n2 n3 n4 fuzz)
+(defun at-curve:fillet (ent / segs res n1 n2 n3 n4 fuzz rad max-angle min-angle maxlength-corner)
   "路口圆角"
+  (setq rad (@:get-config '@curve:radius)
+      maxlength-corner  (@:get-config  '@curve:maxlength-corner)
+      max-angle (angtof (@:get-config '@curve:max-angle))
+      min-angle (angtof (@:get-config '@curve:min-angle))
+      )
   (defun calc-fillet-pts (n1 n2 n3 n4)
     (if(and (setq O (inters
 		     (setq pt1 (polar (car n1)
@@ -128,7 +132,7 @@
 			 res))
 	      )))
 	   
-       (setq res (cons n4 (reverse (cdr (reverse res)))));; 多一个
+       (setq res (cons n4 (reverse (cdr (reverse res)))))
        (setq n1 (caddr res))
        (setq n2 (cadr res))
        (setq n3 (car res))
@@ -139,10 +143,12 @@
 			    (mapcar (quote cdr)
 				    res)
 			    0 (entity:getdxf ent 70)
-			    0))
+			    0)
+  (entdel ent)
+  )
 
 (defun at-curve:fillet-road ()
   (@:help '("根据设定的转弯半径和道路转角范围，平滑道路的转角。"))
-  (setq lwpls (pickset:to-list(ssget '((0 . "lwpolyline")))))
+  (setq lwpls (pickset:to-list(ssget '((0 . "lwpolyline")(62 . 1)))))
   (mapcar 'at-curve:fillet  lwpls))
 

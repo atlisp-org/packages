@@ -10,4 +10,7 @@
         (:DESCRIPTION . "与线有关的工具集")
         (:URL . "http://atlisp.cn")
         (:FILES "at-curve"
-            "notch")))
+		"notch"
+		"optimize-lwpl"
+		"fillet-road"
+		)))

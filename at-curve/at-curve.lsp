@@ -4,9 +4,12 @@
 (@:add-menus
  '("曲线工具"
    ("双线互连" (at-curve:join))
+   ("优化多段线" (at-curve:optimize-lwpl))
+   ("平滑路口" (at-curve:fillet-road))
    ("曲线面积" (at-curve:area))
    ("曲线长度" (at-curve:length))
    ("垂线缺口" (at-curve:notch))
+   
    )
  )
 (@:define-config '@curve:types "*POLYLINE,circle,arc,ellipse,spline,region" "可操作的曲线的图元类型")

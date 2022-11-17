@@ -63,7 +63,7 @@
   (setq n3 (car segs))
   (setq res (cons n3 res))
   (setq segs (cdr segs))
-  (princ "test")
+  
   (while (setq n4 (car segs))
     (cond
      ((and (= 0 (cdr n1))
@@ -151,4 +151,3 @@
   (@:help '("根据设定的转弯半径和道路转角范围，平滑道路的转角。"))
   (setq lwpls (pickset:to-list(ssget '((0 . "lwpolyline")(62 . 1)))))
   (mapcar 'at-curve:fillet  lwpls))
-

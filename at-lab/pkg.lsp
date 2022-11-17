@@ -19,4 +19,5 @@
             "stat"
             "array"
             "z-value"
-            "split-text")))
+            "split-text"
+	    "pvp")))

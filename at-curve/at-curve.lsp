@@ -9,7 +9,8 @@
    ("曲线面积" (at-curve:area))
    ("曲线长度" (at-curve:length))
    ("垂线缺口" (at-curve:notch))
-   
+   ("连线端点" (at-curve:link-end))
+
    )
  )
 (@:define-config '@curve:types "*POLYLINE,circle,arc,ellipse,spline,region" "可操作的曲线的图元类型")

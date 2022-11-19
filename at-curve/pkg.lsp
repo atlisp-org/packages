@@ -12,4 +12,6 @@
         (:FILES "at-curve"
             "notch"
             "optimize-lwpl"
-            "fillet-road")))
+            "fillet-road"
+	    "chain-line"
+	    )))

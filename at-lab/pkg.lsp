@@ -2,7 +2,7 @@
         (:FULL-NAME . "@ ‘—È “")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.27")
+        (:VERSION . "0.0.28")
         (:LOCALE . "chs")
         (:CATEGORY . "Experiment")
         (:REQUIRED . "base")
@@ -20,4 +20,4 @@
             "array"
             "z-value"
             "split-text"
-	    "pvp")))
+            "pvp")))

@@ -16,6 +16,7 @@
 	 ))
   (setq lst-str (mapcar '(lambda(x)(entity:getdxf x 1)) ss))
   (setq strs lst-str)
+  (if (null strs) (progn (@:log "INFO" "none text selected!")(exit)))
   ;;(mapcar '(lambda(x)(string:parse-by-lst x '(":" " " "("")"))) lst-str)
   (dcl:dialog "example")
   
@@ -71,21 +72,22 @@
   (set_tile "title" "文本转表格")
   (dcl:show)
   (setq @:tmp-result strs)
-  
-  (table:make
-   (getpoint "表格插入点:")
-   "分隔结果"
-   (mapcar 'chr
-	   (list:range (ascii "A")
-		       (+ (ascii "A")
-			  (apply 'max (mapcar 'length strs))
-			  -1)
-		       1))
-   strs)
-  )
+  (if (and (listp strs)(> (length strs) 0))
+      (table:make
+       (getpoint "表格插入点:")
+       "分隔结果"
+       (mapcar 'chr
+	       (list:range (ascii "A")
+			   (+ (ascii "A")
+			      (apply 'max (mapcar 'length strs))
+			      -1)
+			   1))
+       strs)
+    ))
 
-(defun @lab:summary-lst ()
+(defun @lab:summary-lst (/ res)
   (@:help "分类汇总字符串分隔的结果")
+  (if (null @:tmp-result)(progn (@:log "INFO" "没有生成结果数据用于汇总。") (exit)))
   (setq lst-ge (vl-remove-if-not '(lambda(x)(member "金额" x)) @:tmp-result))
   (setq res nil)
   (foreach ge lst-ge

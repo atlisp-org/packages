@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lispÇúÏß")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.14")
+        (:VERSION . "0.0.16")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
@@ -13,5 +13,5 @@
             "notch"
             "optimize-lwpl"
             "fillet-road"
-	    "chain-line"
-	    )))
+            "chain-line"
+            "stat")))

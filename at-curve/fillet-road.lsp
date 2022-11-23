@@ -47,6 +47,43 @@
 			       rad)))
 	(list pt-n2 pt-n3 O)
       ))
+  (defun calc-fillet-3pts (n1 n2 n3 )
+    (if(and (setq O (inters
+		     (setq pt1 (polar (car n1)
+				      (+ (angle (car n1)(car n2))
+					 (* -1
+					    (m:sign (geometry:turn-right-p
+						     (car n1)(car n2)(car n3)))
+				      (* 0.5 pi)))
+				   rad
+				   ))
+		     (setq pt2 (polar pt1
+				      (angle (car n1)(car n2))
+				      (distance (car n1)(car n2))))
+		  (setq pt3 (polar (car n3)
+				   (+ (angle (car n2)(car n3))
+				      (* -1
+					 (m:sign (geometry:turn-right-p
+						  (car n1)(car n2)(car n3)))
+					 (* 0.5 pi)))
+				   rad))
+		  (setq pt4 (polar pt3 (angle (car n3)(car n2))
+				   (distance (car n3)(car n2))))))
+	    (setq pt-n2 
+    		  (polar O (+ (angle (car n1)(car n2))
+			      (* (m:sign (geometry:turn-right-p
+					  (car n1)(car n2)(car n3)))
+				 (* 0.5 pi))
+			      )
+			 rad))
+	    (setq pt-n3  (polar O (+ (angle (car n2)(car n3))
+				    (* (m:sign (geometry:turn-right-p
+						(car n1)(car n2)(car n3)))
+				       (* 0.5 pi))
+				    )
+				rad)))
+	(list pt-n2 pt-n3 O)
+      ))
   (setq segs (mapcar (quote (lambda (x y)
 			      (cons x y)))
 		     (curve:pline-3dpoints ent)
@@ -63,20 +100,79 @@
   (setq n3 (car segs))
   (setq res (cons n3 res))
   (setq segs (cdr segs))
-  
+  (cond
+   ((and (= 0 (cdr n1))
+	 (= 0 (cdr n2))
+	 (> (distance (car n1)
+		      (car n2))
+	    (* 2 maxlength-corner))
+	 (> (distance (car n2)
+		      (car n3))
+	    (* 2 maxlength-corner))
+	 (< min-angle
+	    (progn(setq ang
+			(abs (- (angle (car n1)
+				       (car n2))
+				(angle (car n2)
+				       (car n3)))))
+		  (if (> ang  pi)
+		  	(setq ang (- ang pi))
+		      ang))
+	    max-angle)
+	   )
+    (and (setq pts-fillet (calc-fillet-3pts n1 n2 n3))
+	 (setq res (cons
+		    (cons (car pts-fillet)
+			  (apply 'curve:o2bulge pts-fillet))
+		    (cddr res)))
+	 (setq res (cons
+		    (cons (cadr pts-fillet)
+			  (cdr n3))
+		    res))
+	 (setq res (cons n3 res))
+	 )))
   (while (setq n4 (car segs))
     (cond
-     ((and (= 0 (cdr n1))
+     ((and (= 0 (cdr n2))
 	   (= 0 (cdr n3))
-	   ;; ;; n2 ¶Ì
-	   (< (distance (car n2)
-			(car n3))
-	      maxlength-corner) ;; ;; ½Ç¶È
+	   (> (distance (car n2)
+		      (car n3))
+	      (* 2 maxlength-corner))
+	   (> (distance (car n3)
+			(car n4))
+	      (* 2 maxlength-corner))
 	   (< min-angle
 	      (progn(setq ang
-			  (abs (- (angle (car n1)
-					 (car n2))
+			  (abs (- (angle (car n2)
+					 (car n3))
 				  (angle (car n3)
+					 (car n4)))))
+		    (if (> ang  pi)
+		  	(setq ang (- ang pi))
+		      ang))
+	      max-angle)
+	   )
+      (and (setq pts-fillet (calc-fillet-3pts n2 n3 n4))
+	   (setq res (cons
+		      (cons (car pts-fillet)
+			    (apply 'curve:o2bulge pts-fillet))
+		      (cdr res)))
+	   (setq res (cons
+		      (cons (cadr pts-fillet)
+			    (cdr n3))
+		      res))
+	   ))
+     ((and (= 0 (cdr n1))
+	   (= 0 (cdr n3))
+	  ;; ;; n2 ¶Ì
+	  (< (distance (car n2)
+		       (car n3))
+	     maxlength-corner) ;; ;; ½Ç¶È
+	  (< min-angle
+	     (progn(setq ang
+			 (abs (- (angle (car n1)
+					(car n2))
+				 (angle (car n3)
 					 (car n4)))))
 		    (if (> ang  pi)
 		  	(setq ang (- ang pi))
@@ -104,34 +200,62 @@
        3
        (setq n4 (last res))
        (cond
-	((and (= 0 (cdr n1))
-	      (= 0 (cdr n3))
-	      ;; ;; n2 ¶Ì
-	      (< (distance (car n2)
-			   (car n3))
-		 maxlength-corner) ;; ;; ½Ç¶È
-	      (< min-angle
-		 (progn(setq ang
-			     (abs (- (angle (car n1)
-					    (car n2))
-				     (angle (car n3)
-					    (car n4)))))
-			(if (> ang  pi)
-		  	    (setq ang (- ang pi))
-			  ang))
-		 max-angle)
-	      )
-	 (and (setq pts-fillet (calc-fillet-pts n1 n2 n3 n4))
+	((and (= 0 (cdr n2))
+	   (= 0 (cdr n3))
+	   (> (distance (car n2)
+		      (car n3))
+	    (* 2 maxlength-corner))
+	 (> (distance (car n2)
+		      (car n3))
+	    (* 2 maxlength-corner))
+	 (< min-angle
+	    (progn(setq ang
+			(abs (- (angle (car n2)
+				       (car n3))
+				(angle (car n3)
+				       (car n4)))))
+		  (if (> ang  pi)
+		  	(setq ang (- ang pi))
+		    ang))
+	    max-angle)
+	 )
+	 (and (setq pts-fillet (calc-fillet-3pts n2 n3 n4))
 	      (setq res (cons
 			 (cons (car pts-fillet)
 			       (apply 'curve:o2bulge pts-fillet))
-			 (cddr res)))
-	      (setq res (cons
-			 (cons (cadr pts-fillet)
-			       (cdr n3))
-			 res))
-	      )))
-	   
+			 (cdr res)))
+	   (setq res (cons
+		      (cons (cadr pts-fillet)
+			    (cdr n3))
+		      res))
+	   ))
+     ((and (= 0 (cdr n1))
+	   (= 0 (cdr n3))
+	   ;; ;; n2 ¶Ì
+	   (< (distance (car n2)
+			(car n3))
+	      maxlength-corner) ;; ;; ½Ç¶È
+	   (< min-angle
+	      (progn(setq ang
+			  (abs (- (angle (car n1)
+					 (car n2))
+				  (angle (car n3)
+					 (car n4)))))
+		    (if (> ang  pi)
+		  	(setq ang (- ang pi))
+		      ang))
+	      max-angle)
+	   )
+      (and (setq pts-fillet (calc-fillet-pts n1 n2 n3 n4))
+	   (setq res (cons
+		      (cons (car pts-fillet)
+			    (apply 'curve:o2bulge pts-fillet))
+		      (cddr res)))
+	   (setq res (cons
+		      (cons (cadr pts-fillet)
+			    (cdr n3))
+		      res))
+	   )))  
        (setq res (cons n4 (reverse (cdr (reverse res)))))
        (setq n1 (caddr res))
        (setq n2 (cadr res))

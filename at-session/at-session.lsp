@@ -9,7 +9,8 @@
 (@:add-menus
  '("会话管理"
    ("恢复会话" (at-session:open))
-   ("保存会话" (at-session:save-current)))
+   ("保存会话" (at-session:save-current))
+   ("关闭会话" (at-session:close)))
  )
 (defun at-session:open (/ fp session docs)
   (@:help '("打开历史会话。"))
@@ -49,5 +50,27 @@
   (@:log "INFO" "Save session.")
   (princ)
   )
-
-	  
+(defun at-session:close (/ fp session docs)
+  (@:help '("保存并关闭会话 DWG 文档。"))
+  ;; 以下部分为你为实现某一功能所编写的代码。
+  (setq docs nil)
+  (vlax-for doc *DOCS*
+	    (if (/= "" (vla-get-fullname doc))
+		(setq docs (cons (vla-get-fullname doc) docs))))
+  (setq fp (open (strcat @:*prefix-config* "session") "r"))
+  (setq session (read (read-line fp)))
+  (close fp)
+  (vlax-for doc *DOCS*
+	    (if (and
+		 (/= "" (vla-get-fullname doc))
+		 (member (vla-get-fullname doc) (cddr session))
+		 (/= doc *DOC*)
+		 )
+		(vla-close doc :vlax-true)
+	      ))
+  (@:log "INFO" "Resume session.")
+  (if (/= "" (vla-get-fullname *DOC*))
+      (vla-close *DOC* :vlax-true))
+  (princ)
+  )
+  

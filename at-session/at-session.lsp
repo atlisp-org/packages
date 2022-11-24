@@ -102,14 +102,15 @@
 	    (if (and
 		 (/= "" (vla-get-fullname doc))
 		 (member (vla-get-fullname doc) (cddr session))
-		 (/= doc *DOC*)
+		 (/= (vla-get-fullname doc) (vla-get-fullname *DOC*))
 		 )
 		(vla-close doc :vlax-true)
 	      ))
   (@:log "INFO" "Resume session.")
   (if (and (/= "" (vla-get-fullname *DOC*))
-	   (member (vla-get-fullname doc) (cddr session)))
-      (vla-close *DOC* :vlax-true))
+	   (member (vla-get-fullname *DOC*) (cddr session)))
+      (progn
+	(vla-save *DOC*)(vla-sendcommand *DOC* "close ")))
   (princ)
   )
   

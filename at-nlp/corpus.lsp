@@ -29,10 +29,16 @@
 	 ("块" . "insert")
 	 ("参照" . "insert")
 	 ("多段线" . "*polyline")
+	 ("天正标注" . "TCH_DIMENSION*")
 	 ("标注" . "dimension")
 	 ("点" . "point")
 	 ("矩形" . "rectange")
 	 ("长方形" . "rectange")
+	 ("门窗" . "TCH_OPENING")
+	 ("墙体" . "TCH_WALL")
+	 ("墙" . "TCH_WALL")
+	 ("柱" . "TCH_COLUMN")
+	 ("标高" . "TCH_ELEVATION")
 	 )))
 (setq at-nlp:*attribute*
       (mapcar

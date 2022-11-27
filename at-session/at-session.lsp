@@ -8,13 +8,14 @@
 
 (@:add-menus
  '("会话管理"
+   ("上班" (at-session:goto-work))
    ("恢复会话" (at-session:open))
    ("历史会话" (at-session:history))
    ("保存会话" (at-session:save-current))
    ("关闭会话" (at-session:close))
+   ("下班" (at-session:knock-off))
    ("--" "--")
    ("关所有dwg" (at-session:save-and-close-all))
-   ("下班" (at-session:knock-off))
    )
  )
 (defun align-str (n str / flag)
@@ -41,6 +42,27 @@
   t
   )
 
+(defun at-session:goto-work (/ fp session docs)
+  (@:help '("打开最近保存的名称为 ‘下班’ 的会话。"))
+  ;; 以下部分为你为实现某一功能所编写的代码。
+  (setq docs nil)
+  (vlax-for doc *DOCS*
+	    (if (/= "" (vla-get-fullname doc))
+		(setq docs (cons (vla-get-fullname doc) docs))))
+  (setq sessions (at-session:read))
+  (while (and sessions
+	      (/= "下班" (cadr sessions)))
+    (setq sessions (cdr sessions)))
+  (setq session (car (at-session:read)))
+  (if (cddr session)
+      (progn
+	(foreach doc (cddr session)
+		 (if (and (not (member doc docs))
+			  (findfile doc))
+		     (vla-open *DOCS* doc)))
+	(@:log "INFO" "Resume session.")))
+  (princ)
+  )
 (defun at-session:open (/ fp session docs)
   (@:help '("打开最近保存的会话。"))
   ;; 以下部分为你为实现某一功能所编写的代码。
@@ -164,7 +186,7 @@
   )
 
 (defun at-session:knock-off (/ sessions docs fp *error*)
-  (@:help "下班前记录当前打开的所有 dwg图档，并关闭所有dwg图档")
+  (@:help "下班前记录当前打开的所有 dwg图档，并关闭所有dwg图档。")
   (defun *error* (msg)
     (if (= 'file (type fp)) (close fp))
     (@:*error* msg))

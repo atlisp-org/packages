@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp会话管理")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.2")
+        (:VERSION . "0.1.5")
         (:LOCALE . "zh")
         (:CATEGORY . "图档管理")
         (:REQUIRED . "base")

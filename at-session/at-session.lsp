@@ -18,6 +18,12 @@
    ("关所有dwg" (at-session:save-and-close-all))
    )
  )
+;; 如果没有，则创建空文件
+(if (null (findfile (strcat @:*prefix-config* "session")))
+    (progn
+      (setq fp (open (strcat @:*prefix-config* "session") "w"))
+      (write-line "" fp)
+      (close fp)))
 (defun align-str (n str / flag)
   (if (null str)(setq str ""))
   (setq flag nil)
@@ -135,7 +141,6 @@
 		    (cons (cdr (assoc "会话名" res))
 			  (reverse docs))))
 	(at-session:write (cons session sessions))
-	(close fp)
 	(@:log "INFO" "Save session."))
     (@:log "INFO" "No DWG file were opened.")
     )

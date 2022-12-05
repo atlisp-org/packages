@@ -42,9 +42,9 @@
       (progn
 	(setq fp (open(strcat (@:package-path "flange") "data.lst")"r"))
 	(while (setq str-l (read-line fp))
-	  (if(="DN" (substr str-l 1 2))
+	  (if(/= "#" (substr str-l 1 1))
 	      (setq paras (cons 
-			   (string:to-list str-l "\t")
+			   (cdr (string:to-list str-l "\t"))
 			   paras))))
 	;; 显示界面，选择参数。
 	(setq paras (reverse paras))

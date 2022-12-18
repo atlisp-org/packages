@@ -1,6 +1,6 @@
 (@:define-config '@text:order-prefix "" "文字前缀内容")
 (@:define-config '@text:order-suffix "" "文字后缀内容")
-(@:define-config '@text:order-startnum  "1" "文字起始序号")
+(@:define-config '@text:order-startnum "1" "文字起始序号")
 
 (defun @text:menu-add-order (/ *error* @dclfiled @dclfiledame @dclid ent errorsave k 
                              loop mod1 mod2 mod3 mod4 num num_ obj return# ss str1 str 
@@ -41,6 +41,18 @@
                                 :radio_button{label=\"前缀 文字 后缀 序号\";key=\"x4\";value=1;}
                              }ok_cancel;}"
 
+
+
+
+
+
+
+
+
+
+
+
+
     @dclfiled
   )
   (close @dclfiled)
@@ -50,13 +62,15 @@
   (set_tile "textaddstring1" (@:get-config '@text:order-prefix))
   (set_tile "textaddstring2" (@:get-config '@text:order-suffix))
   (set_tile "textaddstring3" (@:get-config '@text:order-startnum))
-  
+
   (setq return# (start_dialog))
-  (if textaddstring1_1
-    (progn
-    (@:set-config '@text:order-prefix textaddstring1_1)
-    (@:set-config '@text:order-suffix textaddstring2_1)
-    (@:set-config '@text:order-startnum textaddstring3_1)))
+  (if (= return# 1)
+    (progn 
+      (@:set-config '@text:order-prefix textaddstring1_1)
+      (@:set-config '@text:order-suffix textaddstring2_1)
+      (@:set-config '@text:order-startnum textaddstring3_1)
+    )
+  )
   (list mod1 mod2 mod3 mod4)
   (cond 
     ((= return# 1)

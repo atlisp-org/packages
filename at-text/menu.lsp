@@ -9,6 +9,7 @@
     ("属性变文本" (@text:a2t))
     ("单行转多" (@text:to-mtext))
     ("加前后缀" (@text:menu-add-prefix-or-suffix))
+    ("批量加序号" (@text:menu-add-order))
     ("点哪加哪" (@text:inc-word))
     ("绘线查找" (@text:find-from-line))
     ("生成表格" (@text:text2table))

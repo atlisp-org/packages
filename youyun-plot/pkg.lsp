@@ -1,0 +1,13 @@
+(@:def-pkg '((:NAME . "youyun-plot")
+        (:FULL-NAME . "有云批量打印")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "3.4.4")
+        (:LOCALE . "chs")
+        (:CATEGORY . "打印")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "有云批量打印,PDF1 v3.4.8 版本。作者 紫神炒黄瓜。")
+        (:URL . "http://atlisp.cn")
+        (:FILES "youyun-plot"
+            "youyun-plot.zip")))

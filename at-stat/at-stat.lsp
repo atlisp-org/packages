@@ -10,17 +10,6 @@
 (@:add-menu "统计表格" "多段线点坐标" "(at-stat:stat-lwpl)" )
 ;;(@:add-menu "统计表格" "矩形" "(list-rec-wxh:stat)" )
 
-(defun at-stat:hello ()
-  (@:help (strcat "这里的内容用于在运行这个功能开始时，对用户进行功能提示。\n"
-		  "如怎么使用，注意事项等。\n当用户设置了学习模式时，会在命令行或弹窗进行提示。\n"
-		  ))
-  ;; 以下部分为你为实现某一功能所编写的代码。
-  (alert (strcat "统计表格 的第一个功能.\n"
-		 "创建了一个配置项 at-stat:first .\n"
-		 "这个配置项的值为: " (@:get-config 'at-stat:first)
-		 ))
-  (princ)
-  )
 (defun at-stat:stat-circle (/ grp-by-y grp% flag)
   ;;一条龙排序，先y
   (setq circles

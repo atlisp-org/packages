@@ -16,6 +16,7 @@
    ("下班" (at-session:knock-off))
    ("--" "--")
    ("关所有dwg" (at-session:save-and-close-all))
+   ("打开目录" (at-session:open-directory-dwgs))
    )
  )
 ;; 如果没有，则创建空文件
@@ -220,3 +221,21 @@
   (vla-quit *ACAD*)
   (princ)
   )
+(defun at-session:open-directory-dwgs ( / folder docs)
+  (@:help "打开选定文件夹下的所有dwg文件")
+  (setq folder (system:get-folder "请选择要打开的文件夹"))
+  (setq dwgs (mapcar '(lambda(x)(strcat folder "\\" x))  (vl-directory-files folder "*.dwg" 1)))
+
+  (if dwgs
+      (progn
+	(setq docs nil)
+	(vlax-for doc *DOCS*
+		  (if (/= "" (vla-get-fullname doc))
+		      (setq docs (cons (vla-get-fullname doc) docs))))
+	(foreach doc dwgs
+		 (if (and (not (member doc docs))
+			  (findfile doc))
+		     (vla-open *DOCS* doc)))
+	(@:log "INFO" "Resume session.")))
+  (princ))
+   

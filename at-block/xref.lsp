@@ -1,5 +1,5 @@
 (@:add-menus
- '(("参照操作"
+ '(("块参照操作"
     ("参照归层" "(@block:xref-layer)")
     ("重载选定" "(@block:xfr)")
     ("重载所有" "(@block:czcz)")

@@ -25,7 +25,12 @@
       (setq fp (open (strcat @:*prefix-config* "session") "w"))
       (write-line "" fp)
       (close fp)))
+;|
+  @param n ÕûÊý
+  @param str ×Ö·û´®
+|;
 (defun align-str (n str / flag)
+  "¶ÔÆë×Ö·û´®"
   (if (null str)(setq str ""))
   (setq flag nil)
   (while (< (string:bytelength str) n)
@@ -238,4 +243,4 @@
 		     (vla-open *DOCS* doc)))
 	(@:log "INFO" "Resume session.")))
   (princ))
-   
+(testa )

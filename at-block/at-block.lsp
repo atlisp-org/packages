@@ -20,9 +20,10 @@
 (@:add-menu "块操作" "块编号设置" "(@block:setup)")
 (@:add-menu "块操作" "设为可分解" "(@block:explodable)")
 (@:add-menu "块操作" "设不能分解" "(@block:explode-disable)")
-(@:add-menu "块操作" "改块基点" "(@block:menu-change-base)")
+(@:add-menu "块操作" "改块基点" '(@block:menu-change-base))
 (@:add-menu "块操作" "插所有块" "(@block:insert-all)")
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")
+(@:get-config 'sym)
 (defun @block:config (/ res)
   "块操作基本信息"
   (setq res 

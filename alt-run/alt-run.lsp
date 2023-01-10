@@ -8,7 +8,7 @@
 
 (@:add-menu "外部程序" "ALTRun" "(alt-run:open)" )
 
-(defun alt-run:open (/ app )
+(defun alt-run:open ( / app )
   ;; 可执行文件路径
   (setq app "bin\\ALTRun\\ALTRun.exe")
   (if (null (findfile app))

@@ -7,11 +7,8 @@
 ;; (@:set-config 'at-plot:first  "New Value")
 ;; Add menu in @lisp panel
 (defun @plot:hello ()
-  (@:help (strcat "The content can show in user interface .\n"
-  	  		  ))
-  (alert (strcat "@´òÓ¡Êä³ö-²âÊÔ°æ 's first function.\n"
-		 "Created a config item at-plot:first .\n"
-		 "THe config ietm th family is this item: " (@:get-config 'at-plot:first)
-		 ))
-  (princ)
-  )
+  (@:help (strcat "The content can show in user interface .\n"))
+  (alert (strcat "@ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½Ô°ï¿½ 's first function.\n"
+                 "Created a config item at-plot:first .\n"
+                 "THe config ietm th family is this item: " (@:get-config 'at-plot:first)))
+  (princ))

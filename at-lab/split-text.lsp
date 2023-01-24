@@ -47,6 +47,7 @@
   (dcl:new "example")
   ;; MVCNIS
   (defun parse-str (str)
+    
     (vl-remove ""
 	       (mapcar '(lambda(x)(vl-string-trim (get_tile "trim") x))
 		       (string:parse-by-lst str (string:to-list (get_tile "sepa") "&&")))

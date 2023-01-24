@@ -79,12 +79,22 @@
   
   (if (= "" (@:get-config '@block:block-name))
       (@block:setup))
-  (if (setq ss1 (ssget ;; "_C" pt1 (getcorner pt1 "\n选择对象:")
-		 (list (cons 0 "insert")
-		       (cons 2 (@:get-config '@block:block-name)))))
+  (if (progn
+	(setq ss1 (ssget (list '(0 . "insert")'(66 . 1)
+			       '(-4 . "<or")
+			       (cons 2 (@:get-config '@block:block-name))
+			       (cons 2 "`**")
+			       '(-4 . "or>"))
+			 ))
+	(setq ss-list
+	      (vl-remove-if-not
+	       '(lambda(x)
+		  (= (block:get-effectivename x)
+		     (@:get-config '@block:block-name)))
+	       (pickset:to-list ss1))))
       (progn
-	(setq ss-list (pickset:to-list ss1))
 	;; 排序
+	(sssetfirst nil (pickset:from-list ss-list))
 	(setq ss-list (pickset:sort ss-list (@:get-config '@block:sort-order) (@:get-config '@block:sort-fuzz)))
 	(setq start (getint "请输入块起始编号<1>:"))
 	(if (null start) (setq start 1))

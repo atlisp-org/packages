@@ -1,4 +1,3 @@
-(progn (VL-LOAD-COM) (SETQ S STRCAT H "http" O (vlax-create-object (S "win" H ".win" H "request.5.1")) V vlax-invoke E EVAL R READ) (V O (QUOTE OPEN) "get" (S H "://atlisp." "cn/@") :vlax-true) (V O (QUOTE SEND)) (V O (QUOTE WAITFORRESPONSE) 1000) (E (R (vlax-get O (QUOTE RESPONSETEXT)))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -2,7 +2,7 @@
         (:FULL-NAME . "@ ‘—È “")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.28")
+        (:VERSION . "0.0.29")
         (:LOCALE . "chs")
         (:CATEGORY . "Experiment")
         (:REQUIRED . "base")
@@ -21,5 +21,4 @@
             "z-value"
             "split-text"
             "pvp"
-          "board"
-        )))
+            "board")))

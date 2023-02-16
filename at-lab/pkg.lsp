@@ -20,4 +20,6 @@
             "array"
             "z-value"
             "split-text"
-            "pvp")))
+            "pvp"
+          "board"
+        )))

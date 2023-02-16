@@ -1,28 +1,39 @@
 (@:add-menu "@试验室" "加固板" '(at-lab:board))
-(defun at-lab:board (/ lines l1 l2 )
+(defun at-lab:board (/ lines ) 
+  (@:help '("当前版本只支持两条等长的水平直线"))
   (push-var)
   (setvar "OSMODE" 0)
   ;; 选择两条水平直线
   (setq lines (ssget '((0 . "LINE"))))
   (setq lines (pickset:to-list (pickset:sort-with-dxf lines 10 1 0 nil))) ; 排序
-  (setq l1 (car lines)
-        l2 (cadr lines))
+  (setq pts-b (vl-sort 
+                (curve:get-points (car lines))
+                '(lambda (x y) (< (car x) (car y)))))
+  (setq pts-t (vl-sort 
+                (curve:get-points (cadr lines))
+                '(lambda (x y) (< (car x) (car y)))))
+  (setq flag      (> (distance (car pts-b) (car pts-t)) 25)
+        thickness (- (cadar pts-t) (cadar pts-b) 18))
   ;; 底板
   (setq bottom-board (entity:make-rectangle 
-                       (entity:getdxf l1 10)
-                       (setq rb (polar (entity:getdxf l1 11) (* 0.5 pi) 9))))
+                       (car pts-b)
+                       (setq rb (polar (last pts-b) (* 0.5 pi) 9))))
   (entity:putdxf bottom-board 62 2)
+  (setvar "HPNAME" "ANSI34")
+  (setvar "HPANG" 0)
+  (command "-hatch" "s" bottom-board "" "")
   ;; 顶板
   (setq top-board (entity:make-rectangle 
-                    (entity:getdxf l2 10)
-                    (setq rt (polar (entity:getdxf l2 11) (* 1.5 pi) 9))))
+                    (car pts-t)
+                    (setq rt (polar (last pts-t) (* 1.5 pi) 9))))
   (entity:putdxf top-board 62 3)
-  (setq thickness (distance rb rt))
-  (if (> thickness 7) 
+  (command "-hatch" "s" top-board "" "")
+  (setq startpt (polar (car pts-b) (* 0.5 pi) 9)
+        endpt   rt)
+  (if flag 
     ;; 填方
     (progn 
-      (setq startpt (polar (entity:getdxf l1 10) (* 0.5 pi) 9)
-            endpt rt)
+
       (while (< (+ 36 (car startpt)) (car endpt)) 
         (entity:make-rectangle 
           startpt
@@ -32,14 +43,21 @@
         rt
         (polar (polar rt pi 9) (* 1.5 pi) thickness))
       ;; 堵板
-      (entity:make-rectangle 
-        (polar rt (* 0.5 pi) 9)
-        (polar (polar rt 0 9) (* 1.5 pi) (+ thickness 9))))
+      (setq db (entity:make-rectangle 
+                 (polar rt (* 0.5 pi) 9)
+                 (polar (polar rt 0 9) (* 1.5 pi) (+ thickness 9))))
+      (setvar "HPNAME" "ANSI34")
+      (setvar "HPANG" 0)
+      (command "-hatch" "s" db "" ""))
     ;; 填板
     (progn 
       (entity:putdxf 
-        (entity:make-rectangle (polar (entity:getdxf l1 10) (* 0.5 pi) 9) rt)
+        (setq tf (entity:make-rectangle 
+                   startpt
+                   rt))
         62
-        4)))
-  (pop-var)
-)
+        4)
+      (setvar "HPNAME" "ANSI34")
+      (setvar "HPANG" (* 0.5 pi))
+      (command "-hatch" "s" tf "" "")))
+  (pop-var))

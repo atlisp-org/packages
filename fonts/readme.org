@@ -1,16 +1,19 @@
 #+TITLE: 常用字体库
-* 本包为常用的CAD字体 
-  以下为当前可下载的字体列表
+* 本包为常用的CAD字体
+您可以下载以下的单个字休，也可以安装 @lisp 后，再安装这个 @lisp字体库 应用包。
+管理常用 CAD 字体。
+
+以下为当前可下载的字体列表
 
   - @@hztxt.shx : 用于在打开dwg文件时，无缺省字体的首选。
-  - Gbcbig.shx
-  - hztxt.shx
-  - romans.shx
-  - txt.shx
-  - China.shx :  中文双线字体
-  - gbhzfs.shx  
-  - Pkpmeng.shx 
-  - Tssdchn.shx : 探索者汉字字体。
-  - Tssdeng.shx : 探索者英文单线字体。钢筋符号。
-  - Tssdeng2.shx : 探索者英文双线字体。钢筋符号。
+  - [[https://atlisp.cn/stable/fonts/Gbcbig.shx][Gbcbig.shx]]
+  - [[https://atlisp.cn/stable/fonts/hztxt.shx][hztxt.shx]]
+  - [[https://atlisp.cn/stable/fonts/romans.shx][romans]]
+  - [[https://atlisp.cn/stable/fonts/txt.shx][txt.shx]]
+  - [[https://atlisp.cn/stable/fonts/China.shx][China]] :  中文双线字体
+  - [[https://atlisp.cn/stable/fonts/gbhzfs.shx][gbhzfs.shx]]
+  - [[https://atlisp.cn/stable/fonts/Pkpmeng.shx][Pkpmeng.shx]]
+  - [[https://atlisp.cn/stable/fonts/Tssdchn.shx][Tssdchn.shx]] : 探索者汉字字体。
+  - [[https://atlisp.cn/stable/fonts/Tssdeng.shx][Tssdeng.shx]] : 探索者英文单线字体。钢筋符号。
+  - [[https://atlisp.cn/stable/fonts/Tssdeng2.shx][Tssdeng2]] : 探索者英文双线字体。钢筋符号。
 

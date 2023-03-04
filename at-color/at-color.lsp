@@ -1,17 +1,9 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-color:first ÓÃÓÚ Ó¦ÓÃ°ü at-color µÄ µÚÒ»¸öÅäÖÃÏî first 
-;; (@:define-config 'at-color:first "ÎÒÊÇÅäÖÃÏî at-color:first µÄÖµ" "Õâ¸öÅäÖÃÏîµÄÓÃÍ¾ËµÃ÷¡£")
-;; (@:get-config 'at-color:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-color:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "ÑÕÉ«Ïà¹Ø" "¿ìËÙ¸ÄÉ«" "(at-color:change-color)" )
-(@:add-menu "ÑÕÉ«Ïà¹Ø" "È¥Õæ²ÊÉ«" "(at-color:del-rgb)" )
+(@:add-menu (_"Color") (_"Modify color") "(at-color:change-color)" )
+(@:add-menu (_"Color") (_"Remove TrueColor") "(at-color:del-rgb)" )
 
 (defun at-color:del-rgb ()
-  ;;(@:help "¿òÑ¡ÒªÈ¥³ıÕæ²ÊÉ«µÄÍ¼Ôª,ÓÃË÷ÒıÉ«Ìæ»»¡£")
-  (prompt "Çë¿òÑ¡ÒªÈ¥³ıÕæ²ÊÉ«µÄÍ¼Ôª:")
+  ;;(@:help "æ¡†é€‰è¦å»é™¤çœŸå½©è‰²çš„å›¾å…ƒ,ç”¨ç´¢å¼•è‰²æ›¿æ¢ã€‚")
+  (prompt "è¯·æ¡†é€‰è¦å»é™¤çœŸå½©è‰²çš„å›¾å…ƒ:")
   (entity:deldxf (ssget '((-4 . ">")(420 . 0))) 420)
   )
 (defun at-color:change-color (/ fname fn x dclid lin)
@@ -20,11 +12,11 @@
   (setq fname (vl-filename-mktemp nil nil ".dcl" ))
   (setq fn (open fname "w" ))
   (foreach x '(
-               "buttonGL:button{horizontal_margin=none;vertical_margin=none;} //×Ô¶¨Òå°´Å¥"
+               "buttonGL:button{horizontal_margin=none;vertical_margin=none;} //è‡ªå®šä¹‰æŒ‰é’®"
                "  ksgs : dialog{" 
-               "  label=\"¿ìËÙ¸ÄÉ«-DIY\";" 
+               "  label=\"å¿«é€Ÿæ”¹è‰²-DIY\";" 
                "     :boxed_row{"
-               "      label=\"¸Ä¶ÔÏóÑÕÉ«\";"
+               "      label=\"æ”¹å¯¹è±¡é¢œè‰²\";"
                "      :image_button{key=\"1\";color=1;width=6;aspect_ratio=1;allow_accept=true;}"
                "      :image_button{key=\"2\";color=2;width=6;aspect_ratio=1;allow_accept=true;}"
                "      :image_button{key=\"3\";color=3;width=6;aspect_ratio=1;allow_accept=true;}"
@@ -36,11 +28,11 @@
                "      :image_button{key=\"9\";color=9;width=6;aspect_ratio=1;allow_accept=true;}"
                "      :image_button{key=\"10\";color=190;width=6;aspect_ratio=1;allow_accept=true;}"
                "      :image_button{key=\"11\";color=15;width=6;aspect_ratio=1;allow_accept=true;}"
-               "      :buttonGL{key=\"12\";label=\"ÆäËü\";width=6;}"
-               "      :buttonGL{key=\"13\";label=\"¶ÔÏóÑÕÉ«Ëæ²ã\";width=true;}"
+               "      :buttonGL{key=\"12\";label=\"å…¶å®ƒ\";width=6;}"
+               "      :buttonGL{key=\"13\";label=\"å¯¹è±¡é¢œè‰²éšå±‚\";width=true;}"
                "     }"
                "     :boxed_row{"
-               "      label=\"¸ÄÍ¼²ãÑÕÉ«\";"
+               "      label=\"æ”¹å›¾å±‚é¢œè‰²\";"
                "      :image_button{key=\"51\";color=1;width=6;aspect_ratio=1;allow_accept=true;}"
                "      :image_button{key=\"52\";color=2;width=6;aspect_ratio=1;allow_accept=true;}"
                "      :image_button{key=\"53\";color=3;width=6;aspect_ratio=1;allow_accept=true;}"
@@ -52,8 +44,8 @@
                "      :image_button{key=\"59\";color=9;width=6;aspect_ratio=1;allow_accept=true;}"
                "      :image_button{key=\"60\";color=190;width=6;aspect_ratio=1;allow_accept=true;}"
                "      :image_button{key=\"61\";color=15;width=6;aspect_ratio=1;allow_accept=true;}"
-               "      :buttonGL{key=\"62\";label=\"ÆäËü\";width=6;}"
-               "      :buttonGL{key=\"63\";label=\"Í¼²ãÑÕÉ«Ëæ²ã\";width=6;}"
+               "      :buttonGL{key=\"62\";label=\"å…¶å®ƒ\";width=6;}"
+               "      :buttonGL{key=\"63\";label=\"å›¾å±‚é¢œè‰²éšå±‚\";width=6;}"
                "     }"
                "     cancel_button;"
                "    }"
@@ -129,9 +121,9 @@
   )
 
 ;;-----------------------------------------------------------------
-					;¸Ä¶ÔÏóÑÕÉ«
-					;1ºì.2»Æ.3ÂÌ.4Çà.5À¶.6Æ·ºì.7°×.8»Ò.9Ç³»Ò.10×ÏÉ«.11¿§É«		
-(defun GL:gs1()(GL:gdxys 1));ºìÉ«
+					;æ”¹å¯¹è±¡é¢œè‰²
+					;1çº¢.2é»„.3ç»¿.4é’.5è“.6å“çº¢.7ç™½.8ç°.9æµ…ç°.10ç´«è‰².11å’–è‰²		
+(defun GL:gs1()(GL:gdxys 1));çº¢è‰²
 (defun GL:gs2()(GL:gdxys 2))
 (defun GL:gs3()(GL:gdxys 3))
 (defun GL:gs4()(GL:gdxys 4))
@@ -148,26 +140,26 @@
       )
   )
 
-;;¸ÄÑÕÉ«Ëæ²ã×Ó³ÌĞò
+;;æ”¹é¢œè‰²éšå±‚å­ç¨‹åº
 (defun GL:gssc(/ ss)
-  (princ "ÑÕÉ«¸ÄÎªËæ²ã")
+  (princ "é¢œè‰²æ”¹ä¸ºéšå±‚")
   (while (setq ss (ssget))
-    (princ (strcat (itoa (sslength ss)) "¸ö¶ÔÏóµÄÑÕÉ«¸ÄÎªËæ²ã"))
+    (princ (strcat (itoa (sslength ss)) "ä¸ªå¯¹è±¡çš„é¢œè‰²æ”¹ä¸ºéšå±‚"))
     (command "change" ss "" "P" "C" "bylayer" "")
     );while
   )
 
-;;¸Ä¶ÔÏóÑÕÉ«×Ó³ÌĞò
+;;æ”¹å¯¹è±¡é¢œè‰²å­ç¨‹åº
 (defun GL:gdxys (dxys / en i obj ss)
   (while (setq ss (ssget ":s"))
-    (princ (strcat "¹²¸Ä±äÁË<" (itoa (sslength ss)) ">¸ö¶ÔÏóµÄÑÕÉ«"))
+    (princ (strcat "å…±æ”¹å˜äº†<" (itoa (sslength ss)) ">ä¸ªå¯¹è±¡çš„é¢œè‰²"))
     (command "change" ss "" "p" "c" dxys "")
     );while
   (princ)
   )
 
 ;;-----------------------------------------------------------------	
-;;¸ÄÍ¼²ãÑÕÉ«
+;;æ”¹å›¾å±‚é¢œè‰²
 (defun GL:gcs1()(GL:gtcys 1))
 (defun GL:gcs2()(GL:gtcys 2))
 (defun GL:gcs3()(GL:gtcys 3))
@@ -184,7 +176,7 @@
       (GL:gtcys yanse)
       )
   )
-					;¸ÄÍ¼²ãÑÕÉ«×Ó³ÌĞò
+					;æ”¹å›¾å±‚é¢œè‰²å­ç¨‹åº
 (defun GL:gtcys (yanse / acaddoc acadobj en i lay layobj obj ss vlay vlay1)
   (setq AcadObj (vlax-get-Acad-object)
 	AcadDoc (vla-get-ActiveDocument AcadObj)
@@ -194,14 +186,14 @@
       (progn
 	(setq i 0)
 	(repeat (sslength ss)
-		(setq en (ssname ss i);È¡Í¼ÔªÃû
-		      obj (vlax-ename->vla-object en);×ª»»Í¼Ôª
-		      lay (vla-get-layer obj);Í¼²ãÃû
-		      vlay (vla-item LayObj lay);×ªÎªVLÍ¼²ãÃû
+		(setq en (ssname ss i);å–å›¾å…ƒå
+		      obj (vlax-ename->vla-object en);è½¬æ¢å›¾å…ƒ
+		      lay (vla-get-layer obj);å›¾å±‚å
+		      vlay (vla-item LayObj lay);è½¬ä¸ºVLå›¾å±‚å
 		      )
 		(if (= (equal vlay vlay1) nil)
 		    (progn
-		      (vla-put-color vlay yanse);¸ÄÍ¼²ãÑÕÉ«
+		      (vla-put-color vlay yanse);æ”¹å›¾å±‚é¢œè‰²
 		      (setq vlay1 vlay)
 		      ))
 		(setq i (1+ i))
@@ -210,7 +202,7 @@
   (princ)
   )
 (defun C:shf () 
-  (princ "\nÍ¼²ãÑÕÉ«ÒÑ»Ö¸´Ä¬ÈÏ£¡cecolor")  
+  (princ "\nå›¾å±‚é¢œè‰²å·²æ¢å¤é»˜è®¤ï¼cecolor")  
   (setvar "cecolor" "bylayer")
   (princ) 
   );defun

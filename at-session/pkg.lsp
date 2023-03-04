@@ -4,7 +4,7 @@
         (:EMAIL . "vitalgg@gmail.com")
         (:VERSION . "0.1.7")
         (:LOCALE . "zh")
-        (:CATEGORY . "图档管理")
+        (:CATEGORY . "Efficiency tools")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
         (:DESCRIPTION . "用于管理当前或历史打开的多个dwg文档，一次打开多个关联的dwg文档。")

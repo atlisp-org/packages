@@ -47,7 +47,7 @@
             "\n卸载所有外部参照 命令：XFXA" "\n拆离选定参照文件 命令：XFD" "\n拆离所有外部参照 命令：XFDA" "\n绑定选定参照文件 命令：XFB" 
             "\n绑定所有外部参照 命令：BDCZ")))
 
-(Defun @block:XFR ()  ;定義“重载选定参照文件”命令
+(Defun @block:XFR ()  ;定义“重载选定参照文件”命令
   (setvar "cmdecho" 0) ;命令执行过程不回显提示和输入
 
   (princ "\n选定要重新载入的参照文件:")
@@ -66,11 +66,11 @@
       (princ Rnames)) ;end progn
   ) ;end if
   (princ))
-(Defun @block:CZCZ ()  ;定義“重新加载所有外部参照”命令
+(Defun @block:CZCZ ()  ;定义“重新加载所有外部参照”命令
   (setvar "cmdecho" 0) ;命令执行过程不回显提示和输入
   (command "-xref" "R" "*")
   (princ))
-(Defun @block:XFX ()  ;定義“卸载选定参照文件”命令
+(Defun @block:XFX ()  ;定义“卸载选定参照文件”命令
 
   (setvar "cmdecho" 0) ;命令执行过程不回显提示和输入
 
@@ -90,11 +90,11 @@
       (princ Rnames)) ;end progn
   ) ;end if
   (princ))
-(Defun @block:XFXA ()  ;定義“卸载所有外部参照”命令
+(Defun @block:XFXA ()  ;定义“卸载所有外部参照”命令
   (setvar "cmdecho" 0) ;命令执行过程不回显提示和输入
   (command "-xref" "U" "*")
   (princ))
-(Defun @block:XFD ()  ;定義“拆离选定参照文件”命令
+(Defun @block:XFD ()  ;定义“拆离选定参照文件”命令
 
   (setvar "cmdecho" 0) ;命令执行过程不回显提示和输入
 
@@ -114,11 +114,11 @@
       (princ Rnames)) ;end progn
   ) ;end if
   (princ))
-(Defun @block:XFDA ()  ;定義“拆离所有外部参照”命令
+(Defun @block:XFDA ()  ;定义“拆离所有外部参照”命令
   (setvar "cmdecho" 0) ;命令执行过程不回显提示和输入
   (command "-xref" "Detach" "*")
   (princ))
-(Defun @block:XFB ()  ;定義“绑定选定参照文件”命令
+(Defun @block:XFB ()  ;定义“绑定选定参照文件”命令
 
   (setvar "cmdecho" 0) ;命令执行过程不回显提示和输入
 
@@ -146,7 +146,7 @@
       (princ Rnames)) ;end progn
   ) ;end if
   (princ))
-(Defun @block:BDCZ ()  ;定義“绑定所有外部参照”命令
+(Defun @block:BDCZ ()  ;定义“绑定所有外部参照”命令
   (setvar "cmdecho" 0) ;命令执行过程不回显提示和输入
   (setq oldBT (getvar "BINDTYPE"))
   (setq BT (if (null BT) oldBT BT))

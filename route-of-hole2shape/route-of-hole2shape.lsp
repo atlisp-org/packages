@@ -3,9 +3,6 @@
 (@:define-config 'ROUTE-OF-HOLE2SHAPE:color  200 "新建的刀路线颜色")
 (@:define-config 'route-of-hole2shape:c2pl-vertex  4 "圆转多段线的顶点数。该值不得小于2")
 (setq route-of-hole2shape:*show-clockwise* nil)
-(layer:make (@:get-config  'ROUTE-OF-HOLE2SHAPE:layer)
-	    (@:get-config  'ROUTE-OF-HOLE2SHAPE:color)
-	    nil nil)
 (@:add-menus
  '(("孔到边刀路"
     ("设置" "(route-of-hole2shape:config)")
@@ -58,7 +55,10 @@
   ;; closeto? T 为曲线上的任意点， nil 为曲线上的顶点
   ;;选择多段线
   ;; 方向不同 正负不同
-  
+  (if (null layer:make) (require 'layer:*))
+  (layer:make (@:get-config  'ROUTE-OF-HOLE2SHAPE:layer)
+	    (@:get-config  'ROUTE-OF-HOLE2SHAPE:color)
+	    nil nil)
   (setq ent-shape (route-of-hole2shape:offset-shape ent-pl))
   (setq closed? (entity:getdxf ent-shape 70))
   ;; 逆时针点序不对

@@ -9,10 +9,6 @@
 (@:define-config '@text:color 10 "临时绘线的颜色号，每次变化加以区别")
 (@:define-config '@text:temp-layer "@temp@" "临时绘线的图层")
 
-(if (null layer:make)(require 'layer:*))
-(if (= 'subr (type layer:make))
-    (layer:make (@:get-config '@text:temp-layer) 1 nil nil))
-
 (defun @text:setup (/ res)
   "工程管理基本信息"
   (setq res 
@@ -296,6 +292,9 @@
 
 (defun @text:find-from-line(/ s1 pt-base txt ename ti% p11 p10 f en p11n p10n fn fn1 attribtext)
   (@:help "选择一个文本a，选择查找范围，查找内容相同的文本，并连线。")
+  (if (null layer:make)(require 'layer:*))
+  (if (= 'subr (type layer:make))
+      (layer:make (@:get-config '@text:temp-layer) 1 nil nil))
   (setq en1 (car (entsel "请选择一个单行文本:")))
   (setq pt-base (cdr (assoc 10 (entget en1))))
   (setq txt (cdr (assoc 1 (entget en1))))

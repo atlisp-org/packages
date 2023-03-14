@@ -1,0 +1,13 @@
+(@:def-pkg '((:NAME . "road-cross")
+        (:FULL-NAME . "十字路口生成器")
+        (:AUTHOR . "lee50310")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.4")
+        (:LOCALE . "CHS")
+        (:CATEGORY . "规划")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "十字路口生成器及道修补")
+        (:URL . "http://atlisp.cn")
+        (:FILES "road-cross"
+            "rd")))

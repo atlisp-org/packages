@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp Color")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.9")
+        (:VERSION . "0.0.10")
         (:LOCALE . "CHS")
         (:CATEGORY . "Color")
         (:OPENSOURCE . 0)

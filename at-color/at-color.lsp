@@ -1,6 +1,40 @@
 (@:add-menu (_"Color") (_"Modify color") "(at-color:change-color)" )
 (@:add-menu (_"Color") (_"Remove TrueColor") "(at-color:del-rgb)" )
+(@:add-menu (_"Color") (_"图变单色") "(at-color:one-color)" )
 
+(defun at-color:one-color (/ color obj-color ents )
+  (@:help "将图纸变为单一颜色")
+  (setq color (acad_colordlg 252 t))
+  (if (null color)(exit))
+  (setq obj-color (vlax-create-object (strcat "AutoCAD.AcCmColor." (substr (getvar "ACADVER") 1 2))))
+  (vla-put-colorIndex obj-color color)
+  ;; 图元
+  (entity:putdxf (ssget "x") 62 color)
+  ;; 块内图元
+  (setq ents (mapcar 
+               'block:ent-list
+               (vl-remove-if 
+                 '(lambda (x) (wcmatch x "*_Space*"))
+                 (mapcar 'vla-get-name (block:list-blk-objs))
+               )
+             )
+  )
+  (foreach lst-ent ents 
+    (foreach ent lst-ent 
+	     (entity:putdxf ent 62 color)
+	     ))
+  ;; 天正图元处理
+  (setq ents (pickset:to-list (ssget "x" '((0 . "TCH_*")))))
+  (setq ents (mapcar 'e2o ents))
+  (mapcar '(lambda(x)
+	     (vla-put-truecolor
+	      x
+	      obj-color))
+	  ents)
+
+  ;;(vla-regen *DOC* :vlax-true)
+  (princ)
+  )
 (defun at-color:del-rgb ()
   ;;(@:help "框选要去除真彩色的图元,用索引色替换。")
   (prompt "请框选要去除真彩色的图元:")

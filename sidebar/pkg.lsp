@@ -1,0 +1,13 @@
+(@:def-pkg '((:NAME . "sidebar")
+        (:FULL-NAME . "²à±ßÀ¸")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.11")
+        (:LOCALE . "CHS")
+        (:CATEGORY . "Common")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "CAD²à±ßÀ¸")
+        (:URL . "http://atlisp.cn")
+        (:FILES "sidebar"
+            "CAD_ScreenMenu.dll")))

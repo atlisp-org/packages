@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	屏幕菜单说明
+	文件结构：
+	<ScreenMenu>  //*根目录，必须按照此名称，不做解释；
+	  <Group TextColor ="#FFF5F5F5"  Title ="第一个组">  //组，组中可以包含子项，包括子组，可以嵌套（即组中加入子组）
+	      <Item Shortcut=""（可选，快捷键提示） Command ="Line"(命令名称) ImageFile =""(可选，图标路径）  TextColor ="#FFF5F5F5"(可选，文字颜色) >绘制直线</Item>
+	      <Item Shortcut="">-</Item> //分割线
+	      <Group TextColor ="#FFF5F5F5"   Title ="嵌套子组">  //嵌套组
+	        <Item Shortcut="" Command ="Command" ImageFile ="" >嵌套子组的项目</Item> 
+	      </Group>
+	  </Group>  
+	</ScreenMenu>
+  ///常用转义符 
+  <(小于)    &lt;
+  >(大于)    &gt;
+  "(双引号)  &quot; 
+  '(单引号)  &apos;
+  &（和）    &amp;
+-->
+<ScreenMenu>
+  <Group TextColor="" Title="基本设置" indexNum="0">
+    <Item Shortcut="" Command="SCREENMENUSETTING" ImageFile="" TextColor="#FFF5F5F5" indexNum="1" ShortcutTip="暂无相关说明">屏幕菜单设置</Item>
+    <Item Shortcut="" Command="togglescreenmenu" ImageFile="" TextColor="" indexNum="2">显示/隐藏切换</Item>
+  </Group>
+</ScreenMenu>

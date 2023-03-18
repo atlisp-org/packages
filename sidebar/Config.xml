@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Config>
+  <!--不要修改此参数，仅用于判断是否第一次加载-->
+  <FistLoad>false</FistLoad>
+  <!--Title:设置屏幕菜单显示名称,留空将默认设置为""迷你&源泉"-->
+  <Title>@lisp菜单</Title>
+  <!--AutoLoad:是否随CAD启动时自动加载,可设置:自动加载(true);手动加载(false),默认true-->
+  <AutoLoad>False</AutoLoad>
+  <!--Dock:保存停靠位置,可选值:左侧(left)；不停靠(none),右侧(right)，默认left-->
+  <DockSides>left</DockSides>
+  <!--AutoRollUp:是否自动折叠，可设值：自动折叠(true);不自动折叠(false),默认true-->
+  <AutoRollUp>True</AutoRollUp>
+  <!--Height:面板高度，默认700,可设值:700-1400任意值-->
+  <Height>700</Height>
+  <LocationX>0</LocationX>
+  <LocationY>0</LocationY>
+  <!--Width:面板宽度，默认400，可设值:100-800任意值-->
+  <Width>400</Width>
+  <!--BackColor:背景颜色，可设任何16进制颜色,如#ff000000,默认值="#FF3B4453"-->
+  <BackColor>#FF3B4453</BackColor>
+  <!--TextColor:全局文字颜色，可设任何16进制颜色,如#ff000000,默认值="#FFF5F5F5",仅当对应xml内TextColor属性为空时生效-->
+  <GlobalTextColor>#FFF5F5F5</GlobalTextColor>
+  <!--SplitLineColor:分割线颜色，可设任何16进制颜色,如#ff000000,默认值="Gray"-->
+  <SplitLineColor>Gray</SplitLineColor>
+  <!--IconColor:图标颜色，可设任何16进制颜色,如#ff000000,默认值="#ff1296db"-->
+  <IconColor>#FF52A0EF</IconColor>
+  <!--FontSize:文字大小，可设任意正整数-->
+  <FontSize>12</FontSize>
+  <!--ItemSpace:分隔间距，可设任意正整数-->
+  <ItemSpace>15</ItemSpace>
+  <!--CommandAndShortcutSpace:命令文字与快捷键之间间距，可设任意正整数-->
+  <CommandAndShortcutSpace>20</CommandAndShortcutSpace>
+  <!--CommandTextWidth:命令文字宽度，可设任意正整数-->
+  <CommandTextWidth>100</CommandTextWidth>
+  <!--ExpandedBackColor:面板展开后背景颜色，可设任何16进制颜色,如#ff000000，默认值"Gray"-->
+  <ExpandedBackground>#FFC0C0C0</ExpandedBackground>
+  <!--
+      ISEnable:true->表示启用;false->表示禁用；
+      IconFolder:设置图标所在文件夹，需要和DLL文件放同级目录；
+      XmlFileName:自定义显示菜单XML文件名称，需要和DLL文件放同级目录，写法参考已有xml文件说明；
+      BackColor：面板背景颜色
+   -->
+  <PaletteSet ISEnable="true" IconFolder="atlisp_icons" XmlFileName="Cmd_atlisp.xml">@lisp</PaletteSet>
+  <PaletteSet ISEnable="true" IconFolder="demo_icons" XmlFileName="Cmd_demo.xml">Demo</PaletteSet>
+</Config>

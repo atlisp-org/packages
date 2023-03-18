@@ -5,6 +5,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 图层工具集
 
+(@:add-menu "图层" "关闭其它" "(@:layer-off-other)")
+(@:add-menu "图层" "冻结其它" "(@:layer-frozen-other)")
+(@:add-menu "图层" "锁定其它" "(@:layer-lock-other)")
+(@:add-menu "图层" "解锁全部" "(@:layer-unlock)")
+(@:add-menu "图层" "解冻全部" "(@:layer-thaw)")
+(@:add-menu "图层" "图层全开" "layon")
+(@:add-menu "图层" "选图进层" "(@layer:ent-to-clayer)")
+
 (defun @:get-layer-by-object(ss / layer ti% ename e  )
   "根据所选对象生成图层表"
   (setq layer nil )
@@ -27,7 +35,6 @@
           )))
   layer
   )
-(@:add-menu "图层" "关闭其它" "(@:layer-off-other)")
 (defun @:layer-off-other( /  ss  layer  lay-act-list )
   "关闭其它图层"
   (setq lay-act-list "")
@@ -45,7 +52,7 @@
            )))
   (command "-layer" "off" lay-act-list "")
   )
-(@:add-menu "图层" "冻结其它" "(@:layer-frozen-other)")
+
 (defun @:layer-frozen-other( /  ss  layer  lay-act-list )
   "冻结其它图层"
   (setq lay-act-list "")
@@ -64,7 +71,6 @@
   (command "-layer" "f" lay-act-list "")
   )
 
-(@:add-menu "图层" "锁定其它" "(@:layer-lock-other)")
 (defun @:layer-lock-other( /  ss  layer  lay-act-list )
   "锁定其它图层"
   (setq lay-act-list "")
@@ -83,7 +89,6 @@
   (command "-layer" "lo" lay-act-list "")
   )
 
-(@:add-menu "图层" "解锁全部" "(@:layer-unlock)")
 (defun @:layer-unlock( /  ss  layer  lay-act-list )
    "解锁全部图层"
   (setq lay-act-list "")
@@ -96,7 +101,6 @@
   (command "-layer" "u" lay-act-list "")
   )
 
-(@:add-menu "图层" "解冻全部" "(@:layer-thaw)")
 (defun @:layer-thaw( /  layer  lay-act-list )
   "解冻全部图层"
   (setq lay-act-list "")
@@ -108,7 +112,35 @@
            ))
   (command "-layer" "t" lay-act-list "")
   )
-(@:add-menu "图层" "图层全开" "layon")
+
+(defun @layer:ent-to-clayer ()
+  (if (null layer:list)(require 'layer:*))
+  (if curr-layer
+      (cond
+       ((= 'int (type curr-layer))
+	(setvar "clayer" (itoa curr-layer)))
+       (t
+	(if (null (member (vl-symbol-name curr-layer) (layer:list)))
+	    (layer:make (vl-symbol-name curr-layer) nil nil nil))
+	(setvar "clayer" (vl-symbol-name curr-layer)))))
+  (@:help (list
+	   (strcat "选择对象到" (getvar "clayer") "层")))
+  (if (setq ss-curr (cadr (ssgetfirst)))
+      (foreach ent (pickset:to-list ss-curr)
+	       (entity:putdxf ent 8 (getvar "clayer"))
+	       (entity:deldxf ent 6 )
+	       (entity:deldxf ent 48)
+	       (entity:deldxf ent 62)
+	       )
+    (while (setq ent (car (entsel)))
+      (entity:putdxf ent 8 (getvar "clayer"))
+      (entity:deldxf ent 6 )
+      (entity:deldxf ent 48)
+      (entity:deldxf ent 62)
+      ))
+  (setq curr-layer nil)
+  )
+  
 
 ;; Local variables:
 ;; coding: gb2312

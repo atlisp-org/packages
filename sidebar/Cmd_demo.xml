@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	屏幕菜单说明
+	文件结构：
+	<ScreenMenu>  //*根目录，必须按照此名称，不做解释；
+	  <Group TextColor ="#FFF5F5F5"  Title ="第一个组">  //组，组中可以包含子项，包括子组，可以嵌套（即组中加入子组）
+	      <Item Shortcut=""（可选，快捷键提示） Command ="Line"(命令名称) ImageFile =""(可选，图标路径）  TextColor ="#FFF5F5F5"(可选，文字颜色) >绘制直线</Item>
+	      <Item Shortcut="">-</Item> //分割线
+	      <Group TextColor ="#FFF5F5F5"   Title ="嵌套子组">  //嵌套组
+	        <Item Shortcut="" Command ="Command" ImageFile ="" >嵌套子组的项目</Item> 
+	      </Group>
+	  </Group>  
+	</ScreenMenu>
+  ///常用转义符 
+  <(小于)    &lt;
+  >(大于)    &gt;
+  "(双引号)  &quot; 
+  '(单引号)  &apos;
+  &（和）    &amp;
+-->
+<ScreenMenu>
+  <Group TextColor="" Title="图元归层" indexNum="0">
+    <Item Shortcut="" Command="(setq curr-layer 'BBB)(@layer:ent-to-clayer)" ImageFile="\YQ_yqsys.bmp" TextColor="" indexNum="1">BBB</Item>
+    <Item Shortcut="" Command="(setq curr-layer 'BEAM)(@layer:ent-to-clayer)" ImageFile="\YQ_yq.bmp" TextColor="" indexNum="2">BEAM</Item>
+    <Item Shortcut="" Command="(setvar 'clayer &quot;BEAM&quot;)(@layer:ent-to-clayer)" TextColor="" indexNum="2">qBEAM</Item>
+  </Group>
+</ScreenMenu>

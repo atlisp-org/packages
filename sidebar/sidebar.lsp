@@ -67,12 +67,27 @@
   )
 (defun sidebar:load ()
   (if (null (findfile (strcat  (strcat (@:package-path "sidebar")"Config.xml"))))
-      (@:down-pkg-file (@:uri) (strcat "sidebar/Config.xml") "stable"))
+      (progn
+	(if (/= 'subr (type @:down-file))
+	    (@:load-module 'pkgman))
+	(@:down-pkg-file (@:uri) (strcat "sidebar/Config.xml") "stable")))
   (if (null (findfile (strcat  (strcat (@:package-path "sidebar")"Cmd_atlisp.xml"))))
-      (@:down-pkg-file (@:uri) (strcat "sidebar/Cmd_atlisp.xml.xml") "stable"))
+      (progn
+	(if (/= 'subr (type @:down-file))
+	    (@:load-module 'pkgman))
+	(@:down-pkg-file (@:uri) (strcat "sidebar/Cmd_atlisp.xml") "stable")))
   
   (setvar "cmdecho" 0)
   (command "netload" (strcat (@:package-path "sidebar")"CAD_ScreenMenu.dll"))
   (setvar "cmdecho" 1)
   )
+(if (null (findfile "bin/unzip.exe"))
+    (progn
+      (if (/= 'subr (type @:down-file))
+	  (@:load-module 'pkgman))
+      (@:down-file "bin/unzip.exe")
+      (sleep 1)))
+(if (null (findfile "bin\\iconv.exe"))
+    (@:down-and-unzip "archives/iconv.zip" "bin"))
+
 (sidebar:load)

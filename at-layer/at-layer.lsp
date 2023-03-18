@@ -119,7 +119,11 @@
       (cond
        ((= 'int (type curr-layer))
 	(setvar "clayer" (itoa curr-layer)))
-       (t
+       ((= 'str (type curr-layer))
+	(if (null (member curr-layer (layer:list)))
+	    (layer:make curr-layer nil nil nil))
+	(setvar "clayer" curr-layer))
+       ((atom curr-layer)
 	(if (null (member (vl-symbol-name curr-layer) (layer:list)))
 	    (layer:make (vl-symbol-name curr-layer) nil nil nil))
 	(setvar "clayer" (vl-symbol-name curr-layer)))))

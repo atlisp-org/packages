@@ -3,14 +3,23 @@
 (@:add-menu (_"Color") (_"图变单色") "(at-color:one-color)" )
 
 (defun at-color:one-color (/ color obj-color ents )
-  (@:help "将图纸变为单一颜色")
+  (@:help '("将图纸变为单一颜色" "所有图块定义均变色" "所选图元变色，如果没有选择图元，则整个dwg均变色"))
   (setq color (acad_colordlg 252 t))
+  (defun chcolor (ent)
+    (cond
+     ((wcmatch (entity:getdxf ent 0) "TCH_*")
+      (vla-put-truecolor (e2o ent) obj-color))
+     (t (entity:putdxf ent 62 color))))
+  
   (if (null color)(exit))
   (setq obj-color (vlax-create-object (strcat "AutoCAD.AcCmColor." (substr (getvar "ACADVER") 1 2))))
   (vla-put-colorIndex obj-color color)
   ;; 图元
-  (entity:putdxf (ssget) 62 color)
-  ;; 块内图元
+  (setq ents (ssget ))
+  (if (null ents)(setq ents (ssget "x")))
+  ;; 所选图元变 252 色
+  (mapcar 'chcolor (pickset:to-list ents))
+  ;; 块内图元变 252色
   (setq ents (mapcar 
                'block:ent-list
                (vl-remove-if 
@@ -20,19 +29,9 @@
              )
   )
   (foreach lst-ent ents 
-    (foreach ent lst-ent 
-	     (entity:putdxf ent 62 color)
-	     ))
-  ;; 天正图元处理
-  (setq ents (pickset:to-list (ssget '((0 . "TCH_*")))))
-  (setq ents (mapcar 'e2o ents))
-  (mapcar '(lambda(x)
-	     (vla-put-truecolor
-	      x
-	      obj-color))
-	  ents)
-
-  ;;(vla-regen *DOC* :vlax-true)
+	   (foreach ent lst-ent
+		    (chcolor ent)))
+  (vla-regen *DOC* :vlax-true)
   (princ)
   )
 (defun at-color:del-rgb ()

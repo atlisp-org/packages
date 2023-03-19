@@ -78,7 +78,6 @@
 			 "      :image_button{key=\"59\";color=9;width=4;height=1.6;horizontal_margin=none;}"
 			 "  }" "     :row{"
 			 "      :buttonGL{key=\"60\";label=\"其它\";width=4;height=1.6;horizontal_margin=none;}"
-			 "      :buttonGL{key=\"61\";label=\"T\";width=4;height=1.6;horizontal_margin=none;}"
 			 "    }" "     }" "     cancel_button;" "    }" "  }" "  }"
 			 )
            (princ x fn)

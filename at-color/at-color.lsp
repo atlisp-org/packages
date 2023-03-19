@@ -9,7 +9,7 @@
   (setq obj-color (vlax-create-object (strcat "AutoCAD.AcCmColor." (substr (getvar "ACADVER") 1 2))))
   (vla-put-colorIndex obj-color color)
   ;; 图元
-  (entity:putdxf (ssget "x") 62 color)
+  (entity:putdxf (ssget) 62 color)
   ;; 块内图元
   (setq ents (mapcar 
                'block:ent-list
@@ -24,7 +24,7 @@
 	     (entity:putdxf ent 62 color)
 	     ))
   ;; 天正图元处理
-  (setq ents (pickset:to-list (ssget "x" '((0 . "TCH_*")))))
+  (setq ents (pickset:to-list (ssget '((0 . "TCH_*")))))
   (setq ents (mapcar 'e2o ents))
   (mapcar '(lambda(x)
 	     (vla-put-truecolor

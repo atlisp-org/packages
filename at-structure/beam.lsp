@@ -31,6 +31,51 @@
   lst-beam)
 
 	     
+(@:add-menu "PKPM" "次梁结果" '(at-structure:secondarybeam-result))
+(defun at-structure:secondarybeam-result ()
+  "找出梁边(成对的平行线)"
+  (setq beamlines (pickset:to-list
+		 (ssget 
+			(list '(0 . "line")
+            (cons 8 "15104")))))
+  (foreach beamline beamlines
+    ;; 向上向左500，向下200取文字
+    (setq pt-mid (curve:midpoint beamline))
+    (setq ang (apply 'angle (entity:getdxf beamline '(10 11))))
+    (setq uptext (ssget "c" pt-mid 
+                  (polar 
+                    (polar pt-mid ang 150)
+                    (+ (* 0.5 pi) ang)
+                    500)
+                  '((0 . "MTEXT"))
+                ))
+    (if uptext 
+      (progn 
+        (foreach ent (pickset:to-list uptext)
+        (entity:putdxf ent 8 "次梁数据")
+        (entity:putdxf ent 1 
+          (string:subst-all "\\C6" "\\C4" (entity:getdxf ent 1))
+        )
+        (entity:putdxf ent 62 6))))
+    (setq downtext (ssget "c" pt-mid 
+                  (polar 
+                    (polar pt-mid ang 150)
+                    (+ (* 1.5 pi) ang)
+                    200)
+                    '((0 . "MTEXT"))
+      ))
+    (if downtext 
+      (progn 
+        (foreach ent (pickset:to-list downtext)
+        (entity:putdxf ent 8 "次梁数据")
+        (entity:putdxf ent 1 
+          (string:subst-all "\\C6" "\\C4" (entity:getdxf ent 1))
+        )
+        (entity:putdxf ent 62 6))))
+  )
+)
+
+	     
   
   
   

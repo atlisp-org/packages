@@ -8,6 +8,7 @@
    ("平滑路口" (at-curve:fillet-road))
    ("曲线面积" (at-curve:area))
    ("曲线长度" (at-curve:length))
+   ("每段长度" (at-curve:per-length))
    ("垂线缺口" (at-curve:notch))
    ("连线端点" (at-curve:link-end))
    ("统计线长" (at-curve:stat))))
@@ -75,4 +76,66 @@
              "mm")
             62
             1))
+  (princ))
+(defun at-curve:per-length (/ lst-curve pts)
+  (@:help '("标注曲线的每段长度"))
+  (@:prompt "请选择曲线:")
+  (setq lst-curve (pickset:to-list
+                   (ssget (list (cons 0 (@:get-config '@curve:types))))))
+  (foreach curve lst-curve
+	   (cond
+	    ((= "LWPOLYLINE" (entity:getdxf curve 0))
+	     (setq i 0)
+	     (setq bulges (curve:pline-convexity curve))
+	     (repeat (curve:subsegments curve)
+		     (entity:putdxf
+		      (entity:make-text
+		       (rtos (curve:subsegment-length
+			      curve
+			      (car (curve:subsegment-points curve i))
+			      (cadr (curve:subsegment-points curve i)))
+			     2 3)
+		       (point:2d->3d
+			(if (= 0 (nth i bulges))
+			    (point:mid
+			     (car (curve:subsegment-points curve i))
+			     (cadr (curve:subsegment-points curve i)))
+			  (polar
+			    (point:mid
+			     (car (curve:subsegment-points curve i))
+			     (cadr (curve:subsegment-points curve i)))
+			    (-(angle  (car (curve:subsegment-points curve i))
+				      (cadr (curve:subsegment-points curve i)))
+			       (* 0.5 pi)
+			      )
+			    (* (nth i bulges) 0.5
+			       (distance 
+				(car (curve:subsegment-points curve i))
+				(cadr (curve:subsegment-points curve i)))))
+			  ))
+		       
+		       (* 2.5 (@:get-config '@:draw-scale))
+		       (angle  (car (curve:subsegment-points curve i))
+				       (cadr (curve:subsegment-points curve i)))
+		       0.72
+		       0
+		       "mm")
+		      62
+		      1)
+		     (setq i (1+ i))
+		     ))
+	    (t
+             (entity:putdxf
+              (entity:make-text
+               (rtos (curve:length (e2o curve)) 2 3)
+               (point:2d->3d (curve:midpoint curve))
+               (* 2.5 (@:get-config '@:draw-scale))
+               0
+               0.72
+               0
+               "mm")
+              62
+              1)
+
+	     )))
   (princ))

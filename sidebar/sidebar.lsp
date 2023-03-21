@@ -64,6 +64,8 @@
 			    (strcat (@:package-path "sidebar")"Cmd_atlisp-ansi.xml") "\" > \"" (strcat (@:package-path "sidebar")"Cmd_atlisp.xml")  "\""
 			    ))
 	  )))
+  (@:speak "点击确定更新屏幕菜单.")
+  (@:cmd "SCREENMENUSETTING")
   )
 (defun sidebar:load ()
   (if (null (findfile (strcat  (strcat (@:package-path "sidebar")"Config.xml"))))

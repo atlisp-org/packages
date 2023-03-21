@@ -39,14 +39,15 @@
   (@:cmd"pspace")
   )
 (defun @layout:pvp-ma ()
-  (@:help "将选中的视口的冻结图层刷到其它视口")
-  (@:prompt "请选择源视口:")
+  (@:help "将选中的视口的冻结图层设置刷到其它视口。")
+  (@:prompt "请点选源视口:")
   (if (setq src-layout (ssget "_:S:E" '((0 . "VIEWPORT"))))
       (progn
 	(setq obj-vflayers
 	      (vla-getxdata (e2o (ssname src-layout 0))
 			    "" 'xtypeOut 'xdataOut))
-	(@:prompt "请选择目标视口")
+	(@:skip-speak)
+	(@:prompt "请框选择目标视口:")
 	
 	(if (setq dist-layouts (ssget '((0 . "VIEWPORT"))))
 	    ;;清除原来的冻结状态
@@ -60,5 +61,9 @@
 		       (vla-display (e2o dst) :vlax-true)
 		       ;;(vla-syncmodelview (e2o dst))
 		       (vla-update (e2o dst))
-		       ))))))
+		       ))
+	  (@:speak "没有选中目标视口,退出执行。")
+	  ))
+    (@:speak "没有选中源视口,退出执行。")
+    ))
 

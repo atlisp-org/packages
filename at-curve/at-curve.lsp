@@ -11,7 +11,10 @@
    ("每段长度" (at-curve:per-length))
    ("垂线缺口" (at-curve:notch))
    ("连线端点" (at-curve:link-end))
-   ("统计线长" (at-curve:stat))))
+   ("统计线长" (at-curve:stat))
+   ("单线变双" (at-curve:dualline))
+
+   ))
 (@:define-config
  '@curve:types
  "*POLYLINE,circle,arc,ellipse,spline,region"
@@ -22,15 +25,15 @@
   (setq pts1 (curve:pline-3dpoints (car curves)))
   (setq pts2 (curve:pline-3dpoints (cadr curves)))
   (if
-   (<
-    (distance (car pts1) (car pts2))
-    (distance (last pts1) (car pts2)))
-   (setq pts1 (reverse pts1)))
+      (<
+       (distance (car pts1) (car pts2))
+       (distance (last pts1) (car pts2)))
+      (setq pts1 (reverse pts1)))
   (if
-   (>
-    (distance (last pts1) (car pts2))
-    (distance (last pts1) (last pts2)))
-   (setq pts2 (reverse pts2)))
+      (>
+       (distance (last pts1) (car pts2))
+       (distance (last pts1) (last pts2)))
+      (setq pts2 (reverse pts2)))
   (entdel (car curves))
   (entdel (cadr curves))
   (entity:make-lwpline-bold
@@ -73,7 +76,7 @@
              0
              0.72
              0
-             "mm")
+             "mb")
             62
             1))
   (princ))
@@ -101,25 +104,25 @@
 			     (car (curve:subsegment-points curve i))
 			     (cadr (curve:subsegment-points curve i)))
 			  (polar
-			    (point:mid
-			     (car (curve:subsegment-points curve i))
-			     (cadr (curve:subsegment-points curve i)))
-			    (-(angle  (car (curve:subsegment-points curve i))
-				      (cadr (curve:subsegment-points curve i)))
-			       (* 0.5 pi)
-			      )
-			    (* (nth i bulges) 0.5
-			       (distance 
-				(car (curve:subsegment-points curve i))
-				(cadr (curve:subsegment-points curve i)))))
+			   (point:mid
+			    (car (curve:subsegment-points curve i))
+			    (cadr (curve:subsegment-points curve i)))
+			   (-(angle  (car (curve:subsegment-points curve i))
+				     (cadr (curve:subsegment-points curve i)))
+			     (* 0.5 pi)
+			     )
+			   (* (nth i bulges) 0.5
+			      (distance 
+			       (car (curve:subsegment-points curve i))
+			       (cadr (curve:subsegment-points curve i)))))
 			  ))
 		       
 		       (* 2.5 (@:get-config '@:draw-scale))
 		       (angle  (car (curve:subsegment-points curve i))
-				       (cadr (curve:subsegment-points curve i)))
+			       (cadr (curve:subsegment-points curve i)))
 		       0.72
 		       0
-		       "mm")
+		       "mb")
 		      62
 		      1)
 		     (setq i (1+ i))
@@ -133,9 +136,26 @@
                0
                0.72
                0
-               "mm")
+               "mb")
               62
               1)
 
 	     )))
   (princ))
+(defun at-curve:dualline ()
+  (@:help '("将单线双向偏移成双线。"))
+  (if (null (member "DASHDOT" (tbl:list "linetype")))
+      (vla-load *LTS* "DASHDOT" (findfile "acasiso.lin")))
+  (or *dualline-width* (setq *dualline-width* 120))
+  (setq dualline-width (getdist (strcat"\n"(@:speak"输入宽度")"<"(rtos *dualline-width* 2 3)">：")))
+  (if dualline-width (setq *dualline-width* dualline-width))
+  (setq lst-curve (pickset:to-list
+                   (ssget (list (cons 0 (@:get-config '@curve:types))))))
+  (foreach curve lst-curve
+	   (vla-offset (e2o curve) (* 0.5 *dualline-width*))
+	   (vla-offset (e2o curve) (* 0.5 *dualline-width* -1))
+	   (entity:putdxf curve 6 "DASHDOT")
+	   (entity:putdxf curve 62 1)
+    )
+  (princ)
+  )

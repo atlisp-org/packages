@@ -19,6 +19,7 @@
  '@curve:types
  "*POLYLINE,circle,arc,ellipse,spline,region"
  "可操作的曲线的图元类型")
+(@:define-config '@curve:dualline-width 120.0 "单线变双线的默认宽度")
 (defun at-curve:join (/ l1 l2 pts1 pts2)
   (@:help "选择两条线，从最近端点连接成一条.")
   (setq curves (pickset:to-list (ssget '((0 . "*line")))))
@@ -146,14 +147,13 @@
   (@:help '("将单线双向偏移成双线。"))
   (if (null (member "DASHDOT" (tbl:list "linetype")))
       (vla-load *LTS* "DASHDOT" (findfile "acasiso.lin")))
-  (or *dualline-width* (setq *dualline-width* 120))
-  (setq dualline-width (getdist (strcat"\n"(@:speak"输入宽度")"<"(rtos *dualline-width* 2 3)">：")))
-  (if dualline-width (setq *dualline-width* dualline-width))
+  (setq dualline-width (getdist (strcat"\n"(@:speak"输入双线宽度")"<"(rtos (@:get-config '@curve:dualline-width) 2 3)">：")))
+  (if dualline-width (@:set-config @curve:dualline-width dualline-width))
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
   (foreach curve lst-curve
-	   (vla-offset (e2o curve) (* 0.5 *dualline-width*))
-	   (vla-offset (e2o curve) (* 0.5 *dualline-width* -1))
+	   (vla-offset (e2o curve) (* 0.5 (@:get-config '@curve:dualline-width)))
+	   (vla-offset (e2o curve) (* 0.5 (@:get-config '@curve:dualline-width) -1))
 	   (entity:putdxf curve 6 "DASHDOT")
 	   (entity:putdxf curve 62 1)
     )

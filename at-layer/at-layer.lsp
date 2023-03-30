@@ -144,7 +144,8 @@
       ))
   (setq curr-layer nil)
   )
-  
+(defun c:ent2clayer ()
+  (@layer:ent-to-clayer))
 
 ;; Local variables:
 ;; coding: gb2312

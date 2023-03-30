@@ -23,5 +23,6 @@
     <Item Shortcut="" Command="(setq curr-layer 'BBB)(@layer:ent-to-clayer)" ImageFile="\YQ_yqsys.bmp" TextColor="" indexNum="1">BBB</Item>
     <Item Shortcut="" Command="(setq curr-layer 'BEAM)(@layer:ent-to-clayer)" ImageFile="\YQ_yq.bmp" TextColor="" indexNum="2">BEAM</Item>
     <Item Shortcut="" Command="(setvar 'clayer &quot;BEAM&quot;)(@layer:ent-to-clayer)" TextColor="" indexNum="2">qBEAM</Item>
+    <Item Shortcut="" Command="(setvar &quot;hpname&quot;  &quot;ANGLE&quot;)(command &quot;-hatch&quot;)" TextColor="" indexNum="2">ANGLE</Item>
   </Group>
 </ScreenMenu>

@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp图层")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "1.2.9")
+        (:VERSION . "1.2.10")
         (:DESCRIPTION . "@lisp图层工具：功能包括图层的开关，锁定/解锁、冻结/解冻之类的。")
         (:CATEGORY . "通用")
         (:URL . "http://atlisp.cn")

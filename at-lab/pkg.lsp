@@ -2,7 +2,7 @@
         (:FULL-NAME . "@ ‘—È “")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.30")
+        (:VERSION . "0.0.32")
         (:LOCALE . "chs")
         (:CATEGORY . "Experiment")
         (:REQUIRED . "base")

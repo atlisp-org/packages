@@ -24,7 +24,7 @@
   (@:edit-config)
   )
 (defun at-cnc:motor-on (speed)
-  (write-line (strcat "M3 " (itoa(fix speed))) fp-cnc)
+  (write-line (strcat "M3 S" (itoa(fix speed))) fp-cnc)
   )
 (defun at-cnc:motor-off ()
   (write-line "M5 " fp-cnc)
@@ -63,8 +63,8 @@
    fp-cnc)
   (write-line (strcat "G90 G00 Z-"
 		      (if (and (entity:getdxf route 39)
-			       (> (entity:getdxf route 39) 0))
-			  (rtos (entity:getdxf route 39) 2 3)
+			       (/= (entity:getdxf route 39) 0))
+			  (rtos (abs (entity:getdxf route 39)) 2 3)
 			(rtos (@:get-config '@cnc:thickness) 2 3)))
 	      fp-cnc)
   (setq pre-pt pt0)
@@ -77,18 +77,19 @@
 			"Y" (rtos (cadr pt) 2 3) " "
 			)
 		fp-cnc)
-	     (write-line
-	      (strcat "G90 G0"
-		      (if (curve:clockwisep ent) "2 " "3 ")
-		      "X" (rtos (car pt) 2 3) " "
-		      "Y" (rtos (cadr pt) 2 3) " "
-		      "R" (rtos
-			   (distance
-			    pt
-			    (curve:bulge2o pre-pt pt (car bulges)))
-			   2 3)
-		      )
-	      fp-cnc)
+	     (progn
+	       (setq co (curve:bulge2o pre-pt pt (car bulges)))
+	       (setq ij (mapcar '- co pre-pt))
+	       (write-line
+		(strcat "G90 G0"
+			(if (< (car bulges) 0) "2 " "3 ")
+			"X" (rtos (car pt) 2 3) " "
+			"Y" (rtos (cadr pt) 2 3) " "
+			"I" (rtos (car ij) 2 3)" "
+			"J" (rtos (cadr ij) 2 3)" "
+			"F200"
+			)
+		fp-cnc))
 	     )
 	   (setq pre-pt pt)
 	   (setq bulges (cdr bulges))
@@ -101,19 +102,20 @@
 		   "Y" (rtos (cadr pt0) 2 3) " "
 		   )
 	   fp-cnc)
-	(write-line
-	 (strcat "G90 G0"
-		 (if (curve:clockwisep ent) "2 " "3 ")
-		 "X" (rtos (car pt0) 2 3) " "
-		 "Y" (rtos (cadr pt0) 2 3) " "
-		 "R" (rtos
-		      (distance
-		       pt0
-		       (curve:bulge2o pre-pt pt0 (car bulges)))
-		      2 3)
-		 )
-	      fp-cnc)
-	     )
+	(progn
+	  (setq co (curve:bulge2o pre-pt pt0 (car bulges)))
+	  (setq ij (mapcar '- co pre-pt))
+	  (write-line
+	   (strcat "G90 G0"
+		   (if (< (car bulges) 0) "2 " "3 ")
+		   "X" (rtos (car pt0) 2 3) " "
+		   "Y" (rtos (cadr pt0) 2 3) " "
+		   "I" (rtos (car ij) 2 3)" "
+		   "J" (rtos (cadr ij) 2 3)" "
+		   "F200"
+		   )
+	   fp-cnc))
+	)
     )
   ;;出刀
   (write-line "G90 G00 Z0" fp-cnc)
@@ -139,8 +141,8 @@
 			    (rtos (entity:getdxf route 40) 2 3)
 			    " Z-"
 			    (if (and (entity:getdxf route 39)
-				     (> (entity:getdxf route 39) 0))
-				(rtos (entity:getdxf route 39) 2 3)
+				     (/= (entity:getdxf route 39) 0))
+				(rtos (abs(entity:getdxf route 39)) 2 3)
 			      (rtos (@:get-config '@cnc:thickness) 2 3)))
 		    fp-cnc)
 	)
@@ -155,22 +157,24 @@
        fp-cnc)
       (write-line (strcat "G90 G00 Z-"
 			  (if (and (entity:getdxf route 39)
-				   (> (entity:getdxf route 39) 0))
-			      (rtos (entity:getdxf route 39) 2 3)
+				   (/= (entity:getdxf route 39) 0))
+			      (rtos (abs(entity:getdxf route 39)) 2 3)
 			    (rtos (@:get-config '@cnc:thickness) 2 3)))  
 		  fp-cnc)
       (write-line
        (strcat "G90 G02 "
 		 "X" (rtos (car pt-arc1) 2 3) " "
 		 "Y" (rtos (cadr pt-arc1) 2 3) " "
-		 "R"(rtos (entity:getdxf route 40) 2 3)
+		 "I-"(rtos (entity:getdxf route 40) 2 3)
+		 "F200"
 		 )
        fp-cnc)
       (write-line
        (strcat "G90 G02 "
 		 "X" (rtos (car pt-arc0) 2 3) " "
 		 "Y" (rtos (cadr pt-arc0) 2 3) " "
-		 "R"(rtos (entity:getdxf route 40) 2 3)
+		 "I"(rtos (entity:getdxf route 40) 2 3)
+		 "F200"
 		 )
        fp-cnc)
       ))
@@ -199,7 +203,8 @@
   ;; 归零
   (at-cnc:motor-off)
   (if (= 1 (@:get-config '@cnc:to-origin))
-      (write-line "G90 G00 X0 Y0 Z150" fp-cnc))
+      (write-line "G90 G00 X0 Y0 Z50" fp-cnc))
   (close fp-cnc)
   (@:prompt "生成G代码文件 at.nc")
+  (princ)
   )

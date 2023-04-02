@@ -4,7 +4,7 @@
 ;; 定义配置项 'at-cnc:first 用于 应用包 at-cnc 的 第一个配置项 first 
 (@:define-config '@cnc:U-axis 1  "是否有U轴")
 (@:define-config '@cnc:r  6.0  "铣刀直径")
-(@:define-config '@cnc:f 100  "进给速率")
+(@:define-config '@cnc:f 20  "进给速率")
 (@:define-config '@cnc:motor-speed 1000 "马达转速")
 (@:define-config '@cnc:to-origin 1  "完成后是否回库")
 (@:define-config '@cnc:thickness 10.0 "要加工工件的厚度")
@@ -61,20 +61,23 @@
 	   "X" (rtos (car pt0) 2 3) " "
 	   "Y" (rtos (cadr pt0) 2 3) " ")
    fp-cnc)
-  (write-line (strcat "G90 G00 Z-"
+  (write-line (strcat "G90 G01 Z-"
 		      (if (and (entity:getdxf route 39)
 			       (/= (entity:getdxf route 39) 0))
 			  (rtos (abs (entity:getdxf route 39)) 2 3)
-			(rtos (@:get-config '@cnc:thickness) 2 3)))
+			(rtos (@:get-config '@cnc:thickness) 2 3))
+		      " F" (rtos (@:get-config '@cnc:f) 2 3)" "
+		      )
 	      fp-cnc)
   (setq pre-pt pt0)
   (foreach pt% (cdr pts)
 	   (setq pt (mapcar '- pt% at-cnc:pt-base))
 	   (if (= 0 (car bulges))
 	       (write-line
-		(strcat "G90 G00 "
+		(strcat "G90 G01 "
 			"X" (rtos (car pt) 2 3) " "
 			"Y" (rtos (cadr pt) 2 3) " "
+			"F" (rtos (@:get-config '@cnc:f) 2 3)" "
 			)
 		fp-cnc)
 	     (progn
@@ -87,7 +90,7 @@
 			"Y" (rtos (cadr pt) 2 3) " "
 			"I" (rtos (car ij) 2 3)" "
 			"J" (rtos (cadr ij) 2 3)" "
-			"F200"
+			"F" (rtos (@:get-config '@cnc:f) 2 3)" "
 			)
 		fp-cnc))
 	     )
@@ -97,9 +100,10 @@
   (if (= 1 (entity:getdxf route 70))
       (if (= 0 (car bulges))
 	  (write-line
-	   (strcat "G90 G00 "
+	   (strcat "G90 G01 "
 		   "X" (rtos (car pt0) 2 3) " "
 		   "Y" (rtos (cadr pt0) 2 3) " "
+		   "F" (rtos (@:get-config '@cnc:f) 2 3)" "
 		   )
 	   fp-cnc)
 	(progn
@@ -112,7 +116,7 @@
 		   "Y" (rtos (cadr pt0) 2 3) " "
 		   "I" (rtos (car ij) 2 3)" "
 		   "J" (rtos (cadr ij) 2 3)" "
-		   "F200"
+		   "F" (rtos (@:get-config '@cnc:f) 2 3)" "
 		   )
 	   fp-cnc))
 	)
@@ -143,7 +147,9 @@
 			    (if (and (entity:getdxf route 39)
 				     (/= (entity:getdxf route 39) 0))
 				(rtos (abs(entity:getdxf route 39)) 2 3)
-			      (rtos (@:get-config '@cnc:thickness) 2 3)))
+			      (rtos (@:get-config '@cnc:thickness) 2 3))
+			    " F" (rtos (@:get-config '@cnc:f) 2 3)" "
+			    )
 		    fp-cnc)
 	)
     (progn ;; 无U轴
@@ -155,18 +161,20 @@
 		 "X" (rtos (car pt-arc0) 2 3) " "
 		 "Y" (rtos (cadr pt-arc0) 2 3) " ")
        fp-cnc)
-      (write-line (strcat "G90 G00 Z-"
+      (write-line (strcat "G90 G01 Z-"
 			  (if (and (entity:getdxf route 39)
 				   (/= (entity:getdxf route 39) 0))
 			      (rtos (abs(entity:getdxf route 39)) 2 3)
-			    (rtos (@:get-config '@cnc:thickness) 2 3)))  
+			    (rtos (@:get-config '@cnc:thickness) 2 3))
+			  " F" (rtos (@:get-config '@cnc:f) 2 3)" "
+			  )  
 		  fp-cnc)
       (write-line
        (strcat "G90 G02 "
 		 "X" (rtos (car pt-arc1) 2 3) " "
 		 "Y" (rtos (cadr pt-arc1) 2 3) " "
 		 "I-"(rtos (entity:getdxf route 40) 2 3)
-		 "F200"
+		 "F" (rtos (@:get-config '@cnc:f) 2 3)" "
 		 )
        fp-cnc)
       (write-line
@@ -174,7 +182,7 @@
 		 "X" (rtos (car pt-arc0) 2 3) " "
 		 "Y" (rtos (cadr pt-arc0) 2 3) " "
 		 "I"(rtos (entity:getdxf route 40) 2 3)
-		 "F200"
+		 "F" (rtos (@:get-config '@cnc:f) 2 3)" "
 		 )
        fp-cnc)
       ))
@@ -187,6 +195,7 @@
   (defun *error* (msg)
     (if (= 'file (type fp-cnc))(close fp-cnc))
     (@:*error* msg))
+  (at-cnc:remove-route)
   (setq curves (pickset:to-list (ssget '((0 . "line,lwpolyline,circle")))))
   (setq at-cnc:pt-base (append (car (pickset:getbox curves 0)) (list 0)))
   (setq fp-cnc (open (strcat @:*prefix* "at.nc")"w"))

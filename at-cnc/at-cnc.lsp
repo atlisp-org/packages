@@ -1,33 +1,44 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ’‚ « π”√ø™∑¢π§æﬂ dev-tools ◊‘∂Ø¥¥Ω®µƒ≥Ã–Ú‘¥Œƒº˛ 
+;; ËøôÊòØ‰ΩøÁî®ÂºÄÂèëÂ∑•ÂÖ∑ dev-tools Ëá™Âä®ÂàõÂª∫ÁöÑÁ®ãÂ∫èÊ∫êÊñá‰ª∂ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ∂®“Â≈‰÷√œÓ 'at-cnc:first ”√”⁄ ”¶”√∞¸ at-cnc µƒ µ⁄“ª∏ˆ≈‰÷√œÓ first 
-(@:define-config '@cnc:U-axis 1  " «∑Ò”–U÷·")
-(@:define-config '@cnc:r  6.0  "œ≥µ∂÷±æ∂")
-(@:define-config '@cnc:f 20  "Ω¯∏¯ÀŸ¬ ")
-(@:define-config '@cnc:cutter-compensation-left  0  "µ∂æﬂ◊Û≤π≥•÷µ")
-(@:define-config '@cnc:cutter-compensation-right  0  "µ∂æﬂ”“≤π≥•÷µ")
-(@:define-config '@cnc:rub-times  2  "ƒ•ø◊¥Œ ˝")
-(@:define-config '@cnc:rub-f  100  "ƒ•ø◊Ω¯∏¯ÀŸ¬ ")
-(@:define-config '@cnc:motor-speed 40000 "¬Ì¥Ô◊™ÀŸ")
-(@:define-config '@cnc:umotor-speed 800 "U÷·¬Ì¥Ô◊™ÀŸ")
-(@:define-config '@cnc:to-origin 1  "ÕÍ≥…∫Û «∑Òªÿø‚")
-(@:define-config '@cnc:thickness 10.0 "“™º”π§π§º˛µƒ∫Ò∂»")
-(@:define-config '@cnc:layer-route "CNC_ROUTE" "…˙≥…µƒµ∂¬∑«˙œﬂÀ˘‘⁄Õº≤„")
-(@:define-config '@cnc:candle "" "Candle Œƒº˛¬∑æ∂")
 
-;; (@:get-config 'at-cnc:first) ;; ªÒ»°≈‰÷√∂•µƒ÷µ
-;; (@:set-config 'at-cnc:first  "–¬…Ëµƒ÷µ") ;; …Ë÷√≈‰÷√∂•µƒ÷µ
-;; œÚœµÕ≥÷–ÃÌº”≤Àµ• 
+(@:define-config '@cnc:units 0.001  "Âä†Â∑•Á≤æÁªÜÂ∫¶ÔºåÂç≥ÊúÄÂ∞èÁ≤æÂ∫¶ÔºåÂçï‰Ωç‰∏∫mm,ÈªòËÆ§‰∏∫0.001 Âç≥1ÂæÆÁ±≥")
+(@:define-config '@cnc:r  6.0  "ÂàÄÂÖ∑Áõ¥ÂæÑÔºåÁîüÊàêÂàÄË∑ØÊó∂Â∞Ü‰ªéÊàêÂìÅËæπÁïåÂÅèÁßªÂçä‰∏™Áõ¥ÂæÑ„ÄÇ")
+(@:define-config '@cnc:motor-speed 4000 "‰∏ªËΩ¥È©¨ËææËΩ¨ÈÄü")
+(@:define-config '@cnc:f 50  "ËøõÁªôÈÄüÁéá")
+(@:define-config '@cnc:cutter-compensation-left 0 "ÂàÄÂÖ∑Â∑¶Ë°•ÂÅøÂÄº")
+(@:define-config '@cnc:cutter-compensation-right 0 "ÂàÄÂÖ∑Âè≥Ë°•ÂÅøÂÄº")
+(@:define-config '@cnc:k-thickness  0.3 "Êâ©Â≠îÂéöÂ∫¶")
+(@:define-config '@cnc:k-times  30 "Êâ©Â≠îÊ¨°Êï∞")
+(@:define-config '@cnc:rub-times 3 "Á£®Â≠îÊ¨°Êï∞")
+(@:define-config '@cnc:rub-f  300 "Á£®Â≠îËøõÁªôÈÄüÁéá")
+(@:define-config '@cnc:U-axis 1  "ÊòØÂê¶ÊúâUËΩ¥")
+(@:define-config '@cnc:umotor-speed 800 "UËΩ¥È©¨ËææËΩ¨ÈÄü")
+(@:define-config '@cnc:to-origin 1  "ÂÆåÊàêÂêéÊòØÂê¶ÂõûÂ∫ì")
+(@:define-config '@cnc:thickness 10.0 "Ë¶ÅÂä†Â∑•Â∑•‰ª∂ÁöÑÂéöÂ∫¶ÔºåÂ¶ÇÊûúËÆæÂÆö‰∫ÜÊõ≤Á∫øÂéöÂ∫¶ÔºåÂàôÈááÁî®Êõ≤Á∫øÂéöÂ∫¶ÂÄº")
+(@:define-config '@cnc:layer-route "CNC_ROUTE" "ÁîüÊàêÁöÑ‰∏≠ÂøÉËΩ¥ÂàÄË∑ØÊõ≤Á∫øÊâÄÂú®ÂõæÂ±Ç")
+(@:define-config '@cnc:candle "" "Candle Êñá‰ª∂Ë∑ØÂæÑÔºåÁî®‰∫éÊâìÂºÄÊñ∞ÁîüÊàêÁöÑ nc Êñá‰ª∂")
+(@:define-config '@cnc:nc-files "CNC" "ÁîüÊàêÁöÑNC Êñá‰ª∂Ë∑ØÂæÑ")
+
+;; ÂêëÁ≥ªÁªü‰∏≠Ê∑ªÂä†ËèúÂçï 
 (@:add-menus '("@CNC"
-	       ("…˙≥…G¥˙¬Î" (at-cnc:gen-gcode))
-	       ("≈‰÷√@CNC" (at-cnc:setup))
-	       ("…æ≥˝µ∂¬∑" (at-cnc:remove-route))
-	       ("¥Úø™Candle" (at-cnc:open-candle))))
+	       ("ÁîüÊàêG‰ª£Á†Å" (at-cnc:gen-gcode))
+	       ("ÈÖçÁΩÆ@CNC" (at-cnc:setup))
+	       ("Âà†Èô§ÂàÄË∑Ø" (at-cnc:remove-route))
+	       ("ÊâìÂºÄCandle" (at-cnc:open-candle))
+	       ("ÊâìÂºÄNCÂ∫ì" (at-cnc:explorer))
+	       ))
 (defun at-cnc:setup (/ res)
-  "π§≥Ãπ‹¿Ìª˘±æ–≈œ¢"
+  (@:help '("ÈÖçÁΩÆ@CNC"))
   (setq @:tmp-search-str "@CNC")
   (@:edit-config)
+  )
+(defun at-cnc:n2s (num)
+  "Êï∞Â≠óËΩ¨Â≠óÁ¨¶‰∏≤Ôºå‰∏Ä‰∫õËÄÅÁöÑCNCËÆæÂ§áÈúÄË¶ÅÂèÇÊï∞ÊúâÂ∞èÊï∞ÁÇπ„ÄÇ"
+  (setq num (rtos num 2 cnc:units))
+  (if (null (member (ascii ".")(vl-string->list num)))
+      (strcat num ".0")
+    num)
   )
 (defun at-cnc:motor-on (speed)
   (write-line (strcat "M3 S" (itoa(fix speed))) fp-cnc)
@@ -41,15 +52,28 @@
 (defun at-cnc:umotor-off ()
   (write-line "M15 " fp-cnc)
   )
-
 (defun at-cnc:open-candle ()
-  (@:help '("¥Úø™ Candle Ω¯––CAM"))
+  (@:help '("Áî® Candle ÊâìÂºÄÁîüÊàêÁöÑncÊñá‰ª∂ËøõË°åCAM"))
   (if (= "" (@:get-config '@cnc:candle))
-      (if (setq path (getfiled "Candle Œƒº˛" "D:\\" "exe" 8))
+      (if (setq path (getfiled "Candle Êñá‰ª∂" "D:\\" "exe" 8))
+	  
 	  (@:set-config '@cnc:candle path))
     )
   (if (findfile(@:get-config '@cnc:candle))
-      (startapp (@:get-config '@cnc:candle) (strcat @:*prefix* "at.nc"))))
+      (startapp (@:get-config '@cnc:candle)
+		(strcat (getenv "userprofile")"\\"(@:get-config '@cnc:nc-files)
+			"\\@cnc.nc")
+		)))
+(defun at-cnc:explorer ()
+  (@:help '("ÊâìÂºÄÁîüÊàêÁöÑ NC ÊâÄÂú®ÁöÑÊñá‰ª∂Â§π„ÄÇ"))
+  (startapp (strcat "explorer /e,\""
+		    (setq nc-dir
+			  (vl-string-trim
+			   "\\/"
+			   (if (member (ascii":")(vl-string->list (@:get-config '@cnc:nc-files)))
+			       (@:get-config '@cnc:nc-files)
+			     (strcat (getenv "userprofile")"\\"(@:get-config '@cnc:nc-files)))))"\"")))
+
 (defun at-cnc:remove-route ()
   (mapcar 'entdel
 	  (pickset:to-list
@@ -59,222 +83,307 @@
 		   (cons 8 (@:get-config '@cnc:layer-route))))))
   )
 
-(defun at-cnc:lwpl2gcode (ent / pts bulges route cnc-f i)
-  (if (= 3 (entity:getdxf ent 62))
+(defun at-cnc:lwpl2gcode (ent / pts bulges route cnc-f i times rub)
+  (setq times (@:get-config '@cnc:k-times))
+  (setq rub nil)
+  (while (>= times 0)
+    (if (= 3 (entity:getdxf ent 62))
+	(vla-offset (e2o ent)
+		    (* -0.5 (+ (@:get-config '@cnc:r)
+			       (* times
+				  (/ (@:get-config '@cnc:k-thickness)
+				     (@:get-config '@cnc:k-times))))
+		       (if (curve:clockwisep ent) 1 -1)
+		       )
+		    )
       (vla-offset (e2o ent)
-		  (* -0.5 (@:get-config '@cnc:r)
+		  (* 0.5 (+ (@:get-config '@cnc:r)
+			    (* times
+			       (/ (@:get-config '@cnc:k-thickness)
+				  (@:get-config '@cnc:k-times))))
 		     (if (curve:clockwisep ent) 1 -1)
 		     )
-		  )   
-    (vla-offset (e2o ent)
-		(* 0.5 (@:get-config '@cnc:r)
-		   (if (curve:clockwisep ent) 1 -1)
-		   )
-		))
-  (setq route (entlast))
-  (entity:putdxf route 8 (@:get-config '@cnc:layer-route))
-  (entity:putdxf route 62 256)
-  (setq i 0)
-  (repeat (1+ (@:get-config '@cnc:rub-times))
-	  (if (= i 0)
-	      (setq cnc-f (@:get-config '@cnc:f))
-	    (setq cnc-f (@:get-config '@cnc:rub-f)))
-	  (setq bulges(curve:pline-convexity route))
-	  (setq pts (curve:get-points route))
-	  ;; ¬Ì¥Ô
-	  
-	  ;;Ω¯µ∂
-	  (setq pt0 (mapcar '- (car pts) at-cnc:pt-base))
-	  (write-line
-	   (strcat "G90 G00 "
-		   "X" (rtos (car pt0) 2 3) " "
-		   "Y" (rtos (cadr pt0) 2 3) " ")
-	   fp-cnc)
-	  (write-line (strcat "G90 G01 Z-"
-			      (if (and (entity:getdxf route 39)
-				       (/= (entity:getdxf route 39) 0))
-				  (rtos (abs (entity:getdxf route 39)) 2 3)
-				(rtos (@:get-config '@cnc:thickness) 2 3))
-			      " F" (rtos cnc-f 2 3)" "
-			      )
-		      fp-cnc)
-	  (setq pre-pt pt0)
-	  (foreach pt% (cdr pts)
-		   (setq pt (mapcar '- pt% at-cnc:pt-base))
-		   (if (= 0 (car bulges))
-		       (write-line
-			(strcat "G90 G01 "
-				"X" (rtos (car pt) 2 3) " "
-				"Y" (rtos (cadr pt) 2 3) " "
-				"F" (rtos cnc-f 2 3)" "
+		  ))
+    (setq route (entlast))
+    (entity:putdxf route 8 (@:get-config '@cnc:layer-route))
+    (entity:putdxf route 62 256)
+    ;; Êç¢‰∏ªÂàÄ
+    ;;(write-line "T1M6" fp-cnc)
+    (repeat (if (> times 0) 1 (1+ (@:get-config '@cnc:rub-times)))
+	    (if (= times 0)
+		(if rub
+		    (setq cnc-f (@:get-config '@cnc:rub-f))
+		  (progn
+		    (setq rub t)
+		    (setq cnc-f (@:get-config '@cnc:f))))
+	      (setq cnc-f (@:get-config '@cnc:f)))
+	    (setq bulges(curve:pline-convexity route))
+	    (setq pts (curve:get-points route))
+	    ;; È©¨Ëææ
+	    ;;ËøõÂàÄ
+	    (setq pt0 (mapcar '- (car pts) at-cnc:pt-base))
+	    (write-line
+	     (strcat "G90 G00 "
+		     "X" (at-cnc:n2s (car pt0)) " "
+		     "Y" (at-cnc:n2s (cadr pt0)) " ")
+	     fp-cnc)
+	    (write-line (strcat "G90 G01 Z-"
+				(if (and (entity:getdxf route 39)
+					 (/= (entity:getdxf route 39) 0))
+				    (at-cnc:n2s (abs (entity:getdxf route 39)))
+				  (at-cnc:n2s (@:get-config '@cnc:thickness)))
+				" F" (itoa cnc-f)" "
 				)
 			fp-cnc)
-		     (progn
-		       (setq co (curve:bulge2o pre-pt pt (car bulges)))
-		       (setq ij (mapcar '- co pre-pt))
-		       (write-line
-			(strcat "G90 G0"
-				(if (< (car bulges) 0) "2 " "3 ")
-				"X" (rtos (car pt) 2 3) " "
-				"Y" (rtos (cadr pt) 2 3) " "
-				"I" (rtos (car ij) 2 3)" "
-				"J" (rtos (cadr ij) 2 3)" "
-				"F" (rtos cnc-f 2 3)" "
-				)
-			fp-cnc))
-		     )
-		   (setq pre-pt pt)
-		   (setq bulges (cdr bulges))
-		   )
-	  (if (= 1 (entity:getdxf route 70))
-	      (if (= 0 (car bulges))
-		  (write-line
-		   (strcat "G90 G01 "
-			   "X" (rtos (car pt0) 2 3) " "
-			   "Y" (rtos (cadr pt0) 2 3) " "
-			   "F" (rtos cnc-f 2 3)" "
-			   )
-		   fp-cnc)
-		(progn
-		  (setq co (curve:bulge2o pre-pt pt0 (car bulges)))
-		  (setq ij (mapcar '- co pre-pt))
-		  (write-line
-		   (strcat "G90 G0"
-			   (if (< (car bulges) 0) "2 " "3 ")
-			   "X" (rtos (car pt0) 2 3) " "
-			   "Y" (rtos (cadr pt0) 2 3) " "
-			   "I" (rtos (car ij) 2 3)" "
-			   "J" (rtos (cadr ij) 2 3)" "
-			   "F" cnc-f 2 3)" "
-		   )
-		  fp-cnc))
-	    )
-
-	  (setq i (1+ i))
-	  )
-  
-  ;;≥ˆµ∂
-  (write-line "G90 G00 Z0" fp-cnc)
-  )
-(defun at-cnc:circle2gcode (ent / pts bulges route cnc-f i)
-  (if (= 3 (entity:getdxf ent 62))
-      (vla-offset (e2o ent)
-		  (* -0.5 (@:get-config '@cnc:r)
-		     (if (curve:clockwisep ent) 1 -1)
-		     )
-		  )   
-    (vla-offset (e2o ent)
-		(* 0.5 (@:get-config '@cnc:r)
-		   (if (curve:clockwisep ent) 1 -1)
-		   )
-		))
-  (setq route (entlast))
-  (entity:putdxf route 8 (@:get-config '@cnc:layer-route))
-  (entity:putdxf route 62 256)
-  (setq i 0)
-  (repeat (1+ (@:get-config '@cnc:rub-times))
-	  (if (= i 0)
-	      (setq cnc-f (@:get-config '@cnc:f))
-	    (setq cnc-f (@:get-config '@cnc:rub-f)))
-	  (if (= 1 (@:get-config '@cnc:U-axis))
-	      (progn
-		;; U ÷·
-		;;Ω¯µ∂
-		(setq pt (mapcar '- (entity:getdxf route 10)  at-cnc:pt-base))
-		(write-line
-		 (strcat "G90 G00 "
-			 "X" (rtos (car pt) 2 3) " "
-			 "Y" (rtos (cadr pt) 2 3) " ")
-		 fp-cnc)
-		(write-line (strcat "G01 U"
-				    (rtos (entity:getdxf route 40) 2 3)
-				    " Z-"
-				    (if (and (entity:getdxf route 39)
-					     (/= (entity:getdxf route 39) 0))
-					(rtos (abs(entity:getdxf route 39)) 2 3)
-				      (rtos (@:get-config '@cnc:thickness) 2 3))
-				    " F" (rtos cnc-f 2 3)" "
-				    )
-			    fp-cnc)
-		)
-	    (progn ;; ŒﬁU÷·
-	      (setq pt (mapcar '- (entity:getdxf route 10)  at-cnc:pt-base))
-	      (setq pt-arc0 (polar pt 0 (entity:getdxf route 40)))
-	      (setq pt-arc1 (polar pt pi (entity:getdxf route 40)))
-	      (write-line
-	       (strcat "G90 G00 "
-		       "X" (rtos (car pt-arc0) 2 3) " "
-		       "Y" (rtos (cadr pt-arc0) 2 3) " ")
-	       fp-cnc)
-	      (write-line (strcat "G90 G01 Z-"
+	    (setq pre-pt pt0)
+	    (foreach pt% (cdr pts)
+		     (setq pt (mapcar '- pt% at-cnc:pt-base))
+		     (if (= 0 (car bulges))
+			 (write-line
+			  (strcat "G90 G01 "
+				  "X" (at-cnc:n2s (car pt)) " "
+				  "Y" (at-cnc:n2s (cadr pt)) " "
+				  "Z-"           (if (and (entity:getdxf route 39)
+							  (/= (entity:getdxf route 39) 0))
+						     (at-cnc:n2s (abs (entity:getdxf route 39)))
+						   (at-cnc:n2s (@:get-config '@cnc:thickness)))
+				  "F" (itoa cnc-f)" "
+				  )
+			  fp-cnc)
+		       (progn
+			 (setq co (curve:bulge2o pre-pt pt (car bulges)))
+			 (setq ij (mapcar '- co pre-pt))
+			 (write-line
+			  (strcat "G17 G90 G0"
+				  (if (< (car bulges) 0) "2 " "3 ")
+				  "X" (at-cnc:n2s (car pt)) " "
+				  "Y" (at-cnc:n2s (cadr pt)) " "
+				  "R" (if (> (abs (car bulges)) 1)"-" "")
+				  (at-cnc:n2s (distance pre-pt co))" "
+				  "Z-"				
 				  (if (and (entity:getdxf route 39)
 					   (/= (entity:getdxf route 39) 0))
-				      (rtos (abs(entity:getdxf route 39)) 2 3)
-				    (rtos (@:get-config '@cnc:thickness) 2 3))
-				  " F" (rtos cnc-f 2 3)" "
-				  )  
-			  fp-cnc)
-	      (write-line
-	       (strcat "G90 G02 "
-		       "X" (rtos (car pt-arc1) 2 3) " "
-		       "Y" (rtos (cadr pt-arc1) 2 3) " "
-		       "I-"(rtos (entity:getdxf route 40) 2 3)
-		       "F" (rtos cnc-f 2 3)" "
+				      (at-cnc:n2s (abs (entity:getdxf route 39)))
+				    (at-cnc:n2s (@:get-config '@cnc:thickness)))
+				  ;; "I" (at-cnc:n2s (car ij))" "
+				  ;; "J" (at-cnc:n2s (cadr ij))" "
+				  "F" (itoa cnc-f)" "
+				  )
+			  fp-cnc))
 		       )
-	       fp-cnc)
-	      (write-line
-	       (strcat "G90 G02 "
-		       "X" (rtos (car pt-arc0) 2 3) " "
-		       "Y" (rtos (cadr pt-arc0) 2 3) " "
-		       "I"(rtos (entity:getdxf route 40) 2 3)
-		       "F" (rtos cnc-f 2 3)" "
+		     (setq pre-pt pt)
+		     (setq bulges (cdr bulges))
+		     )
+	    (if (= 1 (entity:getdxf route 70))
+		(if (= 0 (car bulges))
+		    (write-line
+		     (strcat "G90 G01 "
+			     "X" (at-cnc:n2s (car pt0)) " "
+			     "Y" (at-cnc:n2s (cadr pt0)) " "
+			     "Z-"
+			     (if (and (entity:getdxf route 39)
+				      (/= (entity:getdxf route 39) 0))
+				 (at-cnc:n2s (abs (entity:getdxf route 39)))
+			       (at-cnc:n2s (@:get-config '@cnc:thickness)))           
+			     "F" (itoa cnc-f)" "
+			     )
+		     fp-cnc)
+		  (progn
+		    (setq co (curve:bulge2o pre-pt pt0 (car bulges)))
+		    (setq ij (mapcar '- co pre-pt))
+		    (write-line
+		     (strcat "G17 G90 G0"
+			     (if (< (car bulges) 0) "2 " "3 ")
+			     "X" (at-cnc:n2s (car pt0)) " "
+			     "Y" (at-cnc:n2s (cadr pt0)) " "
+			     "R" (if (> (abs (car bulges)) 1)"-" "")
+			     (at-cnc:n2s (distance pre-pt co))" "
+			     "Z-"
+			     (if (and (entity:getdxf route 39)
+				      (/= (entity:getdxf route 39) 0))
+				 (at-cnc:n2s (abs (entity:getdxf route 39)))
+			       (at-cnc:n2s (@:get-config '@cnc:thickness)))
+			     ;; "I" (at-cnc:n2s (car ij))" "
+			     ;; "J" (at-cnc:n2s (cadr ij))" "
+			     "F" (itoa cnc-f)" "
+			     )
+		     fp-cnc))
+		  )
+	      ;; ‰∏çÈó≠ÂêàÁöÑÊõ≤Á∫øÔºåÈúÄË¶ÅÊä¨Ëµ∑ÂêéÂõûÂà∞Ëµ∑ÁÇπ
+	      (write-line "G90 G00 Z10" fp-cnc)
+	      )
+	    )
+    (setq times (1- times)))
+  ;;Âá∫ÂàÄ
+  (write-line "G90 G00 Z10" fp-cnc)
+  )
+(defun at-cnc:circle2gcode (ent / pts bulges route cnc-f i times rub)
+  (setq times (@:get-config '@cnc:k-times))
+  (setq rub nil)
+  (while (>= times 0)
+    (if (= 3 (entity:getdxf ent 62))
+	(vla-offset (e2o ent)
+		    (* -0.5 (+ (@:get-config '@cnc:r)
+			       (* times
+				  (/ (@:get-config '@cnc:k-thickness)
+				     (@:get-config '@cnc:k-times))))
+		       (if (curve:clockwisep ent) 1 -1)
 		       )
-	       fp-cnc)
-	      ))
-	  (setq i (1+ i)))
-  ;;ƒ•ø◊
-  
-  ;;≥ˆµ∂
-  (write-line "G90 G00 Z0" fp-cnc)
+		    )   
+      (vla-offset (e2o ent)
+		  (* 0.5 (+ (@:get-config '@cnc:r)
+			    (* times
+			       (/ (@:get-config '@cnc:k-thickness)
+				  (@:get-config '@cnc:k-times))))
+		     (if (curve:clockwisep ent) 1 -1)
+		     )
+		  ))
+    (setq route (entlast))
+    (entity:putdxf route 8 (@:get-config '@cnc:layer-route))
+    (entity:putdxf route 62 256)
+    (setq g41 (fix(@:get-config '@cnc:cutter-compensation-left)))
+    ;; U ËΩ¥
+    ;; ÂºÄÂêØUËΩ¥È©¨Ëææ
+    (if (= 1 (@:get-config '@cnc:U-axis))
+	(at-cnc:umotor-on (@:get-config '@cnc:umotor-speed)))
+    (repeat (if (> times 0) 1 (1+ (@:get-config '@cnc:rub-times)))
+	    (if (= times 0)
+		(if rub
+		    (setq cnc-f (@:get-config '@cnc:rub-f))
+		  (progn
+		    (setq rub t)
+		    (setq cnc-f (@:get-config '@cnc:f))))
+	      (setq cnc-f (@:get-config '@cnc:f)))
+	    (if (= 1 (@:get-config '@cnc:U-axis))
+		(progn
+		  ;;ËøõÂàÄ
+		  (setq pt (mapcar '- (entity:getdxf route 10)  at-cnc:pt-base))
+		  (write-line
+		   (strcat "G90 G00 "
+			   "X" (at-cnc:n2s (car pt)) " "
+			   "Y" (at-cnc:n2s (cadr pt)) " ")
+		   fp-cnc)
+		  (write-line (strcat "G01 U"
+				      (at-cnc:n2s (entity:getdxf route 40))
+				      " Z-"
+				      (if (and (entity:getdxf route 39)
+					       (/= (entity:getdxf route 39) 0))
+					  (at-cnc:n2s (abs(entity:getdxf route 39)))
+					(at-cnc:n2s (@:get-config '@cnc:thickness)))
+				      " F" (itoa cnc-f)" "
+				      )
+			      fp-cnc)
+		  )
+	      (progn ;; Êó†UËΩ¥
+		(setq pt (mapcar '- (entity:getdxf route 10)  at-cnc:pt-base))
+		(setq pt-arc0 (polar pt 0 (entity:getdxf route 40)))
+		(setq pt-arc1 (polar pt pi (entity:getdxf route 40)))
+		(write-line (strcat "G41 D"(itoa G41)) fp-cnc)
+		;;ËøõÂàÄ
+		(write-line
+		 (strcat "G90 G00 "
+			 "X" (at-cnc:n2s (car pt-arc0)) " "
+			 "Y" (at-cnc:n2s (cadr pt-arc0)) " ")
+		 fp-cnc)
+		(write-line (strcat "G90 G01 Z-"
+				    (if (and (entity:getdxf route 39)
+					     (/= (entity:getdxf route 39) 0))
+					(at-cnc:n2s (abs(entity:getdxf route 39)))
+				      (at-cnc:n2s (@:get-config '@cnc:thickness)))
+				    " F" (itoa cnc-f)" "
+				    )  
+			    fp-cnc)
+		(write-line
+		 (strcat "G90 G02 "
+			 "X" (at-cnc:n2s (car pt-arc1)) " "
+			 "Y" (at-cnc:n2s (cadr pt-arc1)) " "
+			 "I-"(at-cnc:n2s (entity:getdxf route 40))
+			 "F" (itoa cnc-f)" "
+			 )
+		 fp-cnc)
+		(write-line
+		 (strcat "G90 G02 "
+			 "X" (at-cnc:n2s (car pt-arc0)) " "
+			 "Y" (at-cnc:n2s (cadr pt-arc0)) " "
+			 "I"(at-cnc:n2s (entity:getdxf route 40))
+			 "F" (itoa cnc-f)" "
+			 )
+		 fp-cnc)
+		))
+	    )
+    (setq times (1- times)))
+  (if (= 1 (@:get-config '@cnc:U-axis))
+      (progn
+	;; UËΩ¥Âõû‰Ωç,ÂÖ≥ÁîµÊú∫
+	(write-line "G90 G01 U0 " fp-cnc)
+	(at-cnc:umotor-off)))
+  ;;Âá∫ÂàÄ
+  (write-line "G90 G00 Z10" fp-cnc)
   )
 
-
-(defun at-cnc:gen-gcode (/ *error* curves fp-cnc)
+(defun at-cnc:gen-gcode (/ *error* curves fp-cnc filename nc-dir)
   (defun *error* (msg)
     (if (= 'file (type fp-cnc))(close fp-cnc))
     (@:*error* msg))
+  (setq cnc:units (round (/ (log (/ 1.0 (@:get-config '@cnc:units)))(log 10))))
   (if (null (member (@:get-config '@cnc:layer-route)(layer:list)))
       (layer:make (@:get-config '@cnc:layer-route) 2 nil nil))
   (at-cnc:remove-route)
   (setq curves (pickset:to-list (ssget '((0 . "line,lwpolyline,circle")))))
   (setq at-cnc:pt-base (append (car (pickset:getbox curves (+ 5 (@:get-config '@cnc:r)))) (list 0)))
-  (setq fp-cnc (open (strcat @:*prefix* "at.nc")"w"))
-  ;; ø™∆Ù÷˜÷·¬Ì¥Ô
+  (if (member (ascii":")(vl-string->list (@:get-config '@cnc:nc-files)))
+      (@:mkdir (@:path (@:get-config '@cnc:nc-files)))
+    (@:mkdir (@:path (strcat (getenv "userprofile")"\\"(@:get-config '@cnc:nc-files)))))
+  (setq nc-dir
+	(vl-string-trim
+	 "\\/"
+	 (if (member (ascii":")(vl-string->list (@:get-config '@cnc:nc-files)))
+	     (@:get-config '@cnc:nc-files)
+	   (strcat (getenv "userprofile")"\\"(@:get-config '@cnc:nc-files)))))
+  (setq filename (strcat  nc-dir "\\@cnc_"(datetime:current-time "yyyymodd-hhmmss")".nc"))
+  (setq fp-cnc
+	(open filename "w"))
+
+  ;; ÂàùÂßãÂåñ
+  (write-line "G71G94G80G90G40G49G50G69" fp-cnc)
+  
+  ;; ÂºÄÂêØ‰∏ªËΩ¥È©¨Ëææ
   (at-cnc:motor-on (@:get-config '@cnc:motor-speed))
-  ;; ø™∆ÙU÷·¬Ì¥Ô
-  (if(= 1 (@:get-config '@cnc:U-axis))
-      (at-cnc:umotor-on (@:get-config '@cnc:umotor-speed)))
-  ;; ø™¿‰»¥
+  (if (= 1 (@:get-config '@cnc:U-axis))
+      (progn
+	;; UËΩ¥Âõû‰Ωç
+	(write-line "G90 G01 U0 " fp-cnc)
+	))
+  ;; Êä¨Ëµ∑ÔºåÂºÄÂÜ∑Âç¥
+  (write-line "G90 G00 Z30 " fp-cnc)
   (write-line "M8" fp-cnc)
+  
   (foreach curve curves
 	   (cond
 	    ((= "LWPOLYLINE" (entity:getdxf curve 0))
 	     (at-cnc:lwpl2gcode curve))
 	    ((= "CIRCLE" (entity:getdxf curve 0))
-	     (at-cnc:circle2gcode curve))
+             (at-cnc:circle2gcode curve)
+	     )
 	    )
 	   )
-  ;; πÈ¡„
+  ;; ÂΩíÈõ∂
   (at-cnc:motor-off)
-  (if (= 1 (@:get-config '@cnc:U-axis))
-      (at-cnc:umotor-off))
-  ;; πÿ¿‰»¥
+  ;; ÂÖ≥ÂÜ∑Âç¥
   (write-line "M9" fp-cnc)
   (if (= 1 (@:get-config '@cnc:to-origin))
       (write-line "G90 G00 X0 Y0 Z30" fp-cnc))
   (write-line "M30" fp-cnc)
   
   (close fp-cnc)
-  (@:prompt "…˙≥…G¥˙¬ÎŒƒº˛ at.nc")
+  (if (findfile (strcat (getenv "userprofile")"\\"(@:get-config '@cnc:nc-files)
+			"\\@cnc.nc"))
+      (vl-file-delete
+       (strcat (getenv "userprofile")"\\"(@:get-config '@cnc:nc-files)
+			"\\@cnc.nc")))
+  (vl-file-copy filename
+		(strcat (getenv "userprofile")"\\"(@:get-config '@cnc:nc-files)
+			"\\@cnc.nc"))
+  (@:prompt "ÁîüÊàêG‰ª£Á†ÅÊñá‰ª∂ @cnc.nc")
   (princ)
   )

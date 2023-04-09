@@ -2,12 +2,14 @@
 ;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(@:define-config '@cnc:init 0 "首行是否加载初始化指令")
 (@:define-config '@cnc:units 0.001  "加工精细度，即最小精度，单位为mm,默认为0.001 即1微米")
 (@:define-config '@cnc:r  6.0  "刀具直径，生成刀路时将从成品边界偏移半个直径。")
 (@:define-config '@cnc:motor-speed 4000 "主轴马达转速")
 (@:define-config '@cnc:f 50  "进给速率")
 (@:define-config '@cnc:cutter-compensation-left 0 "刀具左补偿值")
 (@:define-config '@cnc:cutter-compensation-right 0 "刀具右补偿值")
+(@:define-config '@cnc:chopping 0 "工作时是否加冲程")
 (@:define-config '@cnc:k-thickness  0.3 "扩孔厚度")
 (@:define-config '@cnc:k-times  30 "扩孔次数")
 (@:define-config '@cnc:rub-times 3 "磨孔次数")
@@ -345,7 +347,8 @@
 	(open filename "w"))
 
   ;; 初始化
-  (write-line "G71G94G80G90G40G49G50G69" fp-cnc)
+  (if (= 1 (@:get-config '@cnc:init))
+	 (write-line "G71G94G80G90G40G49G50G69" fp-cnc))
   
   ;; 开启主轴马达
   (at-cnc:motor-on (@:get-config '@cnc:motor-speed))
@@ -357,7 +360,8 @@
   ;; 抬起，开冷却
   (write-line "G90 G00 Z30 " fp-cnc)
   (write-line "M8" fp-cnc)
-  
+  (if (= 1 (@:get-config '@cnc:chopping))
+      (write-line "M100" fp-cnc))
   (foreach curve curves
 	   (cond
 	    ((= "LWPOLYLINE" (entity:getdxf curve 0))
@@ -369,6 +373,8 @@
 	   )
   ;; 归零
   (at-cnc:motor-off)
+  (if (= 1 (@:get-config '@cnc:chopping))
+      (write-line "M101" fp-cnc))
   ;; 关冷却
   (write-line "M9" fp-cnc)
   (if (= 1 (@:get-config '@cnc:to-origin))

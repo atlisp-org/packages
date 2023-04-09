@@ -1,5 +1,5 @@
 (defun at-math:sumtxt ()
-  (@:help '("ç»Ÿè®¡æ–‡æœ¬ä¸­çš„é¡¹ä¸æ•°æ®ï¼Œå¯¹ä¸åŒçš„é¡¹æ±‡æ€»æ±‚å’Œã€‚"))
+  (@:help '("Í³¼ÆÎÄ±¾ÖĞµÄÏîÓëÊı¾İ£¬¶Ô²»Í¬µÄÏî»ã×ÜÇóºÍ¡£"))
 
   (defun to-pair(str / pair res)
     (if (p:stringp  str)
@@ -26,7 +26,7 @@
 	      (setq textnumpair (vl-remove nil (mapcar 'to-pair txts)))
         (setq data (mapcar 'car textnumpair)))
       (progn
-    ;; é¡¹ç›®
+    ;; ÏîÄ¿
         (setq res1 nil)
   
         (foreach subj data
@@ -36,6 +36,6 @@
                                              (cdr (assoc (car subj) res1))))
 					                (assoc (car subj) res1)
 					                res1))
-				      (setq res1 (cons  subj res1))))
-        res1)))
+					       (setq res1 (cons  subj res1))))
+	 (setq @:tmp-stat-result  res1))))
 

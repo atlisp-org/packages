@@ -12,6 +12,7 @@
             "tools-geometry"
             "tools-math"
             "stat"
+	    "sumtxt"
             "formula"
             "matrix"
             "menu")))

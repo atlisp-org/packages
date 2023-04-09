@@ -4,7 +4,7 @@
   (defun to-pair(str / pair res)
     (if (p:stringp  str)
 	(foreach a
-		 (vl-remove "" (mapcar '(lambda(x)(vl-string-trim ": ,£º" x))
+		 (vl-remove "" (mapcar '(lambda(x)(vl-string-trim ";£» ,£¬:£º" x))
 				       (string:auto-split str)))
 		 (if (string:numberp a)
 		     (setq res

@@ -1,6 +1,7 @@
 (@:add-menu "统计" "图块名" "(@:stat-block-by-name)")
 (@:add-menu "统计" "属性" "(@:menu-stat-block-by-attribute)")
 (@:add-menu "统计" "单行文本" "(@:menu-stat-text)")
+(@:add-menu "统计" "文数汇总" '(at-math:sumtxt))
 (@:add-menu "统计" "图元统计" "(@math:stat-entity-gui)")
 (@:add-menu "统计" "图元颜色" "(@math:stat-color)")
 (@:add-menu "统计" "电气设备" "(@stat:telec-equip)")

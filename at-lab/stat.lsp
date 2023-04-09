@@ -146,15 +146,15 @@
 		  res))
 	     ))
   ;; summary
-  (setq res
-	(mapcar (function
-		 (lambda(x / res1)
-		   (cons (car x)
-			 (progn
-			   (foreach subj (apply 'append (cdr x))
-				    (if (assoc (car subj) res1)
-					(setq res1
-					      (subst
+  (if (and (setq res
+		 (mapcar (function
+			  (lambda(x / res1)
+			    (cons (car x)
+				  (progn
+				    (foreach subj (apply 'append (cdr x))
+					     (if (assoc (car subj) res1)
+						 (setq res1
+						       (subst
 					       (cons (car subj)
 						     (+ (cdr subj)
 							(cdr (assoc (car subj) res1))))
@@ -165,24 +165,25 @@
 					     subj
 					     res1))))
 			   res1))))
-		res))
-  (setq pt (getpoint "表格绘制位置点："))
-  (setq item-name (list:remove-duplicates (mapcar 'car (apply 'append (mapcar 'cdr res)))))
-  (setq i 0)
-  (table:make pt
-	      "汇总表"
-	      (cons "序号" (cons "类型" item-name))
-	      (mapcar
-	       '(lambda (x)
-		  (cons
-		   (itoa (setq i (1+ i)))
-		   (cons (car x)
-			 (mapcar
-			  '(lambda(y)
-			     (cdr (assoc y (cdr x))))
-			  item-name))))
-	       res))
-  					
+			 res))
+	   (setq pt (getpoint "表格绘制位置点："))
+	   (setq item-name (list:remove-duplicates (mapcar 'car (apply 'append (mapcar 'cdr res))))))
+      (progn
+	(setq i 0)
+	(table:make pt
+		    "汇总表"
+		    (cons "序号" (cons "类型" item-name))
+		    (mapcar
+		     '(lambda (x)
+			(cons
+			 (itoa (setq i (1+ i)))
+			 (cons (car x)
+			       (mapcar
+				'(lambda(y)
+				   (cdr (assoc y (cdr x))))
+				item-name))))
+		     res))))
+  	
   (pop-var)
   (princ)
   )

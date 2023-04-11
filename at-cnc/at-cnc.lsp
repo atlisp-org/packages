@@ -10,7 +10,7 @@
 (@:define-config '@cnc:cutter-compensation-left 0 "刀具左补偿值")
 (@:define-config '@cnc:cutter-compensation-right 0 "刀具右补偿值")
 (@:define-config '@cnc:chopping 0 "工作时是否加冲程")
-(@:define-config '@cnc:k-thickness  0.3 "扩孔厚度")
+(@:define-config '@cnc:k-thickness 0.3 "扩孔厚度")
 (@:define-config '@cnc:k-times  30 "扩孔次数")
 (@:define-config '@cnc:rub-times 3 "磨孔次数")
 (@:define-config '@cnc:rub-f  300 "磨孔进给速率")
@@ -21,6 +21,7 @@
 (@:define-config '@cnc:layer-route "CNC_ROUTE" "生成的中心轴刀路曲线所在图层")
 (@:define-config '@cnc:candle "" "Candle 文件路径，用于打开新生成的 nc 文件")
 (@:define-config '@cnc:nc-files "CNC" "生成的NC 文件路径")
+(@:define-config '@cnc:syntek 1 "SYNTEK CE系统，U轴最大行程为2.0")
 
 ;; 向系统中添加菜单 
 (@:add-menus '("@CNC"
@@ -109,8 +110,6 @@
     (setq route (entlast))
     (entity:putdxf route 8 (@:get-config '@cnc:layer-route))
     (entity:putdxf route 62 256)
-    ;; 换主刀
-    ;;(write-line "T1M6" fp-cnc)
     (repeat (if (> times 0) 1 (1+ (@:get-config '@cnc:rub-times)))
 	    (if (= times 0)
 		(if rub
@@ -129,6 +128,11 @@
 		     "X" (at-cnc:n2s (car pt0)) " "
 		     "Y" (at-cnc:n2s (cadr pt0)) " ")
 	     fp-cnc)
+            ;; 如果原来是用U 轴铣圆的，现在换主刀
+	    (if pre-circle-r
+		(progn
+		  (write-line "M00 (pause for z spindle)" fp-cnc)
+		  (setq pre-circle-r nil)))
 	    (write-line (strcat "G90 G01 Z-"
 				(if (and (entity:getdxf route 39)
 					 (/= (entity:getdxf route 39) 0))
@@ -219,15 +223,55 @@
   ;;出刀
   (write-line "G90 G00 Z10" fp-cnc)
   )
-(defun at-cnc:circle2gcode (ent / pts bulges route cnc-f i times rub)
+(defun at-cnc:circle2gcode (ent / pts bulges route cnc-f i times rub kthickness u)
+  (setq kthickness (@:get-config '@cnc:k-thickness))
+  (if (> kthickness 2.0)(setq kthickness 2.0))
   (setq times (@:get-config '@cnc:k-times))
   (setq rub nil)
+  (setq pt (mapcar '- (entity:getdxf ent 10)  at-cnc:pt-base))
+  ;; 定位
+  (write-line
+   (strcat "G90 G00 "
+	   "X" (at-cnc:n2s (car pt)) " "
+	   "Y" (at-cnc:n2s (cadr pt)) " ")
+   fp-cnc)
+  ;; 开启U轴马达
+  (if (= 1 (@:get-config '@cnc:U-axis))
+      (at-cnc:umotor-on (@:get-config '@cnc:umotor-speed)))
+  
+  ;; 需重新定刀
+  (if (= 1 (@:get-config '@cnc:syntek))
+      (if (> (- (entity:getdxf ent 40)
+		pre-circle-r)
+	     (- 2.0 (@:get-config '@cnc:k-thickness)))
+	  (progn
+	    (write-line "M00 (pause for align U spindle)" fp-cnc)
+	    (setq pre-circle-r (entity:getdxf ent 40)))
+	(progn ;; 半径修正因子
+	  (setq r-n (- (entity:getdxf ent 40)
+		       pre-circle-r))
+	  )
+	))
+  ;; 工作面
+  (write-line
+   (strcat "G01" " Z0.0"
+	   " F" (itoa (@:get-config '@cnc:rub-f))" "
+	   )
+   fp-cnc)
+  (write-line (strcat "G01"
+		      " Z-"
+		      (if (and (entity:getdxf ent 39)
+			       (/= (entity:getdxf ent 39) 0))
+			  (at-cnc:n2s (abs(entity:getdxf ent 39)))
+			(at-cnc:n2s (@:get-config '@cnc:thickness)))
+		      )
+	      fp-cnc)
   (while (>= times 0)
     (if (= 3 (entity:getdxf ent 62))
 	(vla-offset (e2o ent)
 		    (* -0.5 (+ (@:get-config '@cnc:r)
 			       (* times
-				  (/ (@:get-config '@cnc:k-thickness)
+				  (/ kthickness
 				     (@:get-config '@cnc:k-times))))
 		       (if (curve:clockwisep ent) 1 -1)
 		       )
@@ -235,7 +279,7 @@
       (vla-offset (e2o ent)
 		  (* 0.5 (+ (@:get-config '@cnc:r)
 			    (* times
-			       (/ (@:get-config '@cnc:k-thickness)
+			       (/ kthickness
 				  (@:get-config '@cnc:k-times))))
 		     (if (curve:clockwisep ent) 1 -1)
 		     )
@@ -246,8 +290,6 @@
     (setq g41 (fix(@:get-config '@cnc:cutter-compensation-left)))
     ;; U 轴
     ;; 开启U轴马达
-    (if (= 1 (@:get-config '@cnc:U-axis))
-	(at-cnc:umotor-on (@:get-config '@cnc:umotor-speed)))
     (repeat (if (> times 0) 1 (1+ (@:get-config '@cnc:rub-times)))
 	    (if (= times 0)
 		(if rub
@@ -258,23 +300,33 @@
 	      (setq cnc-f (@:get-config '@cnc:f)))
 	    (if (= 1 (@:get-config '@cnc:U-axis))
 		(progn
-		  ;;进刀
-		  (setq pt (mapcar '- (entity:getdxf route 10)  at-cnc:pt-base))
+		  ;; R平面,U定位
 		  (write-line
-		   (strcat "G90 G00 "
-			   "X" (at-cnc:n2s (car pt)) " "
-			   "Y" (at-cnc:n2s (cadr pt)) " ")
+		   (strcat "G01 U"
+			   (if (= 1 (@:get-config '@cnc:syntek))
+			       (strcat "-" (at-cnc:n2s
+					    (+ r-n
+					       (* (-  (@:get-config '@cnc:k-times) times)
+						  (/ kthickness (@:get-config '@cnc:k-times))))
+					    ))
+			     (at-cnc:n2s (entity:getdxf route 40)))
+			   " F"(itoa cnc-f)
+			   )
 		   fp-cnc)
-		  (write-line (strcat "G01 U"
-				      (at-cnc:n2s (entity:getdxf route 40))
-				      " Z-"
-				      (if (and (entity:getdxf route 39)
-					       (/= (entity:getdxf route 39) 0))
-					  (at-cnc:n2s (abs(entity:getdxf route 39)))
-					(at-cnc:n2s (@:get-config '@cnc:thickness)))
-				      " F" (itoa cnc-f)" "
-				      )
-			      fp-cnc)
+		  ;; (write-line (strcat "G01"
+		  ;; 		      " Z-"
+		  ;; 		      (if (and (entity:getdxf route 39)
+		  ;; 			       (/= (entity:getdxf route 39) 0))
+		  ;; 			  (at-cnc:n2s (abs(entity:getdxf route 39)))
+		  ;; 			(at-cnc:n2s (@:get-config '@cnc:thickness)))
+		  ;; 		      )
+		  ;; 	      fp-cnc)
+		  ;; Z轴不用回
+		  ;; (write-line
+		  ;;  (strcat " Z0.0"
+		  ;; 	   " F" (itoa cnc-f)" "
+		  ;; 	   )
+		  ;;  fp-cnc)
 		  )
 	      (progn ;; 无U轴
 		(setq pt (mapcar '- (entity:getdxf route 10)  at-cnc:pt-base))
@@ -314,16 +366,17 @@
 		))
 	    )
     (setq times (1- times)))
+  (write-line "G90 G00 Z10.0" fp-cnc)
   (if (= 1 (@:get-config '@cnc:U-axis))
       (progn
 	;; U轴回位,关电机
-	(write-line "G90 G01 U0 " fp-cnc)
+	(write-line "G90 G00 U0.0 " fp-cnc)
 	(at-cnc:umotor-off)))
-  ;;出刀
-  (write-line "G90 G00 Z10" fp-cnc)
+  ;; 出刀
+  ;; (write-line "G90 G28 U0.0" fp-cnc)
   )
 
-(defun at-cnc:gen-gcode (/ *error* curves fp-cnc filename nc-dir)
+(defun at-cnc:gen-gcode (/ *error* curves fp-cnc filename nc-dir pre-circle-r)
   (defun *error* (msg)
     (if (= 'file (type fp-cnc))(close fp-cnc))
     (@:*error* msg))
@@ -331,7 +384,24 @@
   (if (null (member (@:get-config '@cnc:layer-route)(layer:list)))
       (layer:make (@:get-config '@cnc:layer-route) 2 nil nil))
   (at-cnc:remove-route)
-  (setq curves (pickset:to-list (ssget '((0 . "line,lwpolyline,circle")))))
+  (setq curves (pickset:to-list (ssget '((0 . "lwpolyline,circle")))))
+  ;; 按先圆后曲排序，且圆按半径从小到大排序
+  (setq curves (vl-sort curves '(lambda(x y)
+				  (cond
+				   ((and (= "CIRCLE" (entity:getdxf x 0))
+					 (= "LWPOLYLINE" (entity:getdxf y 0)))
+				    t)
+				   ((and (= "CIRCLE" (entity:getdxf x 0))
+					 (= "CIRCLE" (entity:getdxf y 0))
+					 (< (entity:getdxf x 40)
+					    (entity:getdxf y 40)))
+				    t)
+				   ((and (= "LWPOLYLINE" (entity:getdxf x 0))
+					 (= "LWPOLYLINE" (entity:getdxf y 0)))
+				    t)
+				   ))))
+  (if (= "CIRCLE"  (entity:getdxf (car curves) 0))
+      (setq pre-circle-r 0))
   (setq at-cnc:pt-base (append (car (pickset:getbox curves (+ 5 (@:get-config '@cnc:r)))) (list 0)))
   (if (member (ascii":")(vl-string->list (@:get-config '@cnc:nc-files)))
       (@:mkdir (@:path (@:get-config '@cnc:nc-files)))
@@ -352,13 +422,13 @@
   
   ;; 开启主轴马达
   (at-cnc:motor-on (@:get-config '@cnc:motor-speed))
-  (if (= 1 (@:get-config '@cnc:U-axis))
-      (progn
-	;; U轴回位
-	(write-line "G90 G01 U0 " fp-cnc)
-	))
+  ;; (if (= 1 (@:get-config '@cnc:U-axis))
+  ;;     (progn
+  ;; 	;; U轴回位
+  ;; 	(write-line "G90 G00 U0.0 " fp-cnc)
+  ;; 	))
   ;; 抬起，开冷却
-  (write-line "G90 G00 Z30 " fp-cnc)
+  (write-line "G90 G00 Z30.0 " fp-cnc)
   (write-line "M8" fp-cnc)
   (if (= 1 (@:get-config '@cnc:chopping))
       (write-line "M100" fp-cnc))
@@ -378,7 +448,7 @@
   ;; 关冷却
   (write-line "M9" fp-cnc)
   (if (= 1 (@:get-config '@cnc:to-origin))
-      (write-line "G90 G00 X0 Y0 Z30" fp-cnc))
+      (write-line "G90 G00 X0.0 Y0.0 Z30.0" fp-cnc))
   (write-line "M30" fp-cnc)
   
   (close fp-cnc)

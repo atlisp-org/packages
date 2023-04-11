@@ -2,7 +2,7 @@
         (:FULL-NAME . "@CNC≤‚ ‘∞Ê")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.17")
+        (:VERSION . "0.1.0")
         (:LOCALE . "chs")
         (:CATEGORY . "ª˙–µ")
         (:REQUIRED . "base")

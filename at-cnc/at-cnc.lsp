@@ -267,6 +267,12 @@
 		      )
 	      fp-cnc)
   (while (>= times 0)
+    (if(< (- (entity:getdxf ent 40) (* 0.5 (@:get-config '@cnc:r)) kthickness)
+    	  0)
+	(progn
+    	  (@:alert "刀具直径太大。无法蹚孔。")
+	  (sssetfirst nil (ssadd ent))
+	  (exit)))
     (if (= 3 (entity:getdxf ent 62))
 	(vla-offset (e2o ent)
 		    (* -0.5 (+ (@:get-config '@cnc:r)
@@ -275,15 +281,18 @@
 				     (@:get-config '@cnc:k-times))))
 		       (if (curve:clockwisep ent) 1 -1)
 		       )
-		    )   
-      (vla-offset (e2o ent)
-		  (* 0.5 (+ (@:get-config '@cnc:r)
-			    (* times
-			       (/ kthickness
-				  (@:get-config '@cnc:k-times))))
-		     (if (curve:clockwisep ent) 1 -1)
-		     )
-		  ))
+		    )
+      (progn
+	;; 内径分析，刀具是否可执行
+	(vla-offset (e2o ent)
+		    (* 0.5 (+ (@:get-config '@cnc:r)
+			      (* times
+				 (/ kthickness
+				    (@:get-config '@cnc:k-times))))
+		       (if (curve:clockwisep ent) 1 -1)
+		       )
+		    )
+	))
     (setq route (entlast))
     (entity:putdxf route 8 (@:get-config '@cnc:layer-route))
     (entity:putdxf route 62 256)

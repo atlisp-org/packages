@@ -89,6 +89,8 @@
 (defun at-cnc:lwpl2gcode (ent / pts bulges route cnc-f i times rub)
   (setq times (@:get-config '@cnc:k-times))
   (setq rub nil)
+  (if (= 1 (@:get-config '@cnc:chopping))
+      (write-line "M100" fp-cnc))
   (while (>= times 0)
     (if (= 3 (entity:getdxf ent 62))
 	(vla-offset (e2o ent)
@@ -215,11 +217,16 @@
 			     )
 		     fp-cnc))
 		  )
+	      
 	      ;; 不闭合的曲线，需要抬起后回到起点
+	      
 	      (write-line "G90 G00 Z10" fp-cnc)
+	      
 	      )
 	    )
     (setq times (1- times)))
+  (if (= 1 (@:get-config '@cnc:chopping))
+      (write-line "M101" fp-cnc))
   ;;出刀
   (write-line "G90 G00 Z10" fp-cnc)
   )
@@ -247,17 +254,19 @@
 	  (progn
 	    (write-line "M00 (pause for align U spindle)" fp-cnc)
 	    (setq pre-circle-r (entity:getdxf ent 40)))
-	(progn ;; 半径修正因子
-	  (setq r-n (- (entity:getdxf ent 40)
-		       pre-circle-r))
-	  )
 	))
+  ;; 半径修正因子
+  (setq r-n (- (entity:getdxf ent 40)
+	       pre-circle-r))
+
   ;; 工作面
   (write-line
    (strcat "G01" " Z0.0"
 	   " F" (itoa (@:get-config '@cnc:rub-f))" "
 	   )
    fp-cnc)
+  (if (= 1 (@:get-config '@cnc:chopping))
+      (write-line "M100" fp-cnc))
   (write-line (strcat "G01"
 		      " Z-"
 		      (if (and (entity:getdxf ent 39)
@@ -376,6 +385,8 @@
 	    )
     (setq times (1- times)))
   (write-line "G90 G00 Z10.0" fp-cnc)
+  (if (= 1 (@:get-config '@cnc:chopping))
+      (write-line "M101" fp-cnc))
   (if (= 1 (@:get-config '@cnc:U-axis))
       (progn
 	;; U轴回位,关电机
@@ -439,8 +450,6 @@
   ;; 抬起，开冷却
   (write-line "G90 G00 Z30.0 " fp-cnc)
   (write-line "M8" fp-cnc)
-  (if (= 1 (@:get-config '@cnc:chopping))
-      (write-line "M100" fp-cnc))
   (foreach curve curves
 	   (cond
 	    ((= "LWPOLYLINE" (entity:getdxf curve 0))
@@ -452,8 +461,6 @@
 	   )
   ;; 归零
   (at-cnc:motor-off)
-  (if (= 1 (@:get-config '@cnc:chopping))
-      (write-line "M101" fp-cnc))
   ;; 关冷却
   (write-line "M9" fp-cnc)
   (if (= 1 (@:get-config '@cnc:to-origin))

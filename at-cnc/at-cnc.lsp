@@ -7,6 +7,7 @@
 (@:define-config '@cnc:r  6.0  "刀具直径，生成刀路时将从成品边界偏移半个直径。")
 (@:define-config '@cnc:motor-speed 4000 "主轴马达转速")
 (@:define-config '@cnc:f 50  "进给速率")
+(@:define-config '@cnc:f-u 1.0  "U轴进给速率，该项值可与主轴马达转速配合设置")
 (@:define-config '@cnc:cutter-compensation-left 0 "刀具左补偿值")
 (@:define-config '@cnc:cutter-compensation-right 0 "刀具右补偿值")
 (@:define-config '@cnc:chopping 0 "工作时是否加冲程")
@@ -247,7 +248,7 @@
       (at-cnc:umotor-on (@:get-config '@cnc:umotor-speed)))
   
   ;; 需重新定刀
-  (if (= 1 (@:get-config '@cnc:syntek))
+  (if (and (= 1 (@:get-config '@cnc:syntek)))
       (if (> (- (entity:getdxf ent 40)
 		pre-circle-r)
 	     (- 2.0 (@:get-config '@cnc:k-thickness)))
@@ -261,18 +262,19 @@
 
   ;; 工作面
   (write-line
-   (strcat "G01" " Z0.0"
+   (strcat "G90 G00" " Z0.0"
 	   " F" (itoa (@:get-config '@cnc:rub-f))" "
 	   )
    fp-cnc)
   (if (= 1 (@:get-config '@cnc:chopping))
       (write-line "M100" fp-cnc))
-  (write-line (strcat "G01"
+  (write-line (strcat "G90 G01"
 		      " Z-"
 		      (if (and (entity:getdxf ent 39)
 			       (/= (entity:getdxf ent 39) 0))
 			  (at-cnc:n2s (abs(entity:getdxf ent 39)))
 			(at-cnc:n2s (@:get-config '@cnc:thickness)))
+		      " F" (itoa (@:get-config '@cnc:rub-f))" "
 		      )
 	      fp-cnc)
   (while (>= times 0)
@@ -314,13 +316,17 @@
 		    (setq cnc-f (@:get-config '@cnc:rub-f))
 		  (progn
 		    (setq rub t)
-		    (setq cnc-f (@:get-config '@cnc:f))))
+		    (setq cnc-f
+			  (if (= 1 (@:get-config '@cnc:U-axis))
+			      (@:get-config '@cnc:f-u)
+			    (@:get-config '@cnc:f)
+			    ))))
 	      (setq cnc-f (@:get-config '@cnc:f)))
 	    (if (= 1 (@:get-config '@cnc:U-axis))
 		(progn
 		  ;; R平面,U定位
 		  (write-line
-		   (strcat "G01 U"
+		   (strcat "G90 G01 U"
 			   (if (= 1 (@:get-config '@cnc:syntek))
 			       (strcat "-" (at-cnc:n2s
 					    (+ r-n
@@ -331,20 +337,6 @@
 			   " F"(itoa cnc-f)
 			   )
 		   fp-cnc)
-		  ;; (write-line (strcat "G01"
-		  ;; 		      " Z-"
-		  ;; 		      (if (and (entity:getdxf route 39)
-		  ;; 			       (/= (entity:getdxf route 39) 0))
-		  ;; 			  (at-cnc:n2s (abs(entity:getdxf route 39)))
-		  ;; 			(at-cnc:n2s (@:get-config '@cnc:thickness)))
-		  ;; 		      )
-		  ;; 	      fp-cnc)
-		  ;; Z轴不用回
-		  ;; (write-line
-		  ;;  (strcat " Z0.0"
-		  ;; 	   " F" (itoa cnc-f)" "
-		  ;; 	   )
-		  ;;  fp-cnc)
 		  )
 	      (progn ;; 无U轴
 		(setq pt (mapcar '- (entity:getdxf route 10)  at-cnc:pt-base))
@@ -421,7 +413,7 @@
 				    t)
 				   ))))
   (if (= "CIRCLE"  (entity:getdxf (car curves) 0))
-      (setq pre-circle-r 0))
+      (setq pre-circle-r (entity:getdxf (car curves) 40)))
   (setq at-cnc:pt-base (append (car (pickset:getbox curves (+ 5 (@:get-config '@cnc:r)))) (list 0)))
   (if (member (ascii":")(vl-string->list (@:get-config '@cnc:nc-files)))
       (@:mkdir (@:path (@:get-config '@cnc:nc-files)))

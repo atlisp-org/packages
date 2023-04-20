@@ -268,17 +268,26 @@
    fp-cnc)
   (if (= 1 (@:get-config '@cnc:chopping))
       (write-line "M100" fp-cnc))
-  (write-line (strcat "G90 G01"
-		      " Z-"
-		      (if (and (entity:getdxf ent 39)
-			       (/= (entity:getdxf ent 39) 0))
-			  (at-cnc:n2s (abs(entity:getdxf ent 39)))
-			(at-cnc:n2s (@:get-config '@cnc:thickness)))
-		      " F" (itoa (@:get-config '@cnc:rub-f))" "
-		      )
-	      fp-cnc)
-  (while (>= times 0)
-    (if(< (- (entity:getdxf ent 40) (* 0.5 (@:get-config '@cnc:r)) kthickness)
+  (if (/= 1 (@:get-config '@cnc:syntek))
+      (write-line (strcat "G90 G01"
+			  " Z-"
+			  (if (and (entity:getdxf ent 39)
+				   (/= (entity:getdxf ent 39) 0))
+			      (at-cnc:n2s (abs(entity:getdxf ent 39)))
+			    (at-cnc:n2s (@:get-config '@cnc:thickness)))
+			  " F" (itoa (@:get-config '@cnc:rub-f))" "
+			  )
+		  fp-cnc))
+  (if (= 1 (@:get-config '@cnc:syntek))
+      (progn
+	(at-cnc:umotor-on (@:get-config '@cnc:umotor-speed))
+	(write-line (strcat "M98P1111L"
+			    (itoa (@:get-config '@cnc:k-times)))
+		    fp-cnc)
+	(at-cnc:umotor-off)
+	)
+    (while (>= times 0)
+      (if(< (- (entity:getdxf ent 40) (* 0.5 (@:get-config '@cnc:r)) kthickness)
     	  0)
 	(progn
     	  (@:alert "刀具直径太大。无法蹚孔。")
@@ -375,8 +384,9 @@
 		 fp-cnc)
 		))
 	    )
-    (setq times (1- times)))
-  (write-line "G90 G00 Z10.0" fp-cnc)
+    (setq times (1- times))))
+  (if (/= 1 (@:get-config '@cnc:syntek))
+      (write-line "G90 G00 Z10.0" fp-cnc))
   (if (= 1 (@:get-config '@cnc:chopping))
       (write-line "M101" fp-cnc))
   (if (= 1 (@:get-config '@cnc:U-axis))

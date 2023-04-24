@@ -8,4 +8,5 @@
     ("梅花布圆"  (@lab:array-circle))
     ("分隔字串" (@lab:split-text))
     ("专用汇总" (@lab:summary-lst))
+    ("逐行标数" (@lab:stat-number-inline))
     )))

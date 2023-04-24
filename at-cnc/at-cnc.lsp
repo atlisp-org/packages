@@ -11,6 +11,7 @@
 (@:define-config '@cnc:cutter-compensation-left 0 "刀具左补偿值")
 (@:define-config '@cnc:cutter-compensation-right 0 "刀具右补偿值")
 (@:define-config '@cnc:chopping 0 "工作时是否加冲程")
+(@:define-config '@cnc:chopping-pause 10.0 "冲程前暂停时间")
 (@:define-config '@cnc:k-thickness 0.3 "扩孔厚度")
 (@:define-config '@cnc:k-times  30 "扩孔次数")
 (@:define-config '@cnc:rub-times 3 "磨孔次数")
@@ -91,7 +92,10 @@
   (setq times (@:get-config '@cnc:k-times))
   (setq rub nil)
   (if (= 1 (@:get-config '@cnc:chopping))
-      (write-line "M100" fp-cnc))
+      (progn
+	(write-line "M100" fp-cnc)
+	(write-line (strcat "G04X"(at-cnc:n2s (@:get-config '@cnc:chopping-pause)))fp-cnc)
+	))
   (while (>= times 0)
     (if (= 3 (entity:getdxf ent 62))
 	(vla-offset (e2o ent)
@@ -220,16 +224,18 @@
 		  )
 	      
 	      ;; 不闭合的曲线，需要抬起后回到起点
-	      
-	      (write-line "G90 G00 Z10" fp-cnc)
-	      
+	      (if (= 1 (@:get-config '@cnc:syntek))
+		  (write-line "G90 G00 Z0.0" fp-cnc)
+		(write-line "G90 G00 Z10.0" fp-cnc))
 	      )
 	    )
     (setq times (1- times)))
   (if (= 1 (@:get-config '@cnc:chopping))
       (write-line "M101" fp-cnc))
   ;;出刀
-  (write-line "G90 G00 Z10" fp-cnc)
+  (if (= 1 (@:get-config '@cnc:syntek))
+      (write-line "G90 G00 Z0.0" fp-cnc)
+    (write-line "G90 G00 Z10.0" fp-cnc))
   )
 (defun at-cnc:circle2gcode (ent / pts bulges route cnc-f i times rub kthickness u)
   (setq kthickness (@:get-config '@cnc:k-thickness))
@@ -244,8 +250,8 @@
 	   "Y" (at-cnc:n2s (cadr pt)) " ")
    fp-cnc)
   ;; 开启U轴马达
-  (if (= 1 (@:get-config '@cnc:U-axis))
-      (at-cnc:umotor-on (@:get-config '@cnc:umotor-speed)))
+  ;; (if (= 1 (@:get-config '@cnc:U-axis))
+  ;;     (at-cnc:umotor-on (@:get-config '@cnc:umotor-speed)))
   
   ;; 需重新定刀
   (if (and (= 1 (@:get-config '@cnc:syntek)))
@@ -266,8 +272,11 @@
 	   " F" (itoa (@:get-config '@cnc:rub-f))" "
 	   )
    fp-cnc)
-  (if (= 1 (@:get-config '@cnc:chopping))
-      (write-line "M100" fp-cnc))
+    (if (= 1 (@:get-config '@cnc:chopping))
+      (progn
+	(write-line "M100" fp-cnc)
+	(write-line (strcat "G04X"(at-cnc:n2s (@:get-config '@cnc:chopping-pause))) fp-cnc)
+	))
   (if (/= 1 (@:get-config '@cnc:syntek))
       (write-line (strcat "G90 G01"
 			  " Z-"
@@ -385,8 +394,9 @@
 		))
 	    )
     (setq times (1- times))))
-  (if (/= 1 (@:get-config '@cnc:syntek))
-      (write-line "G90 G00 Z10.0" fp-cnc))
+  (if (= 1 (@:get-config '@cnc:syntek))
+      (write-line "G90 G00 Z0.0" fp-cnc)
+    (write-line "G90 G00 Z10.0" fp-cnc))
   (if (= 1 (@:get-config '@cnc:chopping))
       (write-line "M101" fp-cnc))
   (if (= 1 (@:get-config '@cnc:U-axis))
@@ -423,7 +433,10 @@
 				    t)
 				   ))))
   (if (= "CIRCLE"  (entity:getdxf (car curves) 0))
-      (setq pre-circle-r (entity:getdxf (car curves) 40)))
+      (progn
+	(if (= 1 (@:get-config '@cnc:syntek))
+	    (@:alert "采用调用子程序P1111的方式进刀，该方式的扩孔厚度与进刀次数有关，CAD设置中的扩孔厚度设置值无效。"))
+	(setq pre-circle-r (entity:getdxf (car curves) 40))))
   (setq at-cnc:pt-base (append (car (pickset:getbox curves (+ 5 (@:get-config '@cnc:r)))) (list 0)))
   (if (member (ascii":")(vl-string->list (@:get-config '@cnc:nc-files)))
       (@:mkdir (@:path (@:get-config '@cnc:nc-files)))
@@ -450,7 +463,9 @@
   ;; 	(write-line "G90 G00 U0.0 " fp-cnc)
   ;; 	))
   ;; 抬起，开冷却
-  (write-line "G90 G00 Z30.0 " fp-cnc)
+  (if (= 1 (@:get-config '@cnc:syntek))
+      (write-line "G90 G00 Z0.0" fp-cnc)
+    (write-line "G90 G00 Z30.0" fp-cnc))
   (write-line "M8" fp-cnc)
   (foreach curve curves
 	   (cond
@@ -466,7 +481,10 @@
   ;; 关冷却
   (write-line "M9" fp-cnc)
   (if (= 1 (@:get-config '@cnc:to-origin))
-      (write-line "G90 G00 X0.0 Y0.0 Z30.0" fp-cnc))
+      (if (= 1 (@:get-config '@cnc:syntek))
+	  (write-line "G90 G00 X0.0 Y0.0 Z0.0" fp-cnc)
+	(write-line "G90 G00 X0.0 Y0.0 Z30.0" fp-cnc)
+	))
   (write-line "M30" fp-cnc)
   
   (close fp-cnc)

@@ -2,7 +2,7 @@
         (:FULL-NAME . "@ ‘—È “")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.34")
+        (:VERSION . "0.0.35")
         (:LOCALE . "chs")
         (:CATEGORY . "Experiment")
         (:REQUIRED . "base")
@@ -22,4 +22,5 @@
             "split-text"
             "pvp"
             "board"
-            "stat-number-inline")))
+            "stat-number-inline"
+            "get-cross-from-2layer")))

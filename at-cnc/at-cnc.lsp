@@ -23,7 +23,7 @@
 (@:define-config '@cnc:layer-route "CNC_ROUTE" "生成的中心轴刀路曲线所在图层")
 (@:define-config '@cnc:candle "" "Candle 文件路径，用于打开新生成的 nc 文件")
 (@:define-config '@cnc:nc-files "CNC" "生成的NC 文件路径")
-(@:define-config '@cnc:syntek 1 "SYNTEK CE系统，U轴最大行程为2.0")
+(@:define-config '@cnc:syntek 0 "SYNTEK CE系统，U轴最大行程为2.0")
 
 ;; 向系统中添加菜单 
 (@:add-menus '("@CNC"

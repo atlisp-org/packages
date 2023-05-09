@@ -146,7 +146,7 @@
 (defun at-curve:dualline ()
   (@:help '("将单线双向偏移成双线。"))
   (if (null (member "DASHDOT" (tbl:list "linetype")))
-      (vla-load *LTS* "DASHDOT" (findfile "acasiso.lin")))
+      (vla-load *LTS* "DASHDOT" (findfile "acadiso.lin")))
   (setq dualline-width (getdist (strcat"\n"(@:speak"输入双线宽度")"<"(rtos (@:get-config '@curve:dualline-width) 2 3)">：")))
   (if dualline-width (@:set-config @curve:dualline-width dualline-width))
   (setq lst-curve (pickset:to-list

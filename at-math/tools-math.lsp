@@ -214,7 +214,7 @@
 (defun @math:select-number (/ str-fw entlst)
   (if (null amax) (setq amax 2.6))
   (if (null amin) (setq amin 1.6))
-  (if (/= "" (setq str-fw (getstring (strcat "请输入数字范围(可用,-~分隔)< " (rtos amin 2 2)"~"(rtos amax 2 2)" >: "))))
+  (if (/= "" (setq str-fw (getstring t (strcat "请输入数字范围(可用 , ~ 及空格分隔两个数)< " (rtos amin 2 2)"~"(rtos amax 2 2)" >: "))))
       (progn
 	(setq fw (vl-remove-if '(lambda(x)(equal 0.0 x 1e-8)) (mapcar 'atof (string:auto-split str-fw))))
 	(setq amin (apply 'min fw))
@@ -226,11 +226,9 @@
 	(vl-remove-if-not '(lambda(x / flag)
 			     (setq flag nil)
 			     (foreach num (mapcar 'atof (string:auto-split (entity:getdxf x 1)))
-				      (if (< amin num amax) (setq flag T)))
+				      (if (<= amin num amax) (setq flag T)))
 			     flag)
 			  entlst))
-  (entity:putdxf entlst 62 1)
+  (sssetfirst nil (pickset:from-list entlst))
+  (pickset:from-list entlst)
   )
-;; Local variables:
-;; coding: gb2312
-;; End: 

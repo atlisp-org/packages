@@ -8,7 +8,7 @@
 (@:define-config '@block:attribute-suffix "" "用于排号的块内属性值后缀。")
 (@:define-config '@block:xref-layer "xref-lock" "用于放置外部参照的图层名。")
 (@:define-config '@block:sort-order "xY" "排序规则。xyXY任意两两组合,例如yX,y在前表示y坐标优先，大X表示从右到左排序。")
-(@:define-config '@block:sort-fuzz 10 "按位置排序时，坐标的容差。")
+(@:define-config '@block:sort-fuzz "10,10" "按位置排序时，坐标的容差。逗号用于分隔不同轴的容差。")
 ;; (@:get-config 'at-arch:first) ;; 获取配置顶的值
 ;; (@:set-config 'at-arch:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单
@@ -74,7 +74,7 @@
   
 	    ))
 
-(defun @block:set-number (/ num1 start ss-list ss1 )
+(defun @block:set-number (/ num1 start ss-list ss1 fuzz)
   
   (if (= "" (@:get-config '@block:block-name))
       (@block:setup))
@@ -94,7 +94,10 @@
       (progn
 	;; 排序
 	(sssetfirst nil (pickset:from-list ss-list))
-	(setq ss-list (pickset:sort ss-list (@:get-config '@block:sort-order) (@:get-config '@block:sort-fuzz)))
+	(setq fuzz (mapcar 'atof (string:to-list (@:get-config '@block:sort-fuzz)",")))
+	(while (< (length fuzz) 3)
+	  (setq fuzz (append fuzz (list (last fuzz)))))
+	(setq ss-list (pickset:sort1 ss-list (@:get-config '@block:sort-order) fuzz))
 	(setq start (getint "请输入块起始编号<1>:"))
 	(if (null start) (setq start 1))
 	(setq num1 0)

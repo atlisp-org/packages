@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>  
+<AutoUpdater>  
+  <UpdateInfo>  
+    <!--升级文件的更新日期-->  
+    <UpdateTime Date = "2019-12-15"/>
+  </UpdateInfo>  
+  <!--升级文件列表-->  
+  <UpdateFileList>  
+    <UpdateFile>access-utils.lsp</UpdateFile>
+    <UpdateFile>base-utils.lsp</UpdateFile> 
+    <UpdateFile>curve-utils.lsp</UpdateFile>
+    <UpdateFile>entity-utils.lsp</UpdateFile>
+    <UpdateFile>list-utils.lsp</UpdateFile>
+    <UpdateFile>math-utils.lsp</UpdateFile>
+    <UpdateFile>matrix-utils.lsp</UpdateFile>
+    <UpdateFile>sel-utils.lsp</UpdateFile>
+    <UpdateFile>string-utils.lsp</UpdateFile>
+    <UpdateFile>vla-utils.lsp</UpdateFile>
+    <UpdateFile>dcl-utils.lsp</UpdateFile>
+    <UpdateFile>file-utils.lsp</UpdateFile>
+    <UpdateFile>excel-utils.lsp</UpdateFile>
+    <UpdateFile>update.xml</UpdateFile> 
+  </UpdateFileList>  
+</AutoUpdater>

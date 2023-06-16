@@ -1,0 +1,46 @@
+#+TITLE: autolisp 函数库开发规则
+#+AUTHOR: VitalGG<vitalgg@gmail.com>
+
+* 变量参数命名规则(前缀) 
+  前缀+用途 或 前缀+数字
+** 前缀
+  ent 单个图元 如：ent1 ent2
+  ents 图元列表 
+  obj activeX 对象
+  ss 选择集 
+  lst 列表 lst-str
+  pt 单个2D/3D坐标点 pt1 pt2 pt-bottom pt-top pt-left
+  pts 多个坐标点列表
+  str 字符串
+  int 整数
+  real 实数
+  fp 文件流或文件指针
+** 后缀
+   %  用于迭代的变量 
+
+#+BEGIN_SRC
+(setq i% 0)
+(while (< i% 10)
+  (print i%))
+
+(foreach file% lst-file
+  (print (strcat file% "size is " (vl-file-size file%))))
+(princ)
+#+END_SRC
+
+* 函数命名
+  为了避免众多开发者发布的 lisp 函数重名而导致程序失效。
+
+  除了谓词函数外，其它具有某种可归类的函数名均为 包名:函数名 的形式
+
+  entity:*  实体类函数
+  pickset:* 选择集函数 别名 ss:*
+  block:*   块相关函数
+  layer:*   图层相关函数
+  layout:*  布局相关
+  plot:*    打印出图相关
+  curve:*   曲线相关
+
+
+* 文件
+  lib-curve曲线

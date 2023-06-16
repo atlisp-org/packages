@@ -95,9 +95,7 @@
 	;; ≈≈–Ú
 	(sssetfirst nil (pickset:from-list ss-list))
 	(setq fuzz (mapcar 'atof (string:to-list (@:get-config '@block:sort-fuzz)",")))
-	(while (< (length fuzz) 3)
-	  (setq fuzz (append fuzz (list (last fuzz)))))
-	(setq ss-list (pickset:sort1 ss-list (@:get-config '@block:sort-order) fuzz))
+	(setq ss-list (pickset:sort ss-list (@:get-config '@block:sort-order) fuzz))
 	(setq start (getint "«Î ‰»ÎøÈ∆ º±‡∫≈<1>:"))
 	(if (null start) (setq start 1))
 	(setq num1 0)

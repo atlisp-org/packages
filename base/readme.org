@@ -1,0 +1,116 @@
+#+TITLE: base 基础函数库说明
+* 函数命名
+  以 实体名 开头。如 block layer style .
+* 函数参数说明
+  
+  未详细说明的参数类型均为实体ename。如使用visual lisp 需进行转换。
+
+  如 (block:get-effectivename blk) ; 获取块的真实名称。参数 blk 为图元。
+  
+* 状态
+** push-var
+
+   保存CAD常用变量。将常用的变量和值入栈。
+
+   当无参数时，保存默认的变量。当有字符串参数时，保存该参数。
+
+#+BEGIN_SRC lisp
+(defun foobar ()
+  (push-var) ;; 保存默认的一些变量的状态
+  (push-var "osmode" ) ;; 保存变量osmode的状态
+  (setvar "osmode" 0) ;; 设置以下过程需要的变量值
+  ...
+  (pop-var) ;; 恢复变量 osmode 的状态
+  (pop-var)) ;; 恢复默认的一些变量状态
+#+END_SRC
+
+** pop-var
+
+   恢复保存的变量，与 push-var 成对使用。
+
+#+BEGIN_SRC lisp
+(defun foobar ()
+  (push-var) ;; 保存变量状态
+  ...
+  (pop-var)) ;; 恢复变量状态
+#+END_SRC
+
+* format 
+** 格式
+
+   (format stream "格式化字符串" 参数 ...)
+
+   stream : 流。为真时输出到屏幕，为nil 时返回字符串，当为 文件流时，输出内容到文件流。
+
+   格式化字符串。
+
+   ~A : 字符、数字或列表
+
+   ~D : 整数
+
+   ~F : 符点数。
+
+   ~E : 指数
+
+** 修饰符
+
+   @ : 数值类型前加 + 、 - 号
+
+   整数 : 可以是占位符，小数点位数等。
+
+
+#+BEGIN_SRC lisp
+(format t "~A~%" "要替换~A的字符串")
+(format t "~10d~%" 5) ;; 输出整个5。5前面有10个空格
+(format t "~10,3F~%" pi) ;; 输入 pi，值 3.142 ,前面有6位空格。保留3位小数。
+#+END_SRC
+
+* 块相关
+
+** (block:get-effectivename blk)
+
+    取得块名，支持动态块。参数为块图元。
+** (block:get-attributes blk)
+
+   获取块属性,返回属性名和值的点对列表。
+** (block:set-attributes blk cons-lst)
+
+    设置块属性，参数为块图元及属性名和值的点对列表。
+**  (block:get-dynamic-properties blk)
+
+    获取动态块的动态特性列表：特性名，当前值，只读性，是否显示，允许值
+** (block:get-dynamic-prop-cons-name-value blk)
+
+    获取动态块的动态特性列表：返回值 为特性名和当前值的点对表。
+**  (block:set-dynprop blk  prop val)
+
+    设置动态块的特性.
+* 日期时间
+  
+** (datetime:get-current-day)
+
+   返回日期
+** (atetime:get-current-month)
+
+   返回月份
+** (datetime:get-current-year)
+
+   返回年份
+** (timer:begin)
+
+   计时器开始
+
+** (timer:end time p)
+
+   计时器结束。
+
+   参数：
+
+   time: 开始时间
+
+   p: 为真时输出到命令行
+* TODO 实体
+* 图层
+* 字符串
+* 布局
+* 数学

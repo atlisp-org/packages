@@ -316,7 +316,8 @@
 		      (* 10
 			 (if (< (@:get-config '@text:color) 240)
 			     (+ 10 (@:get-config '@text:color))
-			   10))))))
+			   10)))))
+  )
 
 (defun @text:menu-format-number(/ int-n int-fraction res)
   (@:help "格式化文本中的数字，")

@@ -6,17 +6,63 @@
 
 (defun @text:draw-box (ent / box newent)
   ;; 文本加框
-  (setq box (entity:getbox ent (@:get-config '@text:box-offset)))
+  (if (list:member
+       (entity:getdxf ent 50)
+       (list 0 pi (* 0.5 pi) (* 1.5 pi))
+       0.001)
+      (setq box (entity:getbox ent (@:get-config '@text:box-offset)))
+    (progn
+      (setq box (textbox (entget ent)))
+      ))
   (cond
    ((= (@:get-config '@text:box-type) 1)
     (setq newent
 	  (apply 'entity:make-rectangle
-		 box)))
+		 box))
+    (if (not (list:member
+	      (entity:getdxf ent 50)
+	      (list 0 pi (* 0.5 pi) (* 1.5 pi)) 0.001))
+	(progn
+	  (setq newent1
+		(car(vlax-safearray->list (vlax-variant-value 
+					   (vla-offset (e2o newent)
+						       (@:get-config '@text:box-offset))))))
+	  (entdel newent)
+	  
+	  (vla-move newent1
+		    (apply 'vlax-3d-point (apply 'point:mid box))
+		    (apply 'vlax-3d-point (apply 'point:mid (entity:getbox ent (@:get-config '@text:box-offset)))))
+	  (vla-rotate newent1
+		      (apply 'vlax-3d-point (apply 'point:mid (entity:getbox ent (@:get-config '@text:box-offset))))
+		      (entity:getdxf ent 50))
+	  (setq newent (o2e newent1))
+	  )
+      )
+    )
    ((= (@:get-config '@text:box-type) 2)
     (setq newent
 	  (entity:make-circle
 	   (apply 'point:mid box)
-	   (* 0.5 (apply 'distance box)))))
+	   (* 0.5 (apply 'distance box))))
+    (if (not (list:member
+	      (entity:getdxf ent 50)
+	      (list 0 pi (* 0.5 pi) (* 1.5 pi)) 0.001))
+	(progn
+	  (setq newent1
+		(car(vlax-safearray->list (vlax-variant-value 
+					   (vla-offset (e2o newent)
+						       (@:get-config '@text:box-offset))))))
+	  (entdel newent)
+	  (vla-move newent1
+		    (apply 'vlax-3d-point (apply 'point:mid box))
+		    (apply 'vlax-3d-point (apply 'point:mid (entity:getbox ent (@:get-config '@text:box-offset)))))
+	  (vla-rotate newent1
+		      (apply 'vlax-3d-point (apply 'point:mid (entity:getbox ent (@:get-config '@text:box-offset))))
+		      (entity:getdxf ent 50))
+	  (setq newent (o2e newent1))
+	  )
+      )
+    )
    (t (setq newent (apply 'entity:make-rectangle
 			  box))))
   (if newent
@@ -41,15 +87,21 @@
   ;; (sleep 0.1)
   (if (and pt-base txt)
       (progn
-	(@:prompt "\n请选择需要查找的区域:")
-	(setq s1 (ssget (list '(0 . "text") (cons 1 txt))))
+	(@:prompt "\n请选择需要查找的区域(回车或右键全选):")
+	(if (null (setq s1 (ssget (list '(0 . "text") (cons 1 txt)))))
+	    (setq s1 (ssget "x" (list '(0 . "text") (cons 1 txt)))))
 	(mapcar
 	 '@text:draw-box
 	 (pickset:to-list s1))
 	)))
 (defun @text:menu-remove-box ()
   (@:help '("删除文本框"))
+  (@:prompt "请选择需要删除的区域(回车或右键全选):")
   (setq boxs (pickset:to-list
-	      (ssget "x" (list '(0 . "lwpolyline,circle")
-			       (cons 8 (@:get-config '@text:box-layer))))))
+	      (ssget (list '(0 . "lwpolyline,circle")
+			   (cons 8 (@:get-config '@text:box-layer))))))
+  (if (null boxs)
+      (setq boxs (pickset:to-list
+		  (ssget "x" (list '(0 . "lwpolyline,circle")
+				   (cons 8 (@:get-config '@text:box-layer)))))))
   (mapcar 'entdel boxs))

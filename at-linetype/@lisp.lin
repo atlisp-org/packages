@@ -1,4 +1,28 @@
 *atline1, __/__
-A,2.0,["/",STANDARD,S=5.0,U=0.0,X=0,Y=-4.0],2.0
+A,1.0,[XIE,@lisp.shx,S=1],1.0
 *atline3, ) ) ) )
 A,0,[ARC1,@lisp.shx,S=1,Y=0.707],-1.0
+*Œß¿∏1,‘≤Œß¿∏ ----0-----0----0-----0----0-----0--
+A,.25,-.1,[CIRC1,ltypeshp.shx,x=-.1,s=.1],-.1,1
+*Œß¿∏2,∑ΩŒß¿∏ ----[]-----[]----[]-----[]----[]---
+A,.25,-.1,[BOX,ltypeshp.shx,x=-.1,s=.1],-.1,1
+*πÏµ¿,Tracks -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-
+A,.15,[TRACK1,ltypeshp.shx,s=.25],.15
+*at_BATTING,Batting SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+A,.0001,-.1,[BAT,ltypeshp.shx,x=-.1,s=.1],-.2,[BAT,ltypeshp.shx,r=180,x=.1,s=.1],-.1
+*π©»»π‹,Hot water supply ---- HW ---- HW ---- HW ----
+A,.5,-.2,["HW",STANDARD,S=.1,R=0.0,X=-0.1,Y=-.05],-.2
+*»º∆¯π‹,Gas line ----GAS----GAS----GAS----GAS----GAS----GAS--
+A,.5,-.2,["GAS",STANDARD,S=.1,R=0.0,X=-0.1,Y=-.05],-.25
+*æ‚≥›œﬂ,Zig zag /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+A,.0001,-.2,[ZIG,ltypeshp.shx,x=-.2,s=.2],-.4,[ZIG,ltypeshp.shx,r=180,x=.2,s=.2],-.2
+*≤®¿Àœﬂ, ≤®¿Àœﬂ ~~~~~~~~~~~~~~
+A,0,[QUARTERCIRCLE,@lisp.shx,S=1],-1.414,[QUARTERCIRCLE,@lisp.shx,S=1,R=180,X=1.414],-1.414
+*≤®¿Àœﬂ1, ≤®¿Àœﬂ1 ~~~~~~~~~~~~~~
+A,0,[HALFCIRCLE,@lisp.shx,S=1],-2.0,[HALFCIRCLE,@lisp.shx,S=1,R=180,X=2.0],-2.0
+*≤®¿Àœﬂ2, ≤®¿Àœﬂ2 ~~~~~~~~~~~~~~
+A,0,[WAVE,@lisp.shx,S=1],-6.8305
+*@line1,  ~~~~~~~~~~~~~~
+A,0,[QUARTERCIRCLE,@lisp.shx,S=1],-0.707,[QUARTERCIRCLE,@lisp.shx,S=1,R=180,X=0.707],-0.707
+*@line2,  ~~~~~~~~~~~~~~
+A,0,[QUARTERCIRCLE,@lisp.shx,S=1],-1.0605,[QUARTERCIRCLE,@lisp.shx,S=1,R=180,X=1.0605],-1.0605

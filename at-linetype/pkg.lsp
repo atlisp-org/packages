@@ -1,14 +1,15 @@
 (@:def-pkg '((:NAME . "at-linetype")
-        (:FULL-NAME . "@线型")
+        (:FULL-NAME . "@lisp linetype")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.12")
+        (:VERSION . "0.1.0")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "@lisp线型相关工具")
+        (:DESCRIPTION . "@lisp tools for CAD linetype")
         (:URL . "http://atlisp.cn")
         (:FILES "at-linetype"
             "@lisp.lin"
+            "equip.lin"
             "@lisp.shp")))

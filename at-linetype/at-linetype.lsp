@@ -1,16 +1,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(@:add-menu "@线型" "重载线型" '(at-linetype:reload))
+(@:add-menu "@线型" "加载@lisp线型" '(at-linetype:reload "@lisp"))
+(@:add-menu "@线型" "加载设备线型" '(at-linetype:reload "equip"))
 (@:add-menu "@线型" "编辑线型" '(at-linetype:edit))
 (@:add-menu "@线型" "编辑形" '(at-linetype:edit-shp))
 (@:add-menu "@线型" "编译形" '(at-linetype:compile-shp))
 (@:add-menu "@线型" "定制请求" '(at-linetype:require))
-(defun at-linetype:reload () 
+(defun at-linetype:reload (filename-lt) 
   (@:help '("重新加载@lisp线型"))
   (setvar "filedia" 0)
   (at-linetype:load-shx)
-  (command "-linetype" "l" "*" (strcat (@:package-path "at-linetype") "@lisp.lin"))
+  (command "-linetype" "l" "*" (strcat (@:package-path "at-linetype") filename-lt ".lin"))
   (while (> (getvar "cmdactive") 0) 
     (command "")
   )

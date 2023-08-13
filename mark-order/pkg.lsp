@@ -2,7 +2,7 @@
         (:FULL-NAME . "字串编号")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.3")
+        (:VERSION . "0.0.5")
         (:LOCALE . "chs")
         (:CATEGORY . "定向开发")
         (:REQUIRED . "base")

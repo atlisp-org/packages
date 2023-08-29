@@ -12,15 +12,17 @@
 ;; (@:get-config 'at-arch:first) ;; 获取配置顶的值
 ;; (@:set-config 'at-arch:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单
-(@:add-menu "块操作" "块-设置" "(@block:config)")
-(@:add-menu "块操作" "块替换" "(@block:subst)")
-(@:add-menu "块操作" "块自动编号" "(@block:set-number)")
-(@:add-menu "块操作" "任意块编号" "(@block:set-any-block-number)")
-(@:add-menu "块操作" "块编号设置" "(@block:setup)")
-(@:add-menu "块操作" "设为可分解" "(@block:explodable)")
-(@:add-menu "块操作" "设不能分解" "(@block:explode-disable)")
-(@:add-menu "块操作" "改块基点" '(@block:menu-change-base))
-(@:add-menu "块操作" "插所有块" "(@block:insert-all)")
+(@:add-menus
+ '((_"Block")
+   ((_"Block Config") '(@block:config))
+   ((_"Block Replace") '(@block:subst))
+   ((_"Block auto numbering") '(@block:set-number))
+   ((_"Anyblock numbering") '(@block:set-any-block-number))
+   ((_"Block numbering Config") '(@block:setup))
+   ((_"Set as decomposable") '(@block:explodable))
+   ((_"Set as non decomposable") '(@block:explode-disable))
+   ((_"Change block base point") '(@block:menu-change-base))
+   ((_"Insert all block") '(@block:insert-all))))
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")
 (@:get-config 'sym)
 (defun @block:config (/ res)

@@ -72,47 +72,49 @@
                 0.001)))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
-    (setq selopt (reverse selopt)))
-  (setq ha (entget (car (entsel))))
-  (setq res (cadr (list:split-by ha '(lambda (x) (= (car x) 91)))))
-  (setq res (car (list:split-by res '(lambda (x) (= (car x) 75)))))
-  (setq res (cdr (list:split-by res '(lambda (x) (= (car x) 92)))))
-  ;; (setq res (vl-sort res '(lambda (x y) (> (cdar x) (cdar y)))))
-  ;; 外部边界路径中的图元
-  (setq all-outer (vl-remove-if-not 
-                    '(lambda (x) (= 1 (boole 1 1 (cdr (assoc 92 x)))))
-                    res))
-  (princ (strcat (itoa (length all-outer)) "条外部边界路径"))
+      (setq selopt (reverse selopt)))
+  (setq hatchs (pickset:to-list (ssget '((0 . "hatch")))))
   (setq ss-all nil)
-  (foreach outer all-outer 
-    ;; debug (entity:make-lwpolyline (boundarypath2pts outer) nil 0 1 0)
-    (setq blk-all (pickset:to-list 
+  (setq ss-in nil)
+  (foreach hatch% hatchs
+	   (setq ha (entget hatch%))
+	   (setq res (cadr (list:split-by ha '(lambda (x) (= (car x) 91)))))
+	   (setq res (car (list:split-by res '(lambda (x) (= (car x) 75)))))
+	   (setq res (cdr (list:split-by res '(lambda (x) (= (car x) 92)))))
+	   ;; (setq res (vl-sort res '(lambda (x y) (> (cdar x) (cdar y)))))
+	   ;; 外部边界路径中的图元
+	   (setq all-outer (vl-remove-if-not 
+			    '(lambda (x) (= 1 (boole 1 1 (cdr (assoc 92 x)))))
+			    res))
+	   (princ (strcat (itoa (length all-outer)) "条外部边界路径"))
+	   (foreach outer all-outer 
+		    ;; debug (entity:make-lwpolyline (boundarypath2pts outer) nil 0 1 0)
+		    (setq blk-all (pickset:to-list 
                     (ssget 
                       (car selopt)
                       (boundarypath2pts outer)
                       (append 
-                        (list '(0 . "insert"))
-                        (if (/= "" (@:get-config '@select:blksname)) 
-                          (list 
-                            (cons 2 (@:get-config '@select:blksname))))))))
-    (setq ss-all (list:union ss-all blk-all)))
-  (setq all-inter (vl-remove-if-not 
-                    '(lambda (x) (= 0 (boole 1 1 (cdr (assoc 92 x)))))
-                    res))
-  (princ (strcat (itoa (length all-inter)) "条内部孤岛边界路径"))
-  ;; 内部孤岛边界路径中的图元
-  (setq ss-in nil)
-  (foreach inter all-inter 
-    (setq blk-in (pickset:to-list 
-                   (ssget 
-                     (cadr selopt)
-                     (boundarypath2pts inter)
-                     (append 
                        (list '(0 . "insert"))
                        (if (/= "" (@:get-config '@select:blksname)) 
-                         (list 
-                           (cons 2 (@:get-config '@select:blksname))))))))
-    (if blk-in 
-      (setq ss-in (list:union ss-in blk-in))))
+                           (list 
+                            (cons 2 (@:get-config '@select:blksname))))))))
+		    (setq ss-all (list:union ss-all blk-all)))
+	   (setq all-inter (vl-remove-if-not 
+			    '(lambda (x) (= 0 (boole 1 1 (cdr (assoc 92 x)))))
+			    res))
+	   (princ (strcat (itoa (length all-inter)) "条内部孤岛边界路径"))
+	   ;; 内部孤岛边界路径中的图元
+	   (foreach inter all-inter 
+		    (setq blk-in (pickset:to-list 
+				  (ssget 
+				   (cadr selopt)
+				   (boundarypath2pts inter)
+				   (append 
+				    (list '(0 . "insert"))
+				    (if (/= "" (@:get-config '@select:blksname)) 
+					(list 
+					 (cons 2 (@:get-config '@select:blksname))))))))
+		    (if blk-in 
+			(setq ss-in (list:union ss-in blk-in)))))
   (setq ss-res (list:difference ss-all ss-in))
   (sssetfirst nil (pickset:from-list ss-res)))

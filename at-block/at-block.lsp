@@ -14,28 +14,23 @@
 ;; 向系统中添加菜单
 (@:add-menus
  '((_"Block")
-   ((_"Block Config") '(@block:config))
-   ((_"Block Replace") '(@block:subst))
-   ((_"Block auto numbering") '(@block:set-number))
-   ((_"Anyblock numbering") '(@block:set-any-block-number))
-   ((_"Block numbering Config") '(@block:setup))
-   ((_"Set as decomposable") '(@block:explodable))
-   ((_"Set as non decomposable") '(@block:explode-disable))
-   ((_"Change block base point") '(@block:menu-change-base))
-   ((_"Insert all block") '(@block:insert-all))))
+   ((_"Block Config") (@block:config))
+   ((_"Block Replace") (@block:subst))
+   ((_"Block auto numbering") (@block:set-number))
+   ((_"Anyblock numbering") (@block:set-any-block-number))
+   ((_"Block numbering Config") (@block:setup))
+   ((_"Set as decomposable") (@block:explodable))
+   ((_"Set as non decomposable") (@block:explode-disable))
+   ((_"Change block base point") (@block:menu-change-base))
+   ((_"Insert all block") (@block:insert-all))
+   ((_"Select same block") (@block:select-same))
+   
+   ))
+(@:add-menu (_"Block") "块视图切换" "(@block:outline-dialog)")
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")
-(@:get-config 'sym)
-(defun @block:config (/ res)
-  "块操作基本信息"
-  (setq res 
-	(ui:input "配置信息"
-		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
-			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "`@BLOCK:*")))
-					(if @:*config.db*
-					    @:*config.db* (@:load-config))))))
-  (foreach res% res
-   	   (@:set-config (read (car res%)) (cdr res%)))
-  )
+(defun @block:config (/ res) 
+  (setq @:tmp-search-str "@BLOCK")
+  (@:edit-config))
 (defun @block:setup (/ block-name attribute-name en0 lst-att i% opt% initget% )
   "设置要进行编号的图块，选择一个图块，设置要处理的图块."
   (setq en0 (car (entsel "请点选一个属性块:")))
@@ -203,14 +198,13 @@
 (defun @block:get-corner (blk)
   (entity:getbox blk 0)
   )
-(@:add-menu "块操作" "块视图切换" "(@block:outline-dialog)")
 (defun @block:outline-dialog (/ dcl_fp dcl-tmp dcl_id pkg para% menu%
 			   frames curr-page per-page after-panel-cmd
 			   zoom-w
 			   run-function after-panel corner
 			   page-up page-down *error*)
   "属性块大纲，用于快速切换块视图"
-  (@:help "属性块大纲，用于快速切换块视图\n ")
+  (@:help "属性块大纲，用于快速切换块视图\n不支持动态块。")
   (defun *error* (msg)
     ;; 重启动处理 
     (if (= 'file (type dcl_fp))
@@ -314,7 +308,6 @@
 	(vl-file-delete dcl-tmp)
 	(after-panel after-panel-cmd))
       ))
-(@:add-menu "块操作" "点块多选" "(@block:select-same)")
 (defun @block:select-same (/ blk blks)
   (@:help (strcat "选择一个块，然后选中所有的同名块。"))
   (setq blk (car (entsel "请选择一个块:")))
@@ -326,6 +319,7 @@
   (sssetfirst nil (pickset:from-entlist blks))
   (princ))
 (defun @block:rename-noname (/ name newname i)
+  (@:help "修复块名为空的无名块")
   (setq name "atlisp.cn")
   (setq i 0)
   (while (tblsearch "block" (strcat name (itoa (setq i (1+ i))))))
@@ -338,7 +332,8 @@
   )
 
 
-(defun @block:menu-change-base(/ blkref blkname pt ) 
+(defun @block:menu-change-base(/ blkref blkname pt )
+  
   (setq blkref (car (entsel "请选择要改变基点的块:")))
   (setq blkname (entity:getdxf blkref 2))
 

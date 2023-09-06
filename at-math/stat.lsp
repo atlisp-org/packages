@@ -88,7 +88,7 @@
 		      (block:get-effectivename x)
 		      "(")
 		     ))) ;; 示例: 从图元取出图名。
-		 (pickset:to-list (ssget '((0 . "insert")(2 . "$equip*")))))))) ;; 要统计的图元。
+		 (pickset:to-list (ssget '((0 . "insert")(2 . "*$equip*")))))))) ;; 要统计的图元。
 (if (null dxf-common)
     (setq dxf-common
 	  '((0 . "图元类型")

@@ -26,7 +26,7 @@
 		 (@:package-path "youyun-plot")
 		 )
 	 )))
-  (load ".cache/Intern.fas")
+  ;; (load ".cache/Intern.fas")
   (setvar "secureload" 0)
   (@:mkdir (@:path (strcat (@:package-path "youyun-plot") "ÓĞÔÆ×ÖÌåÌæ»»")))
 

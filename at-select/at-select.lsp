@@ -118,3 +118,11 @@
 			(setq ss-in (list:union ss-in blk-in)))))
   (setq ss-res (list:difference ss-all ss-in))
   (sssetfirst nil (pickset:from-list ss-res)))
+
+(defun @select:line-to-ss ()
+  (@:help "绘制指向选择集的线。")
+  (setq pt (getpoint))
+  (mapcar 
+  '(lambda (x) (entity:make-line pt (entity:getdxf x 10)))
+    (vl-remove nil (pickset:to-list (cadr (ssgetfirst)))
+)))

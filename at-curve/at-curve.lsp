@@ -88,6 +88,24 @@
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
   (foreach curve lst-curve
 	   (cond
+	    ((= "MLINE" (entity:getdxf curve 0))
+	     (setq pts (curve:get-points curve))
+	     (if (equal (car pts)(cadr pts))
+		 (setq pts (cdr pts)))
+	     (while (> (length pts) 1)
+	       (entity:putdxf
+		(entity:make-text
+		 (rtos (distance (car pts)(cadr pts)) 2 3)
+		 (point:2d->3d (point:mid (car pts)(cadr pts)))
+		 (* 2.5 (@:get-config '@:draw-scale))
+		 (angle (car pts)(cadr pts))
+		 0.72
+		 0
+		 "mb")
+		62
+		1)
+	       (setq pts (cdr pts))
+	       ))
 	    ((= "LWPOLYLINE" (entity:getdxf curve 0))
 	     (setq i 0)
 	     (setq bulges (curve:pline-convexity curve))

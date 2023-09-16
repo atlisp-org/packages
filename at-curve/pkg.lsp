@@ -1,13 +1,13 @@
 (@:def-pkg '((:NAME . "at-curve")
-        (:FULL-NAME . "@lisp曲线")
+        (:FULL-NAME . "@lisp curve")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.8")
+        (:VERSION . "0.1.10")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "与线有关的工具集")
+        (:DESCRIPTION . "Toolset related to curves.")
         (:URL . "http://atlisp.cn")
         (:FILES "at-curve"
             "notch"

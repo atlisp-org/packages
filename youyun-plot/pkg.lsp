@@ -2,7 +2,7 @@
         (:FULL-NAME . "有云批量打印")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "3.4.5")
+        (:VERSION . "3.4.6")
         (:LOCALE . "chs")
         (:CATEGORY . "打印")
         (:REQUIRED . "base")

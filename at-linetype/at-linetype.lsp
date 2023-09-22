@@ -8,7 +8,7 @@
 	       ("编辑我的线型" (at-linetype:edit))
 	       ("编辑形文件" (at-linetype:edit-shp))
 	       ("编译形文件" '(at-linetype:compile-shp))
-	       ("我要定制" '(at-linetype:require))))
+	       ("我要定制线型" '(at-linetype:require))))
 (defun at-linetype:reload (filename-lt) 
   (@:help '("重新加载线型"))
   (setvar "filedia" 0)

@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp Block")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.2.10")
+        (:VERSION . "0.2.14")
         (:LOCALE . "CHS")
         (:CATEGORY . "Í¼¿éÏà¹Ø")
         (:REQUIRED . "base")
@@ -11,4 +11,5 @@
         (:URL . "http://atlisp.cn")
         (:FILES "at-block"
             "xref"
-            "insert-all")))
+            "insert-all"
+            "overkill")))

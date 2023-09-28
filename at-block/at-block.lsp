@@ -24,7 +24,7 @@
    ((_"Change block base point") (@block:menu-change-base))
    ((_"Insert all block") (@block:insert-all))
    ((_"Select same block") (@block:select-same))
-   
+   ((_"Positioning overlapping blocks") (@block:overblocks))
    ))
 (@:add-menu (_"Block") "¿éÊÓÍ¼ÇÐ»»" "(@block:outline-dialog)")
 ;; (@:add-menu "¿é²Ù×÷" "Á¬Ðø²å¿é" "(@block:menu-inserts)")

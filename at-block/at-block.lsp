@@ -310,7 +310,10 @@
       ))
 (defun @block:select-same (/ blk blks)
   (@:help (strcat "选择一个块，然后选中所有的同名块。"))
-  (setq blk (car (entsel "请选择一个块:")))
+  (prompt  "请选择一个块:")
+  (while (null(and (setq blk (ssget "_:S:E" '((0 . "insert"))))
+		   (setq blk (ssname blk 0))))
+    (@:prompt "\n未选中块，请选择一个块:"))
   (setq blks (pickset:to-list (ssget "x" '((0 . "INSERT")))))
   
   (setq blks (vl-remove-if '(lambda (x) (/= (block:get-effectivename blk)

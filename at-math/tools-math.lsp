@@ -4,7 +4,7 @@
 ;;; Description: 基于 AutoLisp/VisualLisp 开发的绘图工具集
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; DWG文件中的单行文本的数学运算
-
+(@:define-config '@math:layer-of-zone  "柱" "表示区域的多段线所在的图层")
 ;;; 数字求和
 (@:add-menu "数学" "∑求和" "(@m:text-sum)")
 (defun @m:text-sum ( / s1 si% ti% ename total )

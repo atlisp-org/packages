@@ -11,7 +11,6 @@
 	     (:email . "vitalgg@gmail.com")
 	     (:description . "根据CAD运行环境，下载相匹配的OpenDCL运行时支持库和语言包,不用下载全部文件。")
 	     (:category . "Lib") ;; 分类
-	     (:compatible .  ("acad"))
 	     (:opensource . 1) ;; 是否开源
 	     (:licenses . "GPL") ;; 开源许可
 	     (:url . "http://atlisp.cn") ;; 主页

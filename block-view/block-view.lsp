@@ -3,5 +3,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; define a first config item  'block-view:first for package block-view 's configitem first 
 
-(@:add-menu "¿é²Ù×÷" "BlockView" "(C:BlockView)" )
+(@:add-menu (_"Block") "BlockView" "(C:BlockView)" )
 

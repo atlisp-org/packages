@@ -144,7 +144,7 @@
   ;; (add_list (repeat (+(* 6(length num-format))(apply '+ (mapcar '(lambda(x)(apply '+ x)) num-format)))
   ;; 		    (setq Sepa (strcat "-" Sepa))))
   (foreach row% matrix-num
-	   (add_list (apply 'strcat (mapcar '(lambda(x y)(string:number-format (vl-string-right-trim "0" (rtos y 2 5)) (+ 2 (car x))(+ 2(cadr x)) " "))
+	   (add_list (apply 'strcat (mapcar '(lambda(x y)(string:number-format (rtos y 2 5) (+ 2 (car x))(+ 2(cadr x)) " "))
 					    num-format
 					    row%))))
   (end_list)

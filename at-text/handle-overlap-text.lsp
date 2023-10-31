@@ -1,4 +1,4 @@
-(defun @text:handle-overlay-text ()
+(defun @text:handle-overlay-text (/ txts box ots box1 box2 tbox1 tbox2 w1 w2 h1 h2 o1 o2 dis)
   ;; 避让原则：竖向避水平，水平向右错。
   (@:help "文字避让，处理重叠的单行文本")
   (setq txts (pickset:to-list (ssget  '((0 . "text")))))
@@ -35,9 +35,7 @@
 		(equal r1 (angle o2 o1) 0.2)))
        (setq dis (+ (* 0.2 h1) (* 0.5 (- (* 0.5 (+ w1 w2)) (abs (- (car o2)(car o1)))))))
        (vla-move (e2o txt)  (point:to-ax o1)(point:to-ax (polar o1 (+ r1 (if (> (cos (angle o1 o2)) 0) pi 0)) dis)))
-       (entity:putdxf txt 62 2)
        (vla-move (e2o ot)  (point:to-ax o2)(point:to-ax (polar o2 (+ r2 (if (> (cos (angle o1 o2)) 0) 0 pi))  dis)))
-       (entity:putdxf ot 62 3)
        )
       ;; 两者平行不共线
       ((and (equal r1 r2 0.5)
@@ -45,9 +43,7 @@
 		       (equal r1 (angle o2 o1) 0.2))))
        (setq dis (+ (* 0.2 h1) (* 0.5 (- (* 0.5 (+ h1 h2)) (abs (- (cadr o2)(cadr o1)))))))
        (vla-move (e2o txt)  (point:to-ax o1) (point:to-ax (polar o1 (+ r1 (* 0.5 pi) (if (> (sin (angle o1 o2)) 0) pi 0)) dis)))
-       (entity:putdxf txt 62 2)
        (vla-move (e2o ot)  (point:to-ax o2)(point:to-ax (polar o2 (+ r2 (* 0.5 pi) (if (> (sin (angle o1 o2)) 0) 0 pi)) dis)))
-       (entity:putdxf ot 62 3)
        )
       ;; 两者垂直；动Y向
       ((null (equal r1 r2 0.5))
@@ -55,7 +51,14 @@
 	   (progn
 	     (setq dis (-(+ (* 0.7 h1) (* 0.5 w2)) (abs (- (cadr o2)(cadr o1)))))
 	     (vla-move (e2o ot)  (point:to-ax o2)(point:to-ax (polar o2 (+ r2 (if (> (sin (angle o1 o2)) 0) 0 pi)) dis)))
-	     (entity:putdxf ot 62 3)
 	     )
        ))
-      ))))
+      )
+    ;; 成功设绿,不成功设黄
+    (foreach txt% (list txt ot)
+	     (setq box (entity:getbox txt% 0))
+	     (if (= 1 (length (pickset:to-list (ssget "c" (car box)(cadr box)'((0 . "text"))))))
+		 (entity:putdxf txt% 62 2)
+		 (entity:putdxf txt% 62 3)
+		 ))
+    )))

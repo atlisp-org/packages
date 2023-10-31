@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp文本")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "1.0.37")
+        (:VERSION . "1.0.38")
         (:DESCRIPTION . "@lisp常用文本操作工具。功能有文字对齐、加前后缀、多个单选文本的排版等。")
         (:CATEGORY . "文本")
         (:URL . "http://atlisp.cn")
@@ -17,4 +17,5 @@
             "string-to-table"
             "join-in-line"
             "sort-serial-number"
+            "handle-overlap-text"
             "box")))

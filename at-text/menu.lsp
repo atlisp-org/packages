@@ -21,6 +21,7 @@
     ("文本加框" (@text:menu-draw-box))
     ("删文本框" (@text:menu-remove-box))
     ("重排序号" (@text:sort-serial-number))
+    ("定位重叠字" (@text:locate-overlay-text))
     ("文字避让" (@text:handle-overlay-text))
     )))
 (@:define-hotkey "tts" "(@text:menu-speak)")

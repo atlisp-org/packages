@@ -10,4 +10,6 @@
         (:DESCRIPTION . "与CAD进行中文自然语言交互。")
         (:URL . "http://atlisp.cn")
         (:FILES "at-nlp"
-            "corpus")))
+         "corpus"
+	 "corpus-tangent"
+	 )))

@@ -46,7 +46,9 @@
 		    (foreach
 		     verb (append at-nlp:*verb* at-nlp:*entity*
 				  at-nlp:*attribute* at-nlp:*color*
-				  at-nlp:*bool* at-nlp:*compare* at-nlp:*prep*)
+				  at-nlp:*bool* at-nlp:*compare* at-nlp:*prep*
+				  at-nlp:*tangent* at-nlp:*tangent-attribute*
+				  )
 		     (if (null flag)
 			 (cond
 			  ((= (car verb) x)

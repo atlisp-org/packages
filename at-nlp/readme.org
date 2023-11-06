@@ -54,3 +54,22 @@
 
 修改色号为100
 
+* 开发说明
+** at-nlp:parse-corpus
+根据语料库，解析语句，标注词性和转码。
+
+参数：字符串或字符串列表。
+
+示例：
+
+代码：(at-nlp:parse-corpus '("选择所有"))
+
+返回：(("选择" "ssget" . VERB) ("所有" "x" . PREP))
+
+
+** at-nlp:gen-code
+根据语料结果生成autolisp代码
+
+代码: (at-nlp:gen-code(at-nlp:parse-corpus '("选择所有"))))
+
+返回: (SSSETFIRST nil (SETQ TMP-SS (SSGET "x" (QUOTE nil))))

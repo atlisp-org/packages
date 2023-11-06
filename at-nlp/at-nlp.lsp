@@ -119,7 +119,13 @@
     (setq curr-bool "and")
     (setq curr-att nil)
     (while (and att
-		(/= 'attribute (caar att)))
+		(or (/= 'attribute (caar att))
+		    (and (= 'attribute (caar att))
+			 (= curr-att-dxf (cdr (car att))))
+		    ))
+      (if (and (= 'attribute (caar att))
+	       (= curr-att-dxf (cdar att)))
+	  (setq att (cdr att)))
       (cond
 	;; 处理比较对
 	((and (= 'compare (car (nth 0 att)))

@@ -2,8 +2,8 @@
 ;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 向系统中添加菜单 
-(@:add-menu "@试验室" "关于NLP" '(at-nlp:about))
-(defun at-nlp:about ()
+(@:add-menu "@试验室" "关于NLP" '(@nlp:about))
+(defun @nlp:about ()
   (@:help (strcat "使用自然语言与 CAD 进行交互，如 绘图，修改颜色等\n"
 		  "NLP的初始尝试。\n"
 		  "示例:\n 选择所有坐标大于0,0的图元\n"
@@ -11,14 +11,10 @@
 		  "修改直径为200\n"
 		  "修改为绿色\n"
 		  ))
-  ;; 以下部分为你为实现某一功能所编写的代码。
   (princ)
   )
 (defun @nlp:flatten (lst / lst1)
-    "将多维列表展平为一维。单向箔。"
-    "list"
-    "(list:flatten '(a (b c)
-      (d (e))))"
+    "将多层点对列表展平为一维。"
     (foreach x lst
 	     (cond ((or (and
 			 x
@@ -36,29 +32,9 @@
 		   )))
 (defun at-nlp:parse-corpus (lst-str )
   "词语分段并注词性"
-  (defun flatten (lst / lst1)
-    "将多维列表展平为一维。单向箔。"
-    "list"
-    "(list:flatten '(a (b c)
-      (d (e))))"
-    (foreach x lst
-	     (cond ((or (and
-			 x
-			 (atom x)
-			 (/= "" x))
-			(p:dotpairp x)
-			(and (listp x)
-			     (= (length x) 1)
-			     (atom (car x))
-			     (/= "" (car x))
-			     ))
-		    (setq lst1 (append lst1 (list x))))
-		   ((listp x)
-		    (setq lst1 (append lst1 (flatten x))))
-		   )))
   (if (= 'str (type lst-str))
       (setq lst-str (list lst-str)))
-  (flatten
+  (@nlp:flatten
    (mapcar '(lambda (x / res)
 	      (if (and x (/= "" x))
 		  (progn
@@ -127,7 +103,6 @@
 	       (= curr-att-dxf (cdar att)))
 	  (setq att (cdr att)))
       (cond
-	;; 处理比较对
 	((and (= 'compare (car (nth 0 att)))
 	      (null (cadr (nth 1 att))))
 	 (cond
@@ -150,7 +125,6 @@
 		    curr-att)))))
 	 (setq att (cddr att))
 	 )
-	;; bool
 	((=  'bool  (car (nth 0 att)))
 	 (setq curr-bool (cdr (nth 0 att)))
 	 (setq att (cdr att)))
@@ -202,7 +176,6 @@
 
 (defun at-nlp:gen-code (res-corpus / res)
   (setq res (at-nlp:lst-sym res-corpus))
-  (@:debug "INFO" (vl-prin1-to-string res))
   "更新选择集"
   (defun at-nlp:entmod (res / att-pairs)
     (setq att-pairs (at-nlp:parse-attribute res))
@@ -236,7 +209,6 @@
 		     (at-nlp:parse-attribute res)
 		     )))))))
     )
-   ;;(entmod (subst  
    ((string-equal (cdr (assoc 'verb res)) "entmod")
     (cons 'at-nlp:entmod
 	  (list (cons 'quote (list res))))

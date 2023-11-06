@@ -2,7 +2,7 @@
         (:FULL-NAME . "自然语言交互")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.17")
+        (:VERSION . "0.0.18")
         (:LOCALE . "zh")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
@@ -10,6 +10,5 @@
         (:DESCRIPTION . "与CAD进行中文自然语言交互。")
         (:URL . "http://atlisp.cn")
         (:FILES "at-nlp"
-         "corpus"
-	 "corpus-tangent"
-	 )))
+            "corpus"
+            "corpus-tangent")))

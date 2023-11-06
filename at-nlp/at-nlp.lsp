@@ -14,6 +14,26 @@
   ;; 以下部分为你为实现某一功能所编写的代码。
   (princ)
   )
+(defun @nlp:flatten (lst / lst1)
+    "将多维列表展平为一维。单向箔。"
+    "list"
+    "(list:flatten '(a (b c)
+      (d (e))))"
+    (foreach x lst
+	     (cond ((or (and
+			 x
+			 (atom x)
+			 (/= "" x))
+			(p:dotpairp x)
+			(and (listp x)
+			     (= (length x) 1)
+			     (atom (car x))
+			     (/= "" (car x))
+			     ))
+		    (setq lst1 (append lst1 (list x))))
+		   ((listp x)
+		    (setq lst1 (append lst1 (@nlp:flatten x))))
+		   )))
 (defun at-nlp:parse-corpus (lst-str )
   "词语分段并注词性"
   (defun flatten (lst / lst1)
@@ -36,11 +56,12 @@
 		   ((listp x)
 		    (setq lst1 (append lst1 (flatten x))))
 		   )))
+  (if (= 'str (type lst-str))
+      (setq lst-str (list lst-str)))
   (flatten
    (mapcar '(lambda (x / res)
 	      (if (and x (/= "" x))
 		  (progn
-		    ;;(setq res (list str))
 		    (setq flag nil)
 		    (setq res x)
 		    (foreach
@@ -64,8 +85,6 @@
 					     (cons (car verb) (cdr verb))
 					     (at-nlp:parse-corpus (cdr lst-str)))))
 			     (setq res x)))
-			  ;; ((null (vl-string-search (car verb) x))
-			  ;;  (setq res x))
 			  )))
 		    res)
 		x))
@@ -85,44 +104,62 @@
 			   )
 			res-corpus)))
 (defun at-nlp:parse-attribute (att / lst-att )
-  (if (assoc 'color att)
-      (setq lst-att
-	    (cons 
-	     (dxf-pair 62
-		       (itoa (cdr (assoc 'color att))))
-	     lst-att)))
+  (setq att (@nlp:flatten
+	     (mapcar '(lambda(x)
+		       (if(= 'color (car x))
+			  (list
+			   (cons 'attribute 62)
+			   (cons 'compare "=")
+			   (cons (itoa (cdr x)) nil))
+			 x))
+		     att)))
   (while (setq att (member (assoc 'attribute att) att))
-    (if (and (= 'compare (car (nth 1 att)))
-	     (null (cadr (nth 2 att))))
-	(cond
-	 ((= "=" (cdr (nth 1 att)))
-	  (setq lst-att
-		(cons
-		 (dxf-pair (cdr (assoc 'attribute att))
-			   (car (nth 2 att)))
-		 lst-att))
-	  )
-	 (t
-	  (setq lst-att
-		(cons
-		 (cons -4 "<AND")
-		 (cons
-		  (if (= (cdr (assoc 'attribute att)) 10)
-		      (cons -4 (strcat (cdr (nth 1 att))","(cdr (nth 1 att))",*"))
-		    (cons -4 (cdr (nth 1 att))))
+    (setq curr-att-dxf (cdr (car att)))
+    (setq att (cdr att))
+    (setq curr-bool "and")
+    (setq curr-att nil)
+    (while (and att
+		(/= 'attribute (caar att)))
+      (cond
+	;; 处理比较对
+	((and (= 'compare (car (nth 0 att)))
+	      (null (cadr (nth 1 att))))
+	 (cond
+	   ((= "=" (cdr (nth 0 att)))
+	    (setq curr-att
 		  (cons
-		   (dxf-pair (cdr (assoc 'attribute att))
-			     (car (nth 2 att)))
-		   (cons (cons -4 "AND>")
-			 lst-att)))))
-	  ))
-      (setq lst-att
-	    (cons 
-	     (dxf-pair (cdr (assoc 'attribute att))
-		       (car (nth 1 att)))
-	     lst-att))
-      )
-    (setq att (cddr att))
+		   (dxf-pair curr-att-dxf
+			     (car (nth 1 att)))
+		   curr-att))
+	    )
+	   (t
+	    (setq curr-att
+		  (cons
+		   (if (= curr-att-dxf 10)
+		       (cons -4 (strcat (cdr (nth 0 att))","(cdr (nth 0 att))",*"))
+		       (cons -4 (cdr (nth 0 att))))
+		   (cons
+		    (dxf-pair curr-att-dxf
+			      (car (nth 1 att)))
+		    curr-att)))))
+	 (setq att (cddr att))
+	 )
+	;; bool
+	((=  'bool  (car (nth 0 att)))
+	 (setq curr-bool (cdr (nth 0 att)))
+	 (setq att (cdr att)))
+	(t (setq att (cdr att)))
+	))
+    (setq lst-att
+	  (if(> (length curr-att) 1)
+	     (append
+	      (list (cons -4  (strcat "<" curr-bool)))
+	      curr-att
+	      (list (cons -4 (strcat curr-bool">")))
+	      lst-att)
+	     (append
+	      curr-att
+	      lst-att)))
     )
   lst-att)
 (defun dxf-pair (dxf str)
@@ -160,7 +197,7 @@
 (defun at-nlp:gen-code (res-corpus / res)
   (setq res (at-nlp:lst-sym res-corpus))
   (@:debug "INFO" (vl-prin1-to-string res))
-  ;; 更新选择集
+  "更新选择集"
   (defun at-nlp:entmod (res / att-pairs)
     (setq att-pairs (at-nlp:parse-attribute res))
     (mapcar 'entmod 
@@ -174,7 +211,6 @@
 		    (mapcar 'entget (pickset:to-list (ssget "I"))))
 	    )
     (command "regen"))
-  ;; (@:debug "INFO" (vl-prin1-to-string (parse-attribute res)))
   (cond
    ((string-equal (cdr (assoc 'verb res)) "ssget")
     (list
@@ -200,3 +236,6 @@
 	  (list (cons 'quote (list res))))
     )
    ))
+(defun @nlp:nlp(str)
+  (at-nlp:gen-code(at-nlp:parse-corpus (string:to-list str ";")))
+  )

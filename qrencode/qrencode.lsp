@@ -6,14 +6,7 @@
 ;; (@:get-config 'qrencode:first) ;; 获取配置顶的值
 ;; (@:set-config 'qrencode:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单 
-(@:add-menu "文本" "生成二维码" "(qrencode:draw)" )
-(defun qrencode:hello ()
-  (@:help (strcat "这里的内容用于在运行这个功能开始时，对用户进行功能提示。\n"
-		  "如怎么使用，注意事项等。\n当用户设置了学习模式时，会在命令行或弹窗进行提示。\n"
-		  ))
-  ;; 以下部分为你为实现某一功能所编写的代码。
-  (princ)
-  )
+(@:add-menu "文本2" "生成二维码" "(qrencode:draw)" )
 (if (null (findfile (strcat @:*prefix* "bin\\QRencodeForLisp.exe")))
     (@:down-file "bin/QRencodeForLisp.exe"))
 (defun qrencode:draw ()

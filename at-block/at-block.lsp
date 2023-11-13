@@ -25,6 +25,7 @@
    ((_"Insert all block") (@block:insert-all))
    ((_"Select same block") (@block:select-same))
    ((_"Positioning overlapping blocks") (@block:overblocks))
+   ((_"一炸到底") (@block:explode-all))
    ))
 (@:add-menu (_"Block") "块视图切换" "(@block:outline-dialog)")
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")
@@ -376,3 +377,13 @@
   ;; 选择块名。
   
   )
+(defun @block:explode-all (/ blks )
+  (@:help "将框选区域内的块全部分解。")
+  (setq pt1 (getpoint "选择第一点:"))
+  (setq pt2 (getcorner pt1 "请选择区域第二点"))
+  (while (setq blks (ssget "c" pt1 pt2 '((0 . "insert"))))
+    (foreach blk (pickset:to-list blks)
+	     (vla-explode (e2o blk))
+	     (vla-delete (e2o blk)))
+    (vla-Regen *doc* acActiveViewport)))
+  

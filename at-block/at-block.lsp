@@ -382,6 +382,7 @@
   (setq pt1 (getpoint "选择第一点:"))
   (setq pt2 (getcorner pt1 "请选择区域第二点"))
   (while (setq blks (ssget "c" pt1 pt2 '((0 . "insert"))))
+    ;;将属性变为文字
     (foreach blk (pickset:to-list blks)
 	     (vla-explode (e2o blk))
 	     (vla-delete (e2o blk)))

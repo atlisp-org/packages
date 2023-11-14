@@ -2,6 +2,7 @@
   '("@lisp选择"
     ("选择设置" "(@select:setup)")
     ("填充选块" "(at-select:select-blk-by-hatch)")
+    ("线域选块" "(at-select:select-blk-by-lwpl)")
     ("绘线指引" "(@select:line-to-ss)")
     ("ss1" "(c:ss1)")
     ("ss2" "(c:ss2)")

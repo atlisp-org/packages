@@ -126,3 +126,20 @@
   '(lambda (x) (entity:make-line pt (entity:getdxf x 10)))
     (vl-remove nil (pickset:to-list (cadr (ssgetfirst)))
 )))
+(defun at-select:select-blk-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
+                                      selopt) 
+  (@:help '("选择一个单环闭合多段线，选中曲线内的块。"))
+  (setq selopt '("cp" "wp"))
+  (if (/= 1 (@:get-config '@select:onboundary)) 
+      (setq selopt (reverse selopt)))
+  (if (setq lwpl (car (pickset:to-list (ssget ":S" '((0 . "*polyline")(70 . 1))))))
+      (sssetfirst nil
+		  (ssget 
+		   (car selopt)
+		   (curve:get-points lwpl)
+		   (append 
+		    (list '(0 . "insert"))
+		    (if (/= "" (@:get-config '@select:blksname)) 
+			(list 
+			 (cons 2 (@:get-config '@select:blksname)))))))))
+  

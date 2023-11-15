@@ -1,6 +1,6 @@
 (@:def-pkg '((:NAME . "opendcl")
         (:FULL-NAME . "OpenDCL运行时库")
-        (:VERSION . "1.0.17")
+        (:VERSION . "1.0.18")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
         (:DESCRIPTION . "根据CAD运行环境，下载相匹配的OpenDCL运行时支持库和语言包,不用下载全部文件。")

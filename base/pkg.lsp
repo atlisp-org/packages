@@ -1,6 +1,6 @@
 (@:def-pkg '((:NAME . "base")
         (:FULL-NAME . "@lisp function-lib")
-        (:VERSION . "1.5.48")
+        (:VERSION . "1.5.50")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
         (:DESCRIPTION . "Base package, include some funcition for math,draw,string,datetime,layer,entity,curve,pickset etc.")

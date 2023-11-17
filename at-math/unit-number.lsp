@@ -10,7 +10,7 @@
   (setq lst-str (vl-remove-if '(lambda(x)(= "" (vl-string-trim " " x))) lst-str))
   (while (and  lst-str (> (length lst-str) 1))
     (if(and (string:numberp (car lst-str))
-	    (member (cadr lst-str) @:*units*))
+	    (p:phyunitp (cadr lst-str)))
        (setq res
 	     (cons
 	      (cons (read-from-string (car lst-str))

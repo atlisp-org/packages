@@ -82,13 +82,3 @@
       (progn
 	(@:set-config 'at-dim:scale scale1)))
   )
-
-;; (defun @dim:dim-box (/ pts box ent-lw)
-;;   "包围盒周边标注"
-;;   (setq pts (line:get-lwpoints (setq ent-lw (car (entsel "请选择多段线:")))))
-;;   (setq box (entity:getbox ent-lw))
-
-;;   ;; x 向
-;;   (setq pts-x pts)
-;;   (while (> (length pts-x) 1)
-;;     (

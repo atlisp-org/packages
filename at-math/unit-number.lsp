@@ -1,5 +1,5 @@
 (defun @math:unit-number (/ res lst-str)
-  (@:help  "从文字中提取有物理量的数据")
+  (@:help  "从文字中提取有物理量的数据,结果保存至变量@:tmp-result")
   (setq txts (mapcar 'text:get-mtext (pickset:to-list(ssget '((0 . "*text"))))))
   (setq lst-str
 	(apply 'append 

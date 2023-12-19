@@ -1,5 +1,6 @@
 (@:add-menu "统计" "图块名" "(@:stat-block-by-name)")
-(@:add-menu "统计" "属性" "(@:menu-stat-block-by-attribute)")
+(@:add-menu "统计" "块属性" "(@:menu-stat-block-by-attribute)")
+(@:add-menu "统计" "动态块特性" "(@:menu-stat-block-by-properties)")
 (@:add-menu "统计" "单行文本" "(@:menu-stat-text)")
 (@:add-menu "统计" "文数汇总" '(at-math:sumtxt))
 (@:add-menu "统计" "图元统计" "(@math:stat-entity-gui)")
@@ -33,6 +34,23 @@
   (setq blk-name (getstring "请输入要统计的块名称:"))
   (setq attribute-name (getstring "请输入要分类统计的块属性的名称:"))
   (@:stat-block-by-attribute attribute-name blk-name))
+
+(defun @:stat-block-by-properties (prop-name block-name)
+  "统计选中的指定块名中的某一动态块特性的值及数量。"
+  (setq @:tmp-stat-result
+	(stat:stat
+	 (mapcar (function
+		  (lambda (x)
+		   (if (wcmatch (block:get-effectivename x) block-name)
+		       (cdr (assoc prop-name (block:get-dynamic-properties x)))
+		       )))
+		 (pickset:to-list (ssget '((0 . "insert"))))))))
+
+(defun @:menu-stat-block-by-properties (/ blk-name prop-name)
+  (setq blk-name (getstring "请输入要统计的块名称:"))
+  (setq prop-name (getstring "请输入要分类统计的动态块特性的名称:"))
+  (@:stat-block-by-properties prop-name blk-name))
+
 
 (defun @:stat-entity (stat-item ssfilter)
   "stat-item: 统计项目(dxf 组码比如图层 为8 ); ssfilter 选择集过滤"

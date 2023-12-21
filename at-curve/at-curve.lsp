@@ -13,12 +13,12 @@
    ("连线端点" (at-curve:link-end))
    ("统计线长" (at-curve:stat))
    ("单线变双" (at-curve:dualline))
-
+   ("交点编号" (@curve:inters-number))
    ))
 (@:define-config
- '@curve:types
- "*POLYLINE,circle,arc,ellipse,spline,region"
- "可操作的曲线的图元类型")
+    '@curve:types
+    "*POLYLINE,circle,arc,ellipse,spline,region"
+  "可操作的曲线的图元类型")
 (@:define-config '@curve:dualline-width 120.0 "单线变双线的默认宽度")
 (defun at-curve:join (/ l1 l2 pts1 pts2)
   (@:help "选择两条线，从最近端点连接成一条.")

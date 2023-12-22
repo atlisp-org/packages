@@ -18,6 +18,7 @@
    ((_"Block Config") (@block:config))
    ((_"Block Replace") (@block:subst))
    ((_"Block auto numbering") (@block:set-number))
+   ((_"Numbering by route")(@block:numbering-by-route))
    ((_"Anyblock numbering") (@block:set-any-block-number))
    ((_"Block numbering Config") (@block:setup))
    ((_"Set as decomposable") (@block:explodable))

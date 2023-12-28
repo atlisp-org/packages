@@ -21,9 +21,7 @@
 		))
 	 (entity:putdxf ent-mtext 62 3)
 	 (redraw ent-mtext)
-	 (if (setq response
-		   (@:chat-aigc "http://atlisp.org/api/chat"
-				(strcat "{\"strreq\":\""str-req"\"}")))
+	 (if (setq response (@:aigc str-req))
 	     (progn
 	       (setq response
 		     (text:from-markdown response))

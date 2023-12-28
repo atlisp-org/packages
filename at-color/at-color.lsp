@@ -32,7 +32,7 @@
   (vla-regen *DOC* :vlax-true)
   (princ))
 (defun at-color:del-rgb ()
-  ;;(@:help "框选要去除真彩色的图元,用索引色替换。")
+  (@:help "框选要去除真彩色的图元,用索引色替换。")
   (prompt "请框选要去除真彩色的图元:")
   (entity:deldxf (ssget '((-4 . ">") (420 . 0))) 420))
 (defun at-color:change-color (/ fname fn x dclid lin)

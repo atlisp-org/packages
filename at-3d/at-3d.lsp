@@ -15,6 +15,27 @@
   
   (@:prompt "请选择剖切面上的点")
   (setq pts (pickset:to-list(ssget '((0 . "point")))))
+  (setq slicesurface (ui:select-multi "请选择切面方式"
+				      '("1 平行于xy面 " "2 平行于yz面" "3 平行于zx面" "4 垂直于导向线")))
+  (setq pt1 (entity:getdxf pt% 10))
+  (setq surface-xy (list pt1
+			 (mapcar '+ pt1 '(100 0 0))
+			 (mapcar '+ pt1 '(0 100 0))))
+  (setq surface-yz (list pt1
+			 (mapcar '+ pt1 '(0 100 0 ))
+			 (mapcar '+ pt1 '(0 0 100 ))))
+  (setq surface-zx (list pt1
+			 (mapcar '+ pt1 '(0 0 100))
+			 (mapcar '+ pt1 '(100 0 0))))
+  ;;取点所在的曲线，求点到曲线起点的距离，求点处的切线，求点处的垂面。(vlax-curve-getDistAtPoint curve-obj point)
+  (if (and (setq route (ssget pt1))
+	   (setq firstdiv (vlax-curve-getfirstderiv (e2o route) (vlax-curve-getDistAtPoint (e2o route) pt1))))
+      (setq surface-vr (list pt1
+
+			     ))
+    (setq surface-vr nil)
+    )
+			 
   (foreach
    pt% pts
    (push-var)

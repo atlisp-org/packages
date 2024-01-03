@@ -1,4 +1,4 @@
-(@:define-config 'at-structure:layer-beam "S_BEAMDASH,砼梁" "梁图层")
+(@:define-config '@structure:layer-beam "*BEAM*,*梁*" "梁图层")
 ;; (@:add-menu "结构" "*梁编组" "(at-structure:find-beam)")
 (defun at-structure:find-beam (/ ss-beam lst-beam en-line1 en-line2) 
   "找出梁边(成对的平行线)"

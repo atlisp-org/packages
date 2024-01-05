@@ -301,7 +301,7 @@
   (if (and pt-base txt)
       (progn
 	(princ "\n请选择需要查找的区域:")
-	(setq s1 (ssget  (list '(0 . "text") (cons 1 txt))))
+	(setq s1 (ssget  (list '(0 . "text,tch_text") (cons 1 txt))))
 	(mapcar
 	 (function
 	  (lambda (x)

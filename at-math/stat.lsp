@@ -85,8 +85,8 @@
 (defun @:menu-stat-text (/ ssfilter)
   (setq strfilter (getstring "请输入文本通配符(示例 GBZ* ?BZ* LL*): "))
   (if (/= "" strfilter)
-      (setq ssfilter (list  '(0 . "TEXT") (cons 1  strfilter)))
-      (setq ssfilter (list  '(0 . "TEXT"))))
+      (setq ssfilter (list  '(0 . "TEXT,TCH_TEXT") (cons 1  strfilter)))
+      (setq ssfilter (list  '(0 . "TEXT,TCH_TEXT"))))
   (setq @:tmp-stat-result
 	(stat:stat
 	 (mapcar (function

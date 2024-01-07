@@ -24,5 +24,6 @@
     ("定位重叠字" (@text:locate-overlay-text))
     ("文字避让" (@text:handle-overlay-text))
     ("定位压线字" (@text:locate-overline-text))
+    ("翻译文本" (@text:translate))
     )))
 (@:define-hotkey "tts" "(@text:menu-speak)")

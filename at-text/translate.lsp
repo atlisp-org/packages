@@ -1,4 +1,4 @@
-(@:define-config '@text:target-lang "en" "翻译文件的目标语言")
+(@:define-config '@text:target-lang "en" "翻译文本的目标语言，支持en,zh,zht,jp,kor等")
 (defun @text:translate ()
   (@:help '("翻译选中的单行或多行文本"))
   (setq txts (pickset:to-list (ssget '((0 . "*text")))))

@@ -1,5 +1,5 @@
 (@:define-config '@text:target-lang "en" "翻译文本的目标语言，支持en,zh,zht,jp,kor等")
-(defun @text:translate ()
+(defun @text:translate (/ txts boxs res maxdis)
   (@:help '("翻译选中的单行或多行文本"))
   (setq txts (pickset:to-list (ssget '((0 . "*text")))))
   (setq boxs(mapcar '(lambda(x)(entity:getbox x 0)) txts))
@@ -8,7 +8,10 @@
 		       (text:remove-fmt (text:get-mtext x))
 		       "zh" (@:get-config '@text:target-lang)))
 		    txts))
-  (setq maxdis (apply 'max (mapcar '(lambda(x)(distance (car x)(cadr x))) boxs)))
+
+  (setq maxdis (-
+		(apply 'max (mapcar '(lambda(x)(car (cadr x))) boxs))
+		(apply 'min (mapcar '(lambda(x)(car (car x))) boxs))))
   (mapcar
    '(lambda(x y)
      (entity:make-mtext x

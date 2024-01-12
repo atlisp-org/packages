@@ -6,7 +6,7 @@
  )
    
 (defun @layout:pvp-v (/ clayout vps)
-  (@:help "视口坐标随视图")
+  ;;(@:help "视口坐标随视图")
   (setq clayout (getvar "ctab"))
    (setvar "cmdecho" 0)
   (foreach layout (layout:list)
@@ -34,7 +34,7 @@
   )
 
 (defun @layout:pvp-w (/ clayout vps)
-  (@:help "视口坐标随视图")
+  ;;(@:help "视口坐标随视图")
   (setq clayout (getvar "ctab"))
   (setvar "cmdecho" 0)
   (foreach layout (layout:list)
@@ -59,7 +59,7 @@
   (setvar "cmdecho" 1)
   )
 (defun @layout:pvp-ma ()
-  (@:help "将选中的视口的冻结图层设置刷到其它视口。")
+  ;;(@:help "将选中的视口的冻结图层设置刷到其它视口。")
   (@:prompt "请点选源视口:")
   (if (setq src-layout (ssget "_:S:E" '((0 . "VIEWPORT"))))
       (progn

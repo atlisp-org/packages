@@ -136,10 +136,27 @@
       (sssetfirst nil
 		  (ssget 
 		   (car selopt)
-		   (curve:get-points lwpl)
+		   (list:delsame (curve:get-points lwpl) 0.01)
 		   (append 
 		    (list '(0 . "insert"))
 		    (if (/= "" (@:get-config '@select:blksname)) 
 			(list 
 			 (cons 2 (@:get-config '@select:blksname)))))))))
+  
+(defun at-select:select-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
+                                      selopt) 
+  (@:help '("选择一个单环闭合多段线，选中曲线内的图元。"))
+  (setq selopt '("cp" "wp"))
+  (if (/= 1 (@:get-config '@select:onboundary)) 
+      (setq selopt (reverse selopt)))
+  (@:prompt "选择一个单环闭合多段线:")
+  (if (setq lwpl (car (pickset:to-list (ssget ":S" '((0 . "*polyline")(70 . 1))))))
+      (progn
+	(setq en (entity:getdxf (car (entsel"请点选要选择的图元:")) 0))
+	(sssetfirst nil
+		    (ssget 
+		     (car selopt)
+		     (list:delsame (curve:get-points lwpl) 0.01)
+		     (append 
+		      (list (cons 0 en))))))))
   

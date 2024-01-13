@@ -144,7 +144,7 @@
 			 (cons 2 (@:get-config '@select:blksname)))))))))
   
 (defun at-select:select-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
-                                      selopt) 
+                                      selopt en ssfilter) 
   (@:help '("选择一个单环闭合多段线，选中曲线内的图元。"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
@@ -152,11 +152,98 @@
   (@:prompt "选择一个单环闭合多段线:")
   (if (setq lwpl (car (pickset:to-list (ssget ":S" '((0 . "*polyline")(70 . 1))))))
       (progn
-	(setq en (entity:getdxf (car (entsel"请点选要选择的图元:")) 0))
+	(setq en (car (entsel"请点选要选择的图元:")))
+	(setq ssfilter
+	      (if (= "INSERT" (entity:getdxf en 0))
+		  (append 
+		   (list '(0 . "INSERT"))
+		   (list (cons 2 (entity:getdxf en 2))))
+		  (append 
+		   (list (cons 0 (entity:getdxf en 0))))))
 	(sssetfirst nil
 		    (ssget 
 		     (car selopt)
 		     (list:delsame (curve:get-points lwpl) 0.01)
-		     (append 
-		      (list (cons 0 en))))))))
+		     ssfilter)))))
   
+(defun at-select:select-by-hatch (/ ha res all-outer ss-all all-inter ss-in 
+                                      selopt en ssfilter) 
+  (@:help '("选择一个或多填充图形，再选择在填充图形内需要选中的图形。"))
+  (defun boundarypath2pts (bdpath / pts) 
+    "边界路径转栏选点集"
+    ;; 不是多段线的处理
+    (if (= 0 (boole 1 2 (cdr (assoc 92 bdpath)))) 
+      (progn 
+        (setq parts (list:split-by bdpath '(lambda (x) (= (car x) 72))))
+        (setq parts (mapcar 
+                      '(lambda (x) 
+                         (cond 
+                           ((= 2 (cdr (assoc 72 x)))
+                            (list
+                            (cons 
+                              10
+                              (polar 
+                                (cdr (assoc 10 x))
+                                (* 0.5 (+ (cdr (assoc 50 x)) (cdr (assoc 51 x))))
+                                (cdr (assoc 40 x))))))
+                           (t x)))
+                      parts))
+        (setq bdpath (apply 'append parts))))
+    (setq pts (list:delsame 
+                (mapcar 
+                  'cdr
+                  (vl-remove-if-not 
+                    '(lambda (x) (or (= 10 (car x)) (= 11 (car x))))
+                    bdpath))
+                0.001)))
+  (setq selopt '("cp" "wp"))
+  (if (/= 1 (@:get-config '@select:onboundary)) 
+      (setq selopt (reverse selopt)))
+  (@:prompt "请选择填充图形:")
+  (setq hatchs (pickset:to-list (ssget '((0 . "hatch")))))
+  (setq en (car (entsel"请点选要选择的图元:")))
+  (setq ssfilter
+	(if (= "INSERT" (entity:getdxf en 0))
+	    (append 
+	     (list '(0 . "INSERT"))
+	     (list (cons 2 (entity:getdxf en 2))))
+	    (append 
+	     (list (cons 0 (entity:getdxf en 0))))))
+  (setq ss-all nil)
+  (setq ss-in nil)
+  (foreach hatch% hatchs
+	   (setq ha (entget hatch%))
+	   (setq res (cadr (list:split-by ha '(lambda (x) (= (car x) 91)))))
+	   (setq res (car (list:split-by res '(lambda (x) (= (car x) 75)))))
+	   (setq res (cdr (list:split-by res '(lambda (x) (= (car x) 92)))))
+	   ;; (setq res (vl-sort res '(lambda (x y) (> (cdar x) (cdar y)))))
+	   ;; 外部边界路径中的图元
+	   (setq all-outer (vl-remove-if-not 
+			    '(lambda (x) (= 1 (boole 1 1 (cdr (assoc 92 x)))))
+			    res))
+	   (princ (strcat (itoa (length all-outer)) "条外部边界路径"))
+	   (foreach outer all-outer 
+		    ;; debug (entity:make-lwpolyline (boundarypath2pts outer) nil 0 1 0)
+		    (setq blk-all (pickset:to-list 
+                    (ssget 
+                      (car selopt)
+                      (boundarypath2pts outer)
+		      ssfilter
+		      )))
+		    (setq ss-all (list:union ss-all blk-all)))
+	   (setq all-inter (vl-remove-if-not 
+			    '(lambda (x) (= 0 (boole 1 1 (cdr (assoc 92 x)))))
+			    res))
+	   (princ (strcat (itoa (length all-inter)) "条内部孤岛边界路径"))
+	   ;; 内部孤岛边界路径中的图元
+	   (foreach inter all-inter 
+		    (setq blk-in (pickset:to-list 
+				  (ssget 
+				   (cadr selopt)
+				   (boundarypath2pts inter)
+				   ssfilter
+				   )))
+		    (if blk-in 
+			(setq ss-in (list:union ss-in blk-in)))))
+  (setq ss-res (list:difference ss-all ss-in))
+  (sssetfirst nil (pickset:from-list ss-res)))

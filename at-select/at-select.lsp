@@ -38,12 +38,7 @@
     (setq ss5 ss)
     (if ss5 
       (sssetfirst nil ss5))))
-
-
-(defun at-select:select-blk-by-hatch (/ ha res all-outer ss-all all-inter ss-in 
-                                      selopt) 
-  (@:help '("选择一个填充，返回填充内的块。"))
-  (defun boundarypath2pts (bdpath / pts) 
+(defun boundarypath2pts (bdpath / pts) 
     "边界路径转栏选点集"
     ;; 不是多段线的处理
     (if (= 0 (boole 1 2 (cdr (assoc 92 bdpath)))) 
@@ -70,6 +65,26 @@
                     '(lambda (x) (or (= 10 (car x)) (= 11 (car x))))
                     bdpath))
                 0.001)))
+;; 自交点围栏点
+(defun interself-p (pts / flag pt1 pt2 n)
+  (while (and
+	  (null flag)
+	  (>= (length  pts) 4))
+    (setq pt1 (car pts)
+	  pt2 (cadr pts)
+	  n 2)
+    (repeat (- (length pts) 3)
+	    (if (inters pt1 pt2 (nth n pts)(nth (1+ n) pts))
+		(setq flag t))
+	    (setq n (1+ n))
+	    )
+    (setq pts (cdr pts)))
+  flag
+  )
+
+(defun at-select:select-blk-by-hatch (/ ha res all-outer ss-all all-inter ss-in 
+                                      selopt) 
+  (@:help '("选择一个填充，返回填充内的块。"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
@@ -127,16 +142,18 @@
     (vl-remove nil (pickset:to-list (cadr (ssgetfirst)))
 )))
 (defun at-select:select-blk-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
-                                      selopt) 
+                                     selopt pts-fence) 
   (@:help '("选择一个单环闭合多段线，选中曲线内的块。"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
-  (if (setq lwpl (car (pickset:to-list (ssget ":S" '((0 . "*polyline")(70 . 1))))))
+  (if (and (setq lwpl (car (pickset:to-list (ssget ":S" '((0 . "*polyline")(70 . 1))))))
+	   (setq pts-fence (list:delsame (curve:get-points lwpl) 0.01))
+	   (not (interself-p pts-fence)))
       (sssetfirst nil
 		  (ssget 
 		   (car selopt)
-		   (list:delsame (curve:get-points lwpl) 0.01)
+		   pts-fence
 		   (append 
 		    (list '(0 . "insert"))
 		    (if (/= "" (@:get-config '@select:blksname)) 
@@ -144,58 +161,35 @@
 			 (cons 2 (@:get-config '@select:blksname)))))))))
   
 (defun at-select:select-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
-                                      selopt en ssfilter) 
+                                      selopt en ssfilter pts-fence) 
   (@:help '("选择一个单环闭合多段线，选中曲线内的图元。"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
   (@:prompt "选择一个单环闭合多段线:")
   (if (setq lwpl (car (pickset:to-list (ssget ":S" '((0 . "*polyline")(70 . 1))))))
-      (progn
-	(setq en (car (entsel"请点选要选择的图元:")))
-	(setq ssfilter
-	      (if (= "INSERT" (entity:getdxf en 0))
-		  (append 
-		   (list '(0 . "INSERT"))
-		   (list (cons 2 (entity:getdxf en 2))))
-		  (append 
-		   (list (cons 0 (entity:getdxf en 0))))))
-	(sssetfirst nil
-		    (ssget 
-		     (car selopt)
-		     (list:delsame (curve:get-points lwpl) 0.01)
-		     ssfilter)))))
+      (if (and (setq pts-fence (list:delsame (curve:get-points lwpl) 0.01))
+	       (not (interself-p pts-fence)))
+	  (progn
+	    (setq en (car (entsel"请点选要选择的图元:")))
+	    (setq ssfilter
+		  (if (= "INSERT" (entity:getdxf en 0))
+		      (append 
+		       (list '(0 . "INSERT"))
+		       (list (cons 2 (entity:getdxf en 2))))
+		      (append 
+		       (list (cons 0 (entity:getdxf en 0))))))
+	    (sssetfirst nil
+			(ssget 
+			 (car selopt)
+			 pts-fence
+			 ssfilter)))
+	  (@:alert "所选的多段线不是单环的。"))
+      ))
   
 (defun at-select:select-by-hatch (/ ha res all-outer ss-all all-inter ss-in 
                                       selopt en ssfilter) 
   (@:help '("选择一个或多填充图形，再选择在填充图形内需要选中的图形。"))
-  (defun boundarypath2pts (bdpath / pts) 
-    "边界路径转栏选点集"
-    ;; 不是多段线的处理
-    (if (= 0 (boole 1 2 (cdr (assoc 92 bdpath)))) 
-      (progn 
-        (setq parts (list:split-by bdpath '(lambda (x) (= (car x) 72))))
-        (setq parts (mapcar 
-                      '(lambda (x) 
-                         (cond 
-                           ((= 2 (cdr (assoc 72 x)))
-                            (list
-                            (cons 
-                              10
-                              (polar 
-                                (cdr (assoc 10 x))
-                                (* 0.5 (+ (cdr (assoc 50 x)) (cdr (assoc 51 x))))
-                                (cdr (assoc 40 x))))))
-                           (t x)))
-                      parts))
-        (setq bdpath (apply 'append parts))))
-    (setq pts (list:delsame 
-                (mapcar 
-                  'cdr
-                  (vl-remove-if-not 
-                    '(lambda (x) (or (= 10 (car x)) (= 11 (car x))))
-                    bdpath))
-                0.001)))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))

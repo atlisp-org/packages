@@ -17,18 +17,27 @@
 	(setq blks (vl-remove-if '(lambda (x) (/= blkname
 					       (block:get-effectivename x)))
 				 blks))
+	(setq corner (pickset:getbox blks 100))
+	(command "zoom" "w" (car corner) (cadr corner))
+
+	(setq blks-overed nil)
 	(while (and (setq blk (car blks))
 		    (setq box (@block:get-corner blk))
 		    (setq ss-blk
-			  (ssget "c" (car box)(cadr box) (list '(0 . "insert")
-							       (cons 2 blkname))))
-		    (<= (sslength ss-blk)  1))
-	  (setq blks (cdr  blks)))
-	(if (and ss-blk (> (sslength ss-blk) 1))
+			  (pickset:to-list
+			   (ssget "c" (car box)(cadr box)
+				  (list '(0 . "insert")
+					(cons 2 blkname))))))
+	  (if (and ss-blk (> (length ss-blk) 1))
+	      (progn
+		(setq blks-overed (append blks-overed (vl-remove blk ss-blk)))
+		))
+	  (setq blks (vl-remove-if '(lambda(x)(member x ss-blk)) blks)))
+	(if (and blks-overed)
 	    (progn
-	      (setq corner (pickset:getbox ss-blk 10))
+	      (setq corner (pickset:getbox (pickset:from-list blks-overed) 100))
 	      (command "zoom" "w" (car corner) (cadr corner))
-	      (sssetfirst nil (ssadd (ssname ss-blk 0))))
+	      (sssetfirst nil (pickset:from-list blks-overed)))
 	    (princ (@:speak "没有发现重叠块。"))
 	    )))
   (princ))

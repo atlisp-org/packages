@@ -16,7 +16,10 @@
 	       ("特性随层" "laycur")
 	       ("合并图层" "laymgr")
 	       ("删除图层" "laydel")
-	       ("选图进层" "(@layer:ent-to-clayer)")))
+	       ("图层漫游" "laywalk")
+	       ("选图进层" "(@layer:ent-to-clayer)")
+
+	       ))
 ;; (@:add-menu "图层" "常用命令" "(@layer:ent-to-clayer)")
 
 (defun @:get-layer-by-object(ss / layer ti% ename e  )

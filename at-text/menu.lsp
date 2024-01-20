@@ -23,6 +23,7 @@
     ("重排序号" (@text:sort-serial-number))
     ("定位重叠字" (@text:locate-overlay-text))
     ("文字避让" (@text:handle-overlay-text))
+    ("删除重字" (@text:delete-overlay-sametext))
     ("定位压线字" (@text:locate-overline-text))
     ("翻译文本" (@text:translate))
     )))

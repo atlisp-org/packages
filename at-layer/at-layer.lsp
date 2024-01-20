@@ -5,13 +5,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 图层工具集
 
-(@:add-menu "图层" "关闭其它" "(@:layer-off-other)")
-(@:add-menu "图层" "冻结其它" "(@:layer-frozen-other)")
-(@:add-menu "图层" "锁定其它" "(@:layer-lock-other)")
-(@:add-menu "图层" "解锁全部" "(@:layer-unlock)")
-(@:add-menu "图层" "解冻全部" "(@:layer-thaw)")
-(@:add-menu "图层" "图层全开" "layon")
-(@:add-menu "图层" "选图进层" "(@layer:ent-to-clayer)")
+(@:add-menus '("图层"
+	       ("关闭其它" "(@:layer-off-other)")
+	       ("冻结其它" "(@:layer-frozen-other)")
+	       ("锁定其它" "(@:layer-lock-other)")
+	       ("解锁全部" "(@:layer-unlock)")
+	       ("解冻全部" "(@:layer-thaw)")
+	       ("图层全开" "layon")
+	       ("图层恢复" "layerp")
+	       ("特性随层" "laycur")
+	       ("合并图层" "laymgr")
+	       ("删除图层" "laydel")
+	       ("选图进层" "(@layer:ent-to-clayer)")))
+;; (@:add-menu "图层" "常用命令" "(@layer:ent-to-clayer)")
 
 (defun @:get-layer-by-object(ss / layer ti% ename e  )
   "根据所选对象生成图层表"

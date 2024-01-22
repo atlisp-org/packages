@@ -15,6 +15,7 @@
    ("统计线长" (at-curve:stat))
    ("单线变双" (at-curve:dualline))
    ("交点编号" (@curve:inters-number))
+   ("排线相连" (@curve:link-obj))
    ))
 (@:define-config
     '@curve:types

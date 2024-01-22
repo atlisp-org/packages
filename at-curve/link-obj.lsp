@@ -18,9 +18,56 @@
 		    (if (< (apply 'angle box-target) (* 0.25 pi)) "xy" "yx")
 		    0))
 
+  ;;计算中心点
+  (cond
+   ((= (length obj-src) 1)
+    (setq pt-center
+	  (polar 
+	   (point:centroid box-src)
+	   (if (and (< (apply 'angle box-src) (* 0.25 pi))
+		    (< (apply 'angle box-target) (* 0.25 pi)))
+	       (if (<(cadr (point:centroid box-src))
+		     (cadr (point:centroid box-target)))
+		   (* 0.5 pi)
+		 (* 1.5 pi))
+	     (if (<(car (point:centroid box-src))
+		   (car (point:centroid box-target)))
+		 0 pi)
+	     )
+	   (if (and (< (apply 'angle box-src) (* 0.25 pi))
+		    (< (apply 'angle box-target) (* 0.25 pi)))
+	       (* 0.5 (- (cadr (cadr box-src))
+			 (cadr (car box-src))))
+	     (* 0.5 (- (car (cadr box-src))
+		       (car (car box-src))))))))
+   ((= (length obj-target) 1)
+    (setq pt-center
+	  (polar 
+	   (point:centroid box-target)
+	   (if (and (< (apply 'angle box-src) (* 0.25 pi))
+		    (< (apply 'angle box-target) (* 0.25 pi)))
+	       (if (>(cadr (point:centroid box-src))
+		     (cadr (point:centroid box-target)))
+		   (* 0.5 pi)
+		 (* 1.5 pi))
+	     (if (<(car (point:centroid box-src))
+		   (car (point:centroid box-target)))
+		 pi 0)
+	     )
+	   (if (and (< (apply 'angle box-src) (* 0.25 pi))
+		    (< (apply 'angle box-target) (* 0.25 pi)))
+	       (* 0.5 (- (cadr (cadr box-target))
+			 (cadr (car box-target))))
+	     (* 0.5 (- (car (cadr box-target))
+		       (car (car box-target)))))))
+    )
+   ((= (length obj-src) (length obj-target))
+    (setq pt-center
+	  (point:centroid box-src box-target))
+    ))
   ;; entbox ssbox d-out n/2-gap (n/2-gap + turn-center-line)
   (setq gap (@:get-config '@curve:gap))
-  (defun obj-to-centerline (obj inbox outbox centerline / pts startpt pt-box sign order all)
+  (defun obj-to-centerline (obj inbox outbox / pts startpt pt-box sign order all)
     (setq pts nil)
     ;; start
     (setq startpt (point:centroid (entity:getbox obj 0)))
@@ -57,9 +104,9 @@
     ;; 小为真
     (setq sign
 	  (if (< (apply 'angle inbox) (* 0.25 pi))
-	      (if (< (car startpt) (car centerline))
+	      (if (< (car startpt) (car pt-center))
 		  t)
-	    (if (< (cadr startpt) (cadr centerline))
+	    (if (< (cadr startpt) (cadr pt-center))
 		t)))
     (setq all
 	  (if (member obj obj-src)
@@ -72,9 +119,9 @@
 		      (mapcar
 		       '(lambda(x)
 			  (if (< (apply 'angle inbox) (* 0.25 pi))
-			      (if (< (car(point:centroid (entity:getbox x 0))) (car centerline))
+			      (if (< (car(point:centroid (entity:getbox x 0))) (car pt-center))
 				  t)
-			    (if (< (cadr (point:centroid (entity:getbox x 0))) (cadr centerline))
+			    (if (< (cadr (point:centroid (entity:getbox x 0))) (cadr pt-center))
 				t)))
 		       (if (member obj obj-src)
 			   obj-src
@@ -106,9 +153,9 @@
 	       (if (< (apply 'angle inbox) (* 0.25 pi))
 		   (list
 		    (if sign
-			(- (car centerline)
+			(- (car pt-center)
 			   (* gap (- n-less order)))
-		      (+ (car centerline)
+		      (+ (car pt-center)
 			 (* gap (- order n-less)))
 		      )
 		    (cadr (car pts))
@@ -116,9 +163,9 @@
 		   (list
 		    (car (car pts))
 		    (if sign
-			(- (cadr centerline)
+			(- (cadr pt-center)
 			   (* gap (- n-less order)))
-		      (+ (cadr centerline)
+		      (+ (cadr pt-center)
 			 (* gap (- order n-less)))
 		      )
 		    0))
@@ -127,10 +174,10 @@
 	       (if (< (apply 'angle inbox) (* 0.25 pi))
 		   (list
 		    (car (car pts))
-		    (cadr centerline)
+		    (cadr pt-center)
 		    0)
 		 (list
-		  (car centerline)
+		  (car pt-center)
 		  (cadr (car pts))
 		  0)
 		 )
@@ -153,7 +200,7 @@
 		   x
 		   box-target
 		   box-src
-		   (point:centroid box-src)))
+		   ))
 		 )
 		nil (@:get-config '@curve:pin-width) 0 0))
 	     obj-target))
@@ -165,7 +212,7 @@
 		   x
 		   box-src
 		   box-target
-		   (point:centroid box-target))
+		   )
 		  ;; (reverse
 		  ;;  (obj-to-centerline
 		  ;;   (car obj-target)
@@ -183,13 +230,13 @@
 		   x
 		   box-src
 		   box-target
-		   (point:centroid box-target))
+		   )
 		  (reverse
 		   (obj-to-centerline
 		    y
 		    box-target
 		    box-src
-		    (point:centroid box-target))))
+		    )))
 		 nil (@:get-config '@curve:pin-width) 0 0))
 	     obj-src
 	     obj-target))))

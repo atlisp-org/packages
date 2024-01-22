@@ -11,4 +11,5 @@
     ("ss3" "(c:ss3)")
     ("ss4" "(c:ss4)")
     ("ss5" "(c:ss5)")
+    ("·Ö¶Ñ¼Ó¿ò" "(at-select:cluster-box)")
     ))

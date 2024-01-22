@@ -9,10 +9,11 @@
         (:OPENSOURCE . 0)
         (:DESCRIPTION . "Toolset related to curves.")
         (:URL . "http://atlisp.cn")
-        (:FILES "at-curve"
+             (:FILES "at-curve"
             "notch"
             "optimize-lwpl"
             "fillet-road"
             "chain-line"
-            "inters-number"
+         "inters-number"
+	 "link-obj"
             "stat")))

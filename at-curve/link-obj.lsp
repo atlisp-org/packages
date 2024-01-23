@@ -3,6 +3,8 @@
 (@:define-config '@curve:pin-width 50 "引线宽度，多段线的宽度")
 (defun @curve:link-obj (/ gap)
   (@:help  '("用水平及垂直路径线连接原物体到目标物体。当前只支持1对多的关系"))
+  (setq gap (@:get-config '@curve:gap))
+
   (@:prompt "选择源物体:")
   (setq ss-src (ssget))
   (setq box-src (pickset:getbox ss-src 0))
@@ -63,10 +65,27 @@
     )
    ((= (length obj-src) (length obj-target))
     (setq pt-center
-	  (point:centroid box-src box-target))
+	  (point:centroid
+	   (list
+	    (point:centroid box-src)(point:centroid box-target))))
     ))
-  ;; entbox ssbox d-out n/2-gap (n/2-gap + turn-center-line)
-  (setq gap (@:get-config '@curve:gap))
+  ;; 各体与中心点的位置关系
+  (setq n-less
+	(length
+	 (vl-remove nil
+		    (mapcar
+		     '(lambda(x)
+		       (if (< (apply 'angle  (if (> (length obj-src) 1)
+						 box-src
+						 box-target))
+			      (* 0.25 pi))
+			   (if (< (car(point:centroid (entity:getbox x 0))) (car pt-center))
+			       t)
+			   (if (< (cadr (point:centroid (entity:getbox x 0))) (cadr pt-center))
+			       t)))
+		     (if (> (length obj-src) 1)
+			 obj-src
+			 obj-target)))))
   (defun obj-to-centerline (obj inbox outbox / pts startpt pt-box sign order all)
     (setq pts nil)
     ;; start
@@ -101,7 +120,7 @@
 		     (-(car startpt)
 		       (car (car inbox))))))))
     (setq pts (cons pt-box pts))
-    ;; 小为真
+    ;; 辅助参数
     (setq sign
 	  (if (< (apply 'angle inbox) (* 0.25 pi))
 	      (if (< (car startpt) (car pt-center))
@@ -113,31 +132,13 @@
 	      (length obj-src)
 	    (if (member obj obj-target)
 		(length obj-target))))
-    (setq n-less
-	  (length
-	   (vl-remove nil
-		      (mapcar
-		       '(lambda(x)
-			  (if (< (apply 'angle inbox) (* 0.25 pi))
-			      (if (< (car(point:centroid (entity:getbox x 0))) (car pt-center))
-				  t)
-			    (if (< (cadr (point:centroid (entity:getbox x 0))) (cadr pt-center))
-				t)))
-		       (if (member obj obj-src)
-			   obj-src
-			 obj-target)))))
-    (setq n-more (- all n-less))
-	   
     (setq order
 	  (if (member obj obj-src)
 	      (vl-position obj obj-src)
 	    (if (member obj obj-target)
 		(vl-position obj obj-target))))
-    (setq all
-	  (if (member obj obj-src)
-	      (length obj-src)
-	    (if (member obj obj-target)
-		(length obj-target))))
+
+    ;; 引脚点或出入口端点;; 物体为双数时
     (setq pts (cons
 	       (polar
 		pt-box
@@ -145,10 +146,12 @@
 		(* gap
 		   (if sign
 		       (- n-less order)
-		     (- order n-less))
+		       (if (= 0 (rem all 2))
+			   (1+ (- order n-less))
+			   (- order n-less)))
 		   ))
 	       pts))
-    ;; 到集束
+    ;; 到集束排的点
     (setq pts (cons
 	       (if (< (apply 'angle inbox) (* 0.25 pi))
 		   (list
@@ -170,6 +173,7 @@
 		      )
 		    0))
 	       pts))
+    ;; 到中心位置的点
     (setq pts (cons
 	       (if (< (apply 'angle inbox) (* 0.25 pi))
 		   (list

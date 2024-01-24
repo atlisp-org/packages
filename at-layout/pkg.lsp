@@ -2,11 +2,14 @@
         (:FULL-NAME . "@lisp布局")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.10")
+        (:VERSION . "0.0.11")
         (:LOCALE . "CHS")
         (:CATEGORY . "布局")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
         (:DESCRIPTION . "布局工具")
         (:URL . "http://atlisp.cn")
-        (:FILES "pvp")))
+        (:FILES "pvp"
+            "merge"
+            "stat-vp"
+            "purge")))

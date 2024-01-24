@@ -22,6 +22,7 @@
 (@:add-menu "标注" "选线标斜率" "(at-dim:menu-dim-slope)" )
 (@:add-menu "标注" "坐标标注" "(at-dim:menu-zbbz)" )
 (@:add-menu "标注" "设置比例" "(at-dim:set-scale)" )
+(@:add-menu "标注" "标等分弧长" "(at-dim:menu-dimarc-div)" )
 
 (defun @dim:setup (/ res)
   (setq res 

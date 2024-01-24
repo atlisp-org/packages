@@ -2,7 +2,10 @@
  '("布局"
    ("视口正交坐标"(@layout:pvp-v))
    ("视口世界坐标"(@layout:pvp-w))
-   ("视口冻结刷"(@layout:pvp-ma)))
+   ("视口冻结刷"(@layout:pvp-ma))
+   ("合并布局"(@layout:merge))
+   ("清理空布局"(@layout:purge))
+   )
  )
    
 (defun @layout:pvp-v (/ clayout vps)

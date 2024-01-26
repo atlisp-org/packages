@@ -1,11 +1,11 @@
 (defun @layout:ssgetx (layout)
-  "é€‰æ‹©å¸ƒå±€ä¸­é™¤ä¸»è§†å£ä¸ªçš„æ‰€æœ‰å›¾å…ƒ"
+  "Ñ¡Ôñ²¼¾ÖÖĞ³ıÖ÷ÊÓ¿Ú¸öµÄËùÓĞÍ¼Ôª"
   (ssget "x" (list (cons 410 layout)
 		   '(-4 . "<NOT")'(-4 . "<AND")
 		   '(0 . "viewport")'(69 . 1)
 		   '(-4 . "AND>")'(-4 . "NOT>"))))
 (defun @layout:merge (/ merge-layout)
-  "åˆå¹¶å¸ƒå±€å†…å®¹åˆ°ç¬¬ä¸€ä¸ªå¸ƒå±€ä¸­ã€‚"
+  "ºÏ²¢²¼¾ÖÄÚÈİµ½µÚÒ»¸ö²¼¾ÖÖĞ¡£"
   (defun merge-layout (x / ss bref box)
     (if(and (setq ss (@layout:ssgetx x))
 	    (setq box (pickset:getbox ss 0))
@@ -34,13 +34,10 @@
    (merge-layout layout%))
   (vla-purgeall *DOC*)
   
-  ;; æ‰“å¼€æ‰€æœ‰è§†å£
+  ;; ´ò¿ªËùÓĞÊÓ¿Ú
   (setq ss (ssget "x"
 		  (list '(0 . "viewport")
-			'(-4 . "<NOT")
-			'(69 . 1)
-			'(-4 . "NOT>")
-			)))
+			'(-4 . "<NOT")'(69 . 1)'(-4 . "NOT>"))))
   (mapcar '(lambda(x)
 	    (vla-put-viewporton x :vlax-true))
 	  (pickset:to-vlalist ss))

@@ -1,21 +1,17 @@
-(defun base:info ()
-  "基础库"
-  (princ)
-  )
-(@:load "base/condition")
-(@:load "base/format")
+(if (= "AutoCAD" @:cad-platform)
+    (progn
+      (@:load "base/condition")
+      (@:load "base/format")))
 
-(setq vlap p:vlap
-      stringp p:stringp
-      realp p:realp
-      enamep p:enamep
-      variantp p:variantp
-      picksetp p:picksetp
-      intp p:intp
-      safearrayp p:safearrayp
-      ename-listp p:ename-listp
-      vla-listp p:vla-listp
-      string-listp p:string-listp
-      dotpairp p:DotPairp
-      curvep p:curvep
-      )
+
+(defun @:check-consistency (contents order / ti% tmplist)
+  "检查某键值的唯一性。返回值为整数。"
+  (setq tmplist '())
+  (foreach ti% contents 
+	   (if (= nil (member (cdr (assoc order ti%)) tmplist))
+	       (setq tmplist (append tmplist (list (cdr (assoc order ti%)))))))
+  (length tmplist)
+  )
+
+(setq @:get-eval-code @:get-exec-permit)
+(setq @:run-from-web @:load-remote)

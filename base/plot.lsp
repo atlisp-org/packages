@@ -145,7 +145,7 @@
 	))
   
   
-  (push-var)
+  (push-var nil)
   (setvar "filedia" 0)
   ;;(command "ucs" "w")
   (setvar "osmode" 0)
@@ -172,7 +172,7 @@
 (defun plot:to-dev ( tufu zongheng p1 p2 
 		    / minpoint maxpoint oldosmode )
   "打印到设备。参数： 图幅 纵横 第一点 第二点 输出文件名。"
-  (push-var)
+  (push-var nil)
   (setvar "filedia" 0)
   ;;(command "ucs" "w")
   (setvar "osmode" 0)

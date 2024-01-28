@@ -2,7 +2,7 @@
         (:FULL-NAME . "法兰工具")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.8")
+        (:VERSION . "0.0.9")
         (:LOCALE . "chs")
         (:CATEGORY . "管道")
         (:REQUIRED . "base")

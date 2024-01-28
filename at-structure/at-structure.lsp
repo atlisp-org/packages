@@ -144,7 +144,7 @@
 		   ss)
 	    ))
 
-  (push-var)  
+  (push-var nil)  
   (command "ucs" "w")
   (command "_.undo" "_m")
   (prompt "\n***移动光标至钢筋文字查看！***")

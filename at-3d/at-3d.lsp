@@ -26,7 +26,7 @@
   ;; 			     ))
   ;;   (setq surface-vr nil)
   ;;   )
-  (push-var)
+  (push-var nil)
   (foreach
    pt% pts
    (setq pt1 (entity:getdxf pt% 10))
@@ -117,7 +117,7 @@
   (setq len-pre (/ (curve:length route) n))
   (setq slicesurfaces (mapcar 'read (ui:select-multi "请选择切面方式"
    				      '("1 平行于xy面 " "2 平行于yz面" "3 平行于zx面" "4 垂直于导向线"))))
-  (push-var)
+  (push-var nil)
   (setq i 0)
   (repeat
    (1- n)

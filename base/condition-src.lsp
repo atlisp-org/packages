@@ -9,8 +9,7 @@
   (_"push vars list"))
   
 (defun push-var (varlst)
-  ;;"当前变量状态入栈,参数支持，单个字符串，符号。"
-  ;;(setq varlst (vl-remove-if 'null (varlst)))
+  "当前变量状态入栈, 参数支持单个字符串，符号，nil(默认变量表) "
   (if (= 'list (type (car varlst)))
       (setq varlst (car varlst)))
   (if (or (null (car varlst))
@@ -43,14 +42,3 @@
   ;;"恢复保存的变量"
   (mapcar '(lambda (x) (setvar (car x) (cdr x))) (car @:*var-stack*))
   (setq @:*var-stack* (cdr @:*var-stack*)))
-
-;;局部变量开始
-;; (defun *error* (msg)
-;;   (pop-var) ;还原系统变量
-;;   (if (< 18 (atoi (substr (getvar "acadver") 1 2)))  ;判断CAD版本，高版本用command-s
-;;       (command-s "undo" "e") ;CAD高版本用
-;;       (command "undo" "e")) ;低版本用
-;;   (or (wcmatch (strcase msg) "*BREAK,*CANCEL*,*EXIT*")
-;;       (princ (strcat "\n** Error: " msg " **")))
-;;   (princ)
-;;   )

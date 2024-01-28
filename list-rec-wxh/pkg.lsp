@@ -2,7 +2,7 @@
         (:FULL-NAME . "统计矩形宽高")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.11")
+        (:VERSION . "0.0.12")
         (:LOCALE . "CHS")
         (:CATEGORY . "定向开发")
         (:OPENSOURCE . 0)

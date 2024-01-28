@@ -21,7 +21,7 @@
     )
     ;;(setvar "cmdecho" 1) ;打开命令行提示
     (princ msg))
-  (push-var)
+  (push-var nil)
 
   (if 
     (setq a (ssget 

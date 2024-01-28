@@ -118,7 +118,7 @@
   
 (@:add-menu "数学" "插编号1~20" "(@:insert-numbers)")
 (defun @:insert-numbers (/ mulu-path fp% mulu% i% insert-point% page-number% zhuanye ml-ruler)
-  (push-var)
+  (push-var nil)
   (@:help "插入一序列编号,行距 800 。配合批量加减功能可方便的编辑序号。")
   (setq insert-point% (getpoint "请输入编号插入起始点："))
   (setq i% 0)(setq page-number% 1)

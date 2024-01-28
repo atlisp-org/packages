@@ -78,7 +78,7 @@
   )
 (defun @text:insert-time( / ctextstyle cl )
   "插入时间戳记"
-  (push-var )
+  (push-var nil)
 					;(setvar "textstyle" "vitalhz350")
   (setq pt0 (getpoint "\n请指定插入位置点 :"))
   (setq date0 (menucmd "M=$(edtime,$(getvar,date),YYYY.MO.DD hh:mm:ss)"))

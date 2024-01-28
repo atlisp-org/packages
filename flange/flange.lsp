@@ -9,7 +9,7 @@
 
 (defun flange:make (pt-c DN Dw Dd Ds n t1 / ents)
   "pt-c 中心点 DN 公称直径(内径),Dw外径，Dd,螺丝间距,Ds 螺丝直径,n 螺丝个数，t1厚度"
-  (push-var)
+  (push-var nil)
   (setvar "osmode" 0)
   (if (tblsearch "block" (strcat "Flange-DN" (itoa DN)))
       (block:insert (strcat "Flange-DN" (itoa DN)) "" pt-c 0 1)

@@ -32,7 +32,7 @@
 			      (entity:getdxf title% 40)))
 		    '((0 . "text")(1 . "*管道*,*架空*,*引上*"))))))
     
-  (push-var)
+  (push-var nil)
   (setvar "osmode" 0)
   (setq res nil)
   (setq titles (pickset:to-list(ssget '((0 . "text")(1 . "*-*")))))
@@ -125,7 +125,7 @@
 			   (entity:getdxf title% 40))
 		    (list '(0 . "text")(cons 1 (@:get-config '@lab:stat-item)))))))
     
-  (push-var)
+  (push-var nil)
   (setvar "osmode" 0)
   (setq res nil)
   (setq titles (pickset:to-list(ssget '((0 . "text")(1 . "*-*")))))

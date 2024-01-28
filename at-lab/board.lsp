@@ -1,7 +1,7 @@
 (@:add-menu "@试验室" "加固板" '(at-lab:board))
 (defun at-lab:board (/ lines pts-b pts-t flag thickness bottom-board top-board startpt endpt rt rb db) 
   (@:help '("当前版本只支持两条等长的水平直线"))
-  (push-var)
+  (push-var nil)
   (setvar "OSMODE" 0)
   ;; 选择两条水平直线
   (setq lines (ssget '((0 . "LINE"))))

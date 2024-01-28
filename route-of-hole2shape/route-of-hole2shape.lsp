@@ -38,7 +38,7 @@
   )
 
 (defun route-of-hole2shape:menu-route (/ pt-c pt-pl clockwise offset i new-pts ent-shape)
-  (push-var)
+  (push-var nil)
   (setq pt-c (entity:getdxf (car (entsel "选择圆：")) 10))
   (setvar "osmode" 16383)
   (setq pt-pl (getpoint pt-c "选择多段线:"))
@@ -160,7 +160,7 @@
   ;; (princ new-convexity)(princ "\n")
   ;; (princ new-pts)(princ "\n")
   ;;(curve:ptoncurve pt ;; 顺时针为 红，逆时针为
-  (push-var)
+  (push-var nil)
   (setvar "osmode" 0)
   (entity:putdxf
    (entity:putdxf 

@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp结构工具")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.16")
+        (:VERSION . "0.0.17")
         (:LOCALE . "CHS")
         (:CATEGORY . "结构")
         (:REQUIRED . "base")

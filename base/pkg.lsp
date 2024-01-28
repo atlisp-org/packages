@@ -9,6 +9,4 @@
         (:LICENSES . "LGPL")
         (:URL . "http://atlisp.cn")
         (:FILES "base"
-		"condition"
-		"format"
 		"plot")))

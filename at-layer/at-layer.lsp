@@ -6,11 +6,11 @@
 ;;; 图层工具集
 
 (@:add-menus '("图层"
-	       ("关闭其它" "(@:layer-off-other)")
-	       ("冻结其它" "(@:layer-frozen-other)")
-	       ("锁定其它" "(@:layer-lock-other)")
-	       ("解锁全部" "(@:layer-unlock)")
-	       ("解冻全部" "(@:layer-thaw)")
+	       ("关闭其它" "(@layer:off-other)")
+	       ("冻结其它" "(@layer:frozen-other)")
+	       ("锁定其它" "(@layer:lock-other)")
+	       ("解锁全部" "(@layer:unlock-all)")
+	       ("解冻全部" "(@layer:thaw-all)")
 	       ("图层全开" "layon")
 	       ("图层恢复" "layerp")
 	       ("特性随层" "laycur")
@@ -22,7 +22,7 @@
 	       ))
 ;; (@:add-menu "图层" "常用命令" "(@layer:ent-to-clayer)")
 
-(defun @:get-layer-by-object(ss / layer ti% ename e  )
+(defun @layer:get-layers-by-ss(ss / layer ti% ename e)
   "根据所选对象生成图层表"
   (setq layer nil )
   (setq ti% 0)
@@ -44,16 +44,16 @@
           )))
   layer
   )
-(defun @:layer-off-other( /  ss  layer  lay-act-list )
+(defun @layer:off-other( /  ss  layer  lay-act-list )
   "关闭其它图层"
   (setq lay-act-list "")
   (setq ss (ssget ))
   (foreach layer (layer:list)
            ;;; 如果当前图层不在 所选对象中，设当前层为第一个当前对象层
-           (if (= (member (getvar "clayer")  (@:get-layer-by-object ss)) nil)
-               (setvar "clayer" (car  (@:get-layer-by-object ss)) )
+           (if (= (member (getvar "clayer")  (@layer:get-layers-by-ss ss)) nil)
+               (setvar "clayer" (car  (@layer:get-layers-by-ss ss)) )
              )
-           (if (= (member layer (@:get-layer-by-object ss)) nil)
+           (if (= (member layer (@layer:get-layers-by-ss ss)) nil)
                (if (= lay-act-list "")
                    (setq lay-act-list layer)
                  (setq lay-act-list (strcat lay-act-list "," layer)
@@ -62,16 +62,16 @@
   (command "-layer" "off" lay-act-list "")
   )
 
-(defun @:layer-frozen-other( /  ss  layer  lay-act-list )
+(defun @layer:frozen-other( /  ss  layer  lay-act-list )
   "冻结其它图层"
   (setq lay-act-list "")
   (setq ss (ssget ))
   (foreach layer (layer:list)
            ;;; 如果当前图层不在 所选对象中，设当前层为第一个当前对象层
-           (if (= (member (getvar "clayer")  (@:get-layer-by-object ss)) nil)
-               (setvar "clayer" (car  (@:get-layer-by-object ss)) )
+           (if (= (member (getvar "clayer")  (@layer:get-layers-by-ss ss)) nil)
+               (setvar "clayer" (car  (@layer:get-layers-by-ss ss)) )
              )
-           (if (= (member layer (@:get-layer-by-object ss)) nil)
+           (if (= (member layer (@layer:get-layers-by-ss ss)) nil)
                (if (= lay-act-list "")
                    (setq lay-act-list layer)
                  (setq lay-act-list (strcat lay-act-list "," layer)
@@ -80,16 +80,16 @@
   (command "-layer" "f" lay-act-list "")
   )
 
-(defun @:layer-lock-other( /  ss  layer  lay-act-list )
+(defun @layer:lock-other( /  ss  layer  lay-act-list )
   "锁定其它图层"
   (setq lay-act-list "")
   (setq ss (ssget ))
   (foreach layer (layer:list)
            ;;; 如果当前图层不在 所选对象中，设当前层为第一个当前对象层
-           (if (= (member (getvar "clayer")  (@:get-layer-by-object ss)) nil)
-               (setvar "clayer" (car  (@:get-layer-by-object ss)) )
+           (if (= (member (getvar "clayer")  (@layer:get-layers-by-ss ss)) nil)
+               (setvar "clayer" (car  (@layer:get-layers-by-ss ss)) )
              )
-           (if (= (member layer (@:get-layer-by-object ss)) nil)
+           (if (= (member layer (@layer:get-layers-by-ss ss)) nil)
                (if (= lay-act-list "")
                    (setq lay-act-list layer)
                  (setq lay-act-list (strcat lay-act-list "," layer)
@@ -98,7 +98,7 @@
   (command "-layer" "lo" lay-act-list "")
   )
 
-(defun @:layer-unlock( /  ss  layer  lay-act-list )
+(defun @layer:unlock-all( /  ss  layer  lay-act-list )
    "解锁全部图层"
   (setq lay-act-list "")
   (foreach layer (layer:list)
@@ -110,7 +110,7 @@
   (command "-layer" "u" lay-act-list "")
   )
 
-(defun @:layer-thaw( /  layer  lay-act-list )
+(defun @layer:thaw-all( /  layer  lay-act-list )
   "解冻全部图层"
   (setq lay-act-list "")
   (foreach layer (layer:list)

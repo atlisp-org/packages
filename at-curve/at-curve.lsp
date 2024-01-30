@@ -120,6 +120,7 @@
 	       (setq pts (cdr pts))
 	       ))
 	    ((= "LWPOLYLINE" (entity:getdxf curve 0))
+	     ;; 少闭合曲线最后段
 	     (setq i 0)
 	     (setq bulges (curve:pline-convexity curve))
 	     (repeat (curve:subsegments curve)

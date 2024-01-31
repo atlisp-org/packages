@@ -1,9 +1,3 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; vitaltools -- 唯他工具集
-;;; Author: VitalGG<vitalgg@gmail.com>
-;;; Description: 基于 AutoLisp/VisualLisp 开发的绘图工具集
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; 图层工具集
 
 (@:add-menus '("图层"
 	       ("关闭其它" "(@layer:off-other)")
@@ -58,8 +52,10 @@
                    (setq lay-act-list layer)
                  (setq lay-act-list (strcat lay-act-list "," layer)
              )
-           )))
+		 )))
+  (setvar "cmdecho" 0)
   (command "-layer" "off" lay-act-list "")
+  (setvar "cmdecho" 1)
   )
 
 (defun @layer:frozen-other( /  ss  layer  lay-act-list )
@@ -156,6 +152,3 @@
 (defun c:ent2clayer ()
   (@layer:ent-to-clayer))
 
-;; Local variables:
-;; coding: gb2312
-;; End: 

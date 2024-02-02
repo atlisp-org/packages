@@ -15,7 +15,6 @@
 		(nth (atoi (get_tile "ctbName")) list-ctb))
   (done_dialog))
 (setq list-ctb '())
-;;(@:add-menu "输出打印" "选打印样式表" "(@:set-ctb)")
 (defun @:set-ctb (/ path-ctb fn dcl_fp update-ctb-dialog) 
   "选择打印样式表。"
   (defun update-ctb-dialog ()

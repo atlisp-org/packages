@@ -1,12 +1,15 @@
 (@:def-pkg '((:NAME . "base")
-        (:FULL-NAME . "@lisp function-lib")
-        (:VERSION . "1.5.52")
+        (:FULL-NAME . "@lisp support env")
+        (:VERSION . "1.5.54")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:DESCRIPTION . "Base package, include some funcition for math,draw,string,datetime,layer,entity,curve,pickset etc.")
+        (:DESCRIPTION . "Base package, support @lisp package to run.")
         (:CATEGORY . "Lib")
         (:OPENSOURCE . 1)
         (:LICENSES . "LGPL")
         (:URL . "http://atlisp.cn")
         (:FILES "base"
-		"plot")))
+            "format"
+            "condition"
+            "foracad"
+            "plot")))

@@ -1,5 +1,5 @@
-(defun at-dim:cutting-symbol (/ *error* bu code data dcl_re dclname dlg 
-			      stream tempname tex loopit
+(defun at-dim:cutting-symbol (/ *error* code data dcl_re dclname dlg cscale
+			      stream tempname cutn loopit  
 			      l0
 			      cutline1 cuttext1
 			      cutline2 cuttext2
@@ -38,12 +38,12 @@
 	(repeat (setq i (sslength ss))
 		(setq lst (cons (cdr (assoc 1 (entget (ssname ss (setq i (1- i)))))) lst))
 		)
-	(setq tex (chr (1+ (ascii (car (vl-sort lst '>))))))
+	(setq cutn   (chr (1+ (ascii (car (vl-sort lst '>))))))
 	)
-      (setq tex "A")
+      (setq cutn  "A")
       )
-  (if (null bi)
-      (setq bi (getvar "DIMSCALE"))
+  (if (null cscale)
+      (setq cscale (getvar "DIMSCALE"))
       )
   (while (progn
 	   (initget "S")
@@ -71,9 +71,9 @@
 		       )
 		 (setq dcl_re (load_dialog dclname))
 		 (new_dialog "RENAME" dcl_re)
-		 (set_tile "e03" (rtos (* bi 4)))
+		 (set_tile "e03" (rtos (* cscale 4)))
 		 (set_tile "e04" "同字高")
-		 (action_tile "e02" "(setq bi ( * 0.25 (atof (get_tile \"e03\"))))(done_dialog )")
+		 (action_tile "e02" "(setq cscale ( * 0.25 (atof (get_tile \"e03\"))))(done_dialog )")
 		 (setq dlg (start_dialog))
 		 (unload_dialog dcl_re)
 		 (vl-file-delete dclname)
@@ -86,7 +86,7 @@
   (if (ssget "c" pt0 pt0)
       (setq pt0 (getpoint pt0 "指定起点："))
       )
-  (princ (strcat "\n指定箭头方向,或符号:<" tex ">,右键向视"))
+  (princ (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键向视"))
   
   (setq l0
 	(entity:putdxf
@@ -99,23 +99,23 @@
   (setq cutline1
 	(entity:putdxf
 	 (entity:make-lwpolyline
-	  (list (polar pt0 (* 0.5 pi) (* bi 4))
+	  (list (polar pt0 (* 0.5 pi) (* cscale 4))
 		pt0
-		(polar pt0 0 (* bi 2))
-		(polar pt0 0 (* bi 4))
+		(polar pt0 0 (* cscale 2))
+		(polar pt0 0 (* cscale 4))
 		)
 	  nil
 	  (list
-	   (* bi 0.3)
+	   (* cscale 0.3)
 	   0
-	   (list (* bi 0.3) 0))
+	   (list (* cscale 0.3) 0))
 	  0 0)
 	 62 4)
 	)
   
   (setq cuttext1
-	(entity:make-text tex  pt0 (* bi 4)  0 0.8 0  "MM"))
-  (xdata:put cuttext1 "CUTNUMBER" tex)
+	(entity:make-text cutn   pt0 (* cscale 4)  0 0.8 0  "MM"))
+  (xdata:put cuttext1 "CUTNUMBER" cutn)
   
   
   (entmake (cdr (entget cutline1)))
@@ -147,17 +147,17 @@
 	      (setq s (strcase (chr data)))
 	      (if (wcmatch s "[A-Z]")
 		  (progn
-		    (setq tex s)
-		    (entity:putdxf curttext1 1 tex)
-		    (entity:putdxf curttext2 1 tex)
+		    (setq cutn  s)
+		    (entity:putdxf curttext1 1 cutn)
+		    (entity:putdxf curttext2 1 cutn)
 		    ;; (entity:putdxf curttext3 1 tex)
 		    )
 		  )
 	      (if (= cutmode 1)
-		  (princ (strcat "\n指定箭头方向,或符号:<" tex ">,右键向视"))
+		  (princ (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键向视"))
 		  )
 	      (if (= cutmode 3)
-		  (princ (strcat "\n指定箭头方向,或符号:<" tex ">,右键剖视"))
+		  (princ (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键剖视"))
 		  )
 	      )
 	     ((= code 3)	       ; 鼠标左击,标索引详图号
@@ -167,8 +167,8 @@
 		 (setq cutmode 2)
 		 (entdel l0)
 		 (setq cutdetail-text
-		       (entity:make-text (strcat tex"-"tex) data (* bi 4)  0 0.8 0  "MM"))
-
+		       (entity:make-text (strcat cutn "-"cutn ) data (* cscale 4)  0 0.8 0  "MM"))
+		 
 		 (setq box (text:box cutdetail-text))
 		 (setq cutdetail-l1
 		       (entity:make-lwpolyline
@@ -176,10 +176,10 @@
 				  (polar
 				   x
 				   (* 1.5 pi)
-				   (* bi 0.5)))
+				   (* cscale 0.5)))
 				(list (car box)(cadr box)))
 			nil
-			(* bi 0.2)
+			(* cscale 0.2)
 			0 0))
 		 (setq cutdetail-l2
 		       (entity:make-lwpolyline
@@ -187,7 +187,7 @@
 				  (polar
 				   x
 				   (* 1.5 pi)
-				   (* bi 1)))
+				   (* cscale 1)))
 				(list (car box)(cadr box)))
 			nil
 			0 
@@ -201,7 +201,7 @@
 		 (setq cutmode 2)
 		 (entdel l0)
 		 (setq cutdetail-text
-		       (entity:make-text (strcat tex"-"tex) data (* bi 4)  0 0.8 0  "MM"))
+		       (entity:make-text (strcat tex"-"tex) data (* cscale 4)  0 0.8 0  "MM"))
 		 
 		 (setq box (text:box cutdetail-text))
 		 (setq cutdetail-l1
@@ -210,10 +210,10 @@
 				  (polar
 				   x
 				   (* 1.5 pi)
-				   (* bi 0.5)))
+				   (* cscale 0.5)))
 				(list (car box)(cadr box)))
 			nil
-			(* bi 0.2)
+			(* cscale 0.2)
 			0 0))
 		 (setq cutdetail-l2
 		       (entity:make-lwpolyline
@@ -221,7 +221,7 @@
 				  (polar
 				   x
 				   (* 1.5 pi)
-				   (* bi 1.5)))
+				   (* cscale 1.5)))
 				(list (car box)(cadr box)))
 			nil
 			0 
@@ -253,29 +253,29 @@
 		    (entity:putdxf ent0 11 pt)
 		    ;;
 		    (curve:put-points cutline1
-				      (list (polar pt0 r (* bi 4))
+				      (list (polar pt0 r (* cscale 4))
 					    nil
-					    (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* bi 2))
-					    (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* bi 4)))
+					    (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* cscale 2))
+					    (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* cscale 4)))
 
 				      )
 		    ;; 文字位置
 		    (entity:putdxf cuttext1  11
 				   ;; (polar  ;; 剖向线上
-				   ;;  (point:mid pt0 (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* bi 4)))
+				   ;;  (point:mid pt0 (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* cscale 4)))
 				   ;;  (m:fix-angle(+ pi r))
 				   ;;  (* 1.2(entity:getdxf cuttext1 40)))
-				   (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* bi 6)))
+				   (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* cscale 6)))
 		    
 		    (entity:putdxf cuttext1 50 (m:fix-angle (- r (* 0.5 pi))))
 		    (curve:put-points cutline2
-				      (list (polar pt(m:fix-angle(+ r pi)) (* bi 4))
+				      (list (polar pt(m:fix-angle(+ r pi)) (* cscale 4))
 					    pt
-					    (polar pt (m:fix-angle (- r (* 0.5 pi))) (* bi 2))
-					    (polar pt (m:fix-angle (- r (* 0.5 pi))) (* bi 4)))
+					    (polar pt (m:fix-angle (- r (* 0.5 pi))) (* cscale 2))
+					    (polar pt (m:fix-angle (- r (* 0.5 pi))) (* cscale 4)))
 				      )
 		    (entity:putdxf cuttext2 11
-				   (polar pt (m:fix-angle (- r (* 0.5 pi))) (* bi 6)))
+				   (polar pt (m:fix-angle (- r (* 0.5 pi))) (* cscale 6)))
 		    (entity:putdxf cuttext2 50(m:fix-angle (- r (* 0.5 pi))))
 		    ))
 	      (if (= cutmode 2)
@@ -287,14 +287,14 @@
 						(polar
 						 x
 						 (* 1.5 pi)
-						 (* bi 0.5)))
+						 (* cscale 0.5)))
 					      (list (car box)(cadr box))))
 		    (curve:put-points cutdetail-l2
 				      (mapcar '(lambda(x)
 						(polar
 						 x
 						 (* 1.5 pi)
-						 (* bi 1.5)))
+						 (* cscale 1.5)))
 					      (list (car box)(cadr box))))
 		    ))
 	      (if (= cutmode 3);;向视
@@ -307,11 +307,11 @@
 			       (polar
 				pt0
 				(m:fix-angle(+ pi r))
-				(* bi 8))
+				(* cscale 8))
 			       (polar
 				pt0
 				(m:fix-angle(+ pi r))
-				(* bi 12)))))
+				(* cscale 12)))))
 		    (if cutdrection-text
 			(progn
 			  (entity:putdxf
@@ -322,9 +322,9 @@
 				       (polar
 					pt0
 					(m:fix-angle(+ pi r))
-					(* bi 5)))
+					(* cscale 5)))
 			    (+ r (* 0.5 pi))
-			    (* bi 5)
+			    (* cscale 5)
 			    ))
 			  (entity:putdxf cutdrection-text 50
 					 (m:fix-angle r)))
@@ -334,7 +334,7 @@
 	     ((or(= code 11) (= code 25));; 鼠标右击
 	      (if (= cutmode 1)
 		  (progn
-		    (princ (strcat "\n指定箭头方向,或符号:<" tex ">,右键剖视"))
+		    (princ (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键剖视"))
 		    (setq cutmode 3)
 		    ;;删除剖视
 		    (mapcar '(lambda(x)
@@ -358,30 +358,30 @@
 			  (setq cutdrection-l
 				(entity:make-lwpolyline
 				 (list pt0
-				       (polar pt0 pi (* bi 8))
-				       (polar pt0 pi (* bi 12)))
+				       (polar pt0 pi (* cscale 8))
+				       (polar pt0 pi (* cscale 12)))
 				 nil
-				 (list (* bi 0.3)
-				       (list (* bi 1) 0))
+				 (list (* cscale 0.3)
+				       (list (* cscale 1) 0))
 				 0 0)
 				)
 			  (setq cutdrection-text
-				(entity:make-text (strcat tex "向")
+				(entity:make-text (strcat cutn  "向")
 						  (polar
 						   (point:mid
 						    pt0
-						    (polar pt0 pi (* bi 8)))
+						    (polar pt0 pi (* cscale 8)))
 						   (- (angle
 						       pt0
-						       (polar pt0 pi (* bi 6)))
+						       (polar pt0 pi (* cscale 6)))
 						      (* 0.5 pi))
-						   (* bi 3)
+						   (* cscale 3)
 						   )
-						  (* bi 4)  0 0.8 0  "MM"))
+						  (* cscale 4)  0 0.8 0  "MM"))
 			  )))
 		  (if (= cutmode 3)
 		      (progn
-			(princ (strcat "\n指定箭头方向,或符号:<" tex ">,右键向视"))
+			(princ (strcat "\n指定箭头方向,或符号:<" cutn ">,右键向视"))
 			(setq cutmode 1)
 			(mapcar '(lambda(x)
 				  (if (e2o x)

@@ -51,32 +51,16 @@
 		  "S"
 		  )
 	       (progn
-		 (setq dclname (cond
-				 ((setq tempname (vl-filename-mktemp "re-dcl-tmp.dcl")
-					filen (open tempname "w")
-					)
-				  (foreach stream '("\n" "RENAME:dialog {\n"
-						    "    label = \"设置\" ;\n" "        :edit_box {  label = \" 文字高度:\";    key = \"e03\" ;  }\n"
-						    "        :edit_box {  label = \" 箭头大小:\";    key = \"e04\" ;  }\n" "    :row {\n"
-						    "        :button {is_default = true ; key = \"e02\" ; label = \"确认\" ; }\n"
-						    "        :button { is_cancel = true ; key = \"btn_cancle\" ; label = \"取消\" ; }\n"
-						    "         }\n" "}\n"
-						    )
-					   (princ stream filen)
-					   )
-				  (close filen)
-				  tempname
-				  )
-				 )
-		       )
-		 (setq dcl_re (load_dialog dclname))
-		 (new_dialog "RENAME" dcl_re)
-		 (set_tile "e03" (rtos (* cscale 4)))
-		 (set_tile "e04" "同字高")
-		 (action_tile "e02" "(setq cscale ( * 0.25 (atof (get_tile \"e03\"))))(done_dialog )")
-		 (setq dlg (start_dialog))
-		 (unload_dialog dcl_re)
-		 (vl-file-delete dclname)
+		 (dcl:dialog "cuttingSetting")
+		 (dcl:input "txtHeight" "文字高度" "3.5" "")
+		 (dcl:input "arrowSize" "箭头大小" "3.5" "")
+		 (dcl:dialog-end-ok-cancel)
+		 (dcl:new "cuttingSetting")
+		 (set_tile "txtHeight" (rtos (* cscale 4)))
+		 (set_tile "arrowSize" (rtos (* cscale 4)))
+		 (action_tile "accept"
+			      "(setq cscale ( * 0.25 (atof (get_tile \"txtHeight\"))))(done_dialog )")
+		 (dcl:show)
 		 )
 	       (setq pt0 s)
 	       )
@@ -201,7 +185,7 @@
 		 (setq cutmode 2)
 		 (entdel l0)
 		 (setq cutdetail-text
-		       (entity:make-text (strcat tex"-"tex) data (* cscale 4)  0 0.8 0  "MM"))
+		       (entity:make-text (strcat cutn"-"cutn) data (* cscale 4)  0 0.8 0  "MM"))
 		 
 		 (setq box (text:box cutdetail-text))
 		 (setq cutdetail-l1

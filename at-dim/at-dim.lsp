@@ -23,6 +23,7 @@
 (@:add-menu "标注" "坐标标注" "(at-dim:menu-zbbz)" )
 (@:add-menu "标注" "设置比例" "(at-dim:set-scale)" )
 (@:add-menu "标注" "标等分弧长" "(at-dim:menu-dimarc-div)" )
+(@:add-menu "标注" "剖切符号" "(at-dim:cutting-symbol)")
 
 (defun @dim:setup (/ res)
   (setq res 

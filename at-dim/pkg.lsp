@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp±ê×¢")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.14")
+        (:VERSION . "0.0.15")
         (:LOCALE . "CHS")
         (:CATEGORY . "±ê×¢")
         (:REQUIRED . "base")
@@ -11,4 +11,5 @@
         (:URL . "http://atlisp.cn")
         (:FILES "at-dim"
             "coord"
+            "cutting-symbol"
             "dimarc")))

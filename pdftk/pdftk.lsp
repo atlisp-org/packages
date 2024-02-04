@@ -17,7 +17,7 @@
 (@:add-menu "出图排版" "PDF加水印" "(pdftk:menu-background)" )
 (@:add-menu "出图排版" "解密PDF" "(pdftk:menu-decrypt)" )
 (@:add-menu "出图排版" "加密PDF" "(pdftk:menu-encrypt)" )
-
+(@:patch-pgp)
 (defun pdftk:setup (/ res)
   "pdf tools"
   (setq res 

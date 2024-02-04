@@ -11,14 +11,20 @@
 	    )
 	(if(null (findfile path))
 	   (@:mkdir (@:path path))
-	   )
+	  )
+	(@:prompt "请选择要写出的块:")
+	(setq blk-lst
+	      (mapcar 
+	       '(lambda(x)
+		  (entity:getdxf x 2))
+	       (pickset:to-list (ssget '((0 . "insert"))))))
 	(setq lst
 	      (vl-remove-if  '(lambda(x)
 			       (or 
 				(wcmatch x "`**")
 				(wcmatch x "_*")))
-			     (block:list)))
-	
+			     blk-lst))
+	;; TODO: 可以列出选择
 	(foreach blk lst
 		 (setq fn (strcat path (chr 92) blk))
 		 (if (findfile (strcat fn ".dwg"))

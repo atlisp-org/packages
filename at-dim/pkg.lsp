@@ -1,13 +1,13 @@
 (@:def-pkg '((:NAME . "at-dim")
-        (:FULL-NAME . "@lisp±кЧў")
+        (:FULL-NAME . "@lispж ‡жіЁ")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.17")
+        (:VERSION . "0.0.18")
         (:LOCALE . "CHS")
-        (:CATEGORY . "±кЧў")
+        (:CATEGORY . "ж ‡жіЁ")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "±кЧўР±ВКЈ¬ПЯі¤Ј¬Чш±к±кЧўµИ")
+        (:DESCRIPTION . "ж ‡жіЁж–њзЋ‡пјЊзєїй•їпјЊеќђж ‡ж ‡жіЁз­‰")
         (:URL . "http://atlisp.cn")
         (:FILES "at-dim"
             "coord"

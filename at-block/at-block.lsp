@@ -10,6 +10,7 @@
 (@:define-config '@block:sort-order "xY" "排序规则。xyXY任意两两组合,例如yX,y在前表示y坐标优先，大X表示从右到左排序。")
 (@:define-config '@block:sort-fuzz "10,10" "按位置排序时，坐标的容差。逗号用于分隔不同轴的容差。")
 (@:define-config '@block:size 1000 "用于检测块重叠时，块的最大尺寸。")
+(@:define-config '@block:lib "D:/Design/standard/lib/" "以块方式管理的图库路径。")
 ;; (@:get-config 'at-arch:first) ;; 获取配置顶的值
 ;; (@:set-config 'at-arch:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单
@@ -29,6 +30,7 @@
    ((_"Positioning overlapping blocks") (@block:overblocks))
    ((_"定位任意重叠块") (@block:overblocks2))
    ((_"一炸到底") (@block:explode-all))
+   ("写块到库" (@block:write-file))
    ))
 (@:add-menu (_"Block") "块视图切换" "(@block:outline-dialog)")
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")

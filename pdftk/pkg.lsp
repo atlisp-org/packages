@@ -2,7 +2,7 @@
         (:FULL-NAME . "PDF处理工具")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.2.6")
+        (:VERSION . "0.2.7")
         (:LOCALE . "CHS")
         (:CATEGORY . "图档管理")
         (:REQUIRED . "base")

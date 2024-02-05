@@ -1,24 +1,24 @@
-;; Ö±Ïß¿ªÈ±¿Ú
+;; ç›´çº¿å¼€ç¼ºå£
 
-;; Ñ¡³õÊ¼Ö±ÏßL£¬Ö±Ïß¶ËµãµÄ´¹Ö±Ïß L2.
-;; L ¶ËµãÍËÖÁpt-l , L2 ²ğ·ÖÎªÁ½¸ö£¬pta-l2~pt-a, pt-b~ptb-l2.
-;; »æÖÆ pt-l~pt-a,pt-l~pt-b
-;; TODO: ÑÕÉ« Í¼²ã ÏßĞÍ£¬¿í¶È Í¬Ô­Ïß
-(@:define-config '@curve:notch-type 0 "Éú³ÉÈ±¿ÚµÄÄ¬ÈÏÀàĞÍ£¬0 Ğ¨ĞÎ£¬1 Ô²»¡")
-(@:define-config '@curve:notch-width 80 "Éú³ÉÈ±¿ÚµÄÄ¬ÈÏ¿í¶È")
-(@:define-config '@curve:notch-height 50 "Éú³ÉÈ±¿ÚµÄÄ¬ÈÏÉî¶È")
+;; é€‰åˆå§‹ç›´çº¿Lï¼Œç›´çº¿ç«¯ç‚¹çš„å‚ç›´çº¿ L2.
+;; L ç«¯ç‚¹é€€è‡³pt-l , L2 æ‹†åˆ†ä¸ºä¸¤ä¸ªï¼Œpta-l2~pt-a, pt-b~ptb-l2.
+;; ç»˜åˆ¶ pt-l~pt-a,pt-l~pt-b
+;; TODO: é¢œè‰² å›¾å±‚ çº¿å‹ï¼Œå®½åº¦ åŒåŸçº¿
+(@:define-config '@curve:notch-type 0 "ç”Ÿæˆç¼ºå£çš„é»˜è®¤ç±»å‹ï¼Œ0 æ¥”å½¢ï¼Œ1 åœ†å¼§")
+(@:define-config '@curve:notch-width 80 "ç”Ÿæˆç¼ºå£çš„é»˜è®¤å®½åº¦")
+(@:define-config '@curve:notch-height 50 "ç”Ÿæˆç¼ºå£çš„é»˜è®¤æ·±åº¦")
 
 
 (defun at-curve:notch (/ args)
-  (@:help '("ÔÚ¶¡×ÖÏß½»µã´¦Éú³ÉÈ±¿Ú¡£"))
+  (@:help '("åœ¨ä¸å­—çº¿äº¤ç‚¹å¤„ç”Ÿæˆç¼ºå£ã€‚"))
   (if (setq args (ui:input
-		  "È±¿Ú²ÎÊı"
+		  "ç¼ºå£å‚æ•°"
 		  (list
-		   (list "È±¿Ú¿í¶È" (@:get-config '@curve:notch-width))
-		   (list "È±¿ÚÉî¶È" (@:get-config '@curve:notch-height)))))
+		   (list "ç¼ºå£å®½åº¦" (@:get-config '@curve:notch-width))
+		   (list "ç¼ºå£æ·±åº¦" (@:get-config '@curve:notch-height)))))
       (progn
-	(setq width (cdr (assoc "È±¿Ú¿í¶È" args)))
-	(setq height (cdr (assoc "È±¿ÚÉî¶È" args)))
+	(setq width (cdr (assoc "ç¼ºå£å®½åº¦" args)))
+	(setq height (cdr (assoc "ç¼ºå£æ·±åº¦" args)))
 	(@:set-config '@curve:notch-width width)
 	(@:set-config '@curve:notch-height height)
 	(setq lst-line (pickset:to-list (ssget '((0 . "line")))))

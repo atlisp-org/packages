@@ -1,31 +1,32 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (@:add-menus
- '("ÇúÏß¹¤¾ß"
-   ("ÇúÏßÅäÖÃ" (@curve:setup))
-   ("Ë«Ïß»¥Á¬" (at-curve:join))
-   ("ÓÅ»¯¶à¶ÎÏß" (at-curve:optimize-lwpl))
-   ("Æ½»¬Â·¿Ú" (at-curve:fillet-road))
-   ("ÇúÏßÃæ»ı" (at-curve:area))
-   ("ÇúÏß³¤¶È" (at-curve:length))
-   ("Ã¿¶Î³¤¶È" (at-curve:per-length))
-   ("´¹ÏßÈ±¿Ú" (at-curve:notch))
-   ("Á¬Ïß¶Ëµã" (at-curve:link-end))
-   ("Í³¼ÆÏß³¤" (at-curve:stat))
-   ("µ¥Ïß±äË«" (at-curve:dualline))
-   ("½»µã±àºÅ" (@curve:inters-number))
-   ("ÅÅÏßÏàÁ¬" (@curve:link-obj))
+ '("æ›²çº¿å·¥å…·"
+   ("æ›²çº¿é…ç½®" (@curve:setup))
+   ("åŒçº¿äº’è¿" (at-curve:join))
+   ("ä¼˜åŒ–å¤šæ®µçº¿" (at-curve:optimize-lwpl))
+   ("å¹³æ»‘è·¯å£" (at-curve:fillet-road))
+   ("æ›²çº¿é¢ç§¯" (at-curve:area))
+   ("æ›²çº¿é•¿åº¦" (at-curve:length))
+   ("æ¯æ®µé•¿åº¦" (at-curve:per-length))
+   ("å‚çº¿ç¼ºå£" (at-curve:notch))
+   ("è¿çº¿ç«¯ç‚¹" (at-curve:link-end))
+   ("ç»Ÿè®¡çº¿é•¿" (at-curve:stat))
+   ("å•çº¿å˜åŒ" (at-curve:dualline))
+   ("äº¤ç‚¹ç¼–å·" (@curve:inters-number))
+   ("æ’çº¿ç›¸è¿" (@curve:link-obj))
+   ("æ ·æ¡è½¬å¤šæ®µ" (@curve:spline2lwpl))
    ))
 (@:define-config
     '@curve:types
     "*POLYLINE,circle,arc,ellipse,spline,region"
-  "¿É²Ù×÷µÄÇúÏßµÄÍ¼ÔªÀàĞÍ")
-(@:define-config '@curve:dualline-width 120.0 "µ¥Ïß±äË«ÏßµÄÄ¬ÈÏ¿í¶È")
+  "å¯æ“ä½œçš„æ›²çº¿çš„å›¾å…ƒç±»å‹")
+(@:define-config '@curve:dualline-width 120.0 "å•çº¿å˜åŒçº¿çš„é»˜è®¤å®½åº¦")
 (defun @curve:setup (/ res)
-  "¹¤³Ì¹ÜÀí»ù±¾ĞÅÏ¢"
+  "å·¥ç¨‹ç®¡ç†åŸºæœ¬ä¿¡æ¯"
   (setq res 
-	(ui:input "ÅäÖÃĞÅÏ¢"
+	(ui:input "é…ç½®ä¿¡æ¯"
 		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
 			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "`@CURVE:*")))
 					(if @:*config.db*
@@ -34,7 +35,7 @@
    	   (@:set-config (read (car res%)) (cdr res%)))
   )
 (defun at-curve:join (/ l1 l2 pts1 pts2)
-  (@:help "Ñ¡ÔñÁ½ÌõÏß£¬´Ó×î½ü¶ËµãÁ¬½Ó³ÉÒ»Ìõ.")
+  (@:help "é€‰æ‹©ä¸¤æ¡çº¿ï¼Œä»æœ€è¿‘ç«¯ç‚¹è¿æ¥æˆä¸€æ¡.")
   (setq curves (pickset:to-list (ssget '((0 . "*line")))))
   (setq pts1 (curve:pline-3dpoints (car curves)))
   (setq pts2 (curve:pline-3dpoints (cadr curves)))
@@ -59,8 +60,8 @@
 
 
 (defun at-curve:area (/ lst-curve pts)
-  (@:help '("±ê×¢ÇúÏßµÄµÄ±ÕºÏÃæ»ı"))
-  (@:prompt "ÇëÑ¡Ôñ±ÕºÏÇúÏß:")
+  (@:help '("æ ‡æ³¨æ›²çº¿çš„çš„é—­åˆé¢ç§¯"))
+  (@:prompt "è¯·é€‰æ‹©é—­åˆæ›²çº¿:")
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
   (foreach curve lst-curve
@@ -77,8 +78,8 @@
             1))
   (princ))
 (defun at-curve:length (/ lst-curve pts)
-  (@:help '("ÔÚÇúÏßµÄÖĞµã,±ê×¢ÇúÏßµÄ³¤¶È"))
-  (@:prompt "ÇëÑ¡ÔñÇúÏß:")
+  (@:help '("åœ¨æ›²çº¿çš„ä¸­ç‚¹,æ ‡æ³¨æ›²çº¿çš„é•¿åº¦"))
+  (@:prompt "è¯·é€‰æ‹©æ›²çº¿:")
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
   (foreach curve lst-curve
@@ -95,8 +96,8 @@
             1))
   (princ))
 (defun at-curve:per-length (/ lst-curve pts)
-  (@:help '("±ê×¢ÇúÏßµÄÃ¿¶Î³¤¶È"))
-  (@:prompt "ÇëÑ¡ÔñÇúÏß:")
+  (@:help '("æ ‡æ³¨æ›²çº¿çš„æ¯æ®µé•¿åº¦"))
+  (@:prompt "è¯·é€‰æ‹©æ›²çº¿:")
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
   (foreach curve lst-curve
@@ -120,7 +121,7 @@
 	       (setq pts (cdr pts))
 	       ))
 	    ((= "LWPOLYLINE" (entity:getdxf curve 0))
-	     ;; ÉÙ±ÕºÏÇúÏß×îºó¶Î
+	     ;; å°‘é—­åˆæ›²çº¿æœ€åæ®µ
 	     (setq i 0)
 	     (setq bulges (curve:pline-convexity curve))
 	     (repeat (curve:subsegments curve)
@@ -176,10 +177,10 @@
 	     )))
   (princ))
 (defun at-curve:dualline ()
-  (@:help '("½«µ¥ÏßË«ÏòÆ«ÒÆ³ÉË«Ïß¡£"))
+  (@:help '("å°†å•çº¿åŒå‘åç§»æˆåŒçº¿ã€‚"))
   (if (null (member "DASHDOT" (tbl:list "linetype")))
       (vla-load *LTS* "DASHDOT" (findfile "acadiso.lin")))
-  (setq dualline-width (getdist (strcat"\n"(@:speak"ÊäÈëË«Ïß¿í¶È")"<"(rtos (@:get-config '@curve:dualline-width) 2 3)">£º")))
+  (setq dualline-width (getdist (strcat"\n"(@:speak"è¾“å…¥åŒçº¿å®½åº¦")"<"(rtos (@:get-config '@curve:dualline-width) 2 3)">ï¼š")))
   (if dualline-width (@:set-config @curve:dualline-width dualline-width))
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))

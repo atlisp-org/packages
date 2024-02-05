@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp linetype")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.5")
+        (:VERSION . "0.1.6")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")

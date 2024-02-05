@@ -23,8 +23,8 @@
 	loopit t)
   (setvar "CELTYPE" "BYLAYER")
   (if (null (tblsearch "ltype" "DASHED"))
-      (setq err (vl-catch-all-apply 'vla-Load (list (vla-get-Linetypes *doc*) "DASHED" "acad.lin")))
-    )
+      (setq err (vl-catch-all-apply 'vla-Load (list (vla-get-Linetypes *doc*) "DASHED" *linefile*)))
+      )
   (if (setq ss (ssget "X" '((0 . "TEXT") (1 . "[A-Z]")
 			    (-3 ("CUTNUMBER"))
 			    )))
@@ -42,7 +42,7 @@
     )
   (while (progn
 	   (initget "S")
-	   (if (= (setq s (getpoint (strcat "\n指定剖切线起始点,或捕捉对齐点,或[设置(S)]:")))
+	   (if (= (setq s (getpoint (@:speak "指定剖切线起始点,或捕捉对齐点,或[设置(S)]:")))
 		  "S"
 		  )
 	       (progn
@@ -63,9 +63,9 @@
 	   )
     )
   (if (ssget "c" pt0 pt0)
-      (setq pt0 (getpoint pt0 "指定起点："))
+      (setq pt0 (getpoint pt0 (@:speak"指定起点：")))
     )
-  (princ (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键向视"))
+  (@:prompt (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键向视"))
   
   (setq l0
 	(entity:putdxf
@@ -113,16 +113,16 @@
 		 (progn
 		   (if (= (getvar "ORTHOMODE") 0)
 		       (progn
-			 (prompt "\n<正交 开>")
+			 (@:prompt "<正交 开>")
 			 (setvar "orthomode" 1)
 			 )
 		     (progn
-		       (prompt "\n<正交 关>")
+		       (@:prompt "<正交 关>")
 		       (setvar "orthomode" 0)
 		       )
 		     )
 		   )
-	       )
+		 )
 	     (setq s (strcase (chr data)))
 	     (if (wcmatch s "[A-Z]")
 		 (progn
@@ -133,13 +133,13 @@
 		   )
 	       )
 	     (if (= cutmode 1)
-		 (princ (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键向视"))
+		 (@:prompt(strcat "\n指定箭头方向,或符号:<" cutn  ">,右键向视"))
 	       )
 	     (if (= cutmode 3)
-		 (princ (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键剖视"))
+		 (@:prompt(strcat "\n指定箭头方向,或符号:<" cutn  ">,右键剖视"))
 	       )
 	     )
-	    ((= code 3)	       ; 鼠标左击,标索引详图号
+	    ((= code 3)	    ; 鼠标左击,标索引详图号
 	     (redraw)
 	     (cond
 	      ((= cutmode 1)
@@ -205,9 +205,9 @@
 		      nil
 		      0 
 		      0 0))
+	       (@:prompt "\n指定插入点:")
 	       )
 	      )
-	     (princ "\n指定插入点:")
 	     )
 	    ((= code 5)   ;; 鼠标移动
 	     (if (= (getvar "ORTHOMODE") 1)
@@ -240,10 +240,6 @@
 				     )
 		   ;; 文字位置
 		   (entity:putdxf cuttext1  11
-				  ;; (polar  ;; 剖向线上
-				  ;;  (point:mid pt0 (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* cscale 4)))
-				  ;;  (m:fix-angle(+ pi r))
-				  ;;  (* 1.2(entity:getdxf cuttext1 40)))
 				  (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* cscale 6)))
 		   
 		   (entity:putdxf cuttext1 50 (m:fix-angle (- r (* 0.5 pi))))
@@ -315,7 +311,7 @@
 	    ((or(= code 11) (= code 25));; 鼠标右击
 	     (if (= cutmode 1)
 		 (progn
-		   (princ (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键剖视"))
+		   (@:prompt (strcat "\n指定箭头方向,或符号:<" cutn  ">,右键剖视"))
 		   (setq cutmode 3)
 		   ;;删除剖视
 		   (mapcar '(lambda(x)
@@ -347,7 +343,7 @@
 		   )
 	       (if (= cutmode 3)
 		   (progn
-		     (princ (strcat "\n指定箭头方向,或符号:<" cutn ">,右键向视"))
+		     (@:prompt (strcat "\n指定箭头方向,或符号:<" cutn ">,右键向视"))
 		     (setq cutmode 1)
 		     ;; line1 text1 改剖视形态
 		     (or r (setq r (* 0.5 pi)))
@@ -390,7 +386,6 @@
 	 cutdetail-text
 	 cutdetail-l1
 	 cutdetail-l2
-	 cutdrection-l
-	 cutdrection-text))
+	 ))
   (princ)
   )

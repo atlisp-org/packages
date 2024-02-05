@@ -1,26 +1,26 @@
 (defun at-curve:stat (/ curves res classname dxfno)
-  (@:help "·ÖÀà»ã×ÜÇúÏßµÄ³¤¶È¡£")
+  (@:help "åˆ†ç±»æ±‡æ€»æ›²çº¿çš„é•¿åº¦ã€‚")
   (setq curves (pickset:to-list (ssget '((0 . "*line,lwpolyline,arc,circle")))))
-  (setq classname (ui:select "ÇëÑ¡Ôñ·ÖÀàÌõÄ¿" '("Í¼²ã""ÑÕÉ«ºÅ" "ÏßĞÍ" "¶àÏß±ÈÀı" "Ö¸¶¨×éÂë")))
-  (if (= classname "Ö¸¶¨×éÂë")
-      (setq dxfno (cdr (assoc "×éÂëºÅ" (ui:input "ÇëÊäÈëÒªÍ³¼ÆµÄ dxf ×éÂëºÅ" '(("×éÂëºÅ" 8 "Òª½øĞĞ·ÖÀàÍ³¼ÆµÄ×éÂëºÅ")))))))
+  (setq classname (ui:select "è¯·é€‰æ‹©åˆ†ç±»æ¡ç›®" '("å›¾å±‚""é¢œè‰²å·" "çº¿å‹" "å¤šçº¿æ¯”ä¾‹" "æŒ‡å®šç»„ç ")))
+  (if (= classname "æŒ‡å®šç»„ç ")
+      (setq dxfno (cdr (assoc "ç»„ç å·" (ui:input "è¯·è¾“å…¥è¦ç»Ÿè®¡çš„ dxf ç»„ç å·" '(("ç»„ç å·" 8 "è¦è¿›è¡Œåˆ†ç±»ç»Ÿè®¡çš„ç»„ç å·")))))))
   (print dxfno)
   (if classname
       (progn
-	(setq lst-class (list '("Í¼²ã" . entity:get-layer)
-			  '("ÑÕÉ«ºÅ" . entity:get-color)
-			  '("ÏßĞÍ" . entity:get-linetype)
-			  '("¶àÏß±ÈÀı" . (lambda(x)(entity:getdxf x 40)))
-			  (cons "Ö¸¶¨×éÂë" '(lambda(x)(entity:getdxf x dxfno)))
+	(setq lst-class (list '("å›¾å±‚" . entity:get-layer)
+			  '("é¢œè‰²å·" . entity:get-color)
+			  '("çº¿å‹" . entity:get-linetype)
+			  '("å¤šçº¿æ¯”ä¾‹" . (lambda(x)(entity:getdxf x 40)))
+			  (cons "æŒ‡å®šç»„ç " '(lambda(x)(entity:getdxf x dxfno)))
 			  ))
 	(setq res (mapcar '(lambda(x)(cons
 				      ((eval (cdr (assoc classname lst-class))) x)
 				      (curve:length x)))
 			  curves))
 	(if res
-	    (table:make (getpoint (@:speak "Çëµã»÷±í¸ñ²åÈëµã:"))
-			"³¤¶È»ã×Ü±í"
-			(list classname "×Ü³¤")
+	    (table:make (getpoint (@:speak "è¯·ç‚¹å‡»è¡¨æ ¼æ’å…¥ç‚¹:"))
+			"é•¿åº¦æ±‡æ€»è¡¨"
+			(list classname "æ€»é•¿")
 			(mapcar '(lambda(x)
 				   (list (car x)(cdr x)))
 				(vl-sort (stat:classify res)

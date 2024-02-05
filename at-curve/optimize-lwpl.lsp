@@ -1,6 +1,6 @@
-(@:define-config '@curve:optimize-angle 0.001 "¿ÉÓÅ»¯¶à¶ÎÏßµÄ¼Ğ½Ç²î¡£")
+(@:define-config '@curve:optimize-angle 0.001 "å¯ä¼˜åŒ–å¤šæ®µçº¿çš„å¤¹è§’å·®ã€‚")
 (defun at-curve:optimize-lwpl (/ optimize-lwpl)
-  (@:help '("ÓÅ»¯¶à¶ÎÏß¶¥µã¡£µ±Á¬Ğø¶àµã¹²Ïß»ò¹²Ô²Ê±£¬¼õÉÙ¶¥µã¡£"))
+  (@:help '("ä¼˜åŒ–å¤šæ®µçº¿é¡¶ç‚¹ã€‚å½“è¿ç»­å¤šç‚¹å…±çº¿æˆ–å…±åœ†æ—¶ï¼Œå‡å°‘é¡¶ç‚¹ã€‚"))
   (setq tmp-fuzz (@:get-config '@curve:optimize-angle))
   (setq lwpls (pickset:to-list(ssget '((0 . "lwpolyline")))))
   (mapcar 'curve:optimize-lwpl lwpls))

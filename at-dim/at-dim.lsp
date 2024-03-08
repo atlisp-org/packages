@@ -2,7 +2,6 @@
 ;; This file was created by @lisp DEV-tools
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; define a first config item  'at-dim:first for package at-dim 's configitem first 
-
 (@:define-config '@dim:layer "dim-coor" "标注图层，为空时为当前图层")
 (@:define-config '@dim:arrow "" "箭头样式")
 (@:define-config '@dim:units 3 "标注精度，小数位")

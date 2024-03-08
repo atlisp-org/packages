@@ -1,11 +1,11 @@
 (@:def-pkg '((:NAME . "fonts")
-        (:FULL-NAME . "@lisp×ÖÌå¿â")
+        (:FULL-NAME . "@lispå­—ä½“åº“")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "1.0.26")
-        (:DESCRIPTION . "CAD ³£ÓÃ×ÖÌå¡£°üº¬ÌìÕý¡¢PKPM¡¢Ì½Ë÷ÕßµÈ×ÖÌå¡£")
-        (:CATEGORY . "ÎÄ±¾")
-        (:TAGS "×ÖÌå")
+        (:VERSION . "1.0.27")
+        (:DESCRIPTION . "CAD å¸¸ç”¨å­—ä½“ã€‚åŒ…å«å¤©æ­£ã€PKPMã€æŽ¢ç´¢è€…ç­‰å­—ä½“ã€‚")
+        (:CATEGORY . "æ–‡æœ¬")
+        (:TAGS "å­—ä½“")
         (:URL . "http://atlisp.cn")
         (:FILES "fonts"
             "fix-font"
@@ -18,4 +18,6 @@
             "Tssdchn.shx"
             "Tssdeng.shx"
             "Tssdeng2.shx"
+            "yjkeng.shx"
+            "yjkchn.shx"
             "txt.shx")))

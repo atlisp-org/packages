@@ -1,0 +1,13 @@
+(@:def-pkg '((:NAME . "landscape-plants")
+        (:FULL-NAME . "园林植物设计")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.4")
+        (:LOCALE . "CHS")
+        (:CATEGORY . "园林")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "XXLH园林植物设计插件")
+        (:URL . "http://atlisp.cn")
+        (:FILES "landscape-plants"
+            "xxlh.vlx")))

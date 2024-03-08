@@ -1,0 +1,19 @@
+;;; VLisp project file [V2.0] atlisp saved to:[c:\Users\vitalgg\atlisp\packages] at:[2024/3/1]
+(VLISP-PROJECT-LIST 
+  :NAME
+  atlisp
+  :OWN-LIST
+  ("c:/Users/vitalgg/atlisp/packages/aigc/aigc" 
+    "c:/Users/vitalgg/atlisp/packages/aigc/menus"
+    "c:/Users/vitalgg/atlisp/packages/aigc/pkg"
+  )
+  :FAS-DIRECTORY
+  nil
+  :TMP-DIRECTORY
+  nil
+  :PROJECT-KEYS
+  (:BUILD (:standard))
+  :CONTEXT-ID
+  :AUTOLISP
+)
+;;; EOF

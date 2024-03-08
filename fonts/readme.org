@@ -16,4 +16,6 @@
   - [[https://atlisp.cn/stable/fonts/Tssdchn.shx][Tssdchn.shx]] : 探索者汉字字体。
   - [[https://atlisp.cn/stable/fonts/Tssdeng.shx][Tssdeng.shx]] : 探索者英文单线字体。钢筋符号。
   - [[https://atlisp.cn/stable/fonts/Tssdeng2.shx][Tssdeng2]] : 探索者英文双线字体。钢筋符号。
+  - [[https://atlisp.cn/stable/fonts/yjkeng.shx][yjkeng]] : 盈建科英文字体。
+  - [[https://atlisp.cn/stable/fonts/yjkchn.shx][yjkchn]] : 盈建科中文字体。
 

@@ -26,5 +26,6 @@
     ("删除重字" (@text:delete-overlay-sametext))
     ("定位压线字" (@text:locate-overline-text))
     ("翻译文本" (@text:translate))
+    ("英译中" (@text:translate-from-en))
     )))
 (@:define-hotkey "tts" "(@text:menu-speak)")

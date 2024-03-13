@@ -1,6 +1,6 @@
-(@:add-menu "AIGC" "生成内容" "(aigc:gen-content)")
+(@:add-menu "AIGC" "*生成内容" "(aigc:gen-content)")
 (defun aigc:gen-content () 
-  (@:help "选择一个文本，根据文本的条件和要求生成内容")
+  (@:help "选择一个文本，根据文本的条件和要求生成内容（测试版）")
   (@:prompt "请选择一个文本:")
   (if 
     (and 

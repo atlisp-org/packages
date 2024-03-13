@@ -1,15 +1,16 @@
 (@:def-pkg '((:NAME . "at-dim")
-        (:FULL-NAME . "@lisp±ê×¢")
+        (:FULL-NAME . "@lispæ ‡æ³¨")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.19")
+        (:VERSION . "0.0.21")
         (:LOCALE . "CHS")
-        (:CATEGORY . "±ê×¢")
+        (:CATEGORY . "æ ‡æ³¨")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "±ê×¢Ğ±ÂÊ£¬Ïß³¤£¬×ø±ê±ê×¢µÈ")
+        (:DESCRIPTION . "æ ‡æ³¨æ–œç‡ï¼Œçº¿é•¿ï¼Œåæ ‡æ ‡æ³¨ç­‰")
         (:URL . "http://atlisp.cn")
         (:FILES "at-dim"
             "coord"
             "cutting-symbol"
-            "dimarc")))
+            "dimarc"
+            "sum-dim")))

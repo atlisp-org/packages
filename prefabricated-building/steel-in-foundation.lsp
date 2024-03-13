@@ -57,3 +57,17 @@
 	  (entity:make-circle
 	   pts 20)))
   
+(defun prefabricated-building:delete-steel-in-foundation ()
+  (mapcar 'entdel
+	  (pickset:to-list
+	   (ssget (list '(0 . "point,circle")
+			(cons 8 (@:get-config 'prefabricated-building:layer-of-steelfoundation))))))
+
+  )
+(defun prefabricated-building:dim-steel-in-foundation ()
+  (@:help (list "定位插筋"))
+  (@:prompt "请选择一行或一列插筋点:")
+  (setq ss (ssget (list '(0 . "point")
+			(cons 8 (@:get-config 'prefabricated-building:layer-of-steelfoundation)))))
+  (command "qdim" ss )
+  )

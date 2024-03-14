@@ -7,7 +7,10 @@
 ;; Add menu in @lisp panel
 
 (@:add-menu "外部程序" "ALTRun" "(alt-run:open)" )
-
+(defpackage :alt-run 
+  (:use :cl)
+  (:export :open)
+  )
 (defun alt-run:open ( / app )
   ;; 可执行文件路径
   (setq app "bin\\ALTRun\\ALTRun.exe")

@@ -6,9 +6,15 @@
 ;; (@:get-config 'at-3d:first) ;; 获取配置顶的值
 ;; (@:set-config 'at-3d:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单 
+(in-package :cl)
+(defun foreach (&rest a) a)
 (@:add-menu "3D相关" "选点剖切" "(at-3d:slice-by-pts)")
 (@:add-menu "3D相关" "路径剖切" "(at-3d:slice-by-route)")
-
+(defpackage :at-3d
+  (:use :cl)
+  (:export :slice-by-pts
+           ::slice-by-route) 
+  )
 (defun at-3d:slice-by-pts ()
   (@:help '("将一个曲面用过多个点的平面剖切"))
   (@:prompt "请选择需要剖切的曲面:")
@@ -60,7 +66,7 @@
 	 (while (> (getvar "cmdactive") 0)
 	   (command "")
 	   )
-	 (if (= "SURFACE" (entity:getdxf (entlast) 0))
+	 (if (eq "SURFACE" (entity:getdxf (entlast) 0))
 	     (setq surfaces (ssadd (entlast) surfaces)))))
    (if (member 2 slicesurfaces)
        (progn
@@ -72,7 +78,7 @@
 	 (while (> (getvar "cmdactive") 0)
 	   (command "")
 	   )
-	 (if (= "SURFACE" (entity:getdxf (entlast) 0))
+	 (if (eq "SURFACE" (entity:getdxf (entlast) 0))
 	     (setq surfaces (ssadd (entlast) surfaces)))))
    
    (if (member 3 slicesurfaces)
@@ -85,7 +91,7 @@
 	 (while (> (getvar "cmdactive") 0)
 	   (command "")
 	   )
-	 (if (= "SURFACE" (entity:getdxf (entlast) 0))
+	 (if (eq "SURFACE" (entity:getdxf (entlast) 0))
 	     (setq surfaces (ssadd (entlast) surfaces)))))
    (if (member 4 slicesurfaces)
        (progn
@@ -97,7 +103,7 @@
 	 (while (> (getvar "cmdactive") 0)
 	   (command "")
 	   )
-	 (if (= "SURFACE" (entity:getdxf (entlast) 0))
+	 (if (eq "SURFACE" (entity:getdxf (entlast) 0))
 	     (setq surfaces (ssadd (entlast) surfaces)))))
    
    )

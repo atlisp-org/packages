@@ -38,8 +38,8 @@
    ))
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")
 (defun @block:config (/ res) 
-  (setq @:tmp-search-str "@BLOCK")
-  (@:edit-config))
+  (setq @::tmp-search-str "@BLOCK")
+  (@::edit-config-dialog))
 (defun @block:setup (/ block-name attribute-name en0 lst-att i% opt% initget% )
   "设置要进行编号的图块，选择一个图块，设置要处理的图块."
   (setq en0 (car (entsel "请点选一个属性块:")))

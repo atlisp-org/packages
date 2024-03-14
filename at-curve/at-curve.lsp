@@ -24,16 +24,8 @@
   "可操作的曲线的图元类型")
 (@:define-config '@curve:dualline-width 120.0 "单线变双线的默认宽度")
 (defun @curve:setup (/ res)
-  "工程管理基本信息"
-  (setq res 
-	(ui:input "配置信息"
-		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
-			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "`@CURVE:*")))
-					(if @:*config.db*
-					    @:*config.db* (@:load-config))))))
-  (foreach res% res
-   	   (@:set-config (read (car res%)) (cdr res%)))
-  )
+  (setq @::tmp-search-str "@curve")
+  (@::edit-config-dialog))
 (defun at-curve:join (/ l1 l2 pts1 pts2)
   (@:help "选择两条线，从最近端点连接成一条.")
   (setq curves (pickset:to-list (ssget '((0 . "*line")))))

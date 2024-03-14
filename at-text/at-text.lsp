@@ -10,16 +10,8 @@
 (@:define-config '@text:temp-layer "@temp@" "临时绘线的图层")
 
 (defun @text:setup (/ res)
-  "工程管理基本信息"
-  (setq res 
-	(ui:input "配置信息"
-		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
-			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "`@TEXT:*")))
-					(if @:*config.db*
-					    @:*config.db* (@:load-config))))))
-  (foreach res% res
-   	   (@:set-config (read (car res%)) (cdr res%)))
-  )
+   (setq @::tmp-search-str "@text")
+  (@::edit-config-dialog))
 (defun @:set-fonts (/ fonts)
   (setq fonts (@:string-to-list (@:get-config '@text:fonts) ","))
   (if (and (findfile (car fonts)) (findfile (last fonts)))

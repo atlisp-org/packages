@@ -26,15 +26,8 @@
 (@:add-menu "标注" "标注求和" "(@dim:sum-dim)")
 
 (defun @dim:setup (/ res)
-  (setq res 
-	(ui:input "配置信息"
-		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
-			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "`@DIM:*")))
-					(if @:*config.db*
-					    @:*config.db* (@:load-config))))))
-  (foreach res% res
-   	   (@:set-config (read (car res%)) (cdr res%)))
-  )
+  (setq @::tmp-search-str "@dim")
+  (@::edit-config-dialog))
 (defun at-dim:set-env (/ obj-st obj-dimst ent-dimst)
   (if (null (tblsearch "layer" "坡度标注"))
       (layer:make "坡度标注" 1 nil nil))

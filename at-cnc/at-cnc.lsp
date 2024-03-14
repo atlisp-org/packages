@@ -41,7 +41,7 @@
 (defun at-cnc::setup (/ res)
   (@:help '("配置@CNC"))
   (setq @::tmp-search-str "@CNC")
-  (@::edit-config)
+  (@::edit-config-dialog)
   )
 (defun at-cnc::n2s (num)
   "数字转字符串，一些老的CNC设备需要参数有小数点。"

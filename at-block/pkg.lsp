@@ -13,5 +13,6 @@
             "xref"
             "insert-all"
             "numbering-by-route"
+	    "copy-to-blk"
             "overkill"
             "write-file")))

@@ -27,6 +27,7 @@
    ((_"Change block base point") (@block:menu-change-base))
    ((_"Insert all block") (@block:insert-all))
    ((_"Select same block") (@block:select-same))
+   ("块间复制" (@block:copy-to-blk))
    ))
 (@:add-menus
  (list (strcat (_"Block") "2")

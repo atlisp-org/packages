@@ -1,4 +1,4 @@
-(defun @block:copy-to-blk ()
+(defun @block:copy-by-blk ()
   (@:help '("只支持xyz轴缩放值相同的块,如果不同仅考虑X轴的缩放。"
 	    "操作步骤："
 	    "1、选中要复制的图形，"

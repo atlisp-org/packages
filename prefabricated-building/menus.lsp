@@ -5,6 +5,7 @@
 	       ("删除插筋" "(prefabricated-building:delete-steel-in-foundation)")
 	       ("墙型标志" "(prefabricated-building:gen-beamflag)")
 	       ("墙件序号" "(prefabricated-building:gen-order)")
-	       ("附属电盒" "(prefabricated-building:m-gen-elecdata)")
+	       ;; ("附属电盒" "(prefabricated-building:m-gen-elecdata)")
+	       ("绘构件图" "(prefabricated-building:draw-walls)")
 	       ))
 

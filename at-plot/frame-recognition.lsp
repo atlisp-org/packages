@@ -132,40 +132,41 @@
   flag-hit)
 ;;(princ "test\n")
 (defun @plot:framep (frame-pts / test-ratio height flag-hit i j)
-  "测试是否多段线图框，依据矩形高度和宽高比"
-  (setq @plot:scale-of-frame
-	(mapcar 'atof
-		(string:parse-by-lst (@:get-config '@plot:scale-of-frame) '("," " "))))
-  (@plot:load-config)
-  (setq frame-pts
-	(vl-sort
-	 frame-pts
-	 '(lambda (pt1 pt2)
-	    (or (< (car pt1)(car pt2))
-		(and (equal (car pt1)(car pt2) 0.001)
-		     (< (cadr pt1)(cadr pt2)))))))
-  (setq flag-hit nil)
-  (setq test-ratio nil)
-  ;;两低点 1 3 的 y 值是否一致
-  (if (equal (car (car frame-pts))
+  "测试是否多段线图框，依据矩形高度和宽高比，"
+  (if (>= (length frame-pts) 4)
+      (progn
+	(setq @plot:scale-of-frame
+	      (mapcar 'atof
+		      (string:parse-by-lst (@:get-config '@plot:scale-of-frame) '("," " "))))
+	(@plot:load-config)
+	(setq frame-pts
+	      (vl-sort
+	       frame-pts
+	       '(lambda (pt1 pt2)
+		 (or (< (car pt1)(car pt2))
+		  (and (equal (car pt1)(car pt2) 0.001)
+		   (< (cadr pt1)(cadr pt2)))))))
+	(setq flag-hit nil)
+	(setq test-ratio nil)
+	;;两低点 1 3 的 y 值是否一致
+	(if (equal (car (car frame-pts))
 	     (car (cadr frame-pts))
 	     0.001)
-      (progn
-	(setq height (min (@plot:get-height frame-pts)
-			  (@plot:get-width frame-pts)))
-	;; 测试长宽比
-	(setq i 0)
-	(while (and (null test-ratio)
-		    (< i (length @plot:ratio-of-w/h)))
-	  (if (equal (@plot:get-ratio (@plot:get-height frame-pts)
-				      (@plot:get-width frame-pts))
-		     (nth i @plot:ratio-of-w/h)
-		     0.002)
-	      (setq test-ratio T))
-	  (setq i (1+ i)))))
-  ;; (princ "test..\n")
-  ;; 测试高度
-  (if test-ratio
+	    (progn
+	      (setq height (min (@plot:get-height frame-pts)
+				(@plot:get-width frame-pts)))
+	      ;; 测试长宽比
+	      (setq i 0)
+	      (while (and (null test-ratio)
+			  (< i (length @plot:ratio-of-w/h)))
+		(if (equal (@plot:get-ratio (@plot:get-height frame-pts)
+					    (@plot:get-width frame-pts))
+			   (nth i @plot:ratio-of-w/h)
+			   0.002)
+		    (setq test-ratio T))
+		(setq i (1+ i)))))
+	;; 测试高度
+	(if test-ratio
       (progn
 	(setq flag-hit nil)
 	(foreach
@@ -178,7 +179,7 @@
 		     (* 0.001 height))
 	      (setq flag-hit T))
 	  ))))
-  flag-hit)
+	flag-hit)))
 (defun @plot:frame-recognition-by-polyline (/ frames total)
   "识别多段线矩形图框"
   ;; 识别多段线
@@ -534,3 +535,28 @@
   (prompt "增加了一条识别规则。")
   (princ)
   )
+(defun @plot:frame-recognition-by-insert (/ blks frameblks)
+  ;;
+  "识别外部参照或无属性块"
+  (setq blks (block:list))
+  (if(> (length  blks) 500)
+     (progn
+       (@:prompt "图块太多，跳过匿名块的识别。")
+       (setq blks (vl-remove-if '(lambda(x)(wcmatch x "*`**")) blks))))
+  (setq frameblks nil)
+  (foreach
+   blk blks
+   (princ blk)
+   (princ "\n")
+   (foreach
+    en-in-blk  (block:ent-list blk)
+    (if (and (= "LWPOLYLINE" (entity:getdxf en-in-blk 0))
+	     (@plot:framep(curve:get-points en-in-blk)))
+	(setq frameblks (cons
+			 (cons 
+			  blk
+			  (curve:get-points en-in-blk))
+			 frameblks)))))
+  frameblks
+  )
+  

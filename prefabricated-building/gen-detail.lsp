@@ -120,6 +120,7 @@
 	  (wcmatch a "*插座"))
      (if (wcmatch a "D*") (+ d 300)
 	 (+ d 700)))
+    ((wcmatch a "*交接线") (+ d  1500))
     (t (+ d 700))
     ))
 (defun prefabricated-building:m-gen-elecdata ()
@@ -191,13 +192,26 @@
 	     300)
 	    ((wcmatch (entity:getdxf wall 2) "Q@750")
 	     375)))
-  (entity:make-text
-   (strcat "构件号: "
-	   (cdr(assoc "ORDER" (block:get-attributes wall)))
-	   " , 类型: " (entity:getdxf wall 2)
-	   )
-   (polar pt-base (* 1.5 pi) 1000)
-   250 0 0.8 0 "LB")
+  ;; (entity:make-text
+  ;;  (strcat "构件号: "
+  ;; 	   (cdr(assoc "ORDER" (block:get-attributes wall)))
+  ;; 	   " , 类型: " (entity:getdxf wall 2)
+  ;; 	   )
+  ;;  (polar pt-base 4.25 2930)
+  ;;  250 0 0.8 0 "LB")
+  ;; 图框
+  
+  (setq tk
+	(vla-insertblock *MS* (point:to-ax (polar pt-base 5.42698 4535))
+			 "图框-图集" 0.2 0.2 0.2 0))
+  ;; (block:insert "图框-图集" "" (polar pt-base 5.42698 4535) 0 0.2))
+  ;; (vla-update (e2o tk))
+  (block:set-attributes tk (list (cons "图名" (strcat "构件号: "
+   						      (cdr(assoc "ORDER" (block:get-attributes wall)))
+   						      " , 类型: " (entity:getdxf wall 2)))))
+  
+  (vla-insertblock *MS* (point:to-ax pt-base)
+			 "GJ-elec-dim" 1.0 1.0 1.0 0)
   ;; A
   ;; 绘外形
   (entity:make-text
@@ -296,4 +310,6 @@
   (foreach
    wall walls
    (prefabricated-building:draw-wall wall
-				     (polar pt1 0 (* (setq i (1+ i)) 3000)))))
+				     (polar pt1 0 (* (setq i (1+ i)) 12000)))
+   
+   ))

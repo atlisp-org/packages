@@ -120,7 +120,7 @@
 	  (wcmatch a "*插座"))
      (if (wcmatch a "D*") (+ d 300)
 	 (+ d 700)))
-    ((wcmatch a "*交接线") (+ d  1500))
+    ((wcmatch a "*交接线,*配电箱") (+ d 1500))
     (t (+ d 700))
     ))
 (defun prefabricated-building:m-gen-elecdata ()
@@ -164,10 +164,24 @@
 				    ))
 			       (* 0.5 pi) dis-h))
        ;;安装盒
-       (entity:make-rectangle
-	(polar pt-center (* 1.25 pi) (* 1.414 44))
-	(polar pt-center (* 0.25 pi) (* 1.414 44))
-	)
+       (cond
+	 ((wcmatch (cdr (assoc "A" (block:get-attributes elec%)))
+		   "*配电箱")
+	  (entity:make-rectangle
+	   (polar pt-center pi 200)
+	   (polar (polar pt-center 0 200) (* 0.5 pi) 500)
+	   ))
+	 ((wcmatch (cdr (assoc "A" (block:get-attributes elec%)))
+		   "*交接线")
+	  (entity:make-rectangle
+	   (polar pt-center pi 175)
+	   (polar (polar pt-center 0 175) (* 0.5 pi) 300)
+	   ))
+	 (t
+	  (entity:make-rectangle
+	   (polar pt-center (* 1.25 pi) (* 1.414 44))
+	   (polar pt-center (* 0.25 pi) (* 1.414 44))
+	   )))
        ;;  TODO 电箱
        
        ;;接线盒

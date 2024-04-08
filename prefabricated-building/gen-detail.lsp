@@ -168,6 +168,8 @@
 	(polar pt-center (* 1.25 pi) (* 1.414 44))
 	(polar pt-center (* 0.25 pi) (* 1.414 44))
 	)
+       ;;  TODO 电箱
+       
        ;;接线盒
        (setq pt-center2	(polar (polar pt-base 0 (if aorb dis-w
 						    (- (* 2 w) dis-w)

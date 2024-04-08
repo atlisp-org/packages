@@ -12,24 +12,30 @@
    ("平面图样例" (@hvac:draw-plan-example))
    ))
 (defun @hvac:draw-readme ()
-  (@:help '("插入暖通说明。"
-	    ))
-  ;; 以下部分为你为实现某一功能所编写的代码。
+  (@:help '("插入暖通说明。" ))
   (if (findfile (strcat @::*prefix* "packages/at-hvac/readme-hvac.dwg"))
-      (block:insert
-       "readme-hvac"
-       (strcat @::*prefix* "packages/at-hvac/")
-       (getpoint "请点击插入位置:")
-       0 1))
+      (progn
+	(setq readme-hvac
+	      (block:insert
+	       "readme-hvac"
+	       (strcat @::*prefix* "packages/at-hvac/")
+	       (getpoint "请点击插入位置:")
+	       0 1))
+	(if (string-equal "insert" (entity:getdxf readme-hvac 0))
+	    (progn
+	      (vla-explode (e2o readme-hvac))
+	      (vla-delete (e2o readme-hvac))))))
+	
   )
 (defun @hvac:draw-plan-example ()
   (@:help '("插入暖通平面图样例。"
 	    ))
-  ;; 以下部分为你为实现某一功能所编写的代码。
   (if (findfile (strcat @::*prefix* "packages/at-hvac/example-hvac.dwg"))
-      (block:insert
-       "example-plan-hvac"
-       (strcat @::*prefix* "packages/at-hvac/")
-       (getpoint "请点击插入位置:")
-       0 1))
-  )
+      (progn
+	(setq example-plan-hvac
+	      (block:insert
+	       "example-plan-hvac"
+	       (strcat @::*prefix* "packages/at-hvac/")
+	       (getpoint "请点击插入位置:")
+	       0 1))
+	)))

@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp暖通")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.3")
+        (:VERSION . "0.0.7")
         (:LOCALE . "chs")
         (:CATEGORY . "暖通")
         (:REQUIRED . "base")

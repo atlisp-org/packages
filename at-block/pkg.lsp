@@ -16,4 +16,6 @@
             "copy-to-blk"
             "overkill"
             "write-file"
-            "explode")))
+         "explode"
+	 "clip-to-blk"
+	 )))

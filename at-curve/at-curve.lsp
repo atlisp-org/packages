@@ -61,7 +61,7 @@
             (entity:make-text
              (rtos (vla-get-area (e2o curve)) 2 3)
              (point:2d->3d (point:centroid (curve:get-points curve)))
-             (* 2.5 (@:get-config '@:draw-scale))
+             (* 2.5 (@:get-config '@::draw-scale))
              0
              0.72
              0
@@ -79,7 +79,7 @@
             (entity:make-text
              (rtos (curve:length (e2o curve)) 2 3)
              (point:2d->3d (curve:midpoint curve))
-             (* 2.5 (@:get-config '@:draw-scale))
+             (* 2.5 (@:get-config '@::draw-scale))
              0
              0.72
              0
@@ -103,7 +103,7 @@
 		(entity:make-text
 		 (rtos (distance (car pts)(cadr pts)) 2 3)
 		 (point:2d->3d (point:mid (car pts)(cadr pts)))
-		 (* 2.5 (@:get-config '@:draw-scale))
+		 (* 2.5 (@:get-config '@::draw-scale))
 		 (angle (car pts)(cadr pts))
 		 0.72
 		 0
@@ -143,7 +143,7 @@
 			       (cadr (curve:subsegment-points curve i)))))
 			  ))
 		       
-		       (* 2.5 (@:get-config '@:draw-scale))
+		       (* 2.5 (@:get-config '@::draw-scale))
 		       (angle  (car (curve:subsegment-points curve i))
 			       (cadr (curve:subsegment-points curve i)))
 		       0.72
@@ -158,7 +158,7 @@
               (entity:make-text
                (rtos (curve:length (e2o curve)) 2 3)
                (point:2d->3d (curve:midpoint curve))
-               (* 2.5 (@:get-config '@:draw-scale))
+               (* 2.5 (@:get-config '@::draw-scale))
                0
                0.72
                0

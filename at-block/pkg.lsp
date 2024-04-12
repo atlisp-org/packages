@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp Block")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.2.35")
+        (:VERSION . "0.2.36")
         (:LOCALE . "CHS")
         (:CATEGORY . "图块相关")
         (:REQUIRED . "base")
@@ -16,6 +16,5 @@
             "copy-to-blk"
             "overkill"
             "write-file"
-         "explode"
-	 "clip-to-blk"
-	 )))
+            "explode"
+            "clip-to-blk")))

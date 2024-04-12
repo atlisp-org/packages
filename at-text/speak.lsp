@@ -4,7 +4,7 @@
   (setq texts (pickset:sort
 	       (pickset:to-list texts)
 	       "Yx" 0))
-  (@:set-config '@:speak-asynchronous 0)
+  (@:set-config '@::speak-asynchronous 0)
   (redraw)
   (foreach text texts
 	   (sssetfirst nil (ssadd text))
@@ -12,6 +12,6 @@
 	   (redraw text 3)
 	   (sleep 0.5)
 	   (@:speak (text:remove-fmt (text:get-mtext text))))
-  (@:set-config '@:speak-asynchronous 1)
+  (@:set-config '@::speak-asynchronous 1)
   (princ)
   )

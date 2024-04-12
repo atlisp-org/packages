@@ -22,7 +22,7 @@
   ;; 取剪裁范围的图元
   (setq ents-in (pickset:to-list (ssget "c" pt1 pt2)))
   ;; 去掉不在范围内的图元
-  (if (list:intersect  ents-in ents-new)
+  (if (pickset:intersect  ents-in ents-new)
       (mapcar '(lambda(x)
 		(if (not(member x ents-in))
 		    (entdel x)))

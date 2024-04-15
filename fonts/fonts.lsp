@@ -1,9 +1,12 @@
-(setq @:font-dir (@:string-to-list (getenv "ACAD") ";"))
-
-(if (null (member (strcat @:*prefix* "packages\\fonts") @:font-dir))
+(if (null (member (strcat @:*prefix* "packages\\fonts") (@:string-to-list (getenv "ACAD") ";")))
     (setenv "ACAD" (strcat (vl-string-right-trim ";" (getenv "ACAD"))
 			   ";"
 			   @:*prefix* "packages\\fonts;")))
+;; 创建 @@hztxt.shx字体，用于快速替代缺省字体
+(if (and (null (findfile (strcat @:*prefix* "packages\\fonts\\@@hztxt.shx")))
+	 (findfile (strcat @:*prefix* "packages\\fonts\\Tssdchn.shx")))
+    (vl-file-copy (findfile (strcat @:*prefix* "packages\\fonts\\Tssdchn.shx"))
+		  (strcat @:*prefix* "packages\\fonts\\@@hztxt.shx")))
 
 (defun fonts:merge (/ date1 date2 font font_obj fontlist fontname n to-shx to-ttf)
   "归并字体样式。"

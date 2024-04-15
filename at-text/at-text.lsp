@@ -340,8 +340,3 @@
 	)))
    txts)
   )
-
-
-;; Local variables:
-;; coding: gb2312
-;; End: 

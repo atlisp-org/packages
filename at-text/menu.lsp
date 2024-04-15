@@ -15,7 +15,7 @@
     ("生成表格" (@text:text2table))
     ("格式数字" (@text:menu-format-number))
     ("文本转表格" (@text:string-to-table))
-    ("朗读文本" (@text:menu-speak)))
+    )
    ("文本2" 
     ("按行合并" (@text:join-in-line))
     ("文本加框" (@text:menu-draw-box))
@@ -27,5 +27,6 @@
     ("定位压线字" (@text:locate-overline-text))
     ("翻译文本" (@text:translate))
     ("英译中" (@text:translate-from-en))
+    ("朗读文本" (@text:menu-speak))
     )))
 (@:define-hotkey "tts" "(@text:menu-speak)")

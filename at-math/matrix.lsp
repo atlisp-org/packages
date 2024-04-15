@@ -152,26 +152,40 @@
   (unload_dialog dcl_id)
   (vl-file-delete dcl-tmp)
   (setq @m:*result* result)
+  (@m:draw)
   )
 (setq @m:*result* nil)
 (@:add-menu "数学" "结果写图" "(@m:draw)")
-(defun @m:draw (/ pt1)
+(defun @m:draw (/ pt1 pt-base ents  *error*)
+  (defun *error*(msg)
+    (if ents
+	(mapcar 'entdel ents))
+    (princ msg))
+  (setq pt-base '(0 0 0))
+  (setq ents nil)
   (cond
-   ((atom @m:*result*)
-    (entity:putdxf
-     (entity:make-text (@:to-string @m:*result*)
-		       (getpoint "请输入结果插入点:")
-		       (* 3.5 (@:get-config '@::draw-scale)) 0 0.8 0 "RB")
-     62 2))
-   ((listp @m:*result*)
-    (setq pt1 (getpoint "请输入结果插入点:"))
-    (foreach atom% @m:*result*
-	     (entity:putdxf
-	      (entity:make-text (@:to-string atom%)
-				pt1
-				(* 3.5 (@:get-config '@::draw-scale))
-				0 0.8 0 "RB")
-	      62 2)
-	     (setq pt1 (polar pt1 (* 1.5 pi) (* 5 (@:get-config '@::draw-scale))))
-	     ))
-   (t (alert "没有发现计算结果。"))))
+    ((atom @m:*result*)
+     (setq ents
+	   (entity:putdxf
+	    (entity:make-text (@:to-string @m:*result*)
+			      pt-base
+			      (* 3.5 (@:get-config '@::draw-scale)) 0 0.8 0 "RB")
+	    62 2)))
+    ((listp @m:*result*)
+      (setq pt1 pt-base)
+      (foreach atom% @m:*result*
+	       (setq ents
+		     (cons
+		      (entity:putdxf
+		       (entity:make-text (@:to-string atom%)
+					 pt1
+					 (* 3.5 (@:get-config '@::draw-scale))
+					 0 0.8 0 "RB")
+		       62 2)
+		      ents
+		      ))
+	       (setq pt1 (polar pt1 (* 1.5 pi) (* 5 (@:get-config '@::draw-scale))))
+	       )))
+  (if ents
+      (ui:dyndraw ents pt-base)
+      (@::prompt "没有发现计算结果。")))

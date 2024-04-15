@@ -14,6 +14,7 @@
   (setq s1 (pickset:to-list (ssget '((0 . "text,tch_text")))))
   (setq total (apply '+ (mapcar '(lambda(x)(atof (entity:getdxf x 1))) s1)))
   (print (setq @m:*result* total))
+  (@m:draw)
   (princ)
   )
 
@@ -28,6 +29,7 @@
 
   (setq total (apply '* (mapcar '(lambda(x)(atof (entity:getdxf x 1))) s1)))
   (print (setq @m:*result* total))
+  (@m:draw)
   (princ)
   )
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -40,6 +42,7 @@
   (setq s1 (pickset:to-list (ssget '((0 . "text,tch_text")))))
   (setq total (apply '+ (mapcar '(lambda(x)(atof (entity:getdxf x 1))) s1)))
   (print (setq @m:*result* (/ total (length s1))))
+  (@m:draw)
   (princ)
   )
 (defun @:probe-int (str)

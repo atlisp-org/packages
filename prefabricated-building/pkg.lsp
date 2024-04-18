@@ -2,7 +2,7 @@
         (:FULL-NAME . "装配建筑")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.4")
+        (:VERSION . "0.1.0")
         (:LOCALE . "chs")
         (:CATEGORY . "专用")
         (:REQUIRED . "base")
@@ -11,6 +11,7 @@
         (:URL . "http://atlisp.cn")
         (:FILES "prefabricated-building"
             "steel-in-foundation"
-         "gen-detail"
-	 "beam""slab"
+            "gen-detail"
+            "beam"
+            "slab"
             "menus")))

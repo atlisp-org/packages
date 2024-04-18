@@ -7,26 +7,34 @@
 						 x))))
 	  (matrix:trp matrix-num)
   ))
-(defun @m:form-matrix (entlist-text / fontsize row column result )
+(defun @m:form-matrix (entlist-text / fontsize row column result matrix)
   "选择一组行列文字，形成行列矩阵。"
   (setq fontsize (entity:getdxf (car entlist-text) 40))
-  (setq result '() row (list (car entlist-text)))
+  (setq  matrix nil row (list (car entlist-text)))
   (foreach en% (cdr entlist-text)
 	   (if (equal (cadr (entity:getdxf (car row) 10))
 		      (cadr (entity:getdxf en% 10))
 		      fontsize)
 	       (setq row (append row (list en% )))
 	       (progn ;; 不在同一行，加入列；清行。
-		 (setq result (append result (list (mapcar '@m:get-value row))))
+		 (setq matrix (append matrix (list row)))
 		 (setq row (list en%)))))
-  (setq result (append result (list (mapcar '@m:get-value row))))
-  (if (apply '= (mapcar 'length result))
-      result
+  (setq matrix (append matrix (list row)))
+  (setq col1 (mapcar 'car matrix))
+  (setq @m:tmp-line-spacings
+	(mapcar '(lambda(x)
+		  (distance
+		   (entity:getdxf x 10)
+		   (entity:getdxf (car col1) 10)))
+		col1))
+
+  (if (apply '= (mapcar 'length matrix))
+      (mapcar '(lambda(x)(mapcar '@m:get-value x)) matrix)
       (progn (alert "分析失败，请确认行列对齐。") nil)
       )
   )
   
-(@:add-menu "数学" "行列计算" "(@m:matrix-cal)") 
+;; (@:add-menu "数学" "行列计算" "(@m:matrix-cal)") 
 (defun @m:sort-by-x (ss-lst)
   (vl-sort ss-lst '(lambda (x y)
 		    (> (car (entity:getdxf x 10))
@@ -99,7 +107,7 @@
 		  )))
   (setq column-id '(A B C D F G H I J K L M N O P Q R S U V W X Y Z))
   (setq result nil)
-  (setq matrix-num (@M:form-matrix(@M:get-entmatrix)))
+  (setq matrix-num (@M:form-matrix(@m:get-entmatrix)))
   (setq num-format (@m:align-number matrix-num))
   (setq dcl-tmp (strcat @:*prefix* "tmp-calc.dcl" ))
   ;;(print "aaa")
@@ -172,20 +180,32 @@
 			      (* 3.5 (@:get-config '@::draw-scale)) 0 0.8 0 "RB")
 	    62 2)))
     ((listp @m:*result*)
-      (setq pt1 pt-base)
-      (foreach atom% @m:*result*
-	       (setq ents
-		     (cons
-		      (entity:putdxf
-		       (entity:make-text (@:to-string atom%)
-					 pt1
-					 (* 3.5 (@:get-config '@::draw-scale))
-					 0 0.8 0 "RB")
-		       62 2)
-		      ents
-		      ))
-	       (setq pt1 (polar pt1 (* 1.5 pi) (* 5 (@:get-config '@::draw-scale))))
-	       )))
+     (setq pt1 pt-base)
+     (if (= (length @m:*result*)
+	    (length @m:tmp-line-spacings))
+	 (setq ents
+	       (mapcar '(lambda(x row-spacing)
+			 (entity:putdxf
+			  (entity:make-text (@:to-string x)
+			   (polar pt-base (* 1.5 pi) row-spacing)
+			   (* 3.5 (@:get-config '@::draw-scale))
+			   0 0.8 0 "RB")
+			  62 2))
+		       @m:*result*
+		       @m:tmp-line-spacings))
+	 (foreach atom% @m:*result*
+		  (setq ents
+			(cons
+			 (entity:putdxf
+			  (entity:make-text (@:to-string atom%)
+					    pt1
+					    (* 3.5 (@:get-config '@::draw-scale))
+					    0 0.8 0 "RB")
+			  62 2)
+			 ents
+			 ))
+		  (setq pt1 (polar pt1 (* 1.5 pi) (* 5 (@:get-config '@::draw-scale))))
+		  ))))
   (if ents
       (ui:dyndraw ents pt-base)
       (@::prompt "没有发现计算结果。")))

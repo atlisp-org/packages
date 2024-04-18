@@ -11,5 +11,6 @@
         (:URL . "http://atlisp.cn")
         (:FILES "prefabricated-building"
             "steel-in-foundation"
-            "gen-detail"
+         "gen-detail"
+	 "beam""slab"
             "menus")))

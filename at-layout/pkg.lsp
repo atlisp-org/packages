@@ -1,13 +1,13 @@
-(@:def-pkg '((:NAME . "at-layout")
-        (:FULL-NAME . "@lisp布局")
+(@::def-pkg '((:NAME . "at-layout")
+        (:FULL-NAME . "@lisp甯冨眬")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.1")
+        (:VERSION . "0.1.4")
         (:LOCALE . "CHS")
-        (:CATEGORY . "布局")
+        (:CATEGORY . "甯冨眬")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "布局工具")
+        (:DESCRIPTION . "甯冨眬宸ュ叿")
         (:URL . "http://atlisp.cn")
         (:FILES "pvp"
             "merge"

@@ -10,13 +10,17 @@
 ;; (@:get-config 'pdftk:first) 
 ;; (@:set-config 'pdftk:first  "New Value")
 ;; Add menu in @lisp panel
-(@:add-menu "出图排版" "PDF设置" "(pdftk:setup)" )
-(@:add-menu "出图排版" "合并PDF" "(pdftk:menu-merge)" )
-(@:add-menu "出图排版" "拆分PDF" "(pdftk:menu-burst)" )
-(@:add-menu "出图排版" "PDF加戳记" "(pdftk:menu-stamp)" )
-(@:add-menu "出图排版" "PDF加水印" "(pdftk:menu-background)" )
-(@:add-menu "出图排版" "解密PDF" "(pdftk:menu-decrypt)" )
-(@:add-menu "出图排版" "加密PDF" "(pdftk:menu-encrypt)" )
+(@:add-menus '("PDF相关"
+	       ("PDF设置" "(pdftk:setup)" )
+	       ("合并PDF" "(pdftk:menu-merge)" )
+	       ("拆分PDF" "(pdftk:menu-burst)" )
+	       ("PDF加戳记" "(pdftk:menu-stamp)" )
+	       ("批量加戳记" "(pdftk:menu-batch-stamp)" )
+	       ("PDF加水印" "(pdftk:menu-background)")
+	       ("批量加水印" "(pdftk:menu-batch-background)")
+	       ("解密PDF" "(pdftk:menu-decrypt)" )
+	       ("加密PDF" "(pdftk:menu-encrypt)" )
+	       ))
 (or @:enable-start
     (@:check-pgp)
     (@:patch-pgp) 
@@ -266,7 +270,18 @@
 	(@:set-config  'pdftk:pre-folder(system:dir (vl-filename-directory filename)))
 	(pdftk:stamp filename)
 	(system:explorer (vl-filename-directory filename)))))
-
+(defun pdftk:menu-batch-stamp (/ filename)
+  (@:help "选择一个文件夹，给该文件夹下的pdf文件加上戳记，戳记文件在pdf设置中进行设置。")
+  (if (setq pathname (system:get-folder "请选择要加戳记的PDF文件夹"))
+      (progn
+	(@:set-config  'pdftk:pre-folder (system:dir pathname))
+	(setq pdfs (vl-directory-files pathname "*.pdf"))
+	(foreach
+	 pdf% pdfs
+	 (if (null (wcmatch (strcase pdf% t) "*-background.pdf"))
+	     (pdftk:stamp (strcat (system:dir pathname) pdf%))))
+	(system:explorer (system:dir pathname))
+	)))
 (defun pdftk:stamp (filename / app)
   ;; 可执行文件路径
   (setq app "bin\\pdftk.exe")
@@ -307,6 +322,18 @@
 	(@:set-config  'pdftk:pre-folder (system:dir (vl-filename-directory filename)))
 	(pdftk:background filename)
 	(system:explorer (vl-filename-directory filename))
+	)))
+(defun pdftk:menu-batch-background (/ filename)
+  (@:help "选择一个文件夹，给该文件夹下的pdf文件加上水印，水印文件在pdf设置中进行设置。所选的 pdf 文件必须为透明背景才有效果。")
+  (if (setq pathname (system:get-folder "请选择要加水印的PDF文件夹"))
+      (progn
+	(@:set-config  'pdftk:pre-folder (system:dir pathname))
+	(setq pdfs (vl-directory-files pathname "*.pdf"))
+	(foreach
+	 pdf% pdfs
+	 (if (null (wcmatch (strcase pdf% t) "*-background.pdf"))
+	     (pdftk:background (strcat (system:dir pathname) pdf%))))
+	(system:explorer (system:dir pathname))
 	)))
 
 (defun pdftk:background (filename / app)

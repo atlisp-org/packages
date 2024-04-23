@@ -26,7 +26,7 @@
 (defun @plot:frame-recognition ()
   (@plot:delete-mark)
   (@plot:frame-recognition-by-polyline)
-  (@plot:frame-recognition-by-line)
+  ;; (@plot:frame-recognition-by-line)
   (@plot:mark-frames)
   (@:prompt (strcat "AI 共识别了 "
 		 (itoa (length @plot:*frames*))
@@ -289,14 +289,13 @@
 				   '(-4 . "<NOT")
 				   '(8 . "temp-frames")
 				   '(-4 . "NOT>")))))
-  ;; (@:log "INFO" (strcat "发现 " (itoa(length segments)) "条线。"))
+  (@:log "INFO" (strcat "发现 " (itoa(length segments)) "条线。"))
+ 
   (setq segments (vl-remove-if-not
 		  '(lambda (x)(@plot:frame-length? (line:length x)))
 		  segments))
   (@:log "INFO" (strcat (itoa (length segments)) "条线符合图框尺寸。"))
   (@:log "INFO" "正在分类边框线...\n")
-  ;; (@:debug "INFO" (strcat "segments: "(itoa (length segments))))
-
   (setq seg-h (vl-remove-if-not
 	       '(lambda (x / ang)
 		  (setq ang (apply 'angle (entity:getdxf x '(10 11))))
@@ -306,29 +305,18 @@
 		   (equal ang  0 0.001)
 		   (equal ang  pi 0.001)))
 	       segments))
-  ;; (setq seg-v (vl-remove-if-not
-  ;; 	       '(lambda (x / ang)
-  ;; 		 (setq ang (apply 'angle (entity:getdxf x '(10 11))))
-  ;; 		 (while (>= ang pi)
-  ;; 		   (setq ang (- ang pi)))
-  ;; 		 (equal ang (* 0.5 pi) 0.001))
-  ;; 	       segments))
-  ;; 去除非框长度的线
   
   (@:log "INFO" (strcat "seg-h: "(itoa (length seg-h)) ))
-  ;;			  "seg-v: "(itoa (length seg-v)) ))
   (@:log "INFO" "正在进行边框线排序...")
   (setq seg-h
 	(vl-sort seg-h
 		 '(lambda (ent1 ent2) (< (cadr (entity:getdxf ent1 10))
-					 (cadr (entity:getdxf ent2 10))))))
+				       (cadr (entity:getdxf ent2 10))))))
   ;; (setq seg-v
   ;; 	(vl-sort seg-v
   ;; 		 '(lambda (ent1 ent2) (< (car (entity:getdxf ent1 10))
   ;; 				       (car (entity:getdxf ent2 10))))))
   (@:log "INFO" "从直线图元中识别矩形框。\n")
-  ;;(setq got-tk T)
-  ;;(while (and got-tk (> (length seg-h) 2))
   (setq bm% 0)(setq got-tk nil)
   (while  (< bm% (- (length seg-h) 1))
     (setq tp% (1+ bm%))
@@ -343,8 +331,6 @@
 	    (setq got-tk T)
 	    (setq frame (list (nth bm% seg-h)
 			      (nth tp% seg-h)
-			      ;;(nth lt% seg-v)
-			      ;;(nth rt% seg-v)
 			      ))
 	    (setq frame-pts 
 		  (vl-sort 
@@ -355,7 +341,6 @@
 			  (and (equal (car pt1)(car pt2) 0.001)
 			       (< (cadr pt1)(cadr pt2)))))))
 	    ;; 验证有水平线。
-	    
 	    (setq seg-v1 
 		  (ssget "F" (entity:getdxf (car frame) '(10 11))
 			 ;;frame-pts
@@ -366,8 +351,6 @@
 			       '(-4 . "NOT>"))))
 	    (if (= 'pickset (type seg-v1))
 		(progn
-		  ;; (princ "seg-v1")
-		  ;; (princ (sslength seg-v1))
 		  (setq  seg-v1
 			 (vl-remove-if-not
 			  '(lambda (x / ang)
@@ -383,17 +366,9 @@
 		  
 		    ))))
 	)
-      ;; 从 seg-v 中取相应图元并从表中移除
-      ;; (if get-tk
-      ;; 	  (progn
-      ;; 	    (setq seg-v (vl-remove (caddr frame) seg-v))
-      ;; 	    (setq seg-v (vl-remove (last frame) seg-v))))
       (setq tp% (1+ tp%)))
     (setq bm% (1+ bm%))
     )
-  ;; (setq seg-h (vl-remove (car frame) seg-h))
-  ;; (setq seg-h (vl-remove (cadr frame) seg-h))
-  ;;)
   (princ "\n")
   (@:prompt (strcat "识别了 "
 		    (itoa (-(length @plot:*frames*)

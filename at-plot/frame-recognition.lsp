@@ -7,9 +7,7 @@
 (setq @plot:height-of-frame
       '(210 297 420 594 841))
 (setq @plot:frame-type '("A4" "A3" "A2" "A1" "A0"))
-;; 图框可用比例
-(@:define-config '@plot:scale-of-frame "100 50 30 25 20 150 120 200 500 1 5.996" "图幅比例，以逗号或空格分隔")
-(@:define-config '@plot:layers "*" "图框所在图层，多个图层以 ',' 进行分隔。支持 * 通配符。")
+
 (setq @plot:*frames* '()) ; 图框识别结果数据
 (@:add-menu "通用打印" "配置" "(@plot:setup)")
 (defun @plot:setup (/ res)
@@ -26,11 +24,11 @@
 
 (@:add-menu "通用打印" "AI识别图框" "(@plot:frame-recognition)")
 (defun @plot:frame-recognition ()
+  (@plot:delete-mark)
   (@plot:frame-recognition-by-polyline)
   (@plot:frame-recognition-by-line)
-  (@plot:delete-mark)
   (@plot:mark-frames)
-  (princ (strcat "AI 共识别了 "
+  (@:prompt (strcat "AI 共识别了 "
 		 (itoa (length @plot:*frames*))
 		 " 个图框。\n"))
   (princ)
@@ -88,7 +86,7 @@
 			       (mapcar 'read 
 				       (string:to-lst (@:get-file-contents (strcat @:*prefix-config* "frames-ratio.db")) "\n")))))
     ))
-(defun @plot:frame-length? (dist / i j k scale ratio flag-hit)
+(defun @plot:frame-length? (len / i j k scale ratio flag-hit)
   "测试长度是否符合图框要求"
   (setq @plot:scale-of-frame
 	(mapcar 'atof
@@ -100,7 +98,7 @@
   ;;最小最大判断
   (if (< (* (apply 'min @plot:height-of-frame)
 	    (apply 'min @plot:scale-of-frame))
-	 dict 
+	 len 
 	 (* (apply 'max @plot:height-of-frame)
 	    (apply 'max @plot:scale-of-frame)
 	    (apply 'max @plot:ratio-of-w/h)))
@@ -109,20 +107,20 @@
 	(setq j 0)
 	(while (and (null flag-hit)
 		    (< j (length @plot:scale-of-frame)))
-	  (if (equal dist
+	  (if (equal len
 		     (* (nth i @plot:height-of-frame)
 			(nth j @plot:scale-of-frame))
-		     (* 0.001 dist))
+		     (* 0.001 len))
 	      (setq flag-hit T)    
 	    (progn 
 	      (setq k 0) 
 	      (while (and (null flag-hit)
 			  (< k (length @plot:ratio-of-w/h)))
-		(if (equal dist
+		(if (equal len
 			   (* (nth i @plot:height-of-frame)
 			      (nth j @plot:scale-of-frame)
 			      (nth k @plot:ratio-of-w/h))
-			   (* 0.0019 dist))
+			   (* 0.0019 len))
 		    (setq flag-hit T))
 		
 	    (setq k (1+ k))
@@ -183,7 +181,7 @@
 (defun @plot:frame-recognition-by-polyline (/ frames total)
   "识别多段线矩形图框"
   ;; 识别多段线
-  (@:help (strcat "识别多段线矩形图框"))
+  ;; (@:help (strcat "识别多段线矩形图框"))
   (setq total (length @plot:*frames*))
   (if (setq frames (ssget "x" (list '(0 . "*POLYLINE")
 				    '(90 . 4)
@@ -237,12 +235,14 @@
 			   ))
 		       frames)))
 	(setq @plot:*frames* frames)
-	(princ (strcat "识别了 "
-		       (itoa (-(length @plot:*frames*)
-			       total))
-		       " 个多段线矩形图框。\n"))))
+	(@:prompt (strcat "识别了 "
+			  (itoa (-(length @plot:*frames*)
+				  total))
+			  " 个多段线矩形图框。\n"))))
   (princ)
   )
+
+(@:add-menu "通用打印" "识别直线框" "(@plot:frame-recognition-by-line)")
 (defun @plot:frame-lines? (bm tp lt rt / fuzz)
   "测试4条线段是否为矩形框"
   (setq fuzz 0.01)
@@ -273,7 +273,6 @@
 			 (and (equal  (car pt1)(car pt2) 0.001)
 			      (< (cadr pt1)(cadr pt2)))))))
    ))
-(@:add-menu "通用打印" "识别直线框" "(@plot:frame-recognition-by-line)")
 (defun @plot:frame-recognition-by-line
     (/ frames segments frame-length?
        seg-v seg-h ent-first frame got-tk
@@ -290,15 +289,13 @@
 				   '(-4 . "<NOT")
 				   '(8 . "temp-frames")
 				   '(-4 . "NOT>")))))
-  (@:log "INFO" (strcat "发现 " (itoa(length segments)) "条线。"))
+  ;; (@:log "INFO" (strcat "发现 " (itoa(length segments)) "条线。"))
   (setq segments (vl-remove-if-not
 		  '(lambda (x)(@plot:frame-length? (line:length x)))
 		  segments))
   (@:log "INFO" (strcat (itoa (length segments)) "条线符合图框尺寸。"))
-  (std:timer-end)
-  (std:timer-start)
   (@:log "INFO" "正在分类边框线...\n")
-  (@:debug "INFO" (strcat "segments: "(itoa (length segments))))
+  ;; (@:debug "INFO" (strcat "segments: "(itoa (length segments))))
 
   (setq seg-h (vl-remove-if-not
 	       '(lambda (x / ang)
@@ -320,10 +317,6 @@
   
   (@:log "INFO" (strcat "seg-h: "(itoa (length seg-h)) ))
   ;;			  "seg-v: "(itoa (length seg-v)) ))
-
-  (princ "OK.")
-  (std:timer-end)
-  (std:timer-start)
   (@:log "INFO" "正在进行边框线排序...")
   (setq seg-h
 	(vl-sort seg-h
@@ -333,9 +326,6 @@
   ;; 	(vl-sort seg-v
   ;; 		 '(lambda (ent1 ent2) (< (car (entity:getdxf ent1 10))
   ;; 				       (car (entity:getdxf ent2 10))))))
-  (princ "OK.")
-  (std:timer-end)
-  (std:timer-start)
   (@:log "INFO" "从直线图元中识别矩形框。\n")
   ;;(setq got-tk T)
   ;;(while (and got-tk (> (length seg-h) 2))
@@ -351,7 +341,6 @@
 	    (entity:getdxf (nth tp% seg-h) '(10 11))))
 	  (progn
 	    (setq got-tk T)
-	    ;;(princ "got it\n")
 	    (setq frame (list (nth bm% seg-h)
 			      (nth tp% seg-h)
 			      ;;(nth lt% seg-v)
@@ -375,10 +364,10 @@
 			       '(-4 . "<NOT")
 			       '(8 . "temp-frames")
 			       '(-4 . "NOT>"))))
-	    ;; (princ (sslength seg-v1))
 	    (if (= 'pickset (type seg-v1))
 		(progn
-		  (princ "seg-v1")(princ (sslength seg-v1))
+		  ;; (princ "seg-v1")
+		  ;; (princ (sslength seg-v1))
 		  (setq  seg-v1
 			 (vl-remove-if-not
 			  '(lambda (x / ang)
@@ -405,158 +394,11 @@
   ;; (setq seg-h (vl-remove (car frame) seg-h))
   ;; (setq seg-h (vl-remove (cadr frame) seg-h))
   ;;)
-  (princ (strcat "识别了 "
-		 (itoa (-(length @plot:*frames*)
-			 total))
-		 " 个直线图框。"))
+  (princ "\n")
+  (@:prompt (strcat "识别了 "
+		    (itoa (-(length @plot:*frames*)
+			    total))
+		    " 个直线图框。"))
   (std:timer-end)
   (princ)
   )
-
-(@:add-menu "通用打印" "标记图框" "(@plot:mark-frames)")
-(defun @plot:mark-frames (/ tks)
-  (@plot:init)
-  
-  (foreach frame-pts @plot:*frames*
-	   (print (cdr frame-pts))
-	   (@plot:draw-frame
-	    (vl-sort (car frame-pts)
-		     '(lambda (pt1 pt2)
-			(or (< (car pt1)(car pt2))
-			    (and (equal (car pt1)(car pt2) 0.001)
-				 (< (cadr pt1)(cadr pt2))))))
-	    (cdr frame-pts)
-	    300)
-	   )
-  (setq tks (ssget "x" '((8 . "temp-frames"))))
-  (if (/= nil tks)
-      (command  "_.draworder" tks "" "F")
-    )
-  (princ)
-  )
-
-(@:add-menu "通用打印" "删图框标记" "(@plot:delete-mark)")
-(defun @plot:delete-mark (/ tf)
-  (@plot:init)
-  (if (setq tf (ssget "x" '((0 . "LWPOLYLINE")
-			    (90 . 4)(70 . 1)
-			    (8 . "temp-frames"))))
-      (pickset:erase tf))
-  (setq @plot:*frames* '())
-  (princ)
-  )
-
-(@:add-menu "通用打印" "批打输出" "(@plot:plot-all)")
-(defun @plot:plot-all (/ tf tufu zongheng)
-  (@:help "打印标记的图框")
-  (if (setq tf (pickset:to-list
-		(ssget "x" '((0 . "LWPOLYLINE")
-			     (90 . 4)(70 . 1)
-			     (8 . "temp-frames")))))
-      ;; 打印
-      (progn 
-	(@:log "INFO" "打印标记")
-	(setq frames (mapcar '(lambda (x)
-				(@:get-rec-points x))
-			     tf))
-	(setq i% 0)
-	(foreach frame frames
-		 (setq tuming (car (@pm:pickout-maptitle-first (list (car frame) (last frame)))))
-		 ;; 识别图幅，横竖
-		 (if (null tuming)
-		     (setq tuming "")
-		   (setq tuming (strcat "-" tuming))
-		   )
-		 (setq tufu "A2")
-		 (setq zongheng "L")
-		 (plot:to-pdf tufu zongheng (car frame) (last frame)
-			      (strcat "D:\\test\\" (itoa (setq i% (1+ i%))) tuming ".pdf")))
-	
-	)))
-
-(defun @plot:draw-frame (plist layout% bold / lst-dxf)
-  (setq lst-dxf
-	(list '(0 . "LWPOLYLINE")
-	      '(100 . "AcDbEntity")
-	      '(62 . 1)
-	      (cons 410 layout%)
-	      '(370 . 30)
-	      '(8 . "temp-frames")
-	      '(100 . "AcDbPolyline")
-	      (cons 90 (length plist))
-	      '(70 . 1)
-	      (cons 43 bold)
-	      '(38 . 0.0)
-	      '(39 . 0.0)))
-  
-  (foreach x plist
-	   (setq lst-dxf (append lst-dxf 
-				 (list (cons 10 x)
-				       (cons 40 bold)
-				       (cons 41 bold)
-				       (cons 42 0)
-				       (cons 91 0)
-				       ))))
-  (entmake lst-dxf)
-  (entlast)
-  )
-(@:add-menu  "通用打印" "训练学习" "(@plot:train)")
-(defun @plot:train (/ pt1 pt2 hight res *error*)
-  (defun *error* (msg)
-    (if fp (close fp))
-    (@:*error* msg))
-  (prompt "请点击图框的两个对角点")
-  (setq pt1 (getpoint "左下角: "))
-  (setq pt2 (getpoint pt1 "右上角: "))
-  (setq hight (abs (cadr (mapcar '- pt2 pt1))))
-  (setq res
-	(ui:select "请确认图框的图幅及比例"
-		   (mapcar (function
-			    (lambda (x y)
-			      (strcat y " 1:"
-				(rtos x 2 7))))
-			   (mapcar (function
-				    (lambda (x)
-				      (/ hight x)))
-				   @plot:height-of-frame)
-			   @plot:frame-type)))
-  (setq fp (open (strcat @:*prefix-config* "frames-scale.db")"a"))
-  (write-line (last (string:to-lst res ":")) fp)
-  (close fp)
-  (setq fp (open (strcat @:*prefix-config* "frames-ratio.db")"a"))
-  (write-line
-   (rtos 
-    (/
-     (car (mapcar '- pt2 pt1))
-     (cadr (mapcar '- pt2 pt1)))
-    2 7)
-    fp)
-  (close fp)
-  (prompt "增加了一条识别规则。")
-  (princ)
-  )
-(defun @plot:frame-recognition-by-insert (/ blks frameblks)
-  ;;
-  "识别外部参照或无属性块"
-  (setq blks (block:list))
-  (if(> (length  blks) 500)
-     (progn
-       (@:prompt "图块太多，跳过匿名块的识别。")
-       (setq blks (vl-remove-if '(lambda(x)(wcmatch x "*`**")) blks))))
-  (setq frameblks nil)
-  (foreach
-   blk blks
-   (princ blk)
-   (princ "\n")
-   (foreach
-    en-in-blk  (block:ent-list blk)
-    (if (and (= "LWPOLYLINE" (entity:getdxf en-in-blk 0))
-	     (@plot:framep(curve:get-points en-in-blk)))
-	(setq frameblks (cons
-			 (cons 
-			  blk
-			  (curve:get-points en-in-blk))
-			 frameblks)))))
-  frameblks
-  )
-  

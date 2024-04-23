@@ -1,13 +1,16 @@
-(@:def-pkg '((:NAME . "at-plot")
-        (:FULL-NAME . "@´òÓ¡Êä³ö-²âÊÔ°æ")
+(@::def-pkg '((:NAME . "at-plot")
+        (:FULL-NAME . "@æ‰“å°è¾“å‡º-æµ‹è¯•ç‰ˆ")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.7")
+        (:VERSION . "0.0.8")
         (:LOCALE . "CHS")
-        (:CATEGORY . "´òÓ¡Êä³ö")
+        (:CATEGORY . "æ‰“å°è¾“å‡º")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "@lisp ´òÓ¡Êä³ö¸¨Öú¹¤¾ß£¬º¬ÅúÁ¿´òÓ¡¡¢¶àÍ¼´òÓ¡¡¢ÖÇÄÜÊ¶±ðÍ¼¿ò¡£")
+        (:DESCRIPTION . "@lisp æ‰“å°è¾“å‡ºè¾…åŠ©å·¥å…·ï¼Œå«æ‰¹é‡æ‰“å°ã€å¤šå›¾æ‰“å°ã€æ™ºèƒ½è¯†åˆ«å›¾æ¡†ã€‚")
         (:URL . "http://atlisp.cn")
         (:FILES "at-plot"
-            "frame-recognition")))
+            "frame-recognition"
+            "mark-frame"
+            "export"
+            "train")))

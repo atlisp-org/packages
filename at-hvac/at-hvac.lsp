@@ -2,6 +2,8 @@
  '("@暖通"
    ("插入说明" (@hvac:draw-readme))
    ("平面图样例" (@hvac:draw-plan-example))
+   ("标地暖管"(@hvac:dim-pipe))
+   ("批量标地暖管"(@hvac:batch-dim-pipe))
    ))
 (defun @hvac:draw-readme ()
   (@:help '("插入暖通说明。" ))

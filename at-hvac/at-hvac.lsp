@@ -4,6 +4,8 @@
    ("平面图样例" (@hvac:draw-plan-example))
    ("标地暖管"(@hvac:dim-pipe))
    ("批量标地暖管"(@hvac:batch-dim-pipe))
+   ("分集水器平衡分析"(@hvac:equip-balance))
+   ("绘制设备表"(@hvac:make-equip-bom))
    ))
 (defun @hvac:draw-readme ()
   (@:help '("插入暖通说明。" ))

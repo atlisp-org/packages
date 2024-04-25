@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp暖通")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.17")
+        (:VERSION . "0.0.22")
         (:LOCALE . "chs")
         (:CATEGORY . "暖通")
         (:REQUIRED . "at-pm")
@@ -10,4 +10,5 @@
         (:DESCRIPTION . "暖通系统化绘图工具")
         (:URL . "http://atlisp.cn")
         (:FILES "at-hvac"
-            "dim-pipe")))
+            "dim-pipe"
+            "equip")))

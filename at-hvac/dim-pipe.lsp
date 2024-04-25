@@ -48,7 +48,7 @@
          (entmod dxfent)
          (entupd ent)))))
 (defun @hvac:batch-dim-pipe ()
-  (@:help'("批量标地暖管的间距和分支长度"))
+  (@:help'("批量标地暖管的间距和分支长度,未成功标注的将地暖管改为红色。"))
   (@:prompt "请框选地暖管:")
   (if (setq pipe-s (pickset:to-list (ssget  '((0 . "lwpolyline")(8 . "*地暖*")))))
       (progn
@@ -79,29 +79,29 @@
 			      (setq pt-s (apply 'point:mid (curve:subsegment-picked-points pipe-d pt-s)))
 			      (setq pt-d (polar pt-s (* 1.5 pi) 6000))
 			      (setq line-t (entity:make-line pt-s pt-d))
-			      (if (setq pt-inters (vl-sort (curve:inters (e2o pipe-d)(e2o line-t) acExtendNone)
+			      (setq pt-inters (vl-sort (curve:inters (e2o pipe-d)(e2o line-t) acExtendNone)
 						       '(lambda(x y)
 							 (> (cadr x)(cadr y)))))
-				  (progn
-				    (entdel line-t)
-				    ;; 计算间距
-				    (setq d (car (stat:mode (stat:stat (mapcar 'fix (mapcar 'distance pt-inters (cdr pt-inters)))))))
-				    (setq ml
-					  (entity:make-multileader
-					   (list pt-s pt-d)
-					   (strcat "D="(itoa d)"mm\\PL="
-						   (string:number-format
-						    (rtos len 2 1)
-						    2 1 " 0")
-						   "m")))
-				    (vla-put-ScaleFactor (e2o ml)
-							 (* 10 (@:get-config '@::draw-scale)))
-				    ml)
-				  (progn
-				    (entdel line-t)
-				    nil)
-				  ))
-			    ))))
+			      (entdel line-t)
+			      ;; 计算间距
+			      (setq d (if (and pt-inters
+					       (> (length pt-inters) 1))
+					  (car (stat:mode (stat:stat (mapcar 'fix (mapcar 'distance pt-inters (cdr pt-inters))))))))
+			      (setq ml
+				    (entity:make-multileader
+				     (list pt-s pt-d)
+				     (strcat "D="(if d (itoa d)"{\\C1;***}")"mm\\PL="
+					     (string:number-format
+					      (rtos len 2 1)
+					      2 1 " 0")
+					     "m")))
+			      (vla-put-ScaleFactor (e2o ml)
+						   (* 10 (@:get-config '@::draw-scale)))
+			      ml)
+			    (progn (entity:putdxf pipe-d 62 1) nil)
+			    ))
+		      (progn (entity:putdxf pipe-d 62 1) nil)
+		      ))
 		pipe-s)))
 	(setq flag t)
 	(if (p:ename-listp ents)

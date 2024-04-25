@@ -28,6 +28,10 @@
 (defun @hvac:draw-plan-example ()
   (@:help '("插入暖通平面图样例。"
 	    ))
+  (@:load-module 'pkgman)
+  (if @::require-down
+      (@::require-down "at-hvac/example-hvac.dwg"))
+
   (if (findfile (strcat @::*prefix* "packages/at-hvac/example-hvac.dwg"))
       (progn
 	(setq example-plan-hvac

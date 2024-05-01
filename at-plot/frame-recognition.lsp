@@ -377,3 +377,18 @@
   (std:timer-end)
   (princ)
   )
+
+(@:add-menu "通用打印" "识别块图框" "(@plot:frame-recognition-by-block)")
+
+(defun @plot:frame-recognition-by-block ()
+  (setq blknames (block:list))
+  (setq frameblknames (vl-remove-if-not
+		       '(lambda(x) (@pm:frame-p x))
+		       blknames))
+  (setq frameblkrefs
+	(ssget "x" (list '(0 . "insert")
+			 (cons 2 (string:subst-all "`*" "*" (string:from-list frameblknames ","))))))
+
+  (sssetfirst nil frameblkrefs)
+  )
+

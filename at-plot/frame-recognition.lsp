@@ -382,13 +382,36 @@
 
 (defun @plot:frame-recognition-by-block ()
   (setq blknames (block:list))
-  (setq frameblknames (vl-remove-if-not
-		       '(lambda(x) (@pm:frame-p x))
-		       blknames))
+  (setq frameblkdata
+	(vl-remove-if-not
+	 '(lambda(x)
+	   (cdr x))
+	 (mapcar 
+	  '(lambda(x)
+	    (cons x
+	     (@pm:frame-p x)))
+	  blknames)))
+  ;; 块及图幅对照表
   (setq frameblkrefs
 	(ssget "x" (list '(0 . "insert")
-			 (cons 2 (string:subst-all "`*" "*" (string:from-list frameblknames ","))))))
-
+			 (cons 2 (string:subst-all "`*" "*" (string:from-list (mapcar 'car frameblkdata) ","))))))
+  ;;去除包含的
+  ;; (setq boxs
+  ;; 	(mapcar '(lambda(x)
+  ;; 		  (setq tkdata (member (entity:getdxf x 2) frameblkdata))
+  ;; 		  (setq ptc (point:centroid (setq box (caddr tkdata))))
+  ;; 		  (setq box (mapcar '(lambda(x)
+  ;; 				      (polar x
+  ;; 				       (angle x ptc)
+  ;; 				       2))
+  ;; 			     box))
+  ;; 		  (mapcar '(lambda(x)(block:bcs2wcs x (last tkdata)
+  ;; 				      (entity:getdxf x 10)
+  ;; 				      (entity:getdxf x 50)
+  ;; 				      (entity:getdxf x 41)))
+  ;; 		   box))
+  ;; 		frameblkrefs))
+  ;;去除小框
   (sssetfirst nil frameblkrefs)
   )
 

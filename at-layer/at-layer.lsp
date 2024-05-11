@@ -8,7 +8,7 @@
 	       ("图层全开" "layon")
 	       ("图层恢复" "layerp")
 	       ("特性随层" "laycur")
-	       ("合并图层" "laymgr")
+	       ("合并图层" "laymrg")
 	       ("删除图层" "laydel")
 	       ("图层漫游" "laywalk")
 	       ("选图进层" "(@layer:ent-to-clayer)")

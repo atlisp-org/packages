@@ -17,6 +17,7 @@
    ("交点编号" (@curve:inters-number))
    ("排线相连" (@curve:link-obj))
    ("样条转多段" (@curve:spline2lwpl))
+   ("lw转3D" (@curve:menu-lw2pl))
    ))
 (@:define-config
     '@curve:types

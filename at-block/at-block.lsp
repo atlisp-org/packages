@@ -335,17 +335,15 @@
   (sssetfirst nil (pickset:from-entlist blks))
   (princ))
 (defun @block:rename-noname (/ name newname i)
-  (@:help "修复块名为空的无名块")
   (setq name "atlisp.cn")
-  (setq i 0)
-  (while (tblsearch "block" (strcat name (itoa (setq i (1+ i))))))
-  
-  (setq newname (strcat name (itoa i)))
-  
-  (vlax-for blk *BLKS*
-	    (if (= "" (vla-get-name blk))
-		(vla-put-name blk newname)))
-  )
+  (vlax-for
+   blk *BLKS*
+   (if (= "" (vla-get-name blk))
+       (progn
+	 (setq i 0)
+	 (while (tblsearch "block" (strcat name (itoa (setq i (1+ i))))))
+	 (setq newname (strcat name (itoa i)))
+	 (vla-put-name blk newname)))))
 
 
 (defun @block:menu-change-base(/ blkref blkname pt )

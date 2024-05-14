@@ -3,7 +3,7 @@
   (setq hequips (pickset:to-list (ssget '((0  . "TCH_DBHEQUIPMENT")))))
   (setq hvac-jfsqs
 	(vl-remove-if-not '(lambda(x)
-			    (equal (vlax-get (e2o x) 'hvac_s5)
+			    (equal (vlax-get-property (e2o x) 'hvac_s5)
 			     "采暖分集水器"))
 			  hequips))
   (@:prompt (strcat "选中"(itoa(length hvac-jfsqs))"个采暖分集水器"))
@@ -33,7 +33,7 @@
   (setq hequips (pickset:to-list (ssget '((0  . "TCH_DBHEQUIPMENT")))))
   (setq hvac-jfsqs
 	(vl-remove-if-not '(lambda(x)
-			    (equal (vlax-get (e2o x) 'hvac_s5)
+			    (equal (vlax-get-property (e2o x) 'hvac_s5)
 			     "采暖分集水器"))
 			  hequips))
   (@:prompt (strcat "选中"(itoa(length hvac-jfsqs))"个采暖分集水器"))

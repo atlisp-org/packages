@@ -39,7 +39,7 @@
 	))
   (setq WScript (vlax-get-or-create-object "WScript.Shell"))
   (setq WSreturn (vlax-invoke WScript 'exec (strcat "\"" @::*prefix* "bin\\QRencodeForLisp.exe\" \"" str "\"")))
-  (setq stdout (vlax-get WSreturn 'StdOut))
+  (setq stdout (vlax-get-property WSreturn 'StdOut))
   (setq outstr (vlax-invoke stdout 'Readall))
   (setq lst(read outstr))
   (if lst

@@ -9,9 +9,12 @@
 (defun at-purge:remove-dgn (/)
   (vl-load-com)
   (if (dictremove (namedobjdict) "ACAD_DGNLINESTYLECOMP")
-      (princ "已修正 DGN线型 问题，请运行 purge 清理文件。")
+      (progn
+	(command "purge" "a" "*" "N")
+	(princ "已修正 DGN线型 问题，并运行 purge 清理了文件。")
+	)
       (princ "本图没有 DGN 问题"))
-  ;;;(command "purge" "" "a" "" "N" "")
+  ;;;
   (princ)
   )
 

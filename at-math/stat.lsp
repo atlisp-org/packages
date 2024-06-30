@@ -6,6 +6,7 @@
 (@:add-menu "统计" "图元统计" "(@math:stat-entity-gui)")
 (@:add-menu "统计" "图元颜色" "(@math:stat-color)")
 (@:add-menu "统计" "电气设备" "(@stat:telec-equip)")
+(@:add-menu "统计" "面域按层" "(@stat:region-by-layer)")
 (@:add-menu "统计" "--" "--")
 (@:add-menu "统计" "输出结果" "(stat:print)")
 (@:add-menu "统计" "绘制结果" "(stat:draw)")
@@ -116,3 +117,15 @@
 	    (48 . "线型比例")
 	    (40 . "半径"))))
       
+(defun @stat:region-by-layer ()
+  (@:help (strcat "按不同的图层统计面域的面积。"))
+  (setq @:tmp-stat-result
+	(stat:classify
+	 (mapcar (function
+		  (lambda (x)
+		   (cons
+		    (entity:getdxf x 8)
+		    (vla-get-area (e2o x)))
+		   ))
+		 (pickset:to-list (ssget '((0 . "region"))))
+		 ))))

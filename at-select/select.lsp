@@ -20,7 +20,6 @@
       (if (null s1)
 	  (setq s1 (ssget "x" filters)))))
   (sssetfirst nil s1))
-
 (defun at-select:select-sametype (/ ent1 s1 filters)
   (@::help '("选择同类型的图形"))
   (@:prompt "请点选一个图形:")
@@ -30,7 +29,6 @@
 		       (entity:getdxf ent1 0))))
   (setq s1 (ssget "x" filters))
   (sssetfirst nil s1))
-
 (defun at-select:select-shortlines (/ ent1 s1 filters)
   (@::help '("选择短线，即小于给定长度的线"))
   (if (or (null shortline-value)
@@ -60,4 +58,55 @@
 			    s1))))
   (if s1
       (sssetfirst nil (pickset:from-list s1))))
+(defun at-select:select-samelayer (/ ent1 s1 filters)
+  (@::help '("选择同层的图形"))
+  (@:prompt "请点选一个图形:")
+  (setq ent1 (car (pickset:to-list(ssget ":E:S" ))))
+  (setq filters (list
+		 (cons 8
+		       (entity:getdxf ent1 8))))
+  (setq s1 (ssget "x" filters))
+  (sssetfirst nil s1))
+(defun at-select:select-samecolor (/ ent1 s1 filters)
+  (@::help '("选择同色的图形"))
+  (@:prompt "请点选一个图形:")
+  (setq ent1 (car (pickset:to-list(ssget ":E:S" ))))
+  (setq filters (entity:get-color ent1))
+  (setq s1
+	(vl-remove-if-not
+	 '(lambda(x)
+	   (= filters
+	    (entity:get-color x)))
+	 (pickset:to-list (ssget "x"))))
+  (sssetfirst nil (pickset:from-list s1)))
+(defun at-select:select-samelinetype (/ ent1 s1 filters)
+  (@::help '("选择同线型的图形"))
+  (@:prompt "请点选一个图形:")
+  (setq ent1 (car (pickset:to-list(ssget ":E:S" ))))
+  (setq filters (entity:get-linetype ent1))
+  (setq s1
+	(vl-remove-if-not
+	 '(lambda(x)
+	   (= filters
+	    (entity:get-linetype x)))
+	 (pickset:to-list (ssget "x"))))
+  (sssetfirst nil (pickset:from-list s1)))
+
+
+(defun at-select:select-similar (/ ent1 s1 filters)
+  (@::help '("选择相似曲线"))
+  (if (@::get-config 'curve:types)
+      (setq filters (list
+		     (cons 0
+			   (@::get-config 'curve:types))))
+      (setq filters '((0 . "*polyline,line"))))
+  (@:prompt "请点选一个曲线:")
+  (setq ent1 (car (pickset:to-list(ssget ":E:S" filters))))
+  (setq s1
+	(vl-remove-if-not
+	 '(lambda(x)
+	   (curve:similar-p ent1 x))
+	 (pickset:to-list (ssget "x" filters))))
+  (sssetfirst nil (pickset:from-list s1)))
+
 

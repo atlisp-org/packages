@@ -15,9 +15,12 @@
     ))
 (@:add-menus 
   '("@lisp选择1"
+    ("选择同类型" (at-select:select-sametype))
+    ("选择同层" (at-select:select-samelayer))
+    ("选择同色" (at-select:select-samecolor))
+    ("选择同线型" (at-select:select-samelinetype))
     ("选择闭合线" (at-select:select-closed-lwpl))
     ("选择未闭合线" (at-select:select-unclosed-lwpl))
     ("选择短线" (at-select:select-shortlines))
-    ("选择同类型" (at-select:select-sametype))
-    
+    ("选择相似线" (at-select:select-similar))
     ))

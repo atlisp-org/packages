@@ -1,14 +1,15 @@
-(@:def-pkg '((:NAME . "at-select")
-        (:FULL-NAME . "@lispÑ¡Ôñ¹¤¾ß")
+(@::def-pkg '((:NAME . "at-select")
+        (:FULL-NAME . "@lispé€‰æ‹©å·¥å…·")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.2")
+        (:VERSION . "0.1.3")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "@lispÑ¡Ôñ¹¤¾ß£¬ÈçÑ¡ÔñÌî³äÇøÖĞµÄÄ³ÀàÍ¼¿éµÈ¡£¼ÇÂ¼Ñ¡Ôñ¼¯£¬Ñ¡Ôñ¼¯¹ıÂËµÈ¡£")
+        (:DESCRIPTION . "@lispé€‰æ‹©å·¥å…·ï¼Œå¦‚é€‰æ‹©å¡«å……åŒºä¸­çš„æŸç±»å›¾å—ç­‰ã€‚è®°å½•é€‰æ‹©é›†ï¼Œé€‰æ‹©é›†è¿‡æ»¤ç­‰ã€‚")
         (:URL . "http://atlisp.cn")
         (:FILES "at-select"
-		"cluster-box"
-		"menus")))
+            "select"
+            "cluster-box"
+            "menus")))

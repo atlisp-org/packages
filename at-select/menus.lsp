@@ -13,3 +13,11 @@
     ("ss5" "(c:ss5)")
     ("分堆加框" "(at-select:cluster-box)")
     ))
+(@:add-menus 
+  '("@lisp选择1"
+    ("选择闭合线" (at-select:select-closed-lwpl))
+    ("选择未闭合线" (at-select:select-unclosed-lwpl))
+    ("选择短线" (at-select:select-shortlines))
+    ("选择同类型" (at-select:select-sametype))
+    
+    ))

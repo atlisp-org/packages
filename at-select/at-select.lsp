@@ -1,5 +1,6 @@
 (@:define-config '@select:blksname "" "选择时要匹配的块名")
 (@:define-config '@select:onboundary 1 "1 选择在边界上图元; 0 不选边界上的图元")
+(@::define-config 'curve:similarity 0.95 "曲线相似度，0到1之间的值")
 (defun @select:setup (/ res) 
   (setq @::tmp-search-str "@SELECT")
   (@::edit-config-dialog))

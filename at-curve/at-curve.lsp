@@ -24,6 +24,7 @@
     "*POLYLINE,circle,arc,ellipse,spline,region"
   "可操作的曲线的图元类型")
 (@:define-config '@curve:dualline-width 120.0 "单线变双线的默认宽度")
+
 (defun @curve:setup (/ res)
   (setq @::tmp-search-str "@curve")
   (@::edit-config-dialog))

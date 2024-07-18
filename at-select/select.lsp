@@ -95,11 +95,11 @@
 
 (defun at-select:select-similar (/ ent1 s1 filters)
   (@::help '("选择相似曲线"))
-  (if (@::get-config 'curve:types)
+  (if (@::get-config '@curve:types)
       (setq filters (list
 		     (cons 0
-			   (@::get-config 'curve:types))))
-      (setq filters '((0 . "*polyline,line"))))
+			   (@::get-config '@curve:types))))
+      (setq filters '((0 . "*POLYLINE,circle,arc,ellipse,spline,region,line"))))
   (@:prompt "请点选一个曲线:")
   (setq ent1 (car (pickset:to-list(ssget ":E:S" filters))))
   (setq s1

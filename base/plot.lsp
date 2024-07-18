@@ -1,7 +1,7 @@
 ;; 打印样式表
 (@:define-config 'base:ctb "monochrome.ctb" (_"Print style file."))
 ;;打印驱动配置
-(@:define-config 'base:plotter "VitalPDF.pc3" "Please change it to your ploter,and setup page sizes。")
+(@:define-config 'base:plotter "VitalPDF.pc3" "Please change it to your ploter,and setup page sizes.")
 (cond
  (is-zwcad
   (@:define-config 'base:plotter-pdf "VitalPDFzw.pc5" "PDF Printer"))

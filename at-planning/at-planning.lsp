@@ -9,10 +9,14 @@
 (@:define-config '@planning:openspace-layer "开敞空间" "城市开敞空间图层。")
 (@:define-config '@planning:square-layer "城市广场" "城市广场图层。")
 (@:define-config '@planning:parking "*车位" "用于统计停车位的图块名")
+(@:define-config '@planning:floor-area-ratio-limit 2.0 "容积率限值,单位10000m2/ha")
+(@:define-config '@planning:building-density-limit 35 "建筑密度限值,单位%")
+(@:define-config '@planning:greening-rate-limit 20 "绿地率限值")
 
 ;; 向系统中添加菜单 
 (@:add-menus
  '("规划"
+   ("规划设置"(at-planning:setup))
    ("指定范围"(at-planning:set-range))
    ("用地面积"(at-planning:land-area))
    ("绿地面积" (at-planning:area-of-green))
@@ -22,6 +26,10 @@
    ("数据输入" (at-planning:input))
    ("经济指标" (at-planning:make-index))
    ))
+
+(defun at-planning:setup (/ res)
+   (setq @::tmp-search-str "@planning")
+  (@::edit-config-dialog))
 (defun at-planning:set-range ()
   (@::help "指定要计算的矩形范围")
   (@::prompt "请指定计算范围")
@@ -291,13 +299,14 @@
 		     (list "绿地面积" "㎡" (+ @planning:*green-all-area*
 					      @planning:*green-reduction-area*)
 			   "")
-		     (list "建筑密度" "%" (strcat (@:to-string(* 100 (/ (at-planning:sum @planning:*building-floor1-area*) (at-planning:sum @planning:*land-area*))))"%") "≤35%")
+		     (list "建筑密度" "%" (strcat (@:to-string(* 100 (/ (at-planning:sum @planning:*building-floor1-area*) (at-planning:sum @planning:*land-area*))))"%") (strcat "≤" (itoa(fix(@:get-config '@planning:building-density-limit))) "%"))
 		     (list "容积率" "万㎡/ha"
 			   (/ @planning:*plot-area*
 			      (at-planning:sum @planning:*land-area*)
 			      )
-			   "≤2.0")
-		     (list "绿地率" "%" (strcat (@:to-string (* 100 @planning:*greening-rate*))"%") "≥20%")
+			   (strcat "≤"(@:to-string(@:get-config '@planning:floor-area-ratio-limit))))
+		     (list "绿地率" "%" (strcat (@:to-string (* 100 @planning:*greening-rate*))"%")
+			   (strcat "≥" (itoa(fix(@:get-config '@planning:greening-rate-limit))) "%"))
 		     (list "非机动车停车位" "㎡" "" "")
 		     (list "总车位" "个" (itoa (+ @planning:*parking-overground*
 						  @planning:*parking-underground*))

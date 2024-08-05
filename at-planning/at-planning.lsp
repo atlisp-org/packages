@@ -38,7 +38,7 @@
 (defun at-planning:zoom ()
   (if (or (null at-planning:range-pt1)
 	  (null at-planning:range-pt2))
-      (at-planning:range)
+      (at-planning:set-range)
       )
   (vla-zoomwindow *ACAD* (point:to-ax at-planning:range-pt1)
 		  (point:to-ax  at-planning:range-pt2)))
@@ -131,10 +131,11 @@
 (defun at-planning:area-of-green (/ sum-area)
   (@::help "生成各绿地地块的面积，及汇总面积")
   (at-planning:zoom)
-  (pickset:erase (ssget  "w" at-planning:range-pt1 at-planning:range-pt2
+  (if (setq ss-tmp (ssget  "w" at-planning:range-pt1 at-planning:range-pt2
 		  (list (cons 0 "text")
 				  (cons 8 (@:get-config '@planning:green-layer))
 				  )))
+      (pickset:erase ss-tmp))
   (@:prompt "请选择绿地闭合曲线:")
   (setq lst-curve (pickset:to-list
                    (ssget "w" at-planning:range-pt1 at-planning:range-pt2
@@ -194,7 +195,8 @@
       )
   (princ))
 (defun at-planning:reduction-green ()
-  (@::help "计算填充绿地林荫车位折减面积。")
+  (@::help '("计算填充绿地林荫车位折减面积。"
+	     "车位尺寸 2.4x5.3m2，按60%折减。"))
   (@:prompt "请选择林荫车位:")
   (setq lst-car (pickset:to-list
                  (ssget "w" at-planning:range-pt1 at-planning:range-pt2
@@ -202,6 +204,7 @@
 			      (cons 2 "林荫车位")
 			      ))))
   ;; (setq @planning:*green-reduction-area*  (* -1 0.6 2.4 5.3 (length lst-car)))
+  (@:prompt (strcat "发现林荫车位 " (itoa (length lst-car))" 个"))
   (setq @m:*result*  (* -1 0.6 2.4 5.3 (length lst-car)))
   (@m:draw)
   (princ))
@@ -295,6 +298,7 @@
 			      )
 			   "≤2.0")
 		     (list "绿地率" "%" (strcat (@:to-string (* 100 @planning:*greening-rate*))"%") "≥20%")
+		     (list "非机动车停车位" "㎡" "" "")
 		     (list "总车位" "个" (itoa (+ @planning:*parking-overground*
 						  @planning:*parking-underground*))
 			   "")

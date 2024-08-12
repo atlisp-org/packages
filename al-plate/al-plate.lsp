@@ -1,15 +1,27 @@
-(@::define-config 'al-plate:al-layer "A-ÂÁ°å" "ÂÁ¹¹¼ş¿òÏßÍ¼²ã")
-(@::define-config 'al-plate:thikness-layer "A-°åºñÏß" "ÂÁ¹¹¼şºñÏßÍ¼²ã")
-(@::define-config 'al-plate:thikness 0.5 "ÂÁ°åºñ¶ÈÖµ")
-(@::define-config 'al-plate:length 200 "ÂÁ¹¹¼ş»æÖÆ³¤¶È")
-(@::define-config 'al-plate:symmetry 1 "ÂÁ¹¹¼şÊÇ·ñ×ª½Ç¹¹¼ş£¬0: ·Ç×ª½Ç£¬1:Ò»¶Ë×ª½Ç£¬2:Á½¶Ë×ª½Ç")
-(@::define-config 'al-plate:symmetry 1 "ÂÁ¹¹¼şÊÇ·ñ¶Ô³Æ")
+(defpackage :al-plate
+  (:export 
+   :setup
+   :draw1
+   :al-Layer
+   :thickness-Layer
+   :thickneww
+   :length
+   :truned
+   :symmetry
+  ))
+(in-package :al-plate)
+(@::define-config 'al-plate:al-layer "A-é“æ¿" "é“æ„ä»¶æ¡†çº¿å›¾å±‚")
+(@::define-config 'al-plate:thikness-layer "A-æ¿åšçº¿" "é“æ„ä»¶åšçº¿å›¾å±‚")
+(@::define-config 'al-plate:thikness 0.5 "é“æ¿åšåº¦å€¼")
+(@::define-config 'al-plate:length 200 "é“æ„ä»¶ç»˜åˆ¶é•¿åº¦")
+(@::define-config 'al-plate:turned 1 "é“æ„ä»¶æ˜¯å¦è½¬è§’æ„ä»¶ï¼Œ0: éè½¬è§’ï¼Œ1:ä¸€ç«¯è½¬è§’ï¼Œ2:ä¸¤ç«¯è½¬è§’")
+(@::define-config 'al-plate:symmetry 1 "é“æ„ä»¶æ˜¯å¦å¯¹ç§°")
 
 
 (@::add-menus
- '("ÂÁ°å"
-   ("ÂÁ°åÅäÖÃ" (al-plate:setup))
-   ("ÂÁ¹¹Õ¹¿ª" (al-plate:draw1))
+ '("é“æ¿"
+   ("é“æ¿é…ç½®" (al-plate:setup))
+   ("é“æ„å±•å¼€" (al-plate:draw1))
    ))
 
 (defun al-plate:setup ()
@@ -32,24 +44,24 @@
   (setq ents
 	(append
 	 (list 
-	 ;;µ×Ïß
+	 ;;åº•çº¿
 	 (entity:putdxf
 	  (entity:make-lwpolyline
 	   pts nil 0 0 0)
-	  8 "A-Õ¹¿ªÏß")
-	 ;;¶¥Ïß
+	  8 "A-å±•å¼€çº¿")
+	 ;;é¡¶çº¿
 	 (entity:putdxf
 	  (entity:make-lwpolyline
 	   pts-top nil 0 0 0)
-	  8 "A-Õ¹¿ªÏß")
-	 ;;¶Ë
+	  8 "A-å±•å¼€çº¿")
+	 ;;ç«¯
 	 )
 	 (mapcar '(lambda(x)
 		    (entity:putdxf
 		     (entity:make-line
 		      x
 		      (polar x (* 0.5 pi) (@::get-config 'al-plate:length)))
-		     8  "A-Õ¹¿ªÏß")
+		     8  "A-å±•å¼€çº¿")
 		    )
 		 (list (car pts)(last pts)))
 	 (mapcar '(lambda(x)
@@ -57,13 +69,13 @@
 		     (entity:make-line
 		      x
 		      (polar x (* 0.5 pi) (@::get-config 'al-plate:length)))
-		     8  "A-ÕÛÍäÏß")
+		     8  "A-æŠ˜å¼¯çº¿")
 		    )
 		 (cdr (reverse(cdr pts) )))))
   (ui:dyndraw ents '(0 0 0))
   )
 (defun al-plate:draw1 ()
-  (@:prompt "Ñ¡Ôñ¶à¶ÎÏß")
+  (@:prompt "é€‰æ‹©å¤šæ®µçº¿")
   (if (setq lwpl (car (pickset:to-list (ssget ":S:E" (list '(0 . "lwpolyline")
 							   (cons 8 (@::get-config 'al-plate:al-layer)))
 					      ))))
@@ -78,7 +90,7 @@
 	(setq flag-start 0)
 	(setq segs nil)
 	(while (setq pt3 (car pts))
-	  ;; ÅĞ¶ÏÄÚÕÛ»òÍâÕÛ,½«ĞéÏß¸ÄÎªÊµÏß
+	  ;; åˆ¤æ–­å†…æŠ˜æˆ–å¤–æŠ˜,å°†è™šçº¿æ”¹ä¸ºå®çº¿
 	  (setq flag-end
 		(if (ssget "f"
 			   (list
@@ -106,7 +118,7 @@
 		  flag-start)
 	       segs))
 	(princ segs)
-	;;»æÖÆ
+	;;ç»˜åˆ¶
 	(al-plate:draw-expand segs)
 	)))
 

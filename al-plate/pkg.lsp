@@ -2,7 +2,7 @@
         (:FULL-NAME . "铝板")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.3")
+        (:VERSION . "0.0.4")
         (:LOCALE . "chs")
         (:CATEGORY . "机械")
         (:REQUIRED . "base")

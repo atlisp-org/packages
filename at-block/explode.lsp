@@ -15,7 +15,7 @@
 	    (setq flag-out t)
 	    (setq flag-out nil))
 	
-	;; (setq ents-x nil);;炸开的块图元
+	;; 炸开后的块图元 ents-x
 	(setq objs-x (vlax-safearray->list (vlax-variant-value (vla-Explode (e2o blkref)))))
 	(mapcar 'vla-update objs-x)
 	(setq ents-x (mapcar 'o2e objs-x))

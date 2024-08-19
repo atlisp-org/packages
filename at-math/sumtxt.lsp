@@ -1,5 +1,5 @@
 (defun at-math:sumtxt ()
-  (@:help '("统计文本中的项与数据，对不同的项汇总求和。"))
+  (@::help '("统计文本中的项与数据，对不同的项汇总求和。"))
 
   (defun to-pair(str / pair res)
     (if (p:stringp  str)

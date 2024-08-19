@@ -412,15 +412,19 @@
   (defun explode-loop (blks)
     (if(and blks (atom blks))(setq blks (list blks)))
     (if blks
-	(mapcar '(lambda(blkref / objs-x)
-		  (setq objs-x (vlax-safearray->list (vlax-variant-value (vla-Explode (e2o blkref)))))
-		  (mapcar 'vla-update objs-x)
-		  (explode-loop
-		   (vl-remove-if-not '(lambda(y)
-				       (and
-					(string-equal (entity:getdxf y 0)"insert")
-					))
-		    (mapcar 'o2e objs-x))))
-		blks
-		)))
+	(mapcar
+	 '(lambda(blkref / objs-x)
+	   (if (setq objs-x (vla:get-value (vla-Explode (e2o blkref))))
+	       (progn
+		 (vla-delete blkref)
+		 (mapcar 'vla-update objs-x)
+		 (explode-loop
+		  (vl-remove-if-not
+		   '(lambda(y)
+		     (and
+		      (string-equal (entity:getdxf y 0)"insert")
+		      ))
+		   (mapcar 'o2e objs-x))))))
+	 blks
+	 )))
   (explode-loop (pickset:to-list (ssget '((0 . "insert"))))))

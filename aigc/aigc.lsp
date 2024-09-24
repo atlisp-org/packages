@@ -6,6 +6,7 @@
     (and 
       (setq req (car (pickset:to-list (ssget ":S" '((0 . "*text"))))))
       (setq str-req (text:remove-fmt (text:get-mtext req))))
+   
     (progn 
       (@:load-module 'aibot)
       (setq req-box (entity:getbox req 0))

@@ -6,13 +6,17 @@
 ;;; DWG文件中的单行文本的数学运算
 (@:define-config '@math:layer-of-zone  "柱" "表示区域的多段线所在的图层")
 ;;; 数字求和
+;;;过滤非数字
+(defun filter-num(str / tmp)
+  (if (setq tmp (car (vl-remove-if-not 'string:numberp (string:auto-split str))))
+      (atof tmp)))
 (@:add-menu "数学" "∑求和" "(@m:text-sum)")
 (defun @m:text-sum ( / s1 si% ti% ename total )
   (@:help 
    "求多个数字单行文本的和。支持纯单行文本和天正文本。")
   (prompt "请选择一个或多个数字单行文本")
   (setq s1 (pickset:to-list (ssget '((0 . "text,tch_text")))))
-  (setq total (apply '+ (mapcar '(lambda(x)(atof (entity:getdxf x 1))) s1)))
+  (setq total (apply '+ (mapcar '(lambda(x)(filter-num(entity:getdxf x 1))) s1)))
   (print (setq @m:*result* total))
   (@m:draw)
   (princ)
@@ -27,7 +31,7 @@
   (prompt "请选择一个或多个数字单行文本")
   (setq s1 (pickset:to-list (ssget '((0 . "text,tch_text")))))
 
-  (setq total (apply '* (mapcar '(lambda(x)(atof (entity:getdxf x 1))) s1)))
+  (setq total (apply '* (mapcar '(lambda(x)(filter-num (entity:getdxf x 1))) s1)))
   (print (setq @m:*result* total))
   (@m:draw)
   (princ)
@@ -40,7 +44,7 @@
    "求多个数字单行文本的算术均值。支持单行文本和天正文本。")
   (prompt "请选择一个或多个数字单行文本")
   (setq s1 (pickset:to-list (ssget '((0 . "text,tch_text")))))
-  (setq total (apply '+ (mapcar '(lambda(x)(atof (entity:getdxf x 1))) s1)))
+  (setq total (apply '+ (mapcar '(lambda(x)(filter-num (entity:getdxf x 1))) s1)))
   (print (setq @m:*result* (/ total (length s1))))
   (@m:draw)
   (princ)
@@ -64,7 +68,7 @@
   (mapcar '(lambda (x / str)
 	    (setq str (entity:getdxf x 1))
 	    (if (string:numberp str)
-		(if (> (atof str) minnum1)
+		(if (> (filter-num str) minnum1)
 		    (entity:putdxf x 62 141)
 		    (entity:putdxf x 62 1))))
 	  (pickset:to-list s1))
@@ -167,10 +171,10 @@
 	       (setq res-matrix
 		     (mapcar (read cal-symble) res-matrix 
 			     (mapcar
-			      '(lambda (x) (atof (entity:getdxf x 1)))
+			      '(lambda (x) (filter-num (entity:getdxf x 1)))
 			       matrix)))
 	       (setq res-matrix
-		     (mapcar '(lambda (x) (atof (entity:getdxf x 1)))
+		     (mapcar '(lambda (x) (filter-num (entity:getdxf x 1)))
 			     matrix)))
 	   )
   ;; 写图

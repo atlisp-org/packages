@@ -1,6 +1,6 @@
-(defun at-math:sumtxt ()
+(defun at-math:sumtxt (/ res1 ents txts data textnumpair)
   (@::help '("统计文本中的项与数据，对不同的项汇总求和。"))
-
+  
   (defun to-pair(str / pair res)
     (if (p:stringp  str)
 	(foreach a
@@ -34,5 +34,7 @@
 				  (assoc (car subj) res1)
 				  res1))
 		   (setq res1 (cons  subj res1))))
-	(setq @:tmp-stat-result  res1))))
+	(if (setq @:tmp-stat-result  res1)
+	    (stat:draw))
+	)))
 

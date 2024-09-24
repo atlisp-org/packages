@@ -18,7 +18,9 @@
 	 (mapcar (function
 		  (lambda (x) ;; 匿名函数：从选择集列表中取出要统计的项。
 		   (block:get-effectivename x))) ;; 示例: 从图元取出图名。
-		 (pickset:to-list (ssget '((0 . "insert")))))))) ;; 要统计的图元。
+		 (pickset:to-list (ssget '((0 . "insert"))))))) ;; 要统计的图元。
+  (if @:tmp-stat-result (stat:draw))
+  )
 
 (defun @:stat-block-by-attribute (attribute-name block-name)
   "统计选中的指定块名中的某一属性的值及数量。"
@@ -29,7 +31,9 @@
 		   (if (wcmatch (block:get-effectivename x) block-name)
 		       (cdr (assoc attribute-name (block:get-attributes x)))
 		       )))
-		 (pickset:to-list (ssget '((0 . "insert"))))))))
+		 (pickset:to-list (ssget '((0 . "insert")))))))
+  (if @:tmp-stat-result (stat:draw))
+  )
 
 (defun @:menu-stat-block-by-attribute (/ blk-name attribute-name)
   (setq blk-name (getstring "请输入要统计的块名称:"))
@@ -45,7 +49,8 @@
 		   (if (wcmatch (block:get-effectivename x) block-name)
 		       (cdr (assoc prop-name (block:get-dynamic-properties x)))
 		       )))
-		 (pickset:to-list (ssget '((0 . "insert"))))))))
+		 (pickset:to-list (ssget '((0 . "insert")))))))
+  (if @:tmp-stat-result (stat:draw)))
 
 (defun @:menu-stat-block-by-properties (/ blk-name prop-name)
   (setq blk-name (getstring "请输入要统计的块名称:"))
@@ -60,7 +65,8 @@
 	 (mapcar (function
 		  (lambda (x)
 		   (cdr (assoc stat-item (entget x)))))
-		 (pickset:to-list (ssget ssfilter))))))
+		 (pickset:to-list (ssget ssfilter)))))
+  (if @:tmp-stat-result (stat:draw)))
 
 (defun @math:stat-color (/ ents)
   "stat-color: 统计实体的颜色"
@@ -71,7 +77,8 @@
 	 (mapcar (function
 		  (lambda (x)
 		    (entity:get-color x)))
-		 ents))))
+		 ents)))
+  (if @:tmp-stat-result (stat:draw)))
 
 (defun @math:stat-entity-gui (/ name dxf)
   (@:help "根据需要的统计项目统计选中的选择集。")
@@ -93,7 +100,8 @@
 	 (mapcar (function
 		  (lambda (x)
 		   (cdr (assoc 1 (entget x)))))
-		 (pickset:to-list (ssget ssfilter))))))
+		 (pickset:to-list (ssget ssfilter)))))
+  (if @:tmp-stat-result (stat:draw)))
 
 (defun @stat:telec-equip ()
   (@:help (strcat 
@@ -107,7 +115,8 @@
 		      (block:get-effectivename x)
 		      "(")
 		     ))) ;; 示例: 从图元取出图名。
-		 (pickset:to-list (ssget '((0 . "insert")(2 . "*$equip*")))))))) ;; 要统计的图元。
+		 (pickset:to-list (ssget '((0 . "insert")(2 . "*$equip*")))))))
+  (if @:tmp-stat-result (stat:draw)))
 (if (null dxf-common)
     (setq dxf-common
 	  '((0 . "图元类型")

@@ -70,23 +70,25 @@
 		(= 1 (sslength
 		      (ssget "cp" (text:box x) '((0 . "text"))))))
 	      txts))
-  (setq txts (pickset:sort txts "xy" (* 0.01(entity:getdxf (car txts) 40))))
+  (if (entity:getdxf (car txts) 40)
+      (setq txts (pickset:sort txts "xy" (* 0.01 (entity:getdxf (car txts) 40)))))
   (foreach
    txt  txts
    (setq ots (vl-remove txt (pickset:to-list (ssget "cp" (text:box txt) '((0 . "text"))))))
    (foreach
     ot ots
     ;; 比较 ot 与 txt的位置关系，确定避让规则
-    (setq box1 (text:box txt)
-	  box2(text:box ot))
-    (setq r1 (entity:getdxf  txt 50)
-	  r2 (entity:getdxf ot 50))
-    (setq w1  (distance (car box1)(cadr box1))
-	  w2  (distance (car box2)(cadr box2))
-	  h1  (distance (car box1)(last box1))
-	  h2  (distance (car box2)(last box2))
-	  o1 (point:centroid box1)
-	  o2 (point:centroid box2))
+    (if  (and
+	  (setq box1 (text:box txt))
+	  (setq box2 (text:box ot))
+	  (setq r1 (entity:getdxf  txt 50))
+	  (setq r2 (entity:getdxf ot 50))
+	  (setq w1  (distance (car box1)(cadr box1)))
+	  (setq w2  (distance (car box2)(cadr box2)))
+	  (setq h1  (distance (car box1)(last box1)))
+	  (setq h2  (distance (car box2)(last box2)))
+	  (setq o1 (point:centroid box1))
+	  (setq o2 (point:centroid box2)))
     (cond
       ;; 两者平行且共线
       ((and (equal r1 r2 0.5)
@@ -130,7 +132,7 @@
 	     (entupd ot)
 	     )
        ))
-      )
+      ))
     ;; 成功设绿,不成功设黄
     (if (and (setq i (pickset:length (ssget "cp" (text:box ot) '((0 . "text")))))
 	     (<= i 1))
@@ -146,11 +148,11 @@
   (setq txts (vl-remove-if
 	      '(lambda(x / box)
 		(setq box (entity:getbox x 0))
-		(null (ssget "c" (car box)(cadr box) '((0 . "*line")))))
+		(null (ssget "c" (car box)(cadr box) '((0 . "*line,insert")))))
 	      txts))
   (setq txts (vl-remove-if
 	      '(lambda(x )
-		(null (ssget "cp" (text:box x) '((0 . "*line")))))
+		(null (ssget "cp" (text:box x) '((0 . "*line,insert")))))
 	      txts))
   (if txts
       (progn

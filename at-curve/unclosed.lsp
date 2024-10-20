@@ -33,5 +33,5 @@
   (princ)
   )
 (defun at-curve:rm-flagpts ()
-  (mapcar 'entdel (pickset:to-list(ssget '((0 . "circle")(8 . "@temp")))))
+  (mapcar 'entdel (pickset:to-list(ssget "x" '((0 . "CIRCLE")(8 . "`@temp")))))
   )

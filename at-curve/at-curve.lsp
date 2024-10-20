@@ -21,7 +21,9 @@
    ))
 (@:add-menus
  '("曲线工具2"
-   ("检查闭合" (at-curve:noclosed-endpt))))
+   ("检查闭合" (at-curve:noclosed-endpt))
+   ("清闭合标志" (at-curve:rm-flagpts))
+   ))
 (@:define-config
     '@curve:types
     "*POLYLINE,circle,arc,ellipse,spline,region"

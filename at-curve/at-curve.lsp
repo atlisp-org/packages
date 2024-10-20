@@ -19,6 +19,9 @@
    ("样条转多段" (@curve:spline2lwpl))
    ("lw转3D" (@curve:menu-lw2pl))
    ))
+(@:add-menus
+ '("曲线工具2"
+   ("检查闭合" (at-curve:noclosed-endpt))))
 (@:define-config
     '@curve:types
     "*POLYLINE,circle,arc,ellipse,spline,region"

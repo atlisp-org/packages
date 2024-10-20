@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp curve")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.23")
+        (:VERSION . "0.1.24")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
@@ -16,6 +16,7 @@
             "chain-line"
             "inters-number"
             "link-obj"
+            "unclosed"
             "sp2pl"
             "lw-to-3d"
             "stat")))

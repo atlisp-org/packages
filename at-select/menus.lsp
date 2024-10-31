@@ -22,5 +22,6 @@
     ("选择闭合线" (at-select:select-closed-lwpl))
     ("选择未闭合线" (at-select:select-unclosed-lwpl))
     ("选择短线" (at-select:select-shortlines))
+    ("选择定长线" (at-select:select-samelens-lines))
     ("选择相似线" (at-select:select-similar))
     ))

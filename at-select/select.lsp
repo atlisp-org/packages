@@ -110,3 +110,34 @@
   (sssetfirst nil (pickset:from-list s1)))
 
 
+(defun at-select:select-samelens-lines (/ ent1 s1 filters lengths)
+  (@::help '("选择定长线，即给定的固定长度的线。"))
+  (while (null
+	  (and 
+	   (setq lengths (getstring t "请输入线长度值(以空格或,号分隔多值):"))
+	   (setq lengths (vl-remove nil (string:split lengths '(" " "," "，"))))
+	   (apply 'and (mapcar 'string:numberp lengths))
+	   (setq lengths (mapcar 'read lengths))
+	   ))
+    (prompt "输入错误，请重新输入!\n"))
+  k		    
+  (if (@::get-config 'curve:types)
+      (setq filters (list
+		     (cons 0
+			   (@::get-config 'curve:types))))
+      (setq filters '((0 . "*polyline,line"))))
+
+  
+  (setq s1
+	(vl-remove-if-not
+	 '(lambda(x)
+	   (list:member (vla-get-length (e2o x))
+	    lengths (* 0.001 (vla-get-length (e2o x)))))
+	 (pickset:to-list (progn
+			    (prompt "回车或右键则为所有曲线")
+			    (setq s1 (ssget filters))
+			    (if (null s1)
+				(setq s1 (ssget "x" filters)))
+			    s1))))
+  (if s1
+      (sssetfirst nil (pickset:from-list s1))))

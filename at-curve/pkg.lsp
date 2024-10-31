@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp curve")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.26")
+        (:VERSION . "0.1.27")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")

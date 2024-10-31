@@ -66,9 +66,12 @@
   (foreach curve lst-curve
            (entity:putdxf
             (entity:make-text
-             (rtos (vla-get-area (e2o curve)) 2 3)
+             (rtos (vla-get-area (e2o curve)) 2 (if (@::get-config '@::num-precision)
+			   (@::get-config '@::num-precision)
+			   3
+			   ))
              (point:2d->3d (point:centroid (curve:get-points curve)))
-             (* 2.5 (@:get-config '@::draw-scale))
+             (* (@::get-config '@::text-baseheight) (@:get-config '@::draw-scale))
              0
              0.72
              0
@@ -84,9 +87,12 @@
   (foreach curve lst-curve
            (entity:putdxf
             (entity:make-text
-             (rtos (curve:length (e2o curve)) 2 3)
+             (rtos (curve:length (e2o curve)) 2 (if (@::get-config '@::num-precision)
+			   (@::get-config '@::num-precision)
+			   3
+			   ))
              (point:2d->3d (curve:midpoint curve))
-             (* 2.5 (@:get-config '@::draw-scale))
+	     (* (@::get-config '@::text-baseheight) (@:get-config '@::draw-scale))
              0
              0.72
              0
@@ -108,9 +114,13 @@
 	     (while (> (length pts) 1)
 	       (entity:putdxf
 		(entity:make-text
-		 (rtos (distance (car pts)(cadr pts)) 2 3)
+		 (rtos (distance (car pts)(cadr pts)) 2
+		       (if (@::get-config '@::num-precision)
+			   (@::get-config '@::num-precision)
+			   3
+			   ))
 		 (point:2d->3d (point:mid (car pts)(cadr pts)))
-		 (* 2.5 (@:get-config '@::draw-scale))
+		 (* (@::get-config '@::text-baseheight) (@:get-config '@::draw-scale))
 		 (angle (car pts)(cadr pts))
 		 0.72
 		 0
@@ -130,7 +140,10 @@
 			      curve
 			      (car (curve:subsegment-points curve i))
 			      (cadr (curve:subsegment-points curve i)))
-			     2 3)
+			     2 (if (@::get-config '@::num-precision)
+				   (@::get-config '@::num-precision)
+				   3
+				   ))
 		       (point:2d->3d
 			(if (= 0 (nth i bulges))
 			    (point:mid
@@ -150,7 +163,7 @@
 			       (cadr (curve:subsegment-points curve i)))))
 			  ))
 		       
-		       (* 2.5 (@:get-config '@::draw-scale))
+		       (* (@::get-config '@::text-baseheight) (@:get-config '@::draw-scale))
 		       (angle  (car (curve:subsegment-points curve i))
 			       (cadr (curve:subsegment-points curve i)))
 		       0.72
@@ -163,9 +176,12 @@
 	    (t
              (entity:putdxf
               (entity:make-text
-               (rtos (curve:length (e2o curve)) 2 3)
+               (rtos (curve:length (e2o curve)) 2 (if (@::get-config '@::num-precision)
+			   (@::get-config '@::num-precision)
+			   3
+			   ))
                (point:2d->3d (curve:midpoint curve))
-               (* 2.5 (@:get-config '@::draw-scale))
+               (* (@::get-config '@::text-baseheight) (@:get-config '@::draw-scale))
                0
                0.72
                0

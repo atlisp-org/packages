@@ -19,6 +19,7 @@
 	(setq objs-x (vlax-safearray->list (vlax-variant-value (vla-Explode (e2o blkref)))))
 	(mapcar 'vla-update objs-x)
 	(setq ents-x (mapcar 'o2e objs-x))
+	;; 炸到底
 	;; 删除原块引用
 	(vla-delete (e2o blkref))
 	;;绘制剪裁范围框，用于人工核查

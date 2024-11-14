@@ -38,6 +38,7 @@
    '((_"一炸到底") (@block:explode-all))
    '((_"写块到库") (@block:write-file))
    '((_"炸剪裁块") (@block:menu-explode-cliped))
+   '((_"属性样式刷") (@block:match-att-style))
    ))
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")
 (defun @block:config (/ res) 

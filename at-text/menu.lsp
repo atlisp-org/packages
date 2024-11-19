@@ -27,6 +27,7 @@
     ("定位压线字" (@text:locate-overline-text))
     ("翻译文本" (@text:translate))
     ("英译中" (@text:translate-from-en))
+    ("移除样式" (@text:remove-mtext-style))
     ("朗读文本" (@text:menu-speak))
     )))
 (@:define-hotkey "tts" "(@text:menu-speak)")

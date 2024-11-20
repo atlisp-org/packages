@@ -28,6 +28,7 @@
     ("翻译文本" (@text:translate))
     ("英译中" (@text:translate-from-en))
     ("移除样式" (@text:remove-mtext-style))
+    ("统一样式" (@text:set-style))
     ("朗读文本" (@text:menu-speak))
     )))
 (@:define-hotkey "tts" "(@text:menu-speak)")

@@ -29,6 +29,7 @@
     "*POLYLINE,circle,arc,ellipse,spline,region"
   "可操作的曲线的图元类型")
 (@:define-config '@curve:dualline-width 120.0 "单线变双线的默认宽度")
+(@:define-config '@curve:dualline-closed 0 "单线变双线后封口形式，0:不封口，1:直线，2:半圆")
 
 (defun @curve:setup (/ res)
   (setq @::tmp-search-str "@curve")
@@ -200,10 +201,35 @@
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
   (foreach curve lst-curve
-	   (vla-offset (e2o curve) (* 0.5 (@:get-config '@curve:dualline-width)))
-	   (vla-offset (e2o curve) (* 0.5 (@:get-config '@curve:dualline-width) -1))
+	   (setq curve1 (car (vla:get-value (vla-offset (e2o curve) (* 0.5 (@:get-config '@curve:dualline-width))))))
+	   (setq curve2 (car (vla:get-value(vla-offset (e2o curve) (* 0.5 (@:get-config '@curve:dualline-width) -1)))))
 	   (entity:putdxf curve 6 "DASHDOT")
 	   (entity:putdxf curve 62 1)
-    )
+	   ;;封口
+	   (if (> (@::get-config '@curve:dualline-closed) 0)
+	       (progn
+		 (setq pts-curve1  (curve:get-points curve1))
+		 (setq pts-curve2  (curve:get-points curve2))
+		 (if (= "LINE"(entity:getdxf curve1 0))
+		     (setq pts-curve1  (reverse pts-curve1)))
+		 (if (= "LINE"(entity:getdxf curve2 0))
+		     (setq pts-curve2  (reverse pts-curve2)))
+		 (cond
+		   ((= 1 (@::get-config '@curve:dualline-closed))
+		    (entity:make-line (car pts-curve1)(car pts-curve2))
+		    (entity:make-line (last pts-curve1)(last pts-curve2))
+		    )
+		   ((= 2 (@::get-config '@curve:dualline-closed))
+		    (entity:make-lwpolyline
+		     (list (car pts-curve1)(car pts-curve2))
+		     (list -1 -1)
+		     0 0 0)
+		    (entity:make-lwpolyline
+		   (list (last pts-curve1)(last pts-curve2))
+		   (list 1 1)
+		   0 0 0))
+		   )
+		 ))
+	   )
   (princ)
   )

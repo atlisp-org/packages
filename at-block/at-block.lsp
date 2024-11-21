@@ -362,40 +362,50 @@
 	 (vla-put-name blk newname)))))
 
 
-(defun @block:menu-change-base(/ blkref blkname pt )
+(defun @block:menu-change-base(/ blkref blkname pt pt-oldbase pt-nb v1)
   
   (setq blkref (car (entsel "请选择要改变基点的块:")))
   (setq blkname (entity:getdxf blkref 2))
-
   (setq pt (getpoint (entity:getdxf blkref 10) "请选择目标基点:"))
+  (setq pt-oldbase
+	(vlax-safearray->list
+	 (vlax-variant-value (vla-get-origin (block:get-obj-by-name blkname)))))
   ;;TODO 考虑 210 220 230
   ;; (if (< (apply 'min (mapcar 'last (entity:getdxf blkref '(210 220 230)))) 0)
   ;;     (alert "图块拉伸方向有误，不能正确设置基点。"))
-  (setq pt (mapcar '(lambda (x y z)
-		      (/ (- x y) z))
-		   pt (entity:getdxf blkref 10)
-		   (entity:getdxf blkref '(41 42 43))
-		   ))
-  (princ "aaa")
-  (print blkname)
-  (print pt)
-  (@block:change-base blkname pt))
-  
-(defun @block:change-base (blkname pt-nb / blkobj)
-  (vlax-for blk *BLKS*
-	    (if (= (vla-get-name blk) blkname)
-		(setq blkobj blk)))
+  (setq pt-nb (block:wcs2bcs
+	       pt
+	       pt-oldbase
+	       (entity:getdxf blkref 10)
+	       (entity:getdxf blkref 50)
+	       (entity:getdxf blkref 41)
+	       ))
+  (setq v1 (mapcar '- pt-nb pt-oldbase))
   (vla-put-origin
-   blkobj
-   (vlax-3d-point
-    (mapcar
-     '+
-     pt-nb
-     (vlax-safearray->list
-      (vlax-variant-value (vla-get-origin blkobj)))
-     )))
+   (block:get-obj-by-name blkname)
+   (vlax-3d-point pt-nb))
+  ;; TODO: 平移已有块
+  (if (ui:confirm1 "是否保持已有块显示位置不变?" "是-否")
+      (mapcar
+       '(lambda(blkref)
+	 (entity:putdxf
+	  blkref
+	  10
+	  (m:coordinate (entity:getdxf blkref 10)
+	   (m:coordinate-scale
+	    (m:coordinate-rotate v1 (entity:getdxf blkref 50))
+	    (entity:getdxf blkref 41)))
+	  ))
+       (setq blkrefs (pickset:to-list (block:ssget "x" blkname nil))))
+      )
   (command "regen")
+  (princ)
   )
+;; (defun @block:change-base (blkname pt-nb / blkobj)
+;;   (vla-put-origin
+;;    (block:get-obj-by-name blkname)
+;;    (vlax-3d-point pt-nb))
+;;   )
 (defun @block:menu-inserts ( )
   "连续插块"
   ;; 选择块名。

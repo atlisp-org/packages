@@ -1,7 +1,7 @@
 (defun composing:cluster ()
   (@::help "分堆排版，将选择的图形分堆后，按直线排版。")
   (setq clusters (pickset:cluster (ssget) 1))
-  ;;显示分堆结果。如果不正确，设计间隙重排。
+  ;;显示分堆结果。如果不正确，重新设置间隙重排。
   
   (setq pt-s (getpoint))
   ;; (setq aim-boxs (mapcar '(lambda(x)

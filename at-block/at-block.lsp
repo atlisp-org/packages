@@ -421,23 +421,23 @@
 	     (vla-explode (e2o blk))
 	     (vla-delete (e2o blk)))
     (vla-Regen *doc* acActiveViewport)))
+(defun @block:explode-chain (blkref / objs-x)
+  (if (= 'ename (type blkref)) (setq blkref (e2o blkref)))
+  (cond
+    ((string-equal (vla-get-ObjectName blkref)"AcDbBlockReference")
+     (if (setq objs-x (vla:get-value (vla-Explode blkref)))
+	 (progn
+	   (vla-delete blkref)
+	   (mapcar 'vla-update objs-x)
+	   (mapcar '@block:explode-chain objs-x))
+	 ))
+    (t blkref)))
+
 (defun @block:explode-loop (/ explode-loop)
-  (defun explode-loop (blks)
-    (if(and blks (atom blks))(setq blks (list blks)))
-    (if blks
-	(mapcar
-	 '(lambda(blkref / objs-x)
-	   (if (setq objs-x (vla:get-value (vla-Explode (e2o blkref))))
-	       (progn
-		 (vla-delete blkref)
-		 (mapcar 'vla-update objs-x)
-		 (explode-loop
-		  (vl-remove-if-not
-		   '(lambda(y)
-		     (and
-		      (string-equal (entity:getdxf y 0)"insert")
-		      ))
-		   (mapcar 'o2e objs-x))))))
-	 blks
-	 )))
-  (explode-loop (pickset:to-list (ssget '((0 . "insert"))))))
+  (sssetfirst nil
+	      (pickset:from-list
+	       (mapcar 'o2e
+		       (list:flatten
+			(mapcar '(lambda(blkref)
+				  (list:flatten (@block:explode-chain blkref)))
+				(pickset:to-list (ssget '((0 . "insert"))))))))))

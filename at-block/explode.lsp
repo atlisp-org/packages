@@ -14,14 +14,14 @@
 		(setq ent-sf (entity:getdxf (entity:getdxf (entity:getdxf blkref 360) 360)360)) 290))
 	    (setq flag-out t)
 	    (setq flag-out nil))
-	
 	;; 炸开后的块图元 ents-x
-	(setq objs-x (vlax-safearray->list (vlax-variant-value (vla-Explode (e2o blkref)))))
+	(setq objs-x (list:flatten (@block:explode-chain blkref)))
 	(mapcar 'vla-update objs-x)
 	(setq ents-x (mapcar 'o2e objs-x))
+	;;(princ "abc")
 	;; 炸到底
 	;; 删除原块引用
-	(vla-delete (e2o blkref))
+	;; (vla-delete (e2o blkref))
 	;;绘制剪裁范围框，用于人工核查
 	(setq border
 	      (entity:putdxf 

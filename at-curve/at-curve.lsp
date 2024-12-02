@@ -23,6 +23,7 @@
  '("曲线工具2"
    ("检查闭合" (at-curve:noclosed-endpt))
    ("清闭合标志" (at-curve:rm-flagpts))
+   ("按序号连点" (at-curve:join-by-number))
    ))
 (@:define-config
     '@curve:types

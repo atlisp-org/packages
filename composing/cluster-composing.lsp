@@ -24,3 +24,28 @@
    (setq i (1+ i)))
   
   (princ))
+(defun composing:cluster-gas ()
+  (@::prompt "请选择要排版的图形:")
+  (setq clusterboxs (pickset:cluster (ssget) 1))
+  (if (and (setq clusters(mapcar '(lambda(cluster%)(ssget  "w" (car cluster%)(cadr cluster%))) clusterboxs))
+	   (setq pt-s (getpoint (@::prompt"请点击起始点:"))))
+      (progn
+	(setq gas (getdist (@::prompt "\n请输入间隙值<10>:")))
+	(if (null gas)(setq gas 10))
+	(setq i 0)
+	(foreach
+	 cluster% clusters
+	 (setq box% (pickset:getbox cluster% 0))
+	 (setq box%  (point:rec-2pt->4pt (car box%)(cadr box%)))
+	 (setq pt0 (car box%))
+	 (mapcar
+	  '(lambda(x)
+	    (vla-move (e2o x)
+	     (point:to-ax pt0)
+	     (point:to-ax pt-s)))
+	  (pickset:to-list cluster%))
+	 ;;确认下一点
+	 (setq pt-s (polar pt-s 0 (distance (car box%)(cadr box%))))
+	 (setq pt-s (polar pt-s 0 gas))
+	 )))
+  (princ))

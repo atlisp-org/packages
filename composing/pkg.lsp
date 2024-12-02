@@ -1,4 +1,13 @@
-(@::def-pkg '((:name . "composing")  (:full-name . "ÅÅ°æ")  (:author . "VitalGG")  (:email . "vitalgg@gmail.com")  (:version . "0.0.1")  (:locale . "chs")  (:category . "ÅÅ°æ")  (:required . "base")  (:opensource . 0)   (:description . "¸÷ÖÖÅÅ°æ")  (:url . "http://atlisp.cn")  (:files . ("composing"
-              ;; you can add file name that you will included in the package.
-              ;; lsp file must not input extand name.
-              ))))
+(@::def-pkg '((:NAME . "composing")
+        (:FULL-NAME . "æ’ç‰ˆ")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.5")
+        (:LOCALE . "chs")
+        (:CATEGORY . "æ’ç‰ˆ")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "å„ç§æ’ç‰ˆ")
+        (:URL . "http://atlisp.cn")
+        (:FILES "composing"
+            "cluster-composing")))

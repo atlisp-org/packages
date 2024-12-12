@@ -1,5 +1,5 @@
 (defun at-select:select-closed-lwpl (/ s1 filters)
-  (@::help '("选择闭合的多段线"))
+  (@::prompt '("选择闭合的多段线"))
   (setq filters '((0 . "lwpolyline")(70 . 1)))
   (if @:*auto-mode*
       (setq s1 (ssget "x" filters))
@@ -10,7 +10,7 @@
 	  (setq s1 (ssget "x" filters)))))
   (sssetfirst nil s1))
 (defun at-select:select-unclosed-lwpl (/ s1 filters)
-  (@::help '("选择未闭合的多段线"))
+  (@::prompt '("选择未闭合的多段线"))
   (setq filters '((0 . "LWPOLYLINE")(70 . 0)))
   (if @:*auto-mode*
       (setq s1 (ssget "x" filters))
@@ -21,7 +21,7 @@
 	  (setq s1 (ssget "x" filters)))))
   (sssetfirst nil s1))
 (defun at-select:select-sametype (/ ent1 s1 filters)
-  (@::help '("选择同类型的图形"))
+  (@::prompt '("选择同类型的图形"))
   (@:prompt "请点选一个图形:")
   (setq ent1 (car (pickset:to-list(ssget ":E:S" ))))
   (setq filters (list
@@ -30,7 +30,7 @@
   (setq s1 (ssget "x" filters))
   (sssetfirst nil s1))
 (defun at-select:select-shortlines (/ ent1 s1 filters)
-  (@::help '("选择短线，即小于给定长度的线"))
+  (@::prompt '("选择短线，即小于给定长度的线"))
   (if (or (null shortline-value)
 	  (not(numberp shortline-value))
 	  (< shortline-value 0)
@@ -59,7 +59,7 @@
   (if s1
       (sssetfirst nil (pickset:from-list s1))))
 (defun at-select:select-samelayer (/ ent1 s1 filters)
-  (@::help '("选择同层的图形"))
+  (@::prompt '("选择同层的图形"))
   (@:prompt "请点选一个图形:")
   (setq ent1 (car (pickset:to-list(ssget ":E:S" ))))
   (setq filters (list
@@ -68,7 +68,7 @@
   (setq s1 (ssget "x" filters))
   (sssetfirst nil s1))
 (defun at-select:select-samecolor (/ ent1 s1 filters)
-  (@::help '("选择同色的图形"))
+  (@::prompt '("选择同色的图形"))
   (@:prompt "请点选一个图形:")
   (setq ent1 (car (pickset:to-list(ssget ":E:S" ))))
   (setq filters (entity:get-color ent1))
@@ -80,7 +80,7 @@
 	 (pickset:to-list (ssget "x"))))
   (sssetfirst nil (pickset:from-list s1)))
 (defun at-select:select-samelinetype (/ ent1 s1 filters)
-  (@::help '("选择同线型的图形"))
+  (@::prompt '("选择同线型的图形"))
   (@:prompt "请点选一个图形:")
   (setq ent1 (car (pickset:to-list(ssget ":E:S" ))))
   (setq filters (entity:get-linetype ent1))
@@ -94,7 +94,7 @@
 
 
 (defun at-select:select-similar (/ ent1 s1 filters)
-  (@::help '("选择相似曲线"))
+  (@::prompt '("选择相似曲线"))
   (if (@::get-config '@curve:types)
       (setq filters (list
 		     (cons 0
@@ -111,7 +111,7 @@
 
 
 (defun at-select:select-samelens-lines (/ ent1 s1 filters lengths)
-  (@::help '("选择定长线，即给定的固定长度的线。"))
+  (@::prompt '("选择定长线，即给定的固定长度的线。"))
   (while (null
 	  (and 
 	   (setq lengths (getstring t "请输入线长度值(以空格或,号分隔多值):"))

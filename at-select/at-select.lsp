@@ -5,35 +5,35 @@
   (setq @::tmp-search-str "@SELECT")
   (@::edit-config-dialog))
 (defun c:ss1 (/ ss) 
-  (@:help '("记录当前已选择的图形 为ss1。以方便其它命令使用。如果没有选择且高亮的图形，则高亮ss1"))
+  (@::prompt '("记录当前已选择的图形 为ss1。以方便其它命令使用。如果没有选择且高亮的图形，则高亮ss1"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss1 ss)
     (if ss1 
       (sssetfirst nil ss1))))
 (defun c:ss2 (/ ss) 
-  (@:help '("记录当前已选择的图形 为ss2。"))
+  (@::prompt '("记录当前已选择的图形 为ss2。"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss2 ss)
     (if ss2 
       (sssetfirst nil ss2))))
 (defun c:ss3 (/ ss) 
-  (@:help '("记录当前已选择的图形 为ss3。"))
+  (@::prompt '("记录当前已选择的图形 为ss3。"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss3 ss)
     (if ss3 
       (sssetfirst nil ss3))))
 (defun c:ss4 (/ ss) 
-  (@:help '("记录当前已选择的图形 为ss4。"))
+  (@::prompt '("记录当前已选择的图形 为ss4。"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss4 ss)
     (if ss4 
       (sssetfirst nil ss4))))
 (defun c:ss5 (/ ss) 
-  (@:help '("记录当前已选择的图形 为ss5。"))
+  (@::prompt '("记录当前已选择的图形 为ss5。"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss5 ss)
@@ -85,7 +85,7 @@
 
 (defun at-select:select-blk-by-hatch (/ ha res all-outer ss-all all-inter ss-in 
                                       selopt) 
-  (@:help '("选择一个填充，返回填充内的块。"))
+  (@::prompt '("选择一个填充，返回填充内的块。"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
@@ -136,7 +136,7 @@
   (sssetfirst nil (pickset:from-list ss-res)))
 
 (defun @select:line-to-ss ()
-  (@:help "绘制指向选择集的线。")
+  (@::prompt "绘制指向选择集的线。")
   (setq pt (getpoint))
   (mapcar 
   '(lambda (x) (entity:make-line pt (entity:getdxf x 10)))
@@ -144,7 +144,7 @@
 )))
 (defun at-select:select-blk-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
                                      selopt pts-fence) 
-  (@:help '("选择一个单环闭合多段线，选中曲线内的块。"))
+  (@::prompt '("选择一个单环闭合多段线，选中曲线内的块。"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
@@ -163,7 +163,7 @@
   
 (defun at-select:select-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
                                       selopt en ssfilter pts-fence) 
-  (@:help '("选择一个单环闭合多段线，选中曲线内的图元。"))
+  (@::prompt '("选择一个单环闭合多段线，选中曲线内的图元。"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
@@ -190,7 +190,7 @@
   
 (defun at-select:select-by-hatch (/ ha res all-outer ss-all all-inter ss-in 
                                       selopt en ssfilter) 
-  (@:help '("选择一个或多填充图形，再选择在填充图形内需要选中的图形。"))
+  (@::prompt '("选择一个或多填充图形，再选择在填充图形内需要选中的图形。"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))

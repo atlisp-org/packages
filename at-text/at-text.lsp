@@ -18,7 +18,7 @@
       (command "-style" "Standard" (@:get-config '@text:fonts)
 	       0 0.72 0 "n" "n" "n")))
 (defun @text:multi-text-align (/ A ALL B C L M N P VAL X0 XYZ_NEW Y Y0 Z)
-  (@:help 
+  (@::prompt 
    "对多个乱序排列的单行文本左对齐.并按行距整齐排列。")
   (setq a (ssget (list (cons 0 "text"))))
   (setq n (sslength a))
@@ -146,7 +146,7 @@
   (command "justifytext" s1 "" "m" )
   )
 (defun @text:a2t(/ s1 ename ti% p11 p10 f en p11n p10n fn fn1 attribtext)
-  (@:help "将属性转化为单行文本.")
+  (@::prompt "将属性转化为单行文本.")
   (setq  s1  (ssget  '((0 . "ATTDEF"))))		;构造针对TEXT的选择集
   (setq attribtext '((0 . "TEXT") (100 . "AcDbEntity") (67 . 0) (410 . "Model") (8 . "0") (100 . "AcDbText") )  ) 
   (setq ti% 0)
@@ -283,7 +283,7 @@
 	  lst-ent))
 
 (defun @text:find-from-line(/ s1 pt-base txt ename ti% p11 p10 f en p11n p10n fn fn1 attribtext)
-  (@:help "选择一个文本a，选择查找范围，查找内容相同的文本，并连线。")
+  (@::prompt "选择一个文本a，选择查找范围，查找内容相同的文本，并连线。")
   (if (null layer:make)(require 'layer:*))
   (if (= 'subr (type layer:make))
       (layer:make (@:get-config '@text:temp-layer) 1 nil nil))
@@ -312,7 +312,7 @@
   )
 
 (defun @text:menu-format-number(/ int-n int-fraction res)
-  (@:help "格式化文本中的数字，")
+  (@::prompt "格式化文本中的数字，")
   (setq res (ui:input "请输入格式化配置参数"
 		      '(("整数位数" 2)
 			("小数位数" 0)

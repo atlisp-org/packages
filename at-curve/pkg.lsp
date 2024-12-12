@@ -2,11 +2,12 @@
         (:FULL-NAME . "@lisp curve")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.33")
+        (:VERSION . "0.1.34")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
+        (:FREE . T)
         (:DESCRIPTION . "Toolset related to curves.")
         (:URL . "http://atlisp.cn")
         (:FILES "at-curve"

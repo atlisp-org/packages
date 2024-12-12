@@ -1,5 +1,5 @@
 (defun @block:clip-to-blk ()
-  (@::help "剪裁图形生成块")
+  (@::prompt "剪裁图形生成块")
   (setq border (entity:make-rectangle (setq pt1 (getpoint))(setq pt2 (getcorner pt1))))
   
   (setq ents (pickset:to-list(ssget "c" pt1 pt2)))

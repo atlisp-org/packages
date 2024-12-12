@@ -5,7 +5,7 @@
 (@::define-config '@text:mtext-width 1.0 "多行文本高宽比")
       
 (defun @text:remove-mtext-style (/ ents)
-  (@::help "去除多行文本中的格式，仅保留换行。使用时注意上下标文字。")
+  (@::prompt "去除多行文本中的格式，仅保留换行。使用时注意上下标文字。")
   (setq ents (pickset:to-list (ssget '((0 . "mtext")))))
   (mapcar
    '(lambda(ent)
@@ -20,7 +20,7 @@
    ents)
   )
 (defun @text:set-style (/ ents hzstylename obj)
-  (@::help "统一设置文本和多行文本中的字体格式。")
+  (@::prompt "统一设置文本和多行文本中的字体格式。")
   (setq hzstylename (strcat "HZ" (rtos (@::get-config '@text:mtext-width)  2 3)))
   (if (null (tblsearch "style" hzstylename))
       (progn

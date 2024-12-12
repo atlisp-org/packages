@@ -69,7 +69,7 @@
   )
  
 (defun @block:menu-explode-cliped ()
-  (@::help "炸开剪裁块")
+  (@::prompt "炸开剪裁块")
   (mapcar '@block:explode-cliped
 	  (pickset:to-list (ssget '((0 . "insert")))))
 

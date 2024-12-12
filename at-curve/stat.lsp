@@ -1,5 +1,5 @@
 (defun at-curve:stat (/ curves res classname dxfno)
-  (@:help "分类汇总曲线的长度。")
+  (@::prompt "分类汇总曲线的长度。")
   (setq curves (pickset:to-list (ssget '((0 . "*line,lwpolyline,arc,circle")))))
   (setq classname (ui:select "请选择分类条目" '("图层""颜色号" "线型" "多线比例" "指定组码")))
   (if (= classname "指定组码")

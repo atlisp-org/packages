@@ -1,5 +1,5 @@
 (defun @lab:named-first-layout-from-filename(/ *error* dir% dwgs)
-  (@:help "批量修改某一文件夹下的 dwg 文件的第一个布局名称为文件名。")
+  (@::prompt "批量修改某一文件夹下的 dwg 文件的第一个布局名称为文件名。")
   (defun *error* (msg)
     (if (and
 	 (and (= 'vla-object (type doc%)))

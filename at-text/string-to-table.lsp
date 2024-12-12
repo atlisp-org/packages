@@ -1,5 +1,5 @@
 (defun @text:string-to-table ( / dcl-fp strs)
-  (@:help "批量将单行文本按规律分隔并绘制表格，")
+  (@::prompt "批量将单行文本按规律分隔并绘制表格，")
   (defun align-str (n str / flag)
     (if (null str)(setq str ""))
     (setq flag nil)

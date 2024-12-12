@@ -1,5 +1,5 @@
 (defun @curve:inters-number ()
-  (@:help "一条曲线上与其他多段线的交点进行递增编号")
+  (@::prompt "一条曲线上与其他多段线的交点进行递增编号")
   (@:prompt "请选择一条曲线:")
   (if (setq lwpl (ssname (ssget ":S" '((0 . "*line"))) 0))
       (progn

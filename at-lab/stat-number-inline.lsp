@@ -1,5 +1,5 @@
 (defun @lab:stat-number-inline ()
-  (@:help '("统计每行上圆的数量，并标注在指定位置处"))
+  (@::prompt '("统计每行上圆的数量，并标注在指定位置处"))
   ;; 选择小圆
   (setq ss-c (pickset:to-list (ssget '((0 . "circle")(-4 . "<")(40 . 20)))))
   ;; 按 Y 从上到下排序

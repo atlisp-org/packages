@@ -12,7 +12,7 @@
   pl
   )
 (defun @curve:menu-lw2pl ()
-  (@::help '("将二维多段线转化为三维多段线"
+  (@::prompt '("将二维多段线转化为三维多段线"
 	     "对于有凸度的二维线将将行拉直"))
   (mapcar '@curve:lw-to-3d
 	  (pickset:to-list

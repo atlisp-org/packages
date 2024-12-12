@@ -272,6 +272,6 @@
   )
 
 (defun at-curve:fillet-road ()
-  (@:help '("根据设定的转弯半径和道路转角范围，平滑道路的转角。"))
+  (@::prompt '("根据设定的转弯半径和道路转角范围，平滑道路的转角。"))
   (setq lwpls (pickset:to-list(ssget '((0 . "lwpolyline")(62 . 1)))))
   (mapcar 'at-curve:fillet  lwpls))

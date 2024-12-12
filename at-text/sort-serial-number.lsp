@@ -1,5 +1,5 @@
 (defun @text:sort-serial-number (/ sp txts)
-  (@:help '("重新编排文字前面的序号。"
+  (@::prompt '("重新编排文字前面的序号。"
 	    "支持 单个数字 n. 或 n.n 形式开头的单行文本。"))
   (setq txts (pickset:to-list(ssget '((0 . "text")))))
   (setq txts (pickset:sort txts "Yx" 10))

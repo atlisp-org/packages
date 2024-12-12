@@ -1,5 +1,5 @@
 (defun @lab:pvp-v (/ clayout)
-  (@:help "视口坐标随视图")
+  (@::prompt "视口坐标随视图")
   (setq clayout (getvar "ctab"))
   (foreach layout (layout:list)
 	   (setvar "ctab" layout)
@@ -16,7 +16,7 @@
   )
 
 (defun @lab:pvp-w (/ clayout)
-  (@:help "视口坐标随视图")
+  (@::prompt "视口坐标随视图")
   (setq clayout (getvar "ctab"))
   (foreach layout (layout:list)
 	   (setvar "ctab" layout)

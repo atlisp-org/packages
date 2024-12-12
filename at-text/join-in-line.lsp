@@ -1,5 +1,5 @@
 (defun @text:join-in-line ()
-  (@:help '("合并同一行的多个单行文本为一个"))
+  (@::prompt '("合并同一行的多个单行文本为一个"))
   (if (and (setq txts (pickset:to-list (ssget '((0 . "text")))))
   ;; 按行分组
 	   (setq txts

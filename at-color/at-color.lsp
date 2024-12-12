@@ -3,7 +3,7 @@
 (@:add-menu (_ "Color") (_ "图变单色") "(at-color:one-color)")
 
 (defun at-color:one-color (/ color obj-color ents)
-  (@:help '("将图纸变为单一颜色" "所有图块定义均变色" "所选图元变色，如果没有选择图元，则整个dwg均变色"))
+  (@::prompt '("将图纸变为单一颜色" "所有图块定义均变色" "所选图元变色，如果没有选择图元，则整个dwg均变色"))
   (setq color (acad_colordlg 252 t))
   (defun chcolor (ent)
     (cond
@@ -32,7 +32,7 @@
   (vla-regen *DOC* :vlax-true)
   (princ))
 (defun at-color:del-rgb ()
-  (@:help "框选要去除真彩色的图元,用索引色替换。")
+  (@::prompt "框选要去除真彩色的图元,用索引色替换。")
   (prompt "请框选要去除真彩色的图元:")
   (entity:deldxf (ssget '((-4 . ">") (420 . 0))) 420))
 (defun at-color:change-color (/ fname fn x dclid lin)

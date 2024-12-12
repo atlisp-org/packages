@@ -1,5 +1,5 @@
 (defun @block:match-att-style ()
-  (@::help "将修改的属性样式刷到其它同名块引用的同名属性上。")
+  (@::prompt "将修改的属性样式刷到其它同名块引用的同名属性上。")
   (setq srcatt (car (nentsel (@::prompt "请选择源属性:"))))
   (if (eq "ATTRIB" (entity:getdxf srcatt 0))
       (progn

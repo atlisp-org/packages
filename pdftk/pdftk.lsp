@@ -10,7 +10,7 @@
 ;; (@:get-config 'pdftk:first) 
 ;; (@:set-config 'pdftk:first  "New Value")
 ;; Add menu in @lisp panel
-(@:add-menus '("PDF相关"
+(@::add-menus '("PDF相关"
 	       ("PDF设置" "(pdftk:setup)" )
 	       ("合并PDF" "(pdftk:menu-merge)" )
 	       ("拆分PDF" "(pdftk:menu-burst)" )
@@ -51,7 +51,7 @@
   )
 
 (defun pdftk:menu-merge (/ folder)
-  (@:help "合并选择的文件夹下的所有pdf,到父级目录，并打开该目录。")
+  (@::prompt "合并选择的文件夹下的所有pdf,到父级目录，并打开该目录。")
   (if (setq folder (system:get-folder "请选择要合并的PDF文件夹"))
       (progn
 	(@:set-config 'pdftk:pre-folder (system:dir folder))
@@ -129,7 +129,7 @@
   )
 
 (defun pdftk:menu-burst (/ pdf-file)
-  (@:help "拆分选择的 pdf 文件，并打开文件所在目录。")
+  (@::prompt "拆分选择的 pdf 文件，并打开文件所在目录。")
   (if (setq pdf-file  (getfiled "请选择要拆分的PDF文件" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config 'pdftk:pre-folder (system:dir (vl-filename-directory pdf-file )))
@@ -158,7 +158,7 @@
   )
 
 (defun pdftk:menu-encrypt (/ filename pw permission permissions)
-  (@:help "选择一个 pdf 文件,设置所有者密码和用户密码，并打开文件所在目录。")
+  (@::prompt "选择一个 pdf 文件,设置所有者密码和用户密码，并打开文件所在目录。")
   (setq permission '(("Printing"  nil "高质量打印")
 		     ("DegradedPrinting" nil "低质量打印")
 		     ("ModifyContents" nil "编辑内容,同时允许 Assembly.")
@@ -229,7 +229,7 @@
   )
 
 (defun pdftk:menu-decrypt (/ pdf-file)
-  (@:help "选择一个 pdf 文件,去除所有者密码，并打开文件所在目录。")
+  (@::prompt "选择一个 pdf 文件,去除所有者密码，并打开文件所在目录。")
   (if (setq pdf-file (getfiled "请选择要解密的PDF文件" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config 'pdftk:pre-folder (system:dir (vl-filename-directory pdf-file )))
@@ -264,14 +264,14 @@
   (princ)
   )
 (defun pdftk:menu-stamp (/ filename)
-  (@:help "选择一个文件，给该文件加上戳记，戳记文件在pdf设置中进行设置。")
+  (@::prompt "选择一个文件，给该文件加上戳记，戳记文件在pdf设置中进行设置。")
   (if (setq filename (getfiled "请选择要加戳记的PDF文件" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config  'pdftk:pre-folder(system:dir (vl-filename-directory filename)))
 	(pdftk:stamp filename)
 	(system:explorer (vl-filename-directory filename)))))
 (defun pdftk:menu-batch-stamp (/ filename)
-  (@:help "选择一个文件夹，给该文件夹下的pdf文件加上戳记，戳记文件在pdf设置中进行设置。")
+  (@::prompt "选择一个文件夹，给该文件夹下的pdf文件加上戳记，戳记文件在pdf设置中进行设置。")
   (if (setq pathname (system:get-folder "请选择要加戳记的PDF文件夹"))
       (progn
 	(@:set-config  'pdftk:pre-folder (system:dir pathname))
@@ -316,7 +316,7 @@
   (princ)
   )
 (defun pdftk:menu-background (/ filename)
-  (@:help "选择一个文件，给该文件加上水印，水印文件在pdf设置中进行设置。所选的 pdf 文件必须为透明背景才有效果。")
+  (@::prompt "选择一个文件，给该文件加上水印，水印文件在pdf设置中进行设置。所选的 pdf 文件必须为透明背景才有效果。")
   (if (setq filename  (getfiled "请选择要加水印的PDF文件" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config  'pdftk:pre-folder (system:dir (vl-filename-directory filename)))
@@ -324,7 +324,7 @@
 	(system:explorer (vl-filename-directory filename))
 	)))
 (defun pdftk:menu-batch-background (/ filename)
-  (@:help "选择一个文件夹，给该文件夹下的pdf文件加上水印，水印文件在pdf设置中进行设置。所选的 pdf 文件必须为透明背景才有效果。")
+  (@::prompt "选择一个文件夹，给该文件夹下的pdf文件加上水印，水印文件在pdf设置中进行设置。所选的 pdf 文件必须为透明背景才有效果。")
   (if (setq pathname (system:get-folder "请选择要加水印的PDF文件夹"))
       (progn
 	(@:set-config  'pdftk:pre-folder (system:dir pathname))

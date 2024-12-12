@@ -1,5 +1,5 @@
 (defun @lab:attxyz2csv (/ fp ss-blk)
-  (@:help "块属性和坐标值导出到 D: 盘以当前时间戳为名称的csv文件。完成后打开csv文件。")
+  (@::prompt "块属性和坐标值导出到 D: 盘以当前时间戳为名称的csv文件。完成后打开csv文件。")
   (setq fp (open (setq filename
 		       (strcat "D:/"
 			       (car (string:to-list (@:timestamp) "."))

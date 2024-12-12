@@ -1,5 +1,5 @@
 (defun @block:write-file ()
-  (@:help "将当前dwg中的块导出到库文件夹")
+  (@::prompt "将当前dwg中的块导出到库文件夹")
   (setq cmdecho (getvar "CMDECHO"))
   (setvar "CMDECHO" 0)
   (setq path (@:path-win-format (@:get-config '@block:lib)))

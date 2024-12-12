@@ -140,7 +140,7 @@
 	(@block:setup))))
 
 (defun @block:set-any-block-number (/ num1 start ss-list ss1 )
-  (@:help "任意块编号，含有给定属性的任意块编号。")
+  (@::prompt "任意块编号，含有给定属性的任意块编号。")
   (if (= "" (@:get-config '@block:block-name))
       (@block:setup))
   (if (setq ss1 (ssget ;; "_C" pt1 (getcorner pt1 "\n选择对象:")
@@ -184,7 +184,7 @@
 	(@block:setup))))
 
 (defun @block:subst ()
-  (@:help (strcat "将目标块替换成源块. \n"
+  (@::prompt (strcat "将目标块替换成源块. \n"
 		  "步骤: \n"
 		  "      1. 单选源块；\n"
 		  "      2. 框选目标块。"))
@@ -200,7 +200,7 @@
 	  blks-target))
 		  
 (defun @block:explodable (/ blk )
-  (@:help (strcat "将目标块设置为可分解. \n"
+  (@::prompt (strcat "将目标块设置为可分解. \n"
 		  "步骤: \n"
 		  "      1. 单选设置为可分解的块；\n"))
   
@@ -212,7 +212,7 @@
   ))
 		  
 (defun @block:explode-disable (/ blk )
-  (@:help (strcat "将目标块设置为不可分解. \n"
+  (@::prompt (strcat "将目标块设置为不可分解. \n"
 		  "步骤: \n"
 		  "      1. 单选设置为不可分解的块；\n"))
   
@@ -231,7 +231,7 @@
 			   run-function after-panel corner
 			   page-up page-down *error*)
   "属性块大纲，用于快速切换块视图"
-  (@:help "属性块大纲，用于快速切换块视图\n不支持动态块。")
+  (@::prompt "属性块大纲，用于快速切换块视图\n不支持动态块。")
   (defun *error* (msg)
     ;; 重启动处理 
     (if (= 'file (type dcl_fp))
@@ -336,7 +336,7 @@
 	(after-panel after-panel-cmd))
       ))
 (defun @block:select-same (/ blk blks)
-  (@:help (strcat "选择一个块，然后选中选定范围或全部的同名块。"))
+  (@::prompt (strcat "选择一个块，然后选中选定范围或全部的同名块。"))
   (prompt  "请选择一个块:")
   (while (null(and (setq blk (ssget "_:S:E" '((0 . "insert"))))
 		   (setq blk (ssname blk 0))))
@@ -412,7 +412,7 @@
   
   )
 (defun @block:explode-all (/ blks )
-  (@:help "将框选区域内的块全部分解。")
+  (@::prompt "将框选区域内的块全部分解。")
   (setq pt1 (getpoint "选择第一点:"))
   (setq pt2 (getcorner pt1 "请选择区域第二点"))
   (while (setq blks (ssget "c" pt1 pt2 '((0 . "insert"))))

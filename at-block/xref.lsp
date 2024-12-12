@@ -11,7 +11,7 @@
     ("绑定所有" (@block:bdcz))
     ("命令提示" (@block:help-xref-hk))))
 (defun @block:xref-layer (/ xrefs) 
-  (@:help "将外部参照移至同一个图层，以便于锁定。图层名在设置中进行设置。")
+  (@::prompt "将外部参照移至同一个图层，以便于锁定。图层名在设置中进行设置。")
   (setq xrefs (pickset:to-list (ssget "x" '((0 . "insert")))))
   ;; 去除非外参照块
   (setq xrefs (vl-remove-if-not 

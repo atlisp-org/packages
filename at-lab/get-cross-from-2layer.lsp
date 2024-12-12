@@ -1,6 +1,6 @@
 (@:add-menu "@试验室" "层间线交点" '(@lab:get-cross-from-2layer))
 (defun @lab:get-cross-from-2layer (/ layer1 layer2 pt1 pt2 ents1 ents2 res)
-  (@:help '("求两个图层的线的交点形成圆"
+  (@::prompt '("求两个图层的线的交点形成圆"
             " 操作：选择第一个图层，然后提示选择第二个图层，然后选择图纸范围，范围内的图层一和图层二的线的交点形成圆形"))
   ;; 取第一、二个图层名
   (setq layer1 (entity:get-layer (car (entsel))))

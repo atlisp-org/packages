@@ -1,5 +1,5 @@
 (defun @lab:rec-tube (/ res w h t1 ang)
-  (@:help "绘制矩形管")
+  (@::prompt "绘制矩形管")
   (while (setq res (ui:input "请输入参数"
 			     '(("Width" 200 "矩形管宽度")
                                ("Height" 300 "矩形管高度")

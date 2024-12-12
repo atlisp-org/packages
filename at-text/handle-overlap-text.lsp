@@ -1,5 +1,5 @@
 (defun @text:locate-overlay-text(/ txts box)
-  (@:help "高亮显示有重叠的文字。")
+  (@::prompt "高亮显示有重叠的文字。")
   (if(null (setq txts (pickset:to-list (ssget '((0 . "text"))))))
      (setq txts (pickset:to-list (ssget "x" '((0 . "text"))))))
   ;; 粗过滤
@@ -22,7 +22,7 @@
       (@:prompt "没有发现重叠文字")
       ))
 (defun @text:delete-overlay-sametext(/ txts box sames same1)
-  (@:help "删除内容相同且重叠的文字。")
+  (@::prompt "删除内容相同且重叠的文字。")
   (if(null (setq txts (pickset:to-list (ssget '((0 . "*text"))))))
      (setq txts (pickset:to-list (ssget "x" '((0 . "*text"))))))
   ;; 粗过滤
@@ -56,7 +56,7 @@
 
 (defun @text:handle-overlay-text (/ txts box ots box1 box2 tbox1 tbox2 w1 w2 h1 h2 o1 o2 dis)
   ;; 避让原则：竖向避水平，水平向右错。
-  (@:help "文字避让，处理重叠的单行文本,避让成功设为绿色，不成功设为黄色(颜色索引号为50)。")
+  (@::prompt "文字避让，处理重叠的单行文本,避让成功设为绿色，不成功设为黄色(颜色索引号为50)。")
   (setq txts (pickset:to-list (ssget  '((0 . "text")))))
   ;;去除不重叠的文字
   ;; 粗过滤
@@ -141,7 +141,7 @@
 	)
     )))
 (defun @text:locate-overline-text(/ txts box)
-  (@:help "高亮显示压线的单行文本。")
+  (@::prompt "高亮显示压线的单行文本。")
   (if(null (setq txts (pickset:to-list (ssget '((0 . "text"))))))
      (setq txts (pickset:to-list (ssget "x" '((0 . "text"))))))
   ;; 粗过滤

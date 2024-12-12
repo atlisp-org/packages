@@ -1,5 +1,5 @@
 (defun @block:numbering-by-route (/  lwpl olwpl num1 start ss-list ss1)
-  (@:help "按曲线路顺序对块进行递增编号")
+  (@::prompt "按曲线路顺序对块进行递增编号")
   (@:prompt "请选择一条曲线:")
   (if (setq lwpl (ssname (ssget ":S" '((0 . "*line"))) 0))
       (progn

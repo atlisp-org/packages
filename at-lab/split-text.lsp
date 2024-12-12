@@ -1,5 +1,5 @@
 (defun @lab:split-text ( / dcl-fp strs)
-   (@:help "批量将单行文本按规律分隔并绘制表格，")
+   (@::prompt "批量将单行文本按规律分隔并绘制表格，")
   (defun align-str (n str / flag)
     (if (null str)(setq str ""))
     (setq flag nil)
@@ -87,7 +87,7 @@
     ))
 
 (defun @lab:summary-lst (/ res)
-  (@:help "分类汇总字符串分隔的结果")
+  (@::prompt "分类汇总字符串分隔的结果")
   (if (null @:tmp-result)(progn (@:log "INFO" "没有生成结果数据用于汇总。") (exit)))
   (setq lst-ge (vl-remove-if-not '(lambda(x)(member "金额" x)) @:tmp-result))
   (setq res nil)

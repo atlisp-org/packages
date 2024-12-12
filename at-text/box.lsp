@@ -77,7 +77,7 @@
     )
   )
 (defun @text:menu-draw-box (/ txt s1)
-  (@:help "选择或输入文本，选择查找范围，查找内容相同的文本并加框。")
+  (@::prompt "选择或输入文本，选择查找范围，查找内容相同的文本并加框。")
   (if (null layer:make)(require 'layer:*))
   (if (= 'subr (type layer:make))
       (layer:make (@:get-config '@text:box-layer) 1 nil nil))
@@ -95,7 +95,7 @@
 	 (pickset:to-list s1))
 	)))
 (defun @text:menu-remove-box ()
-  (@:help '("删除文本框"))
+  (@::prompt '("删除文本框"))
   (@:prompt "请选择需要删除的区域(回车或右键全选):")
   (setq boxs (pickset:to-list
 	      (ssget (list '(0 . "lwpolyline,circle")

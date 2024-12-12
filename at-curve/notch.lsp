@@ -10,7 +10,7 @@
 
 
 (defun at-curve:notch (/ args)
-  (@:help '("在丁字线交点处生成缺口。"))
+  (@::prompt '("在丁字线交点处生成缺口。"))
   (if (setq args (ui:input
 		  "缺口参数"
 		  (list

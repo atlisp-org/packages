@@ -1,3 +1,3 @@
 (defun at-curve:de-chamfer ()
-  (@:help "反倒角，")
+  (@::prompt "反倒角，")
   )

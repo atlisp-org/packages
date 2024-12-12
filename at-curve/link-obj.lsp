@@ -2,7 +2,7 @@
 (@:define-config '@curve:pin-length 200 "引脚长度，物体外伸的直线长度")
 (@:define-config '@curve:pin-width 50 "引线宽度，多段线的宽度")
 (defun @curve:link-obj (/ gap)
-  (@:help  '("用水平及垂直路径线连接原物体到目标物体。当前只支持1对多的关系"))
+  (@::prompt  '("用水平及垂直路径线连接原物体到目标物体。当前只支持1对多的关系"))
   (setq gap (@:get-config '@curve:gap))
 
   (@:prompt "选择源物体:")

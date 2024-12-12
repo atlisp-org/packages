@@ -132,7 +132,7 @@
 	(if (null (member (vl-symbol-name curr-layer) (layer:list)))
 	    (layer:make (vl-symbol-name curr-layer) nil nil nil))
 	(setvar "clayer" (vl-symbol-name curr-layer)))))
-  (@:help (list
+  (@::prompt (list
 	   (strcat "选择对象到" (getvar "clayer") "层")))
   (if (setq ss-curr (cadr (ssgetfirst)))
       (foreach ent (pickset:to-list ss-curr)

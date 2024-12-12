@@ -1,5 +1,5 @@
 (defun @block:overblocks (/ *error* blkname ss-blk blks blkent blkname box)
-  (@:help "定位相互重叠的同名块")
+  (@::prompt "定位相互重叠的同名块")
   (defun *error* (msg)
     ;; 重启动处理 
     (if (= 'file (type dcl_fp))
@@ -42,7 +42,7 @@
 	    )))
   (princ))
 (defun @block:overblocks2 (/ *error* blkname ss-blk blks blkent blkname box)
-  (@:help "定位相互重叠的块(块外围尺寸对角线长度不大于设定值)")
+  (@::prompt "定位相互重叠的块(块外围尺寸对角线长度不大于设定值)")
   (defun *error* (msg)
     ;; 重启动处理 
     (if (= 'file (type dcl_fp))

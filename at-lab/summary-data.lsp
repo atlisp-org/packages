@@ -1,5 +1,5 @@
 (defun @lab:summary-data (/ tbl-summary get-data)
-  (@:help (strcat "汇总图框及图框内文本信息\n形成表格"))
+  (@::prompt (strcat "汇总图框及图框内文本信息\n形成表格"))
   (defun get-data (ent / data box mt)
     (if ent
 	(progn

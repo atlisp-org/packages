@@ -36,7 +36,7 @@
   (setq @::tmp-search-str "@curve")
   (@::edit-config-dialog))
 (defun at-curve:join (/ l1 l2 pts1 pts2)
-  (@:help "选择两条线，从最近端点连接成一条.")
+  (@::prompt "选择两条线，从最近端点连接成一条.")
   (setq curves (pickset:to-list (ssget '((0 . "*line")))))
   (setq pts1 (curve:pline-3dpoints (car curves)))
   (setq pts2 (curve:pline-3dpoints (cadr curves)))
@@ -61,7 +61,7 @@
 
 
 (defun at-curve:area (/ lst-curve pts)
-  (@:help '("标注曲线的的闭合面积"))
+  (@::prompt '("标注曲线的的闭合面积"))
   (@:prompt "请选择闭合曲线:")
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
@@ -82,7 +82,7 @@
             1))
   (princ))
 (defun at-curve:length (/ lst-curve pts)
-  (@:help '("在曲线的中点,标注曲线的长度"))
+  (@::prompt '("在曲线的中点,标注曲线的长度"))
   (@:prompt "请选择曲线:")
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
@@ -103,7 +103,7 @@
             1))
   (princ))
 (defun at-curve:per-length (/ lst-curve pts)
-  (@:help '("标注曲线的每段长度"))
+  (@::prompt '("标注曲线的每段长度"))
   (@:prompt "请选择曲线:")
   (setq lst-curve (pickset:to-list
                    (ssget (list (cons 0 (@:get-config '@curve:types))))))
@@ -194,7 +194,7 @@
 	     )))
   (princ))
 (defun at-curve:dualline ()
-  (@:help '("将单线双向偏移成双线。"))
+  (@::prompt '("将单线双向偏移成双线。"))
   (if (null (member "DASHDOT" (tbl:list "linetype")))
       (vla-load *LTS* "DASHDOT" (findfile "acadiso.lin")))
   (setq dualline-width (getdist (strcat"\n"(@:speak"输入双线宽度")"<"(rtos (@:get-config '@curve:dualline-width) 2 3)">：")))

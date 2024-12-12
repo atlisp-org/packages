@@ -1,6 +1,6 @@
 (defun @block:tchpr2insert ()
   ;; 使用高版本的CAD软件用修复方法破解。
-  (@::help "需要以 修复 形式打开被加密文件。")
+  (@::prompt "需要以 修复 形式打开被加密文件。")
   (if (tblsearch "block" "TCH_PR")
       (progn
 	(block:insert "TCH_PR" "" (getpoint "请点击要解开图形的位置:") 0 1)

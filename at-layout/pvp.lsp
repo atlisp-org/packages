@@ -7,6 +7,7 @@
    ("选择合并布局"(@layout:merge-selelected))
    ("合并后1布局"(@layout:merge-next))
    ("清理空布局"(@layout:purge))
+   ("分图到布局"(@layout:devide-map))
    )
  )
    

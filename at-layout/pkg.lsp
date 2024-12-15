@@ -11,6 +11,7 @@
         (:DESCRIPTION . "布局工具")
         (:URL . "http://atlisp.cn")
         (:FILES "pvp"
-            "merge"
+		"merge"
+		"devide-map"
             "stat-vp"
             "purge")))

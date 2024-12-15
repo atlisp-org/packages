@@ -1,16 +1,3 @@
-(@:add-menus
- '("布局"
-   ("视口正交坐标"(@layout:pvp-v))
-   ("视口世界坐标"(@layout:pvp-w))
-   ("视口冻结刷"(@layout:pvp-ma))
-   ("合并所有布局"(@layout:merge))
-   ("选择合并布局"(@layout:merge-selelected))
-   ("合并后1布局"(@layout:merge-next))
-   ("清理空布局"(@layout:purge))
-   ("分图到布局"(@layout:devide-map))
-   )
- )
-   
 (defun @layout:pvp-v (/ clayout vps)
   ;;(@:help "视口坐标随视图")
   (setq clayout (getvar "ctab"))

@@ -1,0 +1,21 @@
+(@::define-config '@layout:divide-margin 1000 "分图图形的外边距,即图形到视口边界的距离")
+(@::define-config '@layout:divide-gap 100 "分图视口间隙,即视口之间的距离")
+(@::define-config '@layout:divide-layout "分图结果" "分图的目标布局名")
+
+(@:add-menus
+ '("布局"
+   ("布局设置"(@layout:setup))
+   ("视口正交坐标"(@layout:pvp-v))
+   ("视口世界坐标"(@layout:pvp-w))
+   ("视口冻结刷"(@layout:pvp-ma))
+   ("合并所有布局"(@layout:merge))
+   ("选择合并布局"(@layout:merge-selelected))
+   ("合并后1布局"(@layout:merge-next))
+   ("清理空布局"(@layout:purge))
+   ("分图到布局"(@layout:divide-map))
+   ("分堆分图"(@layout:divide-cluster))
+   )
+ )
+(defun @layout:setup (/ res)
+   (setq @::tmp-search-str "@layout")
+   (@::edit-config-dialog))

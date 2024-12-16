@@ -1,6 +1,6 @@
 (@:define-config '@text:target-lang "en" "翻译文本的目标语言，支持en,zh,zht,jp,kor等")
 (defun @text:translate (/ txts boxs res maxdis)
-  (@::prompt '("翻译选中的单行或多行文本"))
+  (@::help '("翻译选中的单行或多行文本"))
   (setq txts (pickset:to-list (ssget '((0 . "*text")))))
   (setq boxs(mapcar '(lambda(x)(entity:getbox x 0)) txts))
   (setq res (mapcar '(lambda(x / lst-res)
@@ -41,7 +41,7 @@
 	     (cadr (car box))))))
    res txts))
 (defun @text:translate-from-en (/ txts boxs res maxdis)
-  (@::prompt '("翻译选中纯英文的单行或多行文本至当前系统语言"))
+  (@::help '("翻译选中纯英文的单行或多行文本至当前系统语言"))
   (setq txts (pickset:to-list (ssget '((0 . "*text")))))
   ;;去除非英文
   (setq txts (vl-remove-if

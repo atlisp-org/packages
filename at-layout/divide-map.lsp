@@ -7,6 +7,8 @@
   (or (member (@::get-config '@layout:divide-layout) (layout:list))
       (vla-add *layouts* (@::get-config '@layout:divide-layout)))
   (setvar "ctab" (@::get-config '@layout:divide-layout))
+  ;;去捕捉
+  (std:osmode-off)
   (if(and (setq ss(@layout:ssgetx (@::get-config '@layout:divide-layout)))
 	  (setq box (pickset:getbox ss 0)))
      (progn
@@ -31,6 +33,7 @@
 			(+ gap
 			   (* 0.5 width))
 			)))
+  (std:osmode-on)
   )
 			   
 (defun @layout:divide-cluster (/ clusters margin gap box width height ents pt-base)
@@ -43,6 +46,7 @@
   (or (member (@::get-config '@layout:divide-layout) (layout:list))
       (vla-add *layouts* (@::get-config '@layout:divide-layout)))
   (setvar "ctab" (@::get-config '@layout:divide-layout))
+  (std:osmode-off)
   (if(and (setq ss(@layout:ssgetx (@::get-config '@layout:divide-layout)))
 	  (setq box (pickset:getbox ss 0)))
      (progn
@@ -67,5 +71,6 @@
 			(+ gap
 			   (* 0.5 width))
 			)))
+  (std:osmode-on)
   )
 			   

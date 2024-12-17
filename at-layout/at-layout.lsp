@@ -14,6 +14,8 @@
    ("清理空布局"(@layout:purge))
    ("分图到布局"(@layout:divide-map))
    ("分堆分图"(@layout:divide-cluster))
+   ("视口加A4框"(@layout:add-mapsheet-a4))
+   ("视口加A3框"(@layout:add-mapsheet-a3))
    )
  )
 (defun @layout:setup (/ res)

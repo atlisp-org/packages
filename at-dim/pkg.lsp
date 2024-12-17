@@ -13,5 +13,6 @@
         (:FILES "at-dim"
             "coord"
             "cutting-symbol"
-            "dimarc"
+         "dimarc"
+	 "area"
             "sum-dim")))

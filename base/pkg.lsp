@@ -5,7 +5,7 @@
         (:EMAIL . "vitalgg@gmail.com")
         (:DESCRIPTION . "Base package, support @lisp package to run.")
         (:CATEGORY . "Lib")
-        (:OPENSOURCE . 1)
+        (:OPENSOURCE . 1)(:FREE . t)
         (:LICENSES . "LGPL")
         (:URL . "http://atlisp.cn")
         (:FILES "base"

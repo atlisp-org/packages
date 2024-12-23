@@ -1,7 +1,8 @@
 (@::define-config '@layout:divide-margin 1000 "分图图形的外边距,即图形到视口边界的距离")
 (@::define-config '@layout:divide-gap 100 "分图视口间隙,即视口之间的距离")
 (@::define-config '@layout:divide-layout "分图结果" "分图的目标布局名")
-
+(@::define-config '@layout:divide-per-layout 1 "每个布局中的视口个数，分图数超过该值，布局名自动加序号")
+(@::define-config '@layout:blkrefname "A$C10F55D85,A$C47E05E72" "用于分图的图块名，多个用逗号分隔")
 (@:add-menus
  '("布局"
    ("布局设置"(@layout:setup))
@@ -15,6 +16,7 @@
    ("分图到布局"(@layout:divide-map))
    ("分堆分图"(@layout:divide-cluster))
    ("矩形框分图"(@layout:divide-rectangle))
+   ("图块分图"(@layout:divide-insert))
    ("视口加A4框"(@layout:add-mapsheet-a4))
    ("视口加A3框"(@layout:add-mapsheet-a3))
    )

@@ -6,10 +6,10 @@
         (:LOCALE . "CHS")
         (:CATEGORY . "其它")
         (:REQUIRED . "base")
-        (:OPENSOURCE . 0)
+        (:OPENSOURCE . 0)(:FREE . t)
         (:DESCRIPTION . "阿甘计算器")
         (:URL . "http://atlisp.cn")
-        (:FILES "agan-cal"
-            "agancal"
-            "AganCal.dll"
-            "AganCal18.dll")))
+              (:FILES "agan-cal"
+               "agancal"
+               "AganCal.dll"
+               "AganCal18.dll")))

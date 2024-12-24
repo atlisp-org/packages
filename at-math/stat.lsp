@@ -1,29 +1,29 @@
-(@:add-menu "Í³¼Æ" "Í¼¿éÃû" "(@:stat-block-by-name)")
-(@:add-menu "Í³¼Æ" "¿éÊôĞÔ" "(@:menu-stat-block-by-attribute)")
-(@:add-menu "Í³¼Æ" "¶¯Ì¬¿éÌØĞÔ" "(@:menu-stat-block-by-properties)")
-(@:add-menu "Í³¼Æ" "µ¥ĞĞÎÄ±¾" "(@:menu-stat-text)")
-(@:add-menu "Í³¼Æ" "ÎÄÊı»ã×Ü" '(at-math:sumtxt))
-(@:add-menu "Í³¼Æ" "Í¼ÔªÍ³¼Æ" "(@math:stat-entity-gui)")
-(@:add-menu "Í³¼Æ" "Í¼ÔªÑÕÉ«" "(@math:stat-color)")
-(@:add-menu "Í³¼Æ" "µçÆøÉè±¸" "(@stat:telec-equip)")
-(@:add-menu "Í³¼Æ" "ÃæÓò°´²ã" "(@stat:region-by-layer)")
-(@:add-menu "Í³¼Æ" "--" "--")
-(@:add-menu "Í³¼Æ" "Êä³ö½á¹û" "(stat:print)")
-(@:add-menu "Í³¼Æ" "»æÖÆ½á¹û" "(stat:draw)")
-;;(@:add-menu "Í³¼Æ" "¿éÊôĞÔ" "(@:stat-block-by-attribute)")
+(@:add-menu "ç»Ÿè®¡" "å›¾å—å" "(@:stat-block-by-name)")
+(@:add-menu "ç»Ÿè®¡" "å—å±æ€§" "(@:menu-stat-block-by-attribute)")
+(@:add-menu "ç»Ÿè®¡" "åŠ¨æ€å—ç‰¹æ€§" "(@:menu-stat-block-by-properties)")
+(@:add-menu "ç»Ÿè®¡" "å•è¡Œæ–‡æœ¬" "(@:menu-stat-text)")
+(@:add-menu "ç»Ÿè®¡" "æ–‡æ•°æ±‡æ€»" '(at-math:sumtxt))
+(@:add-menu "ç»Ÿè®¡" "å›¾å…ƒç»Ÿè®¡" "(@math:stat-entity-gui)")
+(@:add-menu "ç»Ÿè®¡" "å›¾å…ƒé¢œè‰²" "(@math:stat-color)")
+(@:add-menu "ç»Ÿè®¡" "ç”µæ°”è®¾å¤‡" "(@stat:telec-equip)")
+(@:add-menu "ç»Ÿè®¡" "é¢åŸŸæŒ‰å±‚" "(@stat:region-by-layer)")
+(@:add-menu "ç»Ÿè®¡" "--" "--")
+(@:add-menu "ç»Ÿè®¡" "è¾“å‡ºç»“æœ" "(stat:print)")
+(@:add-menu "ç»Ÿè®¡" "ç»˜åˆ¶ç»“æœ" "(stat:draw)")
+;;(@:add-menu "ç»Ÿè®¡" "å—å±æ€§" "(@:stat-block-by-attribute)")
 (defun @:stat-block-by-name ()
-  "Í³¼ÆÑ¡ÖĞ¿éµÄ¿éÃû¼°ÊıÁ¿¡£"
-  (setq @:tmp-stat-result  ;; Í³¼Æ½á¹û
-	(stat:stat         ;; Í³¼Æº¯Êı
+  "ç»Ÿè®¡é€‰ä¸­å—çš„å—ååŠæ•°é‡ã€‚"
+  (setq @:tmp-stat-result  ;; ç»Ÿè®¡ç»“æœ
+	(stat:stat         ;; ç»Ÿè®¡å‡½æ•°
 	 (mapcar (function
-		  (lambda (x) ;; ÄäÃûº¯Êı£º´ÓÑ¡Ôñ¼¯ÁĞ±íÖĞÈ¡³öÒªÍ³¼ÆµÄÏî¡£
-		   (block:get-effectivename x))) ;; Ê¾Àı: ´ÓÍ¼ÔªÈ¡³öÍ¼Ãû¡£
-		 (pickset:to-list (ssget '((0 . "insert"))))))) ;; ÒªÍ³¼ÆµÄÍ¼Ôª¡£
+		  (lambda (x) ;; åŒ¿åå‡½æ•°ï¼šä»é€‰æ‹©é›†åˆ—è¡¨ä¸­å–å‡ºè¦ç»Ÿè®¡çš„é¡¹ã€‚
+		   (block:get-effectivename x))) ;; ç¤ºä¾‹: ä»å›¾å…ƒå–å‡ºå›¾åã€‚
+		 (pickset:to-list (ssget '((0 . "insert"))))))) ;; è¦ç»Ÿè®¡çš„å›¾å…ƒã€‚
   (if @:tmp-stat-result (stat:draw))
   )
 
 (defun @:stat-block-by-attribute (attribute-name block-name)
-  "Í³¼ÆÑ¡ÖĞµÄÖ¸¶¨¿éÃûÖĞµÄÄ³Ò»ÊôĞÔµÄÖµ¼°ÊıÁ¿¡£"
+  "ç»Ÿè®¡é€‰ä¸­çš„æŒ‡å®šå—åä¸­çš„æŸä¸€å±æ€§çš„å€¼åŠæ•°é‡ã€‚"
   (setq @:tmp-stat-result
 	(stat:stat
 	 (mapcar (function
@@ -36,12 +36,12 @@
   )
 
 (defun @:menu-stat-block-by-attribute (/ blk-name attribute-name)
-  (setq blk-name (getstring "ÇëÊäÈëÒªÍ³¼ÆµÄ¿éÃû³Æ:"))
-  (setq attribute-name (getstring "ÇëÊäÈëÒª·ÖÀàÍ³¼ÆµÄ¿éÊôĞÔµÄÃû³Æ:"))
+  (setq blk-name (getstring "è¯·è¾“å…¥è¦ç»Ÿè®¡çš„å—åç§°:"))
+  (setq attribute-name (getstring "è¯·è¾“å…¥è¦åˆ†ç±»ç»Ÿè®¡çš„å—å±æ€§çš„åç§°:"))
   (@:stat-block-by-attribute attribute-name blk-name))
 
 (defun @:stat-block-by-properties (prop-name block-name)
-  "Í³¼ÆÑ¡ÖĞµÄÖ¸¶¨¿éÃûÖĞµÄÄ³Ò»¶¯Ì¬¿éÌØĞÔµÄÖµ¼°ÊıÁ¿¡£"
+  "ç»Ÿè®¡é€‰ä¸­çš„æŒ‡å®šå—åä¸­çš„æŸä¸€åŠ¨æ€å—ç‰¹æ€§çš„å€¼åŠæ•°é‡ã€‚"
   (setq @:tmp-stat-result
 	(stat:stat
 	 (mapcar (function
@@ -53,13 +53,13 @@
   (if @:tmp-stat-result (stat:draw)))
 
 (defun @:menu-stat-block-by-properties (/ blk-name prop-name)
-  (setq blk-name (getstring "ÇëÊäÈëÒªÍ³¼ÆµÄ¿éÃû³Æ:"))
-  (setq prop-name (getstring "ÇëÊäÈëÒª·ÖÀàÍ³¼ÆµÄ¶¯Ì¬¿éÌØĞÔµÄÃû³Æ:"))
+  (setq blk-name (getstring "è¯·è¾“å…¥è¦ç»Ÿè®¡çš„å—åç§°:"))
+  (setq prop-name (getstring "è¯·è¾“å…¥è¦åˆ†ç±»ç»Ÿè®¡çš„åŠ¨æ€å—ç‰¹æ€§çš„åç§°:"))
   (@:stat-block-by-properties prop-name blk-name))
 
 
 (defun @:stat-entity (stat-item ssfilter)
-  "stat-item: Í³¼ÆÏîÄ¿(dxf ×éÂë±ÈÈçÍ¼²ã Îª8 ); ssfilter Ñ¡Ôñ¼¯¹ıÂË"
+  "stat-item: ç»Ÿè®¡é¡¹ç›®(dxf ç»„ç æ¯”å¦‚å›¾å±‚ ä¸º8 ); ssfilter é€‰æ‹©é›†è¿‡æ»¤"
   (setq @:tmp-stat-result
 	(stat:stat
 	 (mapcar (function
@@ -69,8 +69,8 @@
   (if @:tmp-stat-result (stat:draw)))
 
 (defun @math:stat-color (/ ents)
-  "stat-color: Í³¼ÆÊµÌåµÄÑÕÉ«"
-  (prompt "ÇëÑ¡ÔñÍ¼Ôª:")
+  "stat-color: ç»Ÿè®¡å®ä½“çš„é¢œè‰²"
+  (prompt "è¯·é€‰æ‹©å›¾å…ƒ:")
   (setq ents (pickset:to-list (ssget )))
   (setq @:tmp-stat-result
 	(stat:stat
@@ -81,9 +81,9 @@
   (if @:tmp-stat-result (stat:draw)))
 
 (defun @math:stat-entity-gui (/ name dxf)
-  (@:help "¸ù¾İĞèÒªµÄÍ³¼ÆÏîÄ¿Í³¼ÆÑ¡ÖĞµÄÑ¡Ôñ¼¯¡£")
+  (@::prompt "æ ¹æ®éœ€è¦çš„ç»Ÿè®¡é¡¹ç›®ç»Ÿè®¡é€‰ä¸­çš„é€‰æ‹©é›†ã€‚")
   (setq dxf nil)
-  (setq name (ui:select "ÇëÑ¡ÔñÒªÍ³¼ÆµÄÏî" (mapcar 'cdr dxf-common)))
+  (setq name (ui:select "è¯·é€‰æ‹©è¦ç»Ÿè®¡çš„é¡¹" (mapcar 'cdr dxf-common)))
   (foreach n% dxf-common
 	   (if (= name (cdr n%))
 	       (setq dxf (car n%))))
@@ -91,7 +91,7 @@
       (@:stat-entity dxf nil)))
 
 (defun @:menu-stat-text (/ ssfilter)
-  (setq strfilter (getstring "ÇëÊäÈëÎÄ±¾Í¨Åä·û(Ê¾Àı GBZ* ?BZ* LL*): "))
+  (setq strfilter (getstring "è¯·è¾“å…¥æ–‡æœ¬é€šé…ç¬¦(ç¤ºä¾‹ GBZ* ?BZ* LL*): "))
   (if (/= "" strfilter)
       (setq ssfilter (list  '(0 . "TEXT,TCH_TEXT") (cons 1  strfilter)))
       (setq ssfilter (list  '(0 . "TEXT,TCH_TEXT"))))
@@ -104,30 +104,30 @@
   (if @:tmp-stat-result (stat:draw)))
 
 (defun @stat:telec-equip ()
-  (@:help (strcat 
-	   "Í³¼ÆµçÆøÉè±¸¡£ÓÃÓÚÌìÕıµçÆø´ø¼ÆËã»úÃûµÄÉè±¸¿é¡£"))
-  (setq @:tmp-stat-result  ;; Í³¼Æ½á¹û
-	(stat:stat         ;; Í³¼Æº¯Êı
+  (@::prompt (strcat 
+	   "ç»Ÿè®¡ç”µæ°”è®¾å¤‡ã€‚ç”¨äºå¤©æ­£ç”µæ°”å¸¦è®¡ç®—æœºåçš„è®¾å¤‡å—ã€‚"))
+  (setq @:tmp-stat-result  ;; ç»Ÿè®¡ç»“æœ
+	(stat:stat         ;; ç»Ÿè®¡å‡½æ•°
 	 (mapcar (function
-		  (lambda (x) ;; ÄäÃûº¯Êı£º´ÓÑ¡Ôñ¼¯ÁĞ±íÖĞÈ¡³öÒªÍ³¼ÆµÄÏî¡£
+		  (lambda (x) ;; åŒ¿åå‡½æ•°ï¼šä»é€‰æ‹©é›†åˆ—è¡¨ä¸­å–å‡ºè¦ç»Ÿè®¡çš„é¡¹ã€‚
 		    (car
 		     (string:to-list 
 		      (block:get-effectivename x)
 		      "(")
-		     ))) ;; Ê¾Àı: ´ÓÍ¼ÔªÈ¡³öÍ¼Ãû¡£
+		     ))) ;; ç¤ºä¾‹: ä»å›¾å…ƒå–å‡ºå›¾åã€‚
 		 (pickset:to-list (ssget '((0 . "insert")(2 . "*$equip*")))))))
   (if @:tmp-stat-result (stat:draw)))
 (if (null dxf-common)
     (setq dxf-common
-	  '((0 . "Í¼ÔªÀàĞÍ")
-	    (8 . "Í¼²ã")
-	    (6 . "ÏßĞÍ")
-	    (62 . "ÑÕÉ«ºÅ")
-	    (48 . "ÏßĞÍ±ÈÀı")
-	    (40 . "°ë¾¶"))))
+	  '((0 . "å›¾å…ƒç±»å‹")
+	    (8 . "å›¾å±‚")
+	    (6 . "çº¿å‹")
+	    (62 . "é¢œè‰²å·")
+	    (48 . "çº¿å‹æ¯”ä¾‹")
+	    (40 . "åŠå¾„"))))
       
 (defun @stat:region-by-layer ()
-  (@:help (strcat "°´²»Í¬µÄÍ¼²ãÍ³¼ÆÃæÓòµÄÃæ»ı¡£"))
+  (@::prompt (strcat "æŒ‰ä¸åŒçš„å›¾å±‚ç»Ÿè®¡é¢åŸŸçš„é¢ç§¯ã€‚"))
   (setq @:tmp-stat-result
 	(stat:classify
 	 (mapcar (function

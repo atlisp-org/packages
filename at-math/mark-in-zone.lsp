@@ -35,7 +35,7 @@
 		  3)))))
 
 (defun @math:mark-in-lwpl (/ ent-nums) 
-  (@:help '("区域标数：筛分多段线区域中的最大最小数，大数用红圈，小数用绿圈。"))
+  (@::prompt '("区域标数：筛分多段线区域中的最大最小数，大数用红圈，小数用绿圈。"))
   (setq zone (pickset:to-list (ssget (list '(0 . "lwpolyline")
 					   (cons 8 (@:get-config '@math:layer-of-zone))))))
   (foreach
@@ -44,7 +44,7 @@
                       (ssget "wp" (curve:get-points lwpl) '((0 . "text")))))
        (@math:mark-in-ss  ent-nums))))
 (defun @math:mark-in-w ()
-  (@:help '("筛分框选的最大最小数，大数用红圈，小数用绿圈。"))
+  (@::prompt '("筛分框选的最大最小数，大数用红圈，小数用绿圈。"))
   (if (setq ent-nums (pickset:to-list 
                       (ssget '((0 . "text")))))
       (@math:mark-in-ss ent-nums))

@@ -1,20 +1,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; vitaltools -- Î¨Ëû¹¤¾ß¼¯
+;;; vitaltools -- å”¯ä»–å·¥å…·é›†
 ;;; Author: VitalGG<vitalgg@gmail.com>
-;;; Description: »ùÓÚ AutoLisp/VisualLisp ¿ª·¢µÄ»æÍ¼¹¤¾ß¼¯
+;;; Description: åŸºäº AutoLisp/VisualLisp å¼€å‘çš„ç»˜å›¾å·¥å…·é›†
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; DWGÎÄ¼şÖĞµÄµ¥ĞĞÎÄ±¾µÄÊıÑ§ÔËËã
-(@:define-config '@math:layer-of-zone  "Öù" "±íÊ¾ÇøÓòµÄ¶à¶ÎÏßËùÔÚµÄÍ¼²ã")
-;;; Êı×ÖÇóºÍ
-;;;¹ıÂË·ÇÊı×Ö
+;;; DWGæ–‡ä»¶ä¸­çš„å•è¡Œæ–‡æœ¬çš„æ•°å­¦è¿ç®—
+(@:define-config '@math:layer-of-zone  "æŸ±" "è¡¨ç¤ºåŒºåŸŸçš„å¤šæ®µçº¿æ‰€åœ¨çš„å›¾å±‚")
+;;; æ•°å­—æ±‚å’Œ
+;;;è¿‡æ»¤éæ•°å­—
 (defun filter-num(str / tmp)
   (if (setq tmp (car (vl-remove-if-not 'string:numberp (string:auto-split str))))
       (atof tmp)))
-(@:add-menu "ÊıÑ§" "¡ÆÇóºÍ" "(@m:text-sum)")
+(@:add-menu "æ•°å­¦" "âˆ‘æ±‚å’Œ" "(@m:text-sum)")
 (defun @m:text-sum ( / s1 si% ti% ename total )
-  (@:help 
-   "Çó¶à¸öÊı×Öµ¥ĞĞÎÄ±¾µÄºÍ¡£Ö§³Ö´¿µ¥ĞĞÎÄ±¾ºÍÌìÕıÎÄ±¾¡£")
-  (prompt "ÇëÑ¡ÔñÒ»¸ö»ò¶à¸öÊı×Öµ¥ĞĞÎÄ±¾")
+  (@::prompt 
+   "æ±‚å¤šä¸ªæ•°å­—å•è¡Œæ–‡æœ¬çš„å’Œã€‚æ”¯æŒçº¯å•è¡Œæ–‡æœ¬å’Œå¤©æ­£æ–‡æœ¬ã€‚")
+  (prompt "è¯·é€‰æ‹©ä¸€ä¸ªæˆ–å¤šä¸ªæ•°å­—å•è¡Œæ–‡æœ¬")
   (setq s1 (pickset:to-list (ssget '((0 . "text,tch_text")))))
   (setq total (apply '+ (mapcar '(lambda(x)(filter-num(entity:getdxf x 1))) s1)))
   (print (setq @m:*result* total))
@@ -23,12 +23,12 @@
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Êı×ÖÇó»ı
-(@:add-menu "ÊıÑ§" "¡ÇÇó»ı" "(@m:text-mul)")
+;;; æ•°å­—æ±‚ç§¯
+(@:add-menu "æ•°å­¦" "âˆæ±‚ç§¯" "(@m:text-mul)")
 (defun @m:text-mul ( / s1  ti% ename total )
-  (@:help 
-   "Çó¶à¸öÊı×Öµ¥ĞĞÎÄ±¾µÄ»ı¡£Ö§³Öµ¥ĞĞÎÄ±¾ºÍÌìÕıÎÄ±¾¡£")
-  (prompt "ÇëÑ¡ÔñÒ»¸ö»ò¶à¸öÊı×Öµ¥ĞĞÎÄ±¾")
+  (@::prompt 
+   "æ±‚å¤šä¸ªæ•°å­—å•è¡Œæ–‡æœ¬çš„ç§¯ã€‚æ”¯æŒå•è¡Œæ–‡æœ¬å’Œå¤©æ­£æ–‡æœ¬ã€‚")
+  (prompt "è¯·é€‰æ‹©ä¸€ä¸ªæˆ–å¤šä¸ªæ•°å­—å•è¡Œæ–‡æœ¬")
   (setq s1 (pickset:to-list (ssget '((0 . "text,tch_text")))))
 
   (setq total (apply '* (mapcar '(lambda(x)(filter-num (entity:getdxf x 1))) s1)))
@@ -37,12 +37,12 @@
   (princ)
   )
 ;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Êı×ÖÇó»ı
-(@:add-menu "ÊıÑ§" "ËãÊõ¾ùÖµ" "(@m:avg)")
+;;; æ•°å­—æ±‚ç§¯
+(@:add-menu "æ•°å­¦" "ç®—æœ¯å‡å€¼" "(@m:avg)")
 (defun @m:avg ( / s1  ti% ename total )
-  (@:help 
-   "Çó¶à¸öÊı×Öµ¥ĞĞÎÄ±¾µÄËãÊõ¾ùÖµ¡£Ö§³Öµ¥ĞĞÎÄ±¾ºÍÌìÕıÎÄ±¾¡£")
-  (prompt "ÇëÑ¡ÔñÒ»¸ö»ò¶à¸öÊı×Öµ¥ĞĞÎÄ±¾")
+  (@::prompt 
+   "æ±‚å¤šä¸ªæ•°å­—å•è¡Œæ–‡æœ¬çš„ç®—æœ¯å‡å€¼ã€‚æ”¯æŒå•è¡Œæ–‡æœ¬å’Œå¤©æ­£æ–‡æœ¬ã€‚")
+  (prompt "è¯·é€‰æ‹©ä¸€ä¸ªæˆ–å¤šä¸ªæ•°å­—å•è¡Œæ–‡æœ¬")
   (setq s1 (pickset:to-list (ssget '((0 . "text,tch_text")))))
   (setq total (apply '+ (mapcar '(lambda(x)(filter-num (entity:getdxf x 1))) s1)))
   (print (setq @m:*result* (/ total (length s1))))
@@ -50,19 +50,19 @@
   (princ)
   )
 (defun @:probe-int (str)
-  "·ÖÎöÒ»¸ö×Ö·û´®ÊıÖµ£¬Èç¹ûÊÇÕûÊıÔòÈ¡Õû¡£"
+  "åˆ†æä¸€ä¸ªå­—ç¬¦ä¸²æ•°å€¼ï¼Œå¦‚æœæ˜¯æ•´æ•°åˆ™å–æ•´ã€‚"
   (if (= 0 (atoi (last (@:string-to-list str "."))))
       (car (@:string-to-list str "."))
       str))
 	     
 	     
 ;;;;;;;;;;;;;;;;;;;;;;;
-;;ÎÄ±¾Êı¾İÉ¸Ñ¡
-(@:add-menu "ÊıÑ§" "Êı¾İÉ¸Ñ¡" "(@m:sx)")
+;;æ–‡æœ¬æ•°æ®ç­›é€‰
+(@:add-menu "æ•°å­¦" "æ•°æ®ç­›é€‰" "(@m:sx)")
 (defun @m:sx ( / minnum1 s1 ti% ename e )
-  (@:help
-   "½øĞĞÉ¸Ñ¡²Ù×÷,È»ºóÊäÈëÒªÉ¸³ıµÄ×î´óÊıÖµ,Íê³ÉºóÑ¡ÔñµÄÎÄ×ÖÑÕÉ«Çø·Ö")
-  (setq minnum1 (getint "ÇëÊäÈëÒªÉ¸·ÖµÄÊıÖµ:"))
+  (@::prompt
+   "è¿›è¡Œç­›é€‰æ“ä½œ,ç„¶åè¾“å…¥è¦ç­›é™¤çš„æœ€å¤§æ•°å€¼,å®Œæˆåé€‰æ‹©çš„æ–‡å­—é¢œè‰²åŒºåˆ†")
+  (setq minnum1 (getint "è¯·è¾“å…¥è¦ç­›åˆ†çš„æ•°å€¼:"))
   (setq s1 (ssget '((0 . "text"))))
 
   (mapcar '(lambda (x / str)
@@ -74,15 +74,15 @@
 	  (pickset:to-list s1))
   (princ))
 
-;;"ÅúÁ¿¸ÄÊıÖµ(¶ÔËùÑ¡ÊıÖµ¼Ó»ò¼õÒ»¶¨Öµ)
-(@:add-menu "ÊıÑ§" "ÅúÁ¿ÔËËã" "(@:multi-text-cal)")
+;;"æ‰¹é‡æ”¹æ•°å€¼(å¯¹æ‰€é€‰æ•°å€¼åŠ æˆ–å‡ä¸€å®šå€¼)
+(@:add-menu "æ•°å­¦" "æ‰¹é‡è¿ç®—" "(@:multi-text-cal)")
 (defun @:multi-text-cal( / cal-symble num  s1 ti% fn )
-  (@:help
-   "ÅúÁ¿¸ÄÊıÖµ,½«Êı×ÖÊ½µ¥ĞĞÎÄ±¾ + - * / Ò»¸öÊıÖµ.")
+  (@::prompt
+   "æ‰¹é‡æ”¹æ•°å€¼,å°†æ•°å­—å¼å•è¡Œæ–‡æœ¬ + - * / ä¸€ä¸ªæ•°å€¼.")
   (initget 1 "+ - * /")
-  (setq cal-symble (getkword "ÇëÊäÈëÔËËã·û (+ - * /): "))
+  (setq cal-symble (getkword "è¯·è¾“å…¥è¿ç®—ç¬¦ (+ - * /): "))
   (setq s1 (pickset:to-list (ssget '((0 . "text")))))
-  (setq num (getreal "ÇëÊäÈëÒª½øĞĞÅúÁ¿¼Ó¼õ³Ë³ıµÄÊıÖµ:"))
+  (setq num (getreal "è¯·è¾“å…¥è¦è¿›è¡Œæ‰¹é‡åŠ å‡ä¹˜é™¤çš„æ•°å€¼:"))
   (setq ti% 0)
   (mapcar '(lambda (x)
 	    (setq fn
@@ -94,9 +94,9 @@
   (princ)
   )
 
-(@:add-menu "ÊıÑ§" "ÅúÁ¿È¡Õû" "(@:fix-number)")
+(@:add-menu "æ•°å­¦" "æ‰¹é‡å–æ•´" "(@:fix-number)")
 (defun @:fix-number( / num  s1 ename ti% p11 p10 f en p11n p10n fn fn1)
-  "ÅúÁ¿È¡Õû"
+  "æ‰¹é‡å–æ•´"
   (setq s1 (ssget '((0 . "text"))))
   (setq num 1)
   (setq ti% 0)
@@ -108,8 +108,8 @@
              (- (sslength s1) 1)
              )
           (setq ename(ssname s1 ti%))
-          (setq p11 nil)			;½«p11ÖÃ¿Õ
-          (setq e (entget ename))		;È¡ÊµÌå±íe
+          (setq p11 nil)			;å°†p11ç½®ç©º
+          (setq e (entget ename))		;å–å®ä½“è¡¨e
           (setq fn (rtos (* (atof (cdr (assoc 1 e))) num) 2 0))
           (setq fn1 (cons 1 fn))
           (setq e (subst fn1 (assoc 1 e) e))
@@ -123,11 +123,11 @@
   (princ)
   )
   
-(@:add-menu "ÊıÑ§" "²å±àºÅ1~20" "(@:insert-numbers)")
+(@:add-menu "æ•°å­¦" "æ’ç¼–å·1~20" "(@:insert-numbers)")
 (defun @:insert-numbers (/ mulu-path fp% mulu% i% insert-point% page-number% zhuanye ml-ruler)
   (push-var nil)
-  (@:help "²åÈëÒ»ĞòÁĞ±àºÅ,ĞĞ¾à 800 ¡£ÅäºÏÅúÁ¿¼Ó¼õ¹¦ÄÜ¿É·½±ãµÄ±à¼­ĞòºÅ¡£")
-  (setq insert-point% (getpoint "ÇëÊäÈë±àºÅ²åÈëÆğÊ¼µã£º"))
+  (@::prompt "æ’å…¥ä¸€åºåˆ—ç¼–å·,è¡Œè· 800 ã€‚é…åˆæ‰¹é‡åŠ å‡åŠŸèƒ½å¯æ–¹ä¾¿çš„ç¼–è¾‘åºå·ã€‚")
+  (setq insert-point% (getpoint "è¯·è¾“å…¥ç¼–å·æ’å…¥èµ·å§‹ç‚¹ï¼š"))
   (setq i% 0)(setq page-number% 1)
   (setvar "osmode" 0)
   (setvar "autosnap" 0)
@@ -141,7 +141,7 @@
   (pop-var)
   (princ))
 
-(@:add-menu "ÊıÑ§" "¶àÁĞÔËËã" "(@m:column-cal)")
+(@:add-menu "æ•°å­¦" "å¤šåˆ—è¿ç®—" "(@m:column-cal)")
 (defun @m:sort-by-x (ss-lst)
   (vl-sort ss-lst '(lambda (x y)
 		    (> (car (entity:getdxf x 10))
@@ -152,10 +152,10 @@
 		     (cadr (entity:getdxf e2 10))))))
 (defun @m:column-cal (/ cal-symble number-lst ss i% res-matrix)
   (initget 1 "+ - * /")
-  (setq cal-symble (getkword "ÇëÊäÈëÔËËã·û (+ - * /): "))
+  (setq cal-symble (getkword "è¯·è¾“å…¥è¿ç®—ç¬¦ (+ - * /): "))
   (setq number-lst '())
   (setq i% 0)
-  (prompt (strcat "ÇëÑ¡ÔñµÚ " (itoa (1+ i%)) " ÁĞ:"))
+  (prompt (strcat "è¯·é€‰æ‹©ç¬¬ " (itoa (1+ i%)) " åˆ—:"))
   (while (setq ss (ssget '((0 . "text"))))
     (if number-lst
 	(setq number-lst
@@ -163,7 +163,7 @@
 				  (@m:sort-by-y (pickset:to-list ss)))))
 	(setq number-lst (list  (@m:sort-by-y (pickset:to-list ss)))))
     (setq i% (1+ i%))
-    (prompt (strcat "ÇëÑ¡ÔñµÚ " (itoa (1+ i%)) " ÁĞ:"))
+    (prompt (strcat "è¯·é€‰æ‹©ç¬¬ " (itoa (1+ i%)) " åˆ—:"))
     )
   (setq res-matrix '())
   (foreach matrix number-lst
@@ -177,7 +177,7 @@
 		     (mapcar '(lambda (x) (filter-num (entity:getdxf x 1)))
 			     matrix)))
 	   )
-  ;; Ğ´Í¼
+  ;; å†™å›¾
   (mapcar '(lambda (x y)
 	    (entity:make-text
 	     (rtos x 2 2)
@@ -190,12 +190,12 @@
 (defun @math:select-number (/ str-fw entlst)
   (if (null amax) (setq amax 2.6))
   (if (null amin) (setq amin 1.6))
-  (if (/= "" (setq str-fw (getstring t (strcat "ÇëÊäÈëÊı×Ö·¶Î§(¿ÉÓÃ , ~ ¼°¿Õ¸ñ·Ö¸ôÁ½¸öÊı)< " (rtos amin 2 2)"~"(rtos amax 2 2)" >: "))))
+  (if (/= "" (setq str-fw (getstring t (strcat "è¯·è¾“å…¥æ•°å­—èŒƒå›´(å¯ç”¨ , ~ åŠç©ºæ ¼åˆ†éš”ä¸¤ä¸ªæ•°)< " (rtos amin 2 2)"~"(rtos amax 2 2)" >: "))))
       (progn
 	(setq fw (vl-remove-if '(lambda(x)(equal 0.0 x 1e-8)) (mapcar 'atof (string:auto-split str-fw))))
 	(setq amin (apply 'min fw))
 	(setq amax (apply 'max fw))))
-  (prompt "ÇëÑ¡ÔñÎÄ×Ö¶ÔÏó:")
+  (prompt "è¯·é€‰æ‹©æ–‡å­—å¯¹è±¡:")
   (setq entlst
 	(pickset:to-list (ssget '((0 . "*text")))))
   (setq entlst

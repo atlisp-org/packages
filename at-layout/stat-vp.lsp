@@ -1,5 +1,5 @@
 (defun at-layout:stat-vp ()
-  (@:help '("每个布局中视口的个数"))
+  (@::prompt '("统计每个布局中视口的个数"))
   (mapcar '(lambda(x)
 	     (ssget "x" (list '(0 . "viewport")(cons 410  x))))
 	  (layout:list)))

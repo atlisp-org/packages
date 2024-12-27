@@ -1,5 +1,5 @@
 (defun @layout:pvp-v (/ clayout vps)
-  ;;(@:help "ÊÓ¿Ú×ø±êËæÊÓÍ¼")
+  (@::prompt "è§†å£åæ ‡éšè§†å›¾")
   (setq clayout (getvar "ctab"))
    (setvar "cmdecho" 0)
   (foreach layout (layout:list)
@@ -27,7 +27,7 @@
   )
 
 (defun @layout:pvp-w (/ clayout vps)
-  ;;(@:help "ÊÓ¿Ú×ø±êËæÊÓÍ¼")
+  (@::prompt "è§†å£åæ ‡éšè§†å›¾")
   (setq clayout (getvar "ctab"))
   (setvar "cmdecho" 0)
   (foreach layout (layout:list)
@@ -52,18 +52,18 @@
   (setvar "cmdecho" 1)
   )
 (defun @layout:pvp-ma ()
-  ;;(@:help "½«Ñ¡ÖĞµÄÊÓ¿ÚµÄ¶³½áÍ¼²ãÉèÖÃË¢µ½ÆäËüÊÓ¿Ú¡£")
-  (@:prompt "ÇëµãÑ¡Ô´ÊÓ¿Ú:")
+  (@::prompt "å°†é€‰ä¸­çš„è§†å£çš„å†»ç»“å›¾å±‚è®¾ç½®åˆ·åˆ°å…¶å®ƒè§†å£ã€‚")
+  (@:prompt "è¯·ç‚¹é€‰æºè§†å£:")
   (if (setq src-layout (ssget "_:S:E" '((0 . "VIEWPORT"))))
       (progn
 	(setq obj-vflayers
 	      (vla-getxdata (e2o (ssname src-layout 0))
 			    "" 'xtypeOut 'xdataOut))
 	(@:skip-speak)
-	(@:prompt "Çë¿òÑ¡ÔñÄ¿±êÊÓ¿Ú:")
+	(@:prompt "è¯·æ¡†é€‰æ‹©ç›®æ ‡è§†å£:")
 	
 	(if (setq dist-layouts (ssget '((0 . "VIEWPORT"))))
-	    ;;Çå³ıÔ­À´µÄ¶³½á×´Ì¬
+	    ;;æ¸…é™¤åŸæ¥çš„å†»ç»“çŠ¶æ€
 	    (progn
 	      (@:cmd "vplayer" "t" "*" "S" dist-layouts "" "")
 	      (foreach dst (pickset:to-list dist-layouts)
@@ -75,8 +75,8 @@
 		       ;;(vla-syncmodelview (e2o dst))
 		       (vla-update (e2o dst))
 		       ))
-	  (@:speak "Ã»ÓĞÑ¡ÖĞÄ¿±êÊÓ¿Ú,ÍË³öÖ´ĞĞ¡£")
+	  (@:speak "æ²¡æœ‰é€‰ä¸­ç›®æ ‡è§†å£,é€€å‡ºæ‰§è¡Œã€‚")
 	  ))
-    (@:speak "Ã»ÓĞÑ¡ÖĞÔ´ÊÓ¿Ú,ÍË³öÖ´ĞĞ¡£")
+    (@:speak "æ²¡æœ‰é€‰ä¸­æºè§†å£,é€€å‡ºæ‰§è¡Œã€‚")
     ))
 

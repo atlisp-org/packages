@@ -1,5 +1,5 @@
 (defun @layout:purge ()
-  (@:help "清理空布局。")
+  (@::prompt "清理空布局。")
   (mapcar '(lambda(x)
 	     (if (null
 		  (ssget "x"

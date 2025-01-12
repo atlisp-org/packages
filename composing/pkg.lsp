@@ -2,7 +2,7 @@
         (:FULL-NAME . "排版")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.5")
+        (:VERSION . "0.0.6")
         (:LOCALE . "chs")
         (:CATEGORY . "排版")
         (:REQUIRED . "base")

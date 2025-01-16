@@ -2,11 +2,12 @@
         (:FULL-NAME . "排版")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.6")
+        (:VERSION . "0.0.7")
         (:LOCALE . "chs")
         (:CATEGORY . "排版")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
+        (:FREE . T)
         (:DESCRIPTION . "各种排版")
         (:URL . "http://atlisp.cn")
         (:FILES "composing"

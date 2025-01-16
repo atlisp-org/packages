@@ -1,5 +1,5 @@
 (defun composing:cluster ()
-  (@::help "分堆排版，将选择的图形分堆后，按直线排版。")
+  (@::prompt "分堆排版，将选择的图形分堆后，按直线排版。")
   (setq clusters (pickset:cluster (ssget) 1))
   ;;显示分堆结果。如果不正确，重新设置间隙重排。
   
@@ -51,7 +51,7 @@
   (princ))
 
 (defun composing:entity ()
-  (@::help "单一图形排版，将选择的图形，按直线排版。")
+  (@::prompt "单一图形排版，将选择的图形，按直线排版。")
   (setq ents (pickset:to-list (ssget)))
   (setq pt-s (getpoint))
   (setq pt-e  (getpoint pt-s "END:"))
@@ -89,7 +89,7 @@
 	 )))
   (princ))
 (defun composing:group ()
-  (@::help "分堆排版，将选择的图形分堆后，按直线排版。")
+  (@::prompt "分堆排版，将选择的图形分堆后，按直线排版。")
   (setq clusters (pickset:cluster (ssget) 1))
   ;;显示分堆结果。如果不正确，重新设置间隙重排。
   

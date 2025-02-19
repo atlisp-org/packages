@@ -12,12 +12,15 @@
 (@:define-config '@planning:floor-area-ratio-limit 2.0 "容积率限值,单位10000m2/ha")
 (@:define-config '@planning:building-density-limit 35 "建筑密度限值,单位%")
 (@:define-config '@planning:greening-rate-limit 20 "绿地率限值")
+(@:define-config '@planning:floor-num 3 "建筑层数，当没有给出建筑面积时，按占地面积x层数计入总面积")
 
 ;; 向系统中添加菜单 
 (@:add-menus
  '("规划"
    ("规划设置"(at-planning:setup))
    ("指定范围"(at-planning:set-range))
+   ("生成绿地"(at-planning:gen-greenland))
+   
    ("用地面积"(at-planning:land-area))
    ("绿地面积" (at-planning:area-of-green))
    ("填充物件" (at-planning:hatch-zone))
@@ -264,20 +267,30 @@
   (@m:draw)
   (princ))
 (defun at-planning:make-index ()
-  (if (or (or (null  @planning:*building-all-area*)
-	      (zerop @planning:*building-all-area*))
-	  (or (null  @planning:*building-overground-area*)
-	      (zerop @planning:*building-overground-area*))
-	  (null  @planning:*building-underground-area*)
-	  (or (null @planning:*plot-area*)
-	      (zerop @planning:*plot-area*))
-	  (null @planning:*parking-underground*))
+  (if (or(or (null  @planning:*building-overground-area*)
+	     (zerop @planning:*building-overground-area*))
+	 (null  @planning:*building-underground-area*)
+	 (or (null @planning:*plot-area*)
+	     (zerop @planning:*plot-area*))
+	 (null @planning:*parking-underground*))
       (at-planning:input))
   (if (at-planning:calc)
-      (ui:dyndraw (table:make
-		   '(0 0 0)
-		   "主要技术经济指标一览表"
-		   '("项目名称""单位""数量""备注")
+      (progn
+	(if (zerop @planning:*building-overground-area*)
+	    (progn
+	      (setq @planning:*plot-area*
+		    (setq @planning:*building-overground-area*
+			  (* (at-planning:sum @planning:*building-floor1-area*)
+			     (@::get-config '@planning:floor-num)))
+		    )
+	      ))
+	(setq @planning:*building-all-area*
+	      (+ @planning:*building-overground-area*
+		 @planning:*building-underground-area*))
+	(ui:dyndraw (table:make
+		     '(0 0 0)
+		     "主要技术经济指标一览表"
+		     '("项目名称""单位""数量""备注")
 		   (append
 		    (list
 		     (list "总建设用地" "㎡" (at-planning:sum  @planning:*land-area*) ""))
@@ -316,21 +329,26 @@
 		     )))
 		  '(0 0 0))
       
-      ))
+      )))
 (defun at-planning:input (/  res)
   (@::help "需要手动输入总图中无法计算的数据")
   (setq res 
 	(ui:input
 	 "建筑数据"
-	 (list (list "建筑总面积" (if @planning:*building-all-area* @planning:*building-all-area* 0.0))
-	       (list "地上建筑面积" (if @planning:*building-overground-area*  @planning:*building-overground-area* 0.0))
+	 (list (list "地上建筑面积" (if @planning:*building-overground-area*  @planning:*building-overground-area* 0.0))
 	       (list "地下建筑面积" (if @planning:*building-underground-area*   @planning:*building-underground-area* 0.0))
-	       (list  "计容面积" (if @planning:*plot-area* @planning:*plot-area*  0.0))
+	       (list "计容面积" (if @planning:*plot-area* @planning:*plot-area*  0.0))
 	       (list "地下车位数" (if @planning:*parking-underground* @planning:*parking-underground* 0)))))
-  (setq @planning:*building-all-area* (cdr (assoc "建筑总面积" res)))
-  (setq @planning:*building-overground-area* (cdr (assoc "地上建筑面积" res)))
-  (setq @planning:*building-underground-area* (cdr (assoc "地下建筑面积" res)))
-  (setq @planning:*plot-area* (cdr (assoc "计容面积" res)))
-  (setq @planning:*parking-underground* (cdr (assoc "地下车位数" res)))
-  )
+  (list
+   ;; (setq @planning:*building-all-area* (cdr (assoc "建筑总面积" res)))
+   (setq @planning:*building-overground-area* (cdr (assoc "地上建筑面积" res)))
+   (setq @planning:*building-underground-area* (cdr (assoc "地下建筑面积" res)))
+   (setq @planning:*plot-area* (cdr (assoc "计容面积" res)))
+   (setq @planning:*parking-underground* (cdr (assoc "地下车位数" res)))
+   ))
   
+(defun at-planning:gen-greenland ()
+  (@::help "在点击位置生成闭合的绿地曲线")
+  (command  "boundary" (getpoint) "")
+  (entity:putdxf (entlast) 8 (@::get-config '@planning:green-layer))
+  )

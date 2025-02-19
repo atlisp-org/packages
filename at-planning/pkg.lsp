@@ -2,7 +2,7 @@
         (:FULL-NAME . "规划")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.0")
+        (:VERSION . "0.1.1")
         (:LOCALE . "chs")
         (:CATEGORY . "建筑工程")
         (:REQUIRED . "base")

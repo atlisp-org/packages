@@ -8,7 +8,7 @@
 (@:define-config '@planning:road-layer "道路" "道路图层。")
 (@:define-config '@planning:openspace-layer "开敞空间" "城市开敞空间图层。")
 (@:define-config '@planning:square-layer "城市广场" "城市广场图层。")
-(@:define-config '@planning:parking "*车位" "用于统计停车位的图块名")
+(@:define-config '@planning:parking "*车位*" "用于统计停车位的图块名")
 (@:define-config '@planning:floor-area-ratio-limit 2.0 "容积率限值,单位10000m2/ha")
 (@:define-config '@planning:building-density-limit 35 "建筑密度限值,单位%")
 (@:define-config '@planning:greening-rate-limit 20 "绿地率限值")
@@ -350,5 +350,7 @@
 (defun at-planning:gen-greenland ()
   (@::help "在点击位置生成闭合的绿地曲线")
   (command  "boundary" (getpoint) "")
-  (entity:putdxf (entlast) 8 (@::get-config '@planning:green-layer))
+  (entity:putdxf (entlast) 8
+		 (string:subst-all "" "*"
+				   (car (string:to-list  (@::get-config '@planning:green-layer)","))))
   )

@@ -43,6 +43,7 @@
    '((_"多重转普通") (@block:minsert2insert))
    '((_"保护转块") (@block:tchpr2insert))
    '((_"分堆建块") (@block:block-cluster))
+   '((_"设置分堆间隙") (@block:set-clustergap))
    ))
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")
 (defun @block:config (/ res) 

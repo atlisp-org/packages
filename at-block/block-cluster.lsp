@@ -1,6 +1,15 @@
-(defun @block:block-cluster ()
+(defun @block:set-clustergap ()
+  (setq @:cluster-gap (getdist "输入适当的分堆间隙值:")))
+(defun @block:block-cluster (/ gap)
   (@::prompt "分堆建块")
-  (setq clusters (pickset:cluster (ssget) 1))
+  (or @:cluster-gap
+      (setq @:cluster-gap (getdist "输入适当的分堆间隙值:")))
+  (setq gap
+	(if (and (numberp @:cluster-gap)
+		 (> @:cluster-gap 0))
+	    @:cluster-gap
+	  1))
+  (setq clusters (pickset:cluster (ssget) gap))
   ;;显示分堆结果。如果不正确，重新设置间隙重排。
   ;;(setq pt-s (getpoint))
   ;; (setq aim-boxs (mapcar '(lambda(x)

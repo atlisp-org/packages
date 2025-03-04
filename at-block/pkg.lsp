@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp Block")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "1.1.1")
+        (:VERSION . "1.1.3")
         (:LOCALE . "CHS")
         (:CATEGORY . "图块相关")
         (:REQUIRED . "base")
@@ -20,5 +20,6 @@
             "minsert"
             "tch-pr"
             "write-file"
+            "block-cluster"
             "explode"
             "clip-to-blk")))

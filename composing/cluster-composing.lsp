@@ -1,6 +1,16 @@
-(defun composing:cluster ()
+(defun composing:set-clustergap ()
+  (setq @:cluster-gap (getdist "输入适当的分堆间隙值:")))
+
+(defun composing:cluster (/ gap)
   (@::prompt "分堆排版，将选择的图形分堆后，按直线排版。")
-  (setq clusters (pickset:cluster (ssget) 1))
+  (or @:cluster-gap
+      (setq @:cluster-gap (getdist "输入适当的分堆间隙值:")))
+  (setq gap
+	(if (and (numberp @:cluster-gap)
+		 (> @:cluster-gap 0))
+	    @:cluster-gap
+	  1))
+  (setq clusters (pickset:cluster (ssget) gap))
   ;;显示分堆结果。如果不正确，重新设置间隙重排。
   
   (setq pt-s (getpoint))
@@ -24,9 +34,16 @@
    (setq i (1+ i)))
   
   (princ))
-(defun composing:cluster-gap ()
+(defun composing:cluster-gap (/ clustergap gap)
   (@::prompt "请选择要排版的图形:")
-  (setq clusterboxs (pickset:cluster (ssget) 1))
+  (or @:cluster-gap
+      (setq @:cluster-gap (getdist "输入适当的分堆间隙值:")))
+  (setq clustergap
+	(if (and (numberp @:cluster-gap)
+		 (> @:cluster-gap 0))
+	    @:cluster-gap
+	  1))
+  (setq clusterboxs (pickset:cluster (ssget) clustergap))
   (if (and (setq clusters(mapcar '(lambda(cluster%)(ssget  "w" (car cluster%)(cadr cluster%))) clusterboxs))
 	   (setq pt-s (getpoint (@::prompt"请点击起始点:"))))
       (progn

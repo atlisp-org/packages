@@ -1,69 +1,69 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-arch:first ÓÃÓÚ Ó¦ÓÃ°ü at-arch µÄ µÚÒ»¸öÅäÖÃÏî first 
-(@:define-config '@arch:parking-blk "³µÎ»*,»úĞµ³µÎ»*" "³µÎ»Í¼¿éÃû")
-(@:define-config '@arch:parking-number-order "Yx" "±àºÅÅÅĞò·½Ê½")
+;; å®šä¹‰é…ç½®é¡¹ 'at-arch:first ç”¨äº åº”ç”¨åŒ… at-arch çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+(@:define-config '@arch:parking-blk "è½¦ä½*,æœºæ¢°è½¦ä½*" "è½¦ä½å›¾å—å")
+(@:define-config '@arch:parking-number-order "Yx" "ç¼–å·æ’åºæ–¹å¼")
 
-;; (@:get-config 'at-arch:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-arch:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
+;; (@:get-config 'at-arch:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-arch:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
 (@:add-menus
- '("@½¨Öş"
-   ("½¨ÖşÉèÖÃ" "(at-arch:setup)" )
-   ("²åÈë³µÎ»" "(at-arch:insert-parking)" )
-   ("²åÈëÎŞÕÏ°­³µÎ»" "(at-arch:insert-accparking)" )
-   ("²åÈë»úĞµ³µÎ»" "(at-arch:insert-machineparking)" )
+ '("@å»ºç­‘"
+   ("å»ºç­‘è®¾ç½®" "(at-arch:setup)" )
+   ("æ’å…¥è½¦ä½" "(at-arch:insert-parking)" )
+   ("æ’å…¥æ— éšœç¢è½¦ä½" "(at-arch:insert-accparking)" )
+   ("æ’å…¥æœºæ¢°è½¦ä½" "(at-arch:insert-machineparking)" )
    
-   ("³µÎ»±àºÅ" "(at-arch:parking-numbering)" )))
+   ("è½¦ä½ç¼–å·" "(at-arch:parking-numbering)" )))
 
 (defun at-arch:setup (/ res)
    (setq @::tmp-search-str "@arch")
    (@::edit-config-dialog))
 
 (defun at-arch:insert-parking ()
-  (setq downfile "at-arch/³µÎ».dwg")
+  (setq downfile "at-arch/è½¦ä½.dwg")
   (if (null (findfile (strcat "packages/" downfile)))
       (progn
 	(@:load-module 'pkgman)
-	(@:down-pkg-file (@:uri) downfile "stable")(@:alert (strcat "ÕıÔÚÏÂÔØËùĞèµÄdwgÎÄ¼ş, ÇëÉÔºò¡£"))(sleep 5))
+	(@:down-pkg-file (@:uri) downfile "stable")(@:alert (strcat "æ­£åœ¨ä¸‹è½½æ‰€éœ€çš„dwgæ–‡ä»¶, è¯·ç¨å€™ã€‚"))(sleep 5))
     (ui:dyndraw
-     (block:insert "³µÎ»" "D:/design/standard" '(0 0 0)0 1)
+     (block:insert "è½¦ä½" (@::package-path "at-arch") '(0 0 0)0 1)
      '(0 0 0))))
 (defun at-arch:insert-accparking ()
-  (setq downfile "at-arch/³µÎ»-ÎŞÕÏ°­.dwg")
+  (setq downfile "at-arch/è½¦ä½-æ— éšœç¢.dwg")
   (if (null (findfile (strcat "packages/" downfile)))
       (progn
 	(@:load-module 'pkgman)
-	(@:down-pkg-file (@:uri) downfile "stable")(@:alert (strcat "ÕıÔÚÏÂÔØËùĞèµÄdwgÎÄ¼ş, ÇëÉÔºò¡£"))(sleep 5))
+	(@:down-pkg-file (@:uri) downfile "stable")(@:alert (strcat "æ­£åœ¨ä¸‹è½½æ‰€éœ€çš„dwgæ–‡ä»¶, è¯·ç¨å€™ã€‚"))(sleep 5))
     (ui:dyndraw
-     (block:insert "³µÎ»-ÎŞÕÏ°­" "D:/design/standard" '(0 0 0)0 1)
+     (block:insert "è½¦ä½-æ— éšœç¢" (@::package-path "at-arch") '(0 0 0)0 1)
      '(0 0 0))))
 (defun at-arch:insert-machineparking ()
-  (setq downfile "at-arch/»úĞµ³µÎ».dwg")
+  (setq downfile "at-arch/æœºæ¢°è½¦ä½.dwg")
   (if (null (findfile (strcat "packages/" downfile)))
       (progn
 	(@:load-module 'pkgman)
-	(@:down-pkg-file (@:uri) downfile "stable")(@:alert (strcat "ÕıÔÚÏÂÔØËùĞèµÄdwgÎÄ¼ş, ÇëÉÔºò¡£"))(sleep 5))
+	(@:down-pkg-file (@:uri) downfile "stable")(@:alert (strcat "æ­£åœ¨ä¸‹è½½æ‰€éœ€çš„dwgæ–‡ä»¶, è¯·ç¨å€™ã€‚"))(sleep 5))
     (ui:dyndraw
-     (block:insert "»úĞµ³µÎ»" "D:/design/standard" '(0 0 0)0 1)
+     (block:insert "æœºæ¢°è½¦ä½" (@::package-path "at-arch") '(0 0 0)0 1)
      '(0 0 0))))
 
   
 (defun at-arch:parking-numbering (/ parkings inputint atts)
-  ;; ÒÔÏÂ²¿·ÖÎªÄãÎªÊµÏÖÄ³Ò»¹¦ÄÜËù±àĞ´µÄ´úÂë¡£
-  (@::prompt "Çë¿òÑ¡Òª½øĞĞ±àºÅµÄ³µÎ»")
+  ;; ä»¥ä¸‹éƒ¨åˆ†ä¸ºä½ ä¸ºå®ç°æŸä¸€åŠŸèƒ½æ‰€ç¼–å†™çš„ä»£ç ã€‚
+  (@::prompt "è¯·æ¡†é€‰è¦è¿›è¡Œç¼–å·çš„è½¦ä½")
   (setq parkings
 	(pickset:sort
 	 (pickset:to-list  (block:ssget  nil (@::get-config '@arch:parking-blk) nil))
 	 (@::get-config '@arch:parking-number-order) 
 	 (mapcar '@::scale '(8 8))))
 
-  ;; ±àºÅ
+  ;; ç¼–å·
 
   (if (null parking-curr-number)
       (setq parking-curr-number 0))
-  (if (setq inputint  (getint (strcat "ÇëÊäÈëÆğÊ¼ºÅ<"(itoa (1+ parking-curr-number))">:")))
+  (if (setq inputint  (getint (strcat "è¯·è¾“å…¥èµ·å§‹å·<"(itoa (1+ parking-curr-number))">:")))
       (setq parking-curr-number (1- inputint)))
   
   (foreach park% parkings

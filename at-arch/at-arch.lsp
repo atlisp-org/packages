@@ -17,7 +17,7 @@
    ("车位编号" "(at-arch:parking-numbering)" )
    ("未命名房间" "(at-arch:locate-unnamed-space)" )
    ("定位房间" "(at-arch:menu-locate-space-by-code)" )
-   ("统计窗地比" "(at-arch:w/space)")
+   ("检查窗地比" "(at-arch:w/space)")
    
    ))
 
@@ -103,12 +103,14 @@
 (defun at-arch:menu-locate-space-by-code()
   (at-arch:locate-space-by-code (getstring "请输入房间编号:")))
 (defun at-arch:w/space (/ spaces)
-  (@::help "窗地比统计")
+  (@::help '("检查窗地比,将不满足要求的房间标红。"
+	     "天正房间信息不会自动更新，当更改窗户型号后，需重新执行搜索房间功能。"
+	     ))
   (if (setq spaces (ssget '((0 . "TCH_SPACE")(8 . "SPACE"))))
       (ui:dyndraw
        (table:make
 	'(0 0 0)
-	"窗地比统计表"
+	"窗地比核查表"
 	(list "房间编号""房间名称""外窗面积""地面面积""窗地比""合规性")
 	(mapcar
 	 '(lambda(x / name ewa ua w/ua)
@@ -127,7 +129,13 @@
 		   x
 		   ci)
 		  "X")
-		"")
+		(progn
+		  (setq ci (color:interface))
+		  (vla-put-colorindex ci 256)
+		  (vla-put-truecolor
+		   x
+		   ci)
+		""))
 	    ))
 	 (mapcar 'e2o (pickset:to-list spaces))))
        '(0 0 0))))

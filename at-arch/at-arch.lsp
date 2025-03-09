@@ -14,23 +14,31 @@
    ("插入车位" "(at-arch:insert-parking)" )
    ("插入无障碍车位" "(at-arch:insert-accparking)" )
    ("插入机械车位" "(at-arch:insert-machineparking)" )
+   ("车位编号" "(at-arch:parking-numbering)" )
+   ("未命名房间" "(at-arch:locate-unnamed-space)" )
+   ("定位房间" "(at-arch:menu-locate-space-by-code)" )
+   ("统计窗地比" "(at-arch:w/space)")
    
-   ("车位编号" "(at-arch:parking-numbering)" )))
+   ))
 
 (defun at-arch:setup (/ res)
    (setq @::tmp-search-str "@arch")
    (@::edit-config-dialog))
 
-(defun at-arch:insert-parking ()
+(defun at-arch:insert-parking (/ downfile)
   (setq downfile "at-arch/车位.dwg")
   (if (null (findfile (strcat "packages/" downfile)))
       (progn
 	(@:load-module 'pkgman)
 	(@:down-pkg-file (@:uri) downfile "stable")(@:alert (strcat "正在下载所需的dwg文件, 请稍候。"))(sleep 5))
-    (ui:dyndraw
-     (block:insert "车位" (@::package-path "at-arch") '(0 0 0)0 1)
-     '(0 0 0))))
-(defun at-arch:insert-accparking ()
+      )
+  (if (findfile (strcat "packages/" downfile))
+      (progn
+	(ui:dyndraw
+	 (block:insert "车位" (@::package-path "at-arch") '(0 0 0)0 1)
+	 '(0 0 0)))
+      ))
+(defun at-arch:insert-accparking (/ downfile)
   (setq downfile "at-arch/车位-无障碍.dwg")
   (if (null (findfile (strcat "packages/" downfile)))
       (progn
@@ -80,3 +88,61 @@
 			   (itoa (setq parking-curr-number (1+ parking-curr-number)))))))))
   (princ)
   )
+(defun at-arch:locate-unnamed-space (/ spaces)
+  (if (setq spaces (ssget "x" '((0 . "TCH_SPACE")(1 . "房间"))))
+      (if(setq corner (entity:getbox (ssname spaces 0) 100))
+	 (command "zoom" "w" (car corner) (cadr corner)))
+      (@::prompt "没有发现未命名房间。")
+      ))
+(defun at-arch:locate-space-by-code (code / spaces)
+  (if (setq spaces (ssget "x" (list '(0 . "TCH_SPACE")(cons 2 code))))
+      (if(setq corner (entity:getbox (ssname spaces 0) 100))
+	 (command "zoom" "w" (car corner) (cadr corner)))
+      (@::prompt "没有发现编号房间。")
+      ))
+(defun at-arch:menu-locate-space-by-code()
+  (at-arch:locate-space-by-code (getstring "请输入房间编号:")))
+(defun at-arch:w/space (/ spaces)
+  (@::help "窗地比统计")
+  (if (setq spaces (ssget '((0 . "TCH_SPACE")(8 . "SPACE"))))
+      (ui:dyndraw
+       (table:make
+	'(0 0 0)
+	"窗地比统计表"
+	(list "房间编号""房间名称""外窗面积""地面面积""窗地比""合规性")
+	(mapcar
+	 '(lambda(x / name ewa ua w/ua)
+	   (list 
+	    (vlax-get-property x 'code)
+	    (setq name  (vlax-get-property x 'name))
+	    (setq ewa (vlax-get-property x 'ExtWinArea))
+	    (setq ua (vlax-get-property x 'useArea))
+	    (setq w/ua
+	     (if(not (zerop (atof ua)))(/ (atof ewa)(atof  ua))0))
+	    (if (null (at-arch:check-w/ua name w/ua))
+		(progn
+		  (setq ci (color:interface))
+		  (vla-put-colorindex ci 12)
+		  (vla-put-truecolor
+		   x
+		   ci)
+		  "X")
+		"")
+	    ))
+	 (mapcar 'e2o (pickset:to-list spaces))))
+       '(0 0 0))))
+	       
+(defun at-arch:check-w/ua (name res)
+  (cond
+    ((wcmatch name "卧室,起居*,厨房")
+     (<  (/ 1.0 7) res))
+    ((wcmatch name "设计*,绘图*")
+     (<  (/ 1.0 4) res))
+     ((wcmatch name "办公*,会议*")
+      (<  (/ 1.0 5) res))
+     ((wcmatch name "复印*,档案*")
+      (<  (/ 1.0 6) res))
+     ((wcmatch name "走廊,走道,楼梯*,卫*")
+      (<  (/ 1.0 10) res))
+    (t t)
+    ))

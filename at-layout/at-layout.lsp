@@ -19,6 +19,7 @@
    ("图块分图"(@layout:divide-insert))
    ("视口加A4框"(@layout:add-mapsheet-a4))
    ("视口加A3框"(@layout:add-mapsheet-a3))
+   ("锁定全部视口"(@layout:lock-all-vp))
    )
  )
 (defun @layout:setup (/ res)

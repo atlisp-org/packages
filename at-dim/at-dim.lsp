@@ -25,6 +25,8 @@
 (@:add-menu "标注" "剖切符号" "(at-dim:cutting-symbol)")
 (@:add-menu "标注" "标注求和" "(@dim:sum-dim)")
 (@:add-menu "标注" "标注面积" "(at-dim:area)")
+(@:add-menu "标注" "尺寸偏差" "(at-dim:make-deviation)")
+(@:add-menu "标注" "尺寸原值" "(at-dim:true-value)")
 
 (defun @dim:setup (/ res)
   (setq @::tmp-search-str "@dim")

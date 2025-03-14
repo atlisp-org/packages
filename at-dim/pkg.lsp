@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp标注")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.24")
+        (:VERSION . "0.0.25")
         (:LOCALE . "CHS")
         (:CATEGORY . "标注")
         (:REQUIRED . "base")
@@ -13,6 +13,7 @@
         (:FILES "at-dim"
             "coord"
             "cutting-symbol"
-         "dimarc"
-	 "area"
-            "sum-dim")))
+            "dimarc"
+            "area"
+            "sum-dim"
+            "deviation")))

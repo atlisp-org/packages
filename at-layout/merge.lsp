@@ -1,28 +1,31 @@
 (defun @layout:ssgetx (layout)
-  "Ñ¡Ôñ²¼¾ÖÖĞ³ıÖ÷ÊÓ¿Ú¸öµÄËùÓĞÍ¼Ôª"
+  "é€‰æ‹©å¸ƒå±€ä¸­é™¤ä¸»è§†å£ä¸ªçš„æ‰€æœ‰å›¾å…ƒ"
   (ssget "x" (list (cons 410 layout)
 		   '(-4 . "<NOT")'(-4 . "<AND")
 		   '(0 . "viewport")'(69 . 1)
 		   '(-4 . "AND>")'(-4 . "NOT>"))))
+(defun @layout:inner-merge-layout (x / ss bref box return)
+  (if(and (setq ss (@layout:ssgetx x))
+	  (setq box (pickset:getbox ss 0))
+	  (setq bname (strcat x "-" (@:timestamp)))
+	  (entity:block ss bname (car box)))
+     (if
+      (setq bref (vla-InsertBlock (vla-get-block layout1)
+				  (point:to-ax pt-lb)
+				  bname
+				  1 1 1 0))
+      (progn
+	(vla-explode bref)
+	(setq return (vl-catch-all-apply 
+		      '(lambda () 
+			(vla-delete bref))))
+	(setq pt-lb (polar pt-lb 0(* 1.1 (- (caadr box) (caar box)))))
+	))))
 (defun @layout:merge-selelected (/ merge-layout)
-  "ºÏ²¢Ñ¡ÖĞµÄ²¼¾ÖÄÚÈİµ½Ñ¡ÖĞµÄµÚÒ»¸ö²¼¾ÖÖĞ¡£"
-  (defun merge-layout (x / ss bref box)
-    (if(and (setq ss (@layout:ssgetx x))
-	    (setq box (pickset:getbox ss 0))
-	    (setq bname (strcat x "-" (@:timestamp))))
-	(progn
-	  (entity:block ss bname (car box))
-	  (setq bref (vla-InsertBlock (vla-get-block layout1)
-				      (point:to-ax pt-lb)
-				      bname
-				      1 1 1 0))
-	  (vla-explode bref)
-	  (vla-delete bref)
-	  (setq pt-lb (polar pt-lb 0(* 1.1 (- (caadr box) (caar box)))))
-	  )))
+  "åˆå¹¶é€‰ä¸­çš„å¸ƒå±€å†…å®¹åˆ°é€‰ä¸­çš„ç¬¬ä¸€ä¸ªå¸ƒå±€ä¸­ã€‚"
   (setq layouts (layout:vla-list))
   (setq layoutnames (mapcar 'vla-get-name layouts))
-  (setq layouts-sel (reverse(ui:select-multi"ÇëÑ¡ÔñÒªºÏ²¢µÄ²¼¾Ö"layoutnames)))
+  (setq layouts-sel (reverse(ui:select-multi"è¯·é€‰æ‹©è¦åˆå¹¶çš„å¸ƒå±€"layoutnames)))
   
   (setq layoutname1 (car layouts-sel))
   
@@ -37,10 +40,10 @@
      (setq pt-lb (list 0.0 0.0 0.0)))
   (foreach
    layout% (cdr layouts-sel)
-   (merge-layout layout%))
+   (@layout:inner-merge-layout layout%))
   (vla-purgeall *DOC*)
   
-  ;; ´ò¿ªËùÓĞÊÓ¿Ú
+  ;; æ‰“å¼€æ‰€æœ‰è§†å£
   (setq ss (ssget "x"
 		  (list '(0 . "viewport")
 			'(-4 . "<NOT")'(69 . 1)'(-4 . "NOT>"))))
@@ -50,21 +53,7 @@
   (setvar "ctab" layoutname1)
   (princ))
 (defun @layout:merge (/ merge-layout)
-  "ºÏ²¢²¼¾ÖÄÚÈİµ½µÚÒ»¸ö²¼¾ÖÖĞ¡£"
-  (defun merge-layout (x / ss bref box)
-    (if(and (setq ss (@layout:ssgetx x))
-	    (setq box (pickset:getbox ss 0))
-	    (setq bname (strcat x "-" (@:timestamp))))
-	(progn
-	  (entity:block ss bname (car box))
-	  (setq bref (vla-InsertBlock (vla-get-block layout1)
-				      (point:to-ax pt-lb)
-				      bname
-				      1 1 1 0))
-	  (vla-explode bref)
-	  (vla-delete bref)
-	  (setq pt-lb (polar pt-lb 0(* 1.1 (- (caadr box) (caar box)))))
-	  )))
+  "åˆå¹¶å¸ƒå±€å†…å®¹åˆ°ç¬¬ä¸€ä¸ªå¸ƒå±€ä¸­ã€‚"
   (setq layouts (layout:vla-list))
   (setq layout1 (car layouts))
   (setq layoutnames (mapcar 'vla-get-name layouts))
@@ -76,10 +65,10 @@
      (setq pt-lb (list 0.0 0.0 0.0)))
   (foreach
    layout% (cdr layoutnames)
-   (merge-layout layout%))
+   (@layout:inner-merge-layout layout%))
   (vla-purgeall *DOC*)
   
-  ;; ´ò¿ªËùÓĞÊÓ¿Ú
+  ;; æ‰“å¼€æ‰€æœ‰è§†å£
   (setq ss (ssget "x"
 		  (list '(0 . "viewport")
 			'(-4 . "<NOT")'(69 . 1)'(-4 . "NOT>"))))
@@ -90,21 +79,7 @@
   (princ))
 
 (defun @layout:merge-next (/ merge-layout)
-  (@::help '("½«µ±Ç°²¼¾ÖºóÃæÏàÁÚµÄµÚÒ»¸ö²¼¾ÖÄÚÈİÒÆµ½µ±Ç°²¼¾ÖÖĞ¡£"))
-  (defun merge-layout (x / ss bref box)
-    (if(and (setq ss (@layout:ssgetx x))
-	    (setq box (pickset:getbox ss 0))
-	    (setq bname (strcat x "-" (@:timestamp))))
-	(progn
-	  (entity:block ss bname (car box))
-	  (setq bref (vla-InsertBlock (vla-get-block layout1)
-				      (point:to-ax pt-lb)
-				      bname
-				      1 1 1 0))
-	  (vla-explode bref)
-	  (vla-delete bref)
-	  (setq pt-lb (polar pt-lb 0(* 1.1 (- (caadr box) (caar box)))))
-	  )))
+  (@::prompt '("å°†å½“å‰å¸ƒå±€åé¢ç›¸é‚»çš„ç¬¬ä¸€ä¸ªå¸ƒå±€å†…å®¹ç§»åˆ°å½“å‰å¸ƒå±€ä¸­ã€‚"))
   (setq layouts (layout:vla-list))
   (setq layoutnames (member (getvar "ctab") (mapcar 'vla-get-name layouts)))
     
@@ -122,15 +97,20 @@
 	   (progn
 	     (setq pt-lb (polar (car box) 0 (* 1.1 (- (caadr box) (caar box))))))
 	   (setq pt-lb (list 0.0 0.0 0.0)))
-	(merge-layout layoutname2)
-	(vla-purgeall *DOC*)
+	(@layout:inner-merge-layout layoutname2)
+	(vl-catch-all-apply 
+	 '(lambda () 
+	   (vla-purgeall *DOC*)))
 	
-	;; ´ò¿ªËùÓĞÊÓ¿Ú
+	;; æ‰“å¼€æ‰€æœ‰è§†å£
 	(setq ss (ssget "x"
 			(list '(0 . "viewport")
 			      '(-4 . "<NOT")'(69 . 1)'(-4 . "NOT>"))))
+	(princ "flag 2\n")
 	(mapcar '(lambda(x)
-		  (vla-put-viewporton x :vlax-true))
+		  (vl-catch-all-apply 
+		   '(lambda ()
+		     (vla-put-viewporton x :vlax-true))))
 		(pickset:to-vlalist ss))
 	(setvar "ctab" layoutname1)))
   (princ))

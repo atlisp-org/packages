@@ -1,4 +1,9 @@
-(@:add-menu "sd1t" "输出PDF" "(sd1t:export-pdf)")
+(@:add-menus
+ '("sd1t"
+   ("输出PDF" (sd1t:export-pdf))
+   ("选择测试" (sd1t:select-frames))
+   ))
+;;依赖的函数
 (defun sd1t:frame-p (blkname / ents box height width mapsheet)
   "测试一个块定义是否为图框，即块内多段线的四角点形成的矩形，
 是否符合图幅规定,如果是则返回图幅名及4角点和基点，否则返回nil"
@@ -66,7 +71,6 @@
 		  (entity:getdxf (tblobjname "block" blkname) 10)
 		  ))
 	)))
-
 (defun sd1t:frame-recognition-by-block ()
   (setq blknames 
 	(vl-remove-if-not  'sd1t:frame-p (block:list)))
@@ -103,7 +107,7 @@
   ;; (sssetfirst nil frameblkrefs)
   (pickset:to-list frameblkrefs)
   )
-(defun sd1t:select-frames ()
+(defun sd1t:auto-select-frames()
   ;; 识别图框块
   (setq tks (sd1t:frame-recognition-by-block))
   ;; 去有X线的图框
@@ -113,34 +117,29 @@
 	   (setq box (entity:getbox tk 0))
 	   (setq box (apply 'point:rec-2pt->4pt
 		      (entity:getbox tk (* -0.0001 (apply 'distance box)))))
-	   (ssget "F" box '((0 . "LINE,LWPOLYINE"))))
-	 tks))
-  ;; 亮显要打印的图
-  (sssetfirst nil (pickset:from-list tks))
-  ;;(sd1t:exportpdf tks)
-  ;; plot 
-  )
-(defun c:sd1t_tks ()
-  (sd1t:select-frames))
-(defun sd1t:export-pdf ()
-  ;; 识别图框块
-  (setq tks (sd1t:frame-recognition-by-block))
-  ;; 去有X线的图框
-  (setq tks
-	(vl-remove-if
-	 '(lambda(tk / box)
-	   (setq box (entity:getbox tk 0))
-	   (setq box (apply 'point:rec-2pt->4pt
-		      (entity:getbox tk (* -0.0001 (apply 'distance box)))))
-	   (ssget "F" box '((0 . "LINE,LWPOLYINE"))))
-	 tks))
-  ;; 亮显要打印的图
-  (sssetfirst nil (pickset:from-list tks))
-  (sd1t:exportpdf tks)
-  ;; plot 
-  )
-(defun c:sd1t_exportpdf ()
-  (sd1t:export-pdf))
+	   (setq x-lines (ssget "F" box '((0 . "LINE,LWPOLYINE"))))
+	   (setq x-linex
+	    (vl-remove-if
+	     '(lambda(x)
+	       (cond
+		 ((eq"LINE"(entity:getdxf x 0))
+		  (setq ang
+			(angle (entity:getdxf x 10)
+			       (entity:getdxf x 11)))
+		  (or (equal ang 0 1e-8)
+		      (equal ang (* 0.5 pi) 1e-8)
+		      (equal ang (* 1.0 pi) 1e-8)
+		      (equal ang (* 1.5 pi) 1e-8)
+		      (equal ang (* 2.0 pi) 1e-8))
+		  )
+		 ;; ((eq"LWPOLYLINE"(entity:getdxf x 0))
+		 ;;  (< (entity:getdxf x 90) 8)
+		 ;;  )
+		)
+	       )
+	     (pickset:to-list x-lines)))
+	   )
+	 tks)))
 (defun sd1t:exportpdf (frames / *error* content% s1 minpoint maxpoint tufu ti% boxInsp boxScale boxRotate corner p1 p2 tuming old-ucs-name)
   (defun *error* (msg)
     (pop-var)
@@ -261,19 +260,22 @@
   (sd1t:pdftk:merge folder)
   ;; (system:explorer folder)
   (if (findfile (strcat (getvar"dwgprefix")(vl-filename-base(getvar"dwgname"))))
-      (foreach pdf
-	       (vl-directory-files
-		(strcat (getvar"dwgprefix")(vl-filename-base(getvar"dwgname"))) "*.pdf" 1)
-	       (vl-file-delete 
-		(strcat (getvar"dwgprefix")(vl-filename-base(getvar"dwgname"))
-			"\\"pdf)
-		)))
+      (progn
+	(foreach pdf
+		 (vl-directory-files
+		  (strcat (getvar"dwgprefix")(vl-filename-base(getvar"dwgname"))) "*.pdf" 1)
+		 (vl-file-delete 
+		  (strcat (getvar"dwgprefix")(vl-filename-base(getvar"dwgname"))
+			  "\\"pdf)
+		  ))
+	(vl-file-delete (strcat (getvar"dwgprefix")(vl-filename-base(getvar"dwgname"))))
+	))
   (princ)
   )
 (defun sd1t:pdftk:merge (folder / app files filetmp filename-bk fp-bookmark file-bk file-bk-utf8)
-  "将参数folder 文件夹下的 pdf 文件合并成一个文件。合并后的文件名为 `文件夹-merge-all.pdf' "
+  "将参数folder 文件夹下的 pdf 文件合并成一个文件。合并后的文件名为 `文件夹.pdf' "
   ""
-  "(pdftk:merge \"D:\\Output\\A项目\")"
+  "(sd1t:pdftk:merge \"D:\\Output\\A项目\")"
   (setq app "bin\\pdftk.exe")
   (pdftk:download)
   (if (and (findfile app)
@@ -281,6 +283,9 @@
 	   (vl-directory-files folder "*.pdf" 1))
       (progn
 	;;(@:patch-pgp-shell)
+	;; 删除旧pdf
+	(if (findfile (strcat folder ".pdf"))
+	    (vl-file-delete (strcat folder ".pdf")))
 	(setq files "*.pdf")
 	(setq filetmp "merge-tmp.pdf")
 	;;(setq filename-bk "merge-all.pdf")
@@ -307,7 +312,7 @@
 			  ))
 	;;(sleep 3)
 	(print folder)
-
+	
 	(command "start-bg"
 		 (strcat " /D \"" folder "\""
 			 " /MIN /B  "
@@ -340,3 +345,19 @@
 	))
   (princ)
   )
+
+;; 功能函数
+(defun sd1t:select-frames ()
+  ;; 亮显要打印的图
+  (if(setq tks (sd1t:auto-select-frames))
+     (sssetfirst nil (pickset:from-list tks)))
+  )
+(defun c:sd1t_tks ()
+  (sd1t:select-frames))
+(defun sd1t:export-pdf ()
+  (if (setq tks (sd1t:auto-select-frames))
+      ;; plot
+      (sd1t:exportpdf tks)
+  ))
+(defun c:sd1t_exportpdf ()
+  (sd1t:export-pdf))

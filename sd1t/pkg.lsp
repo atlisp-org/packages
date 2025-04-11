@@ -1,4 +1,14 @@
-(@::def-pkg '((:name . "sd1t")  (:full-name . "sd1t")  (:author . "VitalGG")  (:email . "vitalgg@gmail.com")  (:version . "0.0.1")  (:locale . "chs")  (:category . "¶¨Ïò¿ª·¢")  (:required . "base")  (:opensource . 0)   (:description . "½«dwgÖĞµÄËùÓĞÎ´»®ÏßµÄÍ¼¿òµ¼³öpdf£¬²¢ºÏ²¢³ÉÒ»¸öpdf")  (:url . "http://atlisp.cn")  (:files . ("sd1t"
-              ;; you can add file name that you will included in the package.
-              ;; lsp file must not input extand name.
-              ))))
+(@::def-pkg '((:NAME . "sd1t")
+        (:FULL-NAME . "sd1t")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.3")
+        (:LOCALE . "chs")
+        (:CATEGORY . "å®šå‘å¼€å‘")
+        (:REQUIRED "base"
+            "pdftk"
+            "at-pm")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "å°†dwgä¸­çš„æ‰€æœ‰æœªåˆ’çº¿çš„å›¾æ¡†å¯¼å‡ºpdfï¼Œå¹¶åˆå¹¶æˆä¸€ä¸ªpdf")
+        (:URL . "http://atlisp.cn")
+        (:FILES "sd1t")))

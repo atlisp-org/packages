@@ -1,49 +1,57 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 定义配置项 'ole:first 用于 应用包 ole 的 第一个配置项 first 
-;;(@:define-config 'ole:size "我是配置项 ole:first 的值" "这个配置项的用途说明。")
-;; (@:get-config 'ole:first) ;; 获取配置顶的值
-;; (@:set-config 'ole:first  "新设的值") ;; 设置配置顶的值
-;; 向系统中添加菜单 
+(@::define-config 'ole:gap 100  "插入图像的水平间隙")
+(@::define-config 'ole:scale 1.0  "插入图像与原图的比例")
+
 (@:add-menu "ole图像" "批量插入" "(ole:multi-insert)" )
-(defun ole:hello ()
-  (@:help (strcat "这里的内容用于在运行这个功能开始时，对用户进行功能提示。\n"
-		  "如怎么使用，注意事项等。\n当用户设置了学习模式时，会在命令行或弹窗进行提示。\n"
-		  ))
-  ;; 以下部分为你为实现某一功能所编写的代码。
-  (alert (strcat "ole图像 的第一个功能.\n"
-		 "创建了一个配置项 ole:first .\n"
-		 "这个配置项的值为: " (@:get-config 'ole:first)
-		 ))
-  (princ)
-  )
+(@:add-menu "ole图像" "安装python" "(ole:setup)" )
+
+(defun ole:setup ()
+  (@::prompt '("安装ole应用包的运行环境"))
+  (@::cmd "powershell-bg"
+	  "winget install python.python.3.13"))
+
 (defun ole:multi-insert ()
-  (@::help '("将文件夹中的图像文件jpg/png,插入到当前dwg中"))
+  (@::prompt '("将文件夹中的图像文件jpg/png,插入到当前dwg中"
+	       "本功能需要python运行环境"
+	       ))
+  (setq i 0)
   (if (setq folder (system:get-folder "请选择要插入的图片文件所有在文件夹"))
       (progn
 	(setq pt-ins (getpoint "插入点:"))
-	(foreach imgfile
-		 (vl-sort
-		  (append
-		   (vl-directory-files folder "*.jpg" 1)
-		   (vl-directory-files folder "*.png" 1))
-		  '<)
-		 ;; 图片数据入剪贴板
-		 (@::cmd"shell-bg"
-			(strcat "py oleimage '"
-				folder"\\"
-				imgfile
-				"'"))
-		 ;;等待完成
-		 (sleep 5)
-		 (setq box (entity:getbox(entlast) 0)
-		 (setq pt-ins (polar pt-ins
-				     0
-				     (- (cadr box)
-					(car box))))
-		 ))
-	))
-  (princ))
+	(if (setq imglst
+	      (vl-sort
+	       (append
+		(vl-directory-files folder "*.jpg" 1)
+		(vl-directory-files folder "*.png" 1))
+	       '<))
+	    (progn
+	      (setq fp (open (strcat @::*tmp-path*
+				     "oleimg.lst")
+
+			     "w"))
+	      (foreach img imglst
+		       (write-line
+			(strcat folder"\\" img)
+			fp))
+	      (close fp)
+	      (@::cmd "shell-bg"
+		      (strcat "atlisp-ole "
+			      (strcat @::*tmp-path*
+				     "oleimg.lst")))
+	      )
+	    
+	    ))
+      ))
+(defun ole:calc-ptins()
+  (if (null pt-ins)(setq pt-ins '(0 0 0)))
+  (setq box (entity:getbox (entlast) 0))
+  (setq pt-ins (polar pt-ins
+		      0
+		      (+ 100 (- (caadr box)
+				(caar box))))))
   
-	     
+(defun ole:osmode-off ()
+  (if (< (getvar "osmode") 16384)
+      (setvar "osmode" (+ (getvar "osmode") 16384))))
+(defun ole:osmode-on ()
+  (if (>= (getvar "osmode") 16384)
+      (setvar "osmode" (- (getvar "osmode") 16384))))

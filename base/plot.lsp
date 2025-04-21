@@ -195,9 +195,10 @@
   ;; MediaName -- 图纸尺寸
   ;; Window -- 表（窗口左下点 右上点)
   ;; FileName -- 输出文件名
-  (setq        AcadObj                (vlax-get-acad-object)
-               ActiveDocObj        (vla-get-ActiveDocument AcadObj)
-               ActiveLayoutObj        (vla-get-ActiveLayout ActiveDocObj))
+  (setq
+   AcadObj         (vlax-get-acad-object)
+   ActiveDocObj    (vla-get-ActiveDocument AcadObj)
+   ActiveLayoutObj (vla-get-ActiveLayout ActiveDocObj))
   (vla-RefreshPlotDeviceInfo ActiveLayoutObj)
   (vla-Put-ConfigName ActiveLayoutObj ConfigName)
   (setq PlotObj (vla-get-Plot ActiveDocObj))

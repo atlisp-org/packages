@@ -1,14 +1,18 @@
-(@::define-config 'ole:gap 100  "插入图像的水平间隙")
+(@::define-config 'ole:gap 300  "插入图像的水平间隙")
 (@::define-config 'ole:scale 1.0  "插入图像与原图的比例")
+(@::define-config 'ole:width 3000.0 "图像宽度")
 
+(@:add-menu "ole图像" "ole设置" "(ole:setup)" )
 (@:add-menu "ole图像" "批量插入" "(ole:multi-insert)" )
-(@:add-menu "ole图像" "安装python" "(ole:setup)" )
+(@:add-menu "ole图像" "配置环境" "(ole:install)" )
 
-(defun ole:setup ()
-  (@::prompt '("安装ole应用包的运行环境"))
-  (@::cmd "powershell-bg"
-	  "winget install python.python.3.13"))
-
+(defun ole:setup (/ res)
+   (setq @::tmp-search-str "ole:")
+   (@::edit-config-dialog))
+(defun ole:install ()
+  (@::cmd "shell"
+	  (strcat "powershell "
+		  (@::package-path "ole")"install.ps1")))
 (defun ole:multi-insert ()
   (@::prompt '("将文件夹中的图像文件jpg/png,插入到当前dwg中"
 	       "本功能需要python运行环境"
@@ -33,7 +37,7 @@
 			(strcat folder"\\" img)
 			fp))
 	      (close fp)
-	      (@::cmd "shell-bg"
+	      (@::cmd "shell"
 		      (strcat "atlisp-ole "
 			      (strcat @::*tmp-path*
 				     "oleimg.lst")))
@@ -46,8 +50,22 @@
   (setq box (entity:getbox (entlast) 0))
   (setq pt-ins (polar pt-ins
 		      0
-		      (+ 100 (- (caadr box)
-				(caar box))))))
+		      ;;(+ 100 (- (caadr box)(caar box)))
+		      (+ (@::get-config 'ole:gap)
+			 (@::get-config 'ole:width)
+			 )))
+  )
+(defun ole:scale-img(/ ole)
+  (setq ole  (e2o(entlast)))
+  (if (not
+       (equal (vla-get-width ole)
+	      (@::get-config 'ole:width)
+	      (* 0.01 (@::get-config 'ole:width))
+	      ))
+      (vla-put-width ole (@::get-config 'ole:width)))
+  (vla-put-InsertionPoint ole (point:to-ax pt-ins))
+  (vla-update  ole)
+  )
   
 (defun ole:osmode-off ()
   (if (< (getvar "osmode") 16384)

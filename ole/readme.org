@@ -1,0 +1,10 @@
+* 说明
+本应用包需要python环境，请执行功能菜单或面板上的 "配置环境" 以自动安装需要的python和模块
+
+* 手动安装支持环境
+** 安装python
+winget install python.python.3.13
+** 安装 atlisp
+pip install atlisp
+** 安装 atlisp-ole
+pip install atlisp-ole

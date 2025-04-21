@@ -70,10 +70,13 @@ def olePicture(image_file,acadapp):
     # print("正在初始化dwg,请稍等",end="")
     # 确定是否安装了@lisp core
     #acadapp.ActiveDocument.SendCommand(install_str)
-    #waitforcad(acadapp)
+    waitforcad(acadapp)
     # 在CAD中执行粘贴操作
     acadapp.ActiveDocument.SendCommand('(command "PASTECLIP" pt-ins) ')
-    time.sleep(3)
+    time.sleep(10)
+    #调整比例
+    acadapp.ActiveDocument.SendCommand('(ole:scale-img) ')
+    time.sleep(10)
     acadapp.ActiveDocument.SendCommand('(ole:calc-ptins) ')
     print("\n正在粘贴 , 请稍等",end="")
     #waitforcad(acadapp)

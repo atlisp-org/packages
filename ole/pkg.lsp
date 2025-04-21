@@ -1,4 +1,13 @@
-(@::def-pkg '((:name . "ole")  (:full-name . "oleÍ¼Ïñ")  (:author . "VitalGG")  (:email . "vitalgg@gmail.com")  (:version . "0.0.1")  (:locale . "chs")  (:category . "Common")  (:required . "base")  (:opensource . 0)   (:description . "½«Í¼ÏñÎÄ¼şÒÔOLE·½Ê½²åÈëµ½dwgÖĞ")  (:url . "http://atlisp.cn")  (:files . ("ole"
-              ;; you can add file name that you will included in the package.
-              ;; lsp file must not input extand name.
-              ))))
+(@::def-pkg '((:NAME . "ole")
+        (:FULL-NAME . "oleå›¾åƒ")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.5")
+        (:LOCALE . "chs")
+        (:CATEGORY . "Common")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "å°†å›¾åƒæ–‡ä»¶ä»¥OLEæ–¹å¼æ’å…¥åˆ°dwgä¸­")
+        (:URL . "http://atlisp.cn")
+        (:FILES "ole"
+            "install.ps1")))

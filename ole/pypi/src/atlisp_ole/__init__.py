@@ -62,20 +62,19 @@ def paste_img(file_img):
     # 设置好剪贴板的数据格式，再传入对应格式的数据，才能正确向剪贴板写入数据
     send_msg_to_clip(win32clipboard.CF_DIB, data)
     
-def olePicture(image_file):
+def olePicture(image_file,acadapp):
     # print("安装 `" + pkgname + "' 到CAD 中")
     paste_img(image_file)
-    acadapp =win32com.client.Dispatch("AutoCAD.application")
         
     # 等待CAD忙完
     # print("正在初始化dwg,请稍等",end="")
     # 确定是否安装了@lisp core
     #acadapp.ActiveDocument.SendCommand(install_str)
     #waitforcad(acadapp)
-    time.sleep(3)
     # 在CAD中执行粘贴操作
-    
     acadapp.ActiveDocument.SendCommand('(command "PASTECLIP" pt-ins) ')
+    time.sleep(3)
+    acadapp.ActiveDocument.SendCommand('(ole:calc-ptins) ')
     print("\n正在粘贴 , 请稍等",end="")
     #waitforcad(acadapp)
     print("\n......完成")
@@ -84,7 +83,15 @@ def olePicture(image_file):
 
 def main():
     if len(sys.argv)>1:
-        olePicture(sys.argv[1])
+        with open(sys.argv[1],"r") as f:
+            acadapp =win32com.client.Dispatch("AutoCAD.application")
+            acadapp.ActiveDocument.SendCommand('(ole:osmode-off) ')
+            for img in f.readlines():
+                img = img.strip("\n")
+                olePicture(img,acadapp)
+            acadapp.ActiveDocument.SendCommand('(ole:osmode-on) ')
+            return 0
 
-if __name__ == '__main__':
-    main()
+    else:
+        print("需要指定图像列表文件")
+        return 1

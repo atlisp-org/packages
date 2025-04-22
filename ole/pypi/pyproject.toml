@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "atlisp-ole"
-version = "0.1.10"
+version = "0.1.18"
 authors = [
   { name="VitalGG", email = "vitalgg@gmail.com"},
 ]
@@ -20,7 +20,8 @@ classifiers = [
 ]
 dependencies = [
     "pywin32>280",
-    "pillow"
+    "pillow",
+    "atlisp"
     ]
 
 [project.urls]

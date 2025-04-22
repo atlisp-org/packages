@@ -2,7 +2,7 @@
         (:FULL-NAME . "LP侧边栏")
         (:AUTHOR . "海角天涯")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.12")
+        (:VERSION . "0.0.13")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")

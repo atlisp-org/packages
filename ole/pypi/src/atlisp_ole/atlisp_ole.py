@@ -55,7 +55,8 @@ def paste_img(file_img):
 
     # 声明output字节对象
     output = BytesIO()
-
+    # 缩放到宽度3000
+    image.resize((100,int( image.size[1] / image.size[0] *  100)))
     # 用BMP (Bitmap) 格式存储
     # 这里是位图，然后用output字节对象来存储
     image.save(output, 'BMP')
@@ -86,8 +87,11 @@ def olePicture(image_file,acadapp):
     waitforcad(acadapp)
     #调整比例
     acadapp.ActiveDocument.SendCommand('(ole:scale-img) ')
+    
     waitforcad(acadapp)
+    acadapp.ActiveDocument.SendCommand('(ole:make-title(vl-filename-base"'+ os.path.basename(image_file) +'")) ')
     #计算下一点
+    waitforcad(acadapp)
     acadapp.ActiveDocument.SendCommand('(ole:calc-ptins) ')
     #waitforcad(acadapp)
     print("  完成")

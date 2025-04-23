@@ -8,7 +8,7 @@ from .atlisp_ole import  send_msg_to_clip,paste_img,olePicture
 
 def main():
     if len(sys.argv)>1:
-        file_name,file_ext = os.path.splitext(sys.argv[1])
+        file_name,file_ext = os.path.splitext(os.path.basename(sys.argv[1]))
         acadapp =win32com.client.Dispatch("AutoCAD.application")
 
         if  file_ext in [".jpg",".png",".bmp"] :
@@ -33,6 +33,7 @@ def main():
         功能：自动将图像以OLE方式插入到cad中。
         """
         print(usage)
+        # os.system("pause")
         return 1
 if __name__ == '__main__':
     main()

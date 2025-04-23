@@ -2,7 +2,7 @@
         (:FULL-NAME . "ole图像")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.5")
+        (:VERSION . "0.1.7")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")

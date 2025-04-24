@@ -53,10 +53,11 @@ def paste_img(file_img):
     # 用open函数处理后，图像对象的模式都是 RGB
     image = Image.open(file_img)
 
+    # 缩放到宽度3000
+    #int width = 50 太大的值会出错！！！
+    image.resize((20,int( image.size[1] / image.size[0] * 20)))
     # 声明output字节对象
     output = BytesIO()
-    # 缩放到宽度3000
-    image.resize((100,int( image.size[1] / image.size[0] *  100)))
     # 用BMP (Bitmap) 格式存储
     # 这里是位图，然后用output字节对象来存储
     image.save(output, 'BMP')

@@ -1,6 +1,7 @@
 (@:add-menus
  '("AIGC"
    ("*生成内容" "(aigc:gen-content)")
+   ("*图纸审查" "(aigc:check-drawing)")
    ("本地部署" "(aigc:Local-deployment)")
    ("下载模型" "(aigc:pull-models)")
    ))
@@ -96,3 +97,13 @@
 	  (aigc:Local-deployment))
       ))
       
+(defun aigc:check-drawing ()
+  (@::prompt '("审查图纸中是否有不合规的地方，以及图纸分析"
+	       "如：引用标准是否过期"
+	       "如：图纸深度，是否有漏项的内容"
+	       ))
+  (@::prompt  "   本功能正在开发中")
+  (princ)
+  )
+
+	     

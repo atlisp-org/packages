@@ -14,15 +14,22 @@
 (@:add-menu "边界" "删除边界填充" "(boundary:remove-hatch)" )
 (@:add-menu "边界" "显示块" "(boundary:show-ent)" )
 
-(defun boundary:make-by-blk ()
+(defun boundary:make-by-blk (/ *error*)
   "由特定的块生成区域"
+  (defun *error*(msg)
+    (pop-var)
+    )
   (setq filter (list '(0 . "insert")(cons 2 (@::get-config 'boundary:blkname))))
   (setq blks (pickset:to-list(ssget filter)))
+  ;; 缩放
+  (pickset:zoom blks)
   (layer:make (@::get-config 'boundary:layer)
 	      (@::get-config 'boundary:color)
 	      nil nil)
   (setvar "clayer" (@::get-config 'boundary:layer))
+  (push-var "pickbox")
   (std:osmode-off)
+  (setvar "pickbox" 1)
   (while (car blks)
     (setq zone (entity:boundary (car blks)))
     (if zone (entity:set-visible (car blks) nil))
@@ -39,6 +46,7 @@
 	  )
 	))
   (std:osmode-on)
+  (pop-var)
   )
 
 (defun boundary:hatch (/ boundarys)

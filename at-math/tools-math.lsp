@@ -94,32 +94,49 @@
   (princ)
   )
 
-(@:add-menu "数学" "批量取整" "(@:fix-number)")
-(defun @:fix-number( / num  s1 ename ti% p11 p10 f en p11n p10n fn fn1)
-  "批量取整"
-  (setq s1 (ssget '((0 . "text"))))
-  (setq num 1)
-  (setq ti% 0)
-  (if (/= s1 nil)
-      (progn
-        (while 
-            (<= 
-             ti% 
-             (- (sslength s1) 1)
-             )
-          (setq ename(ssname s1 ti%))
-          (setq p11 nil)			;将p11置空
-          (setq e (entget ename))		;取实体表e
-          (setq fn (rtos (* (atof (cdr (assoc 1 e))) num) 2 0))
-          (setq fn1 (cons 1 fn))
-          (setq e (subst fn1 (assoc 1 e) e))
+(@:add-menu "数学" "批量精度" "(@:fix-number)")
+(defun @:fix-number( / num prec  s1 ename ti% p11 p10 f en p11n p10n fn fn1)
+  (@::prompt "批量精度，当为输入0时为取整，大于0时为小数位精度")
+  (or  (setq prec (getint (strcat "请输入精度位数<"
+			     (itoa (@::get-config
+				    '@::num-precision))
+			     ">: ")))
+       (setq prec (@::get-config
+				    '@::num-precision)))
+			     
+  (setq s1 (pickset:to-list (ssget '((0 . "text")))))
+  (setq s1 (vl-remove-if-not '(lambda(x)(string:numberp
+					 (entity:getdxf
+					  x 1)))
+			     s1))
+  (mapcar '(lambda(x)
+	    (entity:putdxf
+	     x
+	     1
+	     (rtos (atof (entity:getdxf x 1)) 2 (fix prec))))
+	  s1)
+  ;; (setq num 1)
+  ;; (setq ti% 0)
+  ;; (if (/= s1 nil)
+  ;;     (progn
+  ;;       (while 
+  ;;           (<= 
+  ;;            ti% 
+  ;;            (- (sslength s1) 1)
+  ;;            )
+  ;;         (setq ename(ssname s1 ti%))
+  ;;         (setq p11 nil)			;将p11置空
+  ;;         (setq e (entget ename))		;取实体表e
+  ;;         (setq fn (rtos (* (atof (cdr (assoc 1 e))) num) 2 (fix prec)))
+  ;;         (setq fn1 (cons 1 fn))
+  ;;         (setq e (subst fn1 (assoc 1 e) e))
           
-          (entmod e)
-          (setq ti%(+ 1 ti%))
-          )  ;end while
-        ) ;endprogn s1/=nil
-    )  ;endif  s1 /= nil
-  (setq s1 nil)
+  ;;         (entmod e)
+  ;;         (setq ti%(+ 1 ti%))
+  ;;         )
+  ;;       )
+  ;;   )
+  ;; (setq s1 nil)
   (princ)
   )
   

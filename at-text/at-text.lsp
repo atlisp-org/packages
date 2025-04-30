@@ -312,10 +312,11 @@
   )
 
 (defun @text:menu-format-number(/ int-n int-fraction res)
-  (@::prompt "格式化文本中的数字，")
+  (@::prompt '("格式化文本中的数字."
+	       "注意: 如果小数位太小,会丢失精度且不可恢复."))
   (setq res (ui:input "请输入格式化配置参数"
 		      '(("整数位数" 2)
-			("小数位数" 0)
+			("小数位数" 3)
 			("填充字符" "0"))))
   (prompt "请选择要处理的文本")
   (setq txts (pickset:to-list (ssget '((0 . "text")))))

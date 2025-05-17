@@ -47,7 +47,6 @@
       (@:down-pkg-file (@:uri)"pdftk/background.pdf" "stable"))
   (if (null (findfile "packages\\pdftk\\stamp.pdf"))
       (@:down-pkg-file (@:uri)"pdftk/stamp.pdf" "stable"))
-  
   )
 
 (defun pdftk:menu-merge (/ folder)

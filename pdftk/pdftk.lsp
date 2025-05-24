@@ -102,27 +102,34 @@
 			 "output " filetmp
 			 ))
 	(while (null (findfile (strcat folder "\\" filetmp)))
-	  (sleep 3))
-	(command "start-bg"
-		 (strcat  " /D \"" folder "\""
-			  " /MIN /B  "
-			  @:*prefix* app  " "
-			  filetmp " "
-			  "update_info_utf8 "
-			  " bk-utf8.txt "
-			  " output \"..\\"
-			  (vl-filename-base folder) "-" filename-bk "\" "
-			  ))
-	(while (null (findfile (strcat folder "\\..\\"
-				       (vl-filename-base folder)
-				       "-" filename-bk)))
-	  (sleep 3))
-	(vl-file-delete file-bk)
-	(vl-file-delete file-bk-utf8)
-	(vl-file-delete (strcat folder "\\" filetmp))
+	  (sleep 1))
+	(if (findfile (strcat folder "\\" filetmp))
+	    (progn
+	      (command "start-bg"
+		       (strcat  " /D \"" folder "\""
+				" /MIN /B  "
+				@:*prefix* app  " "
+				filetmp " "
+				"update_info_utf8 "
+				" bk-utf8.txt "
+				" output \"..\\"
+				(vl-filename-base folder) "-" filename-bk "\" "
+				))
+	      (setq i 0)
+	      (while (null (findfile (strcat folder "\\..\\"
+					     (vl-filename-base folder)
+					     "-" filename-bk))))
+		(sleep 1))
+	    )
+	
+	(if (findfile file-bk)(vl-file-delete file-bk))
+	(if (findfile file-blk-utf8)(vl-file-delete file-bk-utf8))
+	(if (findfile (strcat folder "\\" filetmp))
+	    (vl-file-delete (strcat folder "\\" filetmp)))
 	
 	(setvar "cmdecho" 1)
-	(system:explorer (strcat folder "\\..\\" ))
+	(if (findfile  (strcat folder "\\..\\"))
+	    (system:explorer (strcat folder "\\..\\" )))
 	))
   (princ)
   )

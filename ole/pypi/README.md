@@ -1,3 +1,26 @@
+### @lisp ole
+atlisp-ole 是 @lisp CAD应用云调用py将图片以OLE方式插入dwgr的应用包。
+
+运行该包需要安装 python运行环境
+
+```shell
+winget install python.python.3.13
+```
+
+安装包
+```shell
+pip install atlisp-ole
+```
+
+将@lisp  ole安装到CAD
+```shell
+atlisp install
+atlisp pull ole
+```
+
+安装成功后就可以在 CAD操作了。
+
+
 ### @lisp CAD应用云 系统结构
 ```mermaid
   graph TD;

@@ -10,6 +10,8 @@
         (:DESCRIPTION . "建筑相关功能，车位编号统计等")
         (:URL . "http://atlisp.cn")
         (:FILES "at-arch"
-            "车位.dwg"
-            "车位-无障碍.dwg"
-            "机械车位.dwg")))
+		"车位.dwg"
+		"窗地比.org"
+		"车位-无障碍.dwg"
+		"机械车位.dwg"
+		)))

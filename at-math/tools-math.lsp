@@ -225,3 +225,4 @@
   (sssetfirst nil (pickset:from-list entlst))
   (pickset:from-list entlst)
   )
+(@:add-menu "数学" "公式求值" "(@m:cal-text)")

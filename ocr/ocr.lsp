@@ -13,7 +13,7 @@
   (setq sset (vla-Add (vla-get-SelectionSets *doc*) (strcat "TEST_OCR1"  (@::timestamp))))
   (vla-SelectOnScreen sset)
   (vla-export *DOC* (strcat @::*prefix* "tmp/ocr") "BMP" sset)
-  (setq req (@::postjson "http://localhost:5000/api/ocr" (strcat "{\"filepath\":\""(@::path-unix-format(strcat @::*prefix* "tmp\\ocr.BMP")) "\"}")))
+  (setq req (@::postjson "http://localhost:5000/ocr/ocr" (strcat "{\"filepath\":\""(@::path-unix-format(strcat @::*prefix* "tmp\\ocr.BMP")) "\"}")))
   (vla-delete sset)
   (princ req)
   req

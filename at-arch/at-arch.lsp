@@ -16,9 +16,12 @@
    ("插入机械车位" "(at-arch:insert-machineparking)" )
    ("车位编号" "(at-arch:parking-numbering)" )
    ("未命名房间" "(at-arch:locate-unnamed-space)" )
-   ("定位房间" "(at-arch:menu-locate-space-by-code)" )
+   ("定位房间" "(at-arch:menu-locate-space)" )
    ("检查窗地比" "(at-arch:w/space)")
-   
+   ("选择同形房间" "(at-arch:sel-same-space)")
+   ("选择同名房间" "(at-arch:sel-same-name)")
+   ("显隐房间面积" "(at-arch:onoff-spacearea)")
+   ("总建筑面积" "(at-arch:sum-spacearea)")
    ))
 
 (defun at-arch:setup (/ res)
@@ -94,14 +97,23 @@
 	 (command "zoom" "w" (car corner) (cadr corner)))
       (@::prompt "没有发现未命名房间。")
       ))
-(defun at-arch:locate-space-by-code (code / spaces)
-  (if (setq spaces (ssget "x" (list '(0 . "TCH_SPACE")(cons 2 code))))
-      (if(setq corner (entity:getbox (ssname spaces 0) 100))
-	 (command "zoom" "w" (car corner) (cadr corner)))
+(defun at-arch:locate-space (code / spaces)
+  (if (string:numberp  code)
+      (setq spaces (ssget "x" (list '(0 . "TCH_SPACE")(cons 2 code))))
+      (setq spaces (ssget "x" (list '(0 . "TCH_SPACE")
+				    (cons 1 code)))))
+  (if spaces
+      (progn 
+	(if(setq corner (entity:getbox (ssname spaces 0) 100))
+	   (command "zoom" "w" (car corner) (cadr corner)))
+	(sssetfirst nil spaces))
       (@::prompt "没有发现编号房间。")
       ))
-(defun at-arch:menu-locate-space-by-code()
-  (at-arch:locate-space-by-code (getstring "请输入房间编号:")))
+
+(defun at-arch:menu-locate-space()
+  (@::help '("当输入数字时以按定位。"
+	     "当输入非数字时，按名称定位，支持*号通配符，如 *井，*电梯* 等 。"))
+  (at-arch:locate-space (getstring "请输入房间编号或名称:")))
 (defun at-arch:w/space (/ spaces)
   (@::help '("检查窗地比,将不满足要求的房间标红。"
 	     "天正房间信息不会自动更新，当更改窗户型号后，需重新执行搜索房间功能。"
@@ -158,3 +170,59 @@
   (if (nth i w/ua)
       (setq flag (< (cdr (nth i w/ua)) res)))
   flag)
+(defun at-arch:sel-same-space (/ ent1 s1 filters)
+  (@::help "选择相同面积的房间")
+  (@:prompt "请点选一个图形:")
+  (setq ent1 (car (pickset:to-list(ssget ":E:S" '((0 . "TCH_SPACE"))))))
+  (setq filters (list
+		 (cons 0
+		       (entity:getdxf ent1 0))))
+  (setq s1
+	(vl-remove-if-not
+	 '(lambda(x)
+	   (and 
+	    (equal
+	     (entity:getdxf x 41)
+	     (entity:getdxf ent1 41)
+	     0.005)
+	    (equal
+	     (entity:getdxf x 42)
+	     (entity:getdxf ent1 42)
+	     10)
+	    ))
+	 (pickset:to-list(ssget "x" filters))))
+  (sssetfirst nil (pickset:from-list s1)))
+
+(defun at-arch:sel-same-name (/ ent1 s1 filters)
+  (@::help "选择相同名称的房间")
+  (@:prompt "请点选一个图形:")
+  (setq ent1 (car (pickset:to-list(ssget ":E:S" '((0 . "TCH_SPACE"))))))
+  (setq filters (list
+		 (cons 0
+		       (entity:getdxf ent1 0))
+		 (cons 1 (entity:getdxf ent1 1)))
+	)
+  (setq s1
+	(pickset:to-list(ssget "x" filters)))
+  (sssetfirst nil (pickset:from-list s1)))
+(defun  at-arch:onoff-spacearea ()
+  (@::help "切换房间面积的显示/隐藏")
+  (setq spaces (pickset:to-list (ssget "x"'((0 . "TCH_SPACE")(1 . "~*建筑面积")))))
+  (mapcar
+   '(lambda(x)
+     (if (= "是" (vlax-get(e2o x) 'showarea ))
+	 (vlax-put (e2o x) 'showarea "否")
+	 (vlax-put (e2o x) 'showarea "是")))
+   spaces)
+  )
+(defun  at-arch:sum-spacearea ()
+  (@::help "求各单块建筑面积的和")
+  (setq spaces (pickset:to-list (ssget "x"'((0 . "TCH_SPACE")(1 . "*建筑面积")))))
+  (princ
+   (setq res
+	 (apply '+
+		(mapcar
+		 '(lambda(x)
+		   (entity:getdxf x 41))
+		 spaces))))
+  )

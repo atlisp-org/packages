@@ -2,7 +2,7 @@
         (:FULL-NAME . "@建筑")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.17")
+        (:VERSION . "0.0.19")
         (:LOCALE . "chs")
         (:CATEGORY . "建筑工程")
         (:REQUIRED . "base")

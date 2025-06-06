@@ -105,7 +105,15 @@
   (if spaces
       (progn 
 	(if(setq corner (entity:getbox (ssname spaces 0) 100))
-	   (command "zoom" "w" (car corner) (cadr corner)))
+	    (command "zoom" "w" (car corner) (cadr corner)))
+	(princ (strcat "选中房间的总净面积："
+		       (rtos (apply '+
+				    (mapcar
+			       '(lambda(x)
+				  (entity:getdxf x 41))
+			       (pickset:to-list spaces)))
+			     2 3)
+		       ))
 	(sssetfirst nil spaces))
       (@::prompt "没有发现编号房间。")
       ))
@@ -156,7 +164,7 @@
       (list (cons "卧室,起居*,厨房"  (/ 1.0 7.0))
 	    (cons "设计*,绘图*" (/ 1 4.0))
 	    (cons "办公*,会议*" (/ 1 5.0))
-	    (cons "复印*,档案*" (/ 1 6.0))
+	    (cons "复印*,档案*,*包间*" (/ 1 6.0))
 	    (cons "走廊,走道,楼梯*,卫*" (/ 1 10.0))))
 (defun at-arch:check-w/ua (name res / w/ua i flag)
   (setq w/ua at-arch:w/ua)
@@ -204,6 +212,14 @@
 	)
   (setq s1
 	(pickset:to-list(ssget "x" filters)))
+  (princ (strcat "选中房间的总净面积："
+		 (rtos (apply '+
+			      (mapcar
+			       '(lambda(x)
+				  (entity:getdxf x 41))
+			       s1))
+		       2 3)
+		 ))
   (sssetfirst nil (pickset:from-list s1)))
 (defun  at-arch:onoff-spacearea ()
   (@::help "切换房间面积的显示/隐藏")
@@ -224,5 +240,7 @@
 		(mapcar
 		 '(lambda(x)
 		   (entity:getdxf x 41))
-		 spaces))))
+		 spaces))
+
+	 ))
   )

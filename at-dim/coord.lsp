@@ -62,13 +62,19 @@
        (setq prefix-x "X")
        (setq prefix-y "Y"))
      )
-  (setq strx (strcat prefix-x "=" (rtos(* unit1 (car pt-b)) 2 (@:get-config '@dim:units)))
-	stry (strcat prefix-y "=" (rtos (* unit1(cadr pt-b)) 2 (@:get-config '@dim:units)))
-	strh
-	(if (= 1 (@:get-config '@dim:elevation))
-	    (strcat "H=" (rtos (* unit1(caddr pt-b)) 2 (@:get-config '@dim:units)))))
-
-  
+  (if (= 0 (@::get-config '@dim:switch-xy))
+      (setq strx (strcat prefix-x "="(string:number-format (rtos(* unit1 (car pt-b)) 2 (@:get-config '@dim:units)) 0  3 " 0"))
+	    stry (strcat prefix-y "="(string:number-format (rtos(* unit1(cadr pt-b)) 2 (@:get-config '@dim:units)) 0  3 " 0")) 
+	    strh
+	    (if (= 1 (@:get-config '@dim:elevation))
+		(strcat "H=" (rtos (* unit1(caddr pt-b)) 2 (@:get-config '@dim:units)))))
+    (setq strx (strcat prefix-x "="(string:number-format (rtos(* unit1 (cadr pt-b)) 2 (@:get-config '@dim:units)) 0  3 " 0"))
+	  stry (strcat prefix-y "="(string:number-format (rtos(* unit1(car pt-b)) 2 (@:get-config '@dim:units)) 0  3 " 0")) 
+	  strh
+	  (if (= 1 (@:get-config '@dim:elevation))
+	      (strcat "H=" (rtos (* unit1(caddr pt-b)) 2 (@:get-config '@dim:units)))))
+    )
+    
   (if (= 1 (@:get-config '@dim:coordinate-type))
       (progn
 	(setq txtx

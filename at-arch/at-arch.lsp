@@ -9,19 +9,29 @@
 ;; (@:set-config 'at-arch:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单 
 (@:add-menus
- '("@建筑"
-   ("建筑设置" "(at-arch:setup)" )
-   ("插入车位" "(at-arch:insert-parking)" )
-   ("插入无障碍车位" "(at-arch:insert-accparking)" )
-   ("插入机械车位" "(at-arch:insert-machineparking)" )
-   ("车位编号" "(at-arch:parking-numbering)" )
-   ("未命名房间" "(at-arch:locate-unnamed-space)" )
-   ("定位房间" "(at-arch:menu-locate-space)" )
-   ("检查窗地比" "(at-arch:w/space)")
-   ("选择同形房间" "(at-arch:sel-same-space)")
-   ("选择同名房间" "(at-arch:sel-same-name)")
-   ("显隐房间面积" "(at-arch:onoff-spacearea)")
-   ("总建筑面积" "(at-arch:sum-spacearea)")
+ '(("@建筑"
+    ("建筑设置" "(at-arch:setup)" )
+    ("未命名房间" "(at-arch:locate-unnamed-space)" )
+    ("定位房间" "(at-arch:menu-locate-space)" )
+    ("检查窗地比" "(at-arch:w/space)")
+    ("选择同形房间" "(at-arch:sel-same-space)")
+    ("选择同名房间" "(at-arch:sel-same-name)")
+    ("显隐房间面积" "(at-arch:onoff-spacearea)")
+    ("总建筑面积" "(at-arch:sum-spacearea)")
+    )
+   ("@建筑说明"
+    ("公建说明" "(at-arch:insert-block \"公建说明\")")
+    ("住宅说明" "(at-arch:insert-block \"住宅说明\")")
+    ("防水专篇" "(at-arch:insert-block \"防水设计-专篇\")")
+    ("绿建专篇" "(at-arch:insert-block \"绿建专篇\")")
+    )
+   ("@建筑车库"
+    ("插入车位" "(at-arch:insert-parking)" )
+    ("插入无障碍车位" "(at-arch:insert-accparking)" )
+    ("插入机械车位" "(at-arch:insert-machineparking)" )
+    ("车位编号" "(at-arch:parking-numbering)" )
+    )
+
    ))
 
 (defun at-arch:setup (/ res)

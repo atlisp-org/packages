@@ -2,7 +2,7 @@
         (:FULL-NAME . "@建筑")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.19")
+        (:VERSION . "0.0.20")
         (:LOCALE . "chs")
         (:CATEGORY . "建筑工程")
         (:REQUIRED . "base")
@@ -10,7 +10,10 @@
         (:DESCRIPTION . "建筑相关功能，车位编号统计等")
         (:URL . "http://atlisp.cn")
         (:FILES "at-arch"
+            "lib"
             "车位.dwg"
             "窗地比.org"
             "车位-无障碍.dwg"
-            "机械车位.dwg")))
+            "机械车位.dwg"
+            "绿建专篇.dwg"
+            "防水设计-专篇.dwg")))

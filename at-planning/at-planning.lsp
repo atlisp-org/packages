@@ -2,12 +2,13 @@
 ;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 定义配置项 'at-planning:first 用于 应用包 at-planning 的 第一个配置项 first 
-(@:define-config '@planning:land-layer "用地红线" "用地红线图层。")
+(@:define-config '@planning:land-layer "用地红线,用地界线" "用地红线图层。")
 (@:define-config '@planning:building-layer "建筑轮廓" "建筑基底轮廓线图层。")
 (@:define-config '@planning:green-layer "绿地线" "绿地图层。")
 (@:define-config '@planning:road-layer "道路" "道路图层。")
 (@:define-config '@planning:openspace-layer "开敞空间" "城市开敞空间图层。")
 (@:define-config '@planning:square-layer "城市广场" "城市广场图层。")
+(@:define-config '@planning:parking-layer "停车场" "用于统计停车场面积的图层")
 (@:define-config '@planning:parking "*车位*" "用于统计停车位的图块名")
 (@:define-config '@planning:floor-area-ratio-limit 2.0 "容积率限值,单位10000m2/ha")
 (@:define-config '@planning:building-density-limit 35 "建筑密度限值,单位%")
@@ -293,14 +294,18 @@
 		     '("项目名称""单位""数量""备注")
 		   (append
 		    (list
-		     (list "总建设用地" "㎡" (at-planning:sum  @planning:*land-area*) ""))
+		     (list "总建设用地" "㎡"
+			   (at-planning:sum  @planning:*land-area*)
+			   (strcat (rtos (/ (at-planning:sum  @planning:*land-area*) 666.6) 2 3)
+				   "亩")
+			   ))
 		    (if (> (length @planning:*land-area*)1)
 			(progn
 			  (setq i 0)
 			  (mapcar '(lambda(x)
-				    (list (strcat "其中:  地块"(itoa (setq i (1+ i))))
-				     "㎡"
-				     x
+				     (list (strcat "其中:  地块"(itoa (setq i (1+ i))))
+					   "㎡"
+					   x
 				     ""))
 				  @planning:*land-area*)))
 		    (list

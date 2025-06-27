@@ -21,7 +21,7 @@
   ;; 		   )))))
   (setq statdata
 	(stat:stat (mapcar '(lambda(x)
-			      (strcat (block:get-dynprop x "查寻1")
+			      (strcat "W"(itoa (fix(block:get-dynprop x "距离2")))
 				      "-"
 				      (itoa
 				       (fix

@@ -1,0 +1,16 @@
+;;; VLisp project file [V2.0] functions saved to:[D:/Profile/desktop/dd3] at:[3/9/21] 
+(vlisp-project-list
+  :name
+  functions
+  :own-list
+  ("functions")
+  :fas-directory
+  "./bin"
+  :tmp-directory
+  "./tmp"
+  :project-keys
+  (:build (:standard) :merged t :safe-mode t :msglevel 1)
+  :context-id
+  :autolisp
+)
+;;; EOF

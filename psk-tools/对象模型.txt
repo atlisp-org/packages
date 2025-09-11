@@ -1,0 +1,21 @@
+COMP	PATH	DUCT-ROUND
+		DUCT-RECT
+		PIPE
+		REFPIPE
+	PART	ELBOW
+		REDUCER
+		TEE
+		TEE-S
+		TEE-P
+		BRANCH
+		CROSS
+	PART	ATTACH
+		INLINE (截止阀...)
+		END
+	PARTSET	(轴流风机组件...)
+	EQUIP	...
+
+
+
+FIT 绘制与数据分离的管件
+PART 绘制即数据的管件

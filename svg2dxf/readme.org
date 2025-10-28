@@ -1,0 +1,25 @@
+* 说明
+图片矢量化功能采用 vtracer 工具。
+
+* 安装步骤
+1. 安装 rust
+   #+BEGIN_SRC shell
+     winget install RustLang.Rust.GNU
+   #+END_SRC
+2. 安装 vtracer
+
+   需要打开一个新的终端或运行powershell打开新会话。
+   #+BEGIN_SRC shell
+     cargo install vtracer
+   #+END_SRC
+3. 将 vtracer 路径加入到应用程序搜索路径表
+   
+* 使用
+
+   #+BEGIN_SRC shell
+     vtracer --input 图像文件 --output <结果文件.svg>
+   #+END_SRC
+* svg2dxf
+使用python 将svg转为dxf
+
+   

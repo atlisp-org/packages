@@ -130,7 +130,15 @@
 	(setvar "cmdecho" 1)
 	(if (findfile  (strcat folder "\\..\\"))
 	    (system:explorer (strcat folder "\\..\\" )))
-	))
+	)
+    (cond
+     ((not (findfile app))
+      (princ "合并PDF没有正确执行！没有发现 pdftk.exe")
+      )
+     (t
+      (princ "合并PDF没有正确执行！")
+     )
+    )
   (princ)
   )
 

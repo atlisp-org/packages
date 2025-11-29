@@ -44,6 +44,7 @@
    '((_"保护转块") (@block:tchpr2insert))
    '((_"分堆建块") (@block:block-cluster))
    '((_"设置分堆间隙") (@block:set-clustergap))
+   '((_"按线转块") (@block:rotate-blk-by-line))
    ))
 ;; (@:add-menu "块操作" "连续插块" "(@block:menu-inserts)")
 (defun @block:config (/ res) 

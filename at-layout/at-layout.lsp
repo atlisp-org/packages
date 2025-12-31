@@ -4,7 +4,7 @@
 (@::define-config '@layout:divide-per-layout 1 "每个布局中的视口个数，分图数超过该值，布局名自动加序号")
 (@::define-config '@layout:blkrefname "A$C10F55D85,A$C47E05E72" "用于分图的图块名，多个用逗号分隔")
 (@:add-menus
- '("布局"
+ '(("布局"
    ("布局设置"(@layout:setup))
    ("视口正交坐标"(@layout:pvp-v))
    ("视口世界坐标"(@layout:pvp-w))
@@ -21,7 +21,22 @@
    ("视口加A3框"(@layout:add-mapsheet-a3))
    ("锁定全部视口"(@layout:lock-all-vp))
    )
+   ("布局2"
+    ("布局到模型"(@layout:export-to-model))))
  )
 (defun @layout:setup (/ res)
    (setq @::tmp-search-str "@layout")
    (@::edit-config-dialog))
+(defun @layout:export-to-model ()
+  (@::prompt  '("将布局导出到 文件名-布局名.dwg "))
+  (foreach
+   layout (layout:list)
+   (setvar "clayout" layout)
+   (command "exportlayout" "")
+   ;;  (strcat (getvar "dwgprefix")
+   ;;  (vl-filename-base (getvar "dwgname"))
+   ;;  "-"
+   ;;  layout
+   ;; ".dwg")
+   )
+  (princ))

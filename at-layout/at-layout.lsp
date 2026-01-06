@@ -33,10 +33,12 @@
    layout (layout:list)
    (setvar "clayout" layout)
    (command "exportlayout" "")
+   )
+  (princ))
+
+   
    ;;  (strcat (getvar "dwgprefix")
    ;;  (vl-filename-base (getvar "dwgname"))
    ;;  "-"
    ;;  layout
    ;; ".dwg")
-   )
-  (princ))

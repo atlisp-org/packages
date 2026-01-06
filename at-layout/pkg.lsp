@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp布局")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "1.0.9")
+        (:VERSION . "1.0.10")
         (:LOCALE . "CHS")
         (:CATEGORY . "布局")
         (:REQUIRED . "base")

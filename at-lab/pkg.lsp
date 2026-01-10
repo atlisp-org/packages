@@ -24,4 +24,6 @@
             "pvp"
             "board"
             "stat-number-inline"
-            "get-cross-from-2layer")))
+            "get-cross-from-2layer"
+	    "center-content"
+	    )))

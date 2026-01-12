@@ -3,51 +3,75 @@ using System.Windows;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
+
+using System.Diagnostics;
+using System.Drawing;
+using System.Threading;
+using System.Text;
+using System.IO;
+using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
+using System.Linq;
+// using System.ComponentModel;
 
 namespace AtPaletteSet
 {
+    public partial class Form1 : UserControl
+    {
+	private WebView2 webView21 = new WebView2();
+	public Form1()
+        {
+            // InitializeComponent();
+            Resize += new EventHandler(Form_Resize);
+            webView21.CoreWebView2InitializationCompleted += WebView21_CoreWebView2InitializationCompleted;
+	    try{
+		Initialize();
+	    }
+	    catch (System.Exception ex)
+	    {
+		MessageBox.Show($"WebView2 initial faile:{ex.Message}");
+	    }
+        }
+         /// <summary>
+         /// 实现自适应页面缩放
+         /// </summary>
+        private void Form_Resize(object sender, EventArgs e)
+        {
+            webView21.Size = ClientSize - new Size(webView21.Location);
+        }
+        /// <summary>
+        /// webview 加载完毕
+        /// </summary>
+        private void WebView21_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
+        {
+            webView21.CoreWebView2.Navigate("https://atlisp.cn/palette.html");
+        }
+        /// <summary>
+        /// WebView2初始化
+        /// </summary>
+        async void Initialize()
+        {
+	    string userDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WebView2", "UserData");
+	    Directory.CreateDirectory(userDataFolder); // 确保目录存在
+	    var environment = await CoreWebView2Environment.CreateAsync(null, userDataFolder);
+	    // webView21.CoreWebView2.Navigate("https://atlisp.cn/palette.html");
+	    await webView21.EnsureCoreWebView2Async(environment);
+        }
+    }
+
+    
     public class AtLispPalette 
     {
-	private WebView2 webView2 = new WebView2();
-			     
-	private static void CoreWebView2_NewWindowRequested(object sender, CoreWebView2NewWindowRequestedEventArgs e)
-	{
-	    if (sender is CoreWebView2 webView)
-	    {
-		e.Handled = true; // 阻止默认弹窗行为
-		webView.Navigate(e.Uri); // 在当前 WebView2 中加载新页面
-	    }
-	}
-	private static void CoreWebView2_WebResourceResponseReceived(object sender, CoreWebView2WebResourceResponseReceivedEventArgs e)
-	{
-	    var uri = e.Request.Uri;
-	    Console.WriteLine($"Response received for: {uri}");
-	    e.Response.Headers.ToList().ForEach(header =>
-	    {
-		Console.WriteLine($"Header: {header.Key} - {header.Value}");
-	    });
-	}
 	[CommandMethod("AtPalette")]
 	public void AtPalette()
 	{
-	    // 获取 AutoCAD 主应用对象
-
-	    webView2.EnsureCoreWebView2Async(null);
-	    webView2.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
-	    // webView2.CoreWebView2.WebResourceResponseReceived += CoreWebView2_WebResourceResponseReceived;
-	    // 添加请求过滤器
-	    webView2.CoreWebView2.AddWebResourceRequestedFilter("*://atlisp.cn/*", CoreWebView2WebResourceContext.Document);
-	    // webView2.CoreWebView2.WebResourceRequested += WebView2_WebResourceRequested;
-	    // 初始化面板集对象
+	    // private webView  =  CreateWebView();
+	
 	    PaletteSet ps = new PaletteSet("@LISP");
 	    ps.MinimumSize = new System.Drawing.Size(200, 600);
 
@@ -56,14 +80,17 @@ namespace AtPaletteSet
 	    
 	    // 添加控件到面板集中
 	    ps.Add("@LISP", ctrl);
-	    ps.Add("DW", webView2);
+	    Form1 webView = new Form1();
+	    if (null != webView ){
+		ps.Add("DW", webView);
+            }
 
 	    // 显示面板
 	    ps.Visible = true;
 
 	    // 设置面板样式和透明度
-	    ps.Style = PaletteSetStyles.ShowTabForSingle;
-	    ps.Opacity = 90;
+	    // ps.Style = PaletteSetStyles.ShowTabForSingle;
+	    // ps.Opacity = 100;
 	}
 	
     }

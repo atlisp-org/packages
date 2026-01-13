@@ -5,9 +5,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Threading.Tasks;
 
-using Autodesk.AutoCAD.Runtime;
-using Autodesk.AutoCAD.Windows;
-
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -17,14 +14,27 @@ using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using System.Linq;
+using Autodesk.AutoCAD.DatabaseServices;// (Database, DBPoint, Line, Spline) 
+using Autodesk.AutoCAD.Geometry;//(Point3d, Line3d, Curve3d) 
+using Autodesk.AutoCAD.ApplicationServices;// (Application, Document) 
+using Autodesk.AutoCAD.Runtime;// (CommandMethodAttribute, RXObject, CommandFlag) 
+using Autodesk.AutoCAD.EditorInput;//(Editor, PromptXOptions, PromptXResult)
+using System.Runtime.InteropServices;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
+
 
 namespace AtPaletteSet
 {
     public partial class AtLispWv : UserControl
     {
+	Database db = HostApplicationServices.WorkingDatabase;
+        Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
+        Document doc = Application.DocumentManager.MdiActiveDocument;
+
 	private WebView2 webView = new WebView2();
 	public AtLispWv(String uri)
         {
+	    ed.WriteMessage("加载 @lisp 侧边栏\n");
             // InitializeComponent();
             Resize += new EventHandler(Form_Resize);
             webView.CoreWebView2InitializationCompleted += WebView21_CoreWebView2InitializationCompleted;
@@ -82,7 +92,11 @@ namespace AtPaletteSet
 	    /// <script>
             /// window.chrome.webview.postMessage("Message from JavaScript!");
 	    ///  </script>
-	    MessageBox.Show("Received message from JavaScript: " + message);
+	    // MessageBox.Show("Received message from JavaScript: " + message);
+	    doc.SendStringToExecute(message+" ",true,false,false);
+	    // Application.ShowAlertDialog(message);
+	    // Application.ActiveDocument.SendCommand(message+" ");
+	    // var cmdmsg =  message.Split(":")
 	}
     }
     

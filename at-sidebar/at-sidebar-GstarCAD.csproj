@@ -28,7 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3650.58" />
     <PackageReference Include="WebView2.Runtime.X64" Version="143.0.3650.139" />
-    <PackageReference Include="GStarCad.Net" Version="20.22.1" />
+    <PackageReference Include="GStarCad.Net" Version="20.25.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />

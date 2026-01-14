@@ -3,6 +3,7 @@ namespace AtPaletteSet
     public class AtLispPalette 
     {
         [CommandMethod("@Palette")]
+	//[CommandMethod("AtPalette")]
 	public void AtPalette()
 	{
 	    PaletteSet ps = new PaletteSet("@LISP");

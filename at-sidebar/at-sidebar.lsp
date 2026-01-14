@@ -8,22 +8,32 @@
 ;; 向系统中添加菜单 
 (@:add-menu "@侧边栏" "加载侧边栏" "(at-sidebar:load)" )
 (defun at-sidebar:load ()
-  (if (findfile (strcat (@::package-path  "at-sidebar")
-			"palette/at-sidebar.dll"))
+  (setq netdll
+	(strcat (@::package-path  "at-sidebar")
+		"net/at-sidebar-"
+		(cond
+		 ((is-zwcad
+		   "ZWCAD"))
+		 ((is-gstarcad
+		   "GstarCAD"))
+		 (t
+		  "AutoCAD"))
+		".dll"))
+		  
+  (if (findfile netdll)
       (progn
-	(command "netload" (findfile (strcat (@::package-path  "at-sidebar")
-					     "palette/at-sidebar.dll")))
-	(command "@Pallete")))
-  (progn
-    (@::log "INFO" "编译 at-sidebar")
-    (if (or (system:which "dotnet")
-	    (findfile "C:\\Program Files\\dotnet\\dotnet.exe"))
-	(command "start"
-		 (strcat " /D \"" (@::package-path "at-sidebar") "\""
-			 "/B "
-			 "dotnet -b release -o palette"
-			 ))
-      (progn
-	(@::log "WARN" "没有发现 .NET SDK开发环境")
-	))
-      ))
+	(command "netload" (findfile netdll))
+	(sleep 5)
+	(command "@Pallete"))
+    (progn
+      (@::@log "INFO" "编译 at-sidebar")
+      (if (or (system:which "dotnet")
+	      (findfile "C:\\Program Files\\dotnet\\dotnet.exe"))
+	  (command "start"
+		   (findfile (strcat (@::package-path  "at-sidebar")
+				     "compile.bat"))
+		   )
+	(progn
+	  (@::@log "WARN" "没有发现 .NET SDK开发环境")
+	  ))
+      )))

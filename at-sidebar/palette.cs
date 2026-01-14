@@ -1,31 +1,3 @@
-using System;
-// using System.Windows;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Threading.Tasks;
-
-using Autodesk.AutoCAD.Runtime;
-using Autodesk.AutoCAD.Windows;
-
-using System.Diagnostics;
-using System.Drawing;
-using System.Threading;
-using System.Text;
-using System.IO;
-using System.Windows.Forms;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.WinForms;
-using System.Linq;
-// using System.ComponentModel;
-using Autodesk.AutoCAD.DatabaseServices;// (Database, DBPoint, Line, Spline) 
-using Autodesk.AutoCAD.Geometry;//(Point3d, Line3d, Curve3d) 
-using Autodesk.AutoCAD.ApplicationServices;// (Application, Document) 
-using Autodesk.AutoCAD.Runtime;// (CommandMethodAttribute, RXObject, CommandFlag) 
-using Autodesk.AutoCAD.EditorInput;//(Editor, PromptXOptions, PromptXResult)
-using System.Runtime.InteropServices;
-using Application = Autodesk.AutoCAD.ApplicationServices.Application;
-
 namespace AtPaletteSet
 {
     public class AtLispPalette 

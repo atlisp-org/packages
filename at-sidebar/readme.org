@@ -1,10 +1,10 @@
 * atlisp 侧边栏
-
-** 为保证该功能可以正常运行，建议本地编译，需要安装 dotnet SDK(安装方法见下节内容)
-进入at-sidebar 文件夹
+** 编译
+为保证该功能可以正常运行，建议本地编译，需要安装 dotnet SDK(安装方法见下节内容)
+打开
 #+begin_src
 cd %userprofile%\@lisp\packages\at-sidebar
-dotnet build -c release -o palette
+dotnet build at-sidebar.sln -c release
 #+end_src
 
 
@@ -12,5 +12,11 @@ dotnet build -c release -o palette
 #+begin_src
   winget install Microsoft.DotNet.SDK.10
 #+end_src
+
 安装完成后需要打开新的终端才能更新环境变量
 
+配置 nuget 源
+
+#+begin_src
+dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+#+end_src

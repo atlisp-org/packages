@@ -4,7 +4,7 @@
 打开
 #+begin_src
 cd %userprofile%\@lisp\packages\at-sidebar
-dotnet build -c release -o palette
+dotnet build at-sidebar.sln -c release
 #+end_src
 
 

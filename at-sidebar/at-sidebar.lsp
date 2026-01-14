@@ -12,12 +12,12 @@
 	(strcat (@::package-path  "at-sidebar")
 		"net/at-sidebar-"
 		(cond
-		 ((is-zwcad
-		   "ZWCAD"))
-		 ((is-gstarcad
-		   "GstarCAD"))
+		 (is-zwcad
+		  "ZWCAD")
+		 (is-gstarcad
+		  "GstarCAD")
 		 (t
-		  "AutoCAD"))
+		 "AutoCAD"))
 		".dll"))
 		  
   (if (findfile netdll)

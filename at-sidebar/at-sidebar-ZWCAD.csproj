@@ -51,6 +51,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
     <Compile Remove="*-AutoCAD.cs" />
+    <Compile Remove="*-GstarCAD.cs" />
   </ItemGroup>
 
  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

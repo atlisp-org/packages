@@ -6,7 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "at-sidebar-AutoCAD", "at-si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "at-sidebar-ZWCAD", "at-sidebar-ZWCAD.csproj", "{5144FBDA-E573-0E08-6E14-895E1E80221D}"
 EndProject
-Global
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "at-sidebar-GstarCAD", "at-sidebar-GstarCAD.csproj", "{5144FBDA-E573-0E08-6E14-895E1E802211}"
+EndProjectGlobal
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

@@ -2,8 +2,8 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <LangVersion>preview</LangVersion>
     <RootNamespace>at_sidebar</RootNamespace>
+    <LangVersion>preview</LangVersion>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -28,8 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3650.58" />
     <PackageReference Include="WebView2.Runtime.X64" Version="143.0.3650.139" />
-    <PackageReference Include="AutoCAD.NET" Version="24.3.0" />
-    <PackageReference Include="ZWCAD.NET"  Version="24.0.0"/>
+    <PackageReference Include="GStarCad.Net" Version="20.22.1" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -50,8 +49,8 @@
     <Reference Include="System.Windows.Forms.DataVisualization.Design" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
+    <Compile Remove="*-AutoCAD.cs" />
     <Compile Remove="*-ZWCAD.cs" />
-    <Compile Remove="*-GstarCAD.cs" />
   </ItemGroup>
 
  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

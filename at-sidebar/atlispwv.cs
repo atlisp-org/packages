@@ -34,7 +34,6 @@ namespace AtPaletteSet
 	private WebView2 webView = new WebView2();
 	public AtLispWv(String uri)
         {
-	    ed.WriteMessage("加载 @lisp 侧边栏\n");
             // InitializeComponent();
             Resize += new EventHandler(Form_Resize);
             webView.CoreWebView2InitializationCompleted += WebView21_CoreWebView2InitializationCompleted;
@@ -80,12 +79,15 @@ namespace AtPaletteSet
 	    // 加载本地 HTML
 	    // string htmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, "index.html");
 	    webView.Source = new Uri(uri);
+	    webView.CoreWebView2.AddHostObjectToScript("host", new ScriptHost());
+	    await webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.host = window.chrome.webview.hostObjects.host;");
         }
 	// 向 JS 发送消息
 	private void SendToJs(string message)
 	{
 	    webView.CoreWebView2.PostWebMessageAsString(message);
 	}
+	
 	private void WebView2_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
 	{
 	    string message = e.WebMessageAsJson; // 获取来自 JavaScript 的消息
@@ -94,10 +96,24 @@ namespace AtPaletteSet
 	    ///  </script>
 	    // MessageBox.Show("Received message from JavaScript: " + message);
 	    doc.SendStringToExecute(message+" ",true,false,false);
-	    // Application.ShowAlertDialog(message);
-	    // Application.ActiveDocument.SendCommand(message+" ");
-	    // var cmdmsg =  message.Split(":")
+	    // ed.Command(message);
 	}
     }
+    [ClassInterface(ClassInterfaceType.AutoDual)]
+    [ComVisible(true)]
+    public class ScriptHost
+    {
+	Database db = HostApplicationServices.WorkingDatabase;
+        Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
+        Document doc = Application.DocumentManager.MdiActiveDocument;
+
+	public string SendCommand(string message)
+	{
+	    ed.Command(message+" ");
+	    return message;
+	}
+    }
+    
+   
     
 }

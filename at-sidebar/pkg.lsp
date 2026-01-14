@@ -1,4 +1,15 @@
-(@::def-pkg '((:name . "at-sidebar")  (:full-name . "@≤‡±ﬂ¿∏")  (:author . "VitalGG")  (:email . "vitalgg@gmail.com")  (:version . "0.0.1")  (:locale . "chs")  (:category . "Common")  (:required . "base")  (:opensource . 0)   (:description . "@lisp≤‡±ﬂ¿∏")  (:url . "http://atlisp.cn")  (:files . ("at-sidebar"
-              ;; you can add file name that you will included in the package.
-              ;; lsp file must not input extand name.
-              ))))
+(@::def-pkg '((:NAME . "at-sidebar")
+        (:FULL-NAME . "@‰æßËæπÊ†è")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.4")
+        (:LOCALE . "chs")
+        (:CATEGORY . "Common")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "@lisp‰æßËæπÊ†è,C#ÁâàÊú¨")
+        (:URL . "http://atlisp.cn")
+        (:FILES "at-sidebar"
+            "at-sidebar.csproj"
+            "palette.cs"
+            "atlispwv.cs")))

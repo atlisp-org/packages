@@ -26,24 +26,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3650.58" />
-    <PackageReference Include="WebView2.Runtime.X64" Version="130.0.2849.80" />
-    <Reference Include="accoremgd">
-      <HintPath>C:\Program Files\Autodesk\AutoCAD 2022\accoremgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="AcCui">
-      <HintPath>C:\Program Files\Autodesk\AutoCAD 2022\AcCui.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="acdbmgd">
-      <HintPath>C:\Program Files\Autodesk\AutoCAD 2022\acdbmgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="acmgd">
-      <HintPath>C:\Program Files\Autodesk\AutoCAD 2022\acmgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    
+    <PackageReference Include="WebView2.Runtime.X64" Version="143.0.3650.139" />
+    <PackageReference Include="AutoCAD.NET" Version="24.3.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />

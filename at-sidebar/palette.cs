@@ -23,7 +23,6 @@ using Autodesk.AutoCAD.Geometry;//(Point3d, Line3d, Curve3d)
 using Autodesk.AutoCAD.ApplicationServices;// (Application, Document) 
 using Autodesk.AutoCAD.Runtime;// (CommandMethodAttribute, RXObject, CommandFlag) 
 using Autodesk.AutoCAD.EditorInput;//(Editor, PromptXOptions, PromptXResult)
-using AcadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 using System.Runtime.InteropServices;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 

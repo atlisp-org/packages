@@ -2,7 +2,7 @@
         (:FULL-NAME . "@侧边栏")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.1")
+        (:VERSION . "0.1.4")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
@@ -12,10 +12,12 @@
         (:FILES "at-sidebar"
             "at-sidebar-ZWCAD.csproj"
             "at-sidebar-AutoCAD.csproj"
-            "at-sidebar.sln"
+            "at-sidebar-GstarCAD.csproj"
+            "at-sidebar.slnx"
             "global-using.cs"
             "global-using-AutoCAD.cs"
             "global-using-ZWCAD.cs"
+            "global-using-GstarCAD.cs"
             "palette.cs"
             "atlispwv.cs"
             "compile.bat")))

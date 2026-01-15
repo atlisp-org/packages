@@ -30,6 +30,7 @@
     <PackageReference Include="WebView2.Runtime.X64" Version="143.0.3650.139" />
     <PackageReference Include="AutoCAD.NET" Version="24.3.0" />
     <PackageReference Include="ZWCAD.NET"  Version="24.0.0"/>
+    <PackageReference Include="GStarCad.Net" Version="20.25.0" /> 
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />

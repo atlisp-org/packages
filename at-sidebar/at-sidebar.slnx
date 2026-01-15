@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="at-sidebar-AutoCAD.csproj" />
+  <Project Path="at-sidebar-GstarCAD.csproj" />
+  <Project Path="at-sidebar-ZWCAD.csproj" />
+</Solution>

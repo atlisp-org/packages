@@ -54,9 +54,9 @@ namespace AtPaletteSet
 			};
 			// 加载本地 HTML
 			// string htmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, "index.html");
-			webView.Source = new Uri(uri);
 			webView.CoreWebView2.AddHostObjectToScript("host", new ScriptHost());
 			await webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.host = window.chrome.webview.hostObjects.host;");
+			webView.Source = new Uri(uri);
 		}
 		// 向 JS 发送消息
 		private void SendToJs(string message)

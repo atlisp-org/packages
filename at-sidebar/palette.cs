@@ -24,7 +24,7 @@ namespace AtPaletteSet
 	    if (null != gb ){
 		ps.Add("国标", gb);
             }
-	    AtLispWv dw = new AtLispWv("http://s3.atlisp.cn/");
+	    AtLispWv dw = new AtLispWv("http://s3.atlisp.cn/gallery");
 	    if (null != dw ){
 		ps.Add("图库", dw);
             }

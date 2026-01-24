@@ -54,3 +54,28 @@
 	(@::@log "WARN" "没有发现 .NET SDK开发环境")
 	))
       ))
+(defun at-sidebar:make-pattern-img ()
+  "开发版本"
+  (setq pat-files (vl-directory-files (strcat @::*prefix*"pattern/") "*.pat" 1))
+  (setq rec
+	(entity:make-rectangle '(0 0)'(200 200)))
+  (setq box (entity:getbox rec 0))
+  (setvar "hpscale" 75)
+  (setvar "cmdecho" 0)
+  (foreach
+   patfile% pat-files
+   (setvar "hpname" (vl-filename-base patfile%))
+
+   (if(not (findfile (strcat @::*prefix*"pattern/"(getvar "hpname")".png")))
+       (progn
+	 (command "-hatch" "s" rec "" "")
+	 (vla-regen *DOC* acAllViewports)
+	 (command "-plot" "y" "" "PublishToWeb PNG.pc3" "200x200" 
+		  "P" "n" "w" (car box)(cadr box) "f" "c" "y" (@:get-config 'base:ctb) "y" "a"
+		  (strcat @::*prefix*"pattern/" (getvar "hpname")".png")  "n" "y" )
+	 (mapcar 'entdel (pickset:to-list (ssget "x" '((0 . "hatch")))))
+	 )))
+  (setvar "cmdecho" 1)
+  (entdel rec)
+  (princ)
+  )

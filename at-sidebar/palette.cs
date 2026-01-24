@@ -24,9 +24,9 @@ namespace AtPaletteSet
 	    if (null != gb ){
 		ps.Add("国标", gb);
             }
-	    AtLispWv dw = new AtLispWv("http://s3.atlisp.cn/gallery");
+	    AtLispWv dw = new AtLispWv("http://s3.atlisp.cn/dw/pattern/");
 	    if (null != dw ){
-		ps.Add("图库", dw);
+		ps.Add("填充库", dw);
             }
 	    ps.Visible = true;
 	    ps.DockEnabled = DockSides.Left;

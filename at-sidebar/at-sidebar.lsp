@@ -53,4 +53,69 @@
       (progn
 	(@::@log "WARN" "没有发现 .NET SDK开发环境")
 	))
-      ))
+    ))
+(defun at-sidebar:hatch (patname / patfile content)
+  ;; TODO: 下载pat
+  (setq patfile (strcat @::*prefix* patname".pat"))
+  (if (and (not (findfile patfile))
+	   (setq content (@::@get (strcat "http://s3.atlisp.cn/dw/pat/"patname".pat"))))
+      (progn
+	;;处理乱码
+	(setq lines (string:to-list content "\n"))
+	(setq patfp  (open patfile "w"))
+	(write-line (strcat  "*" patname) patfp)
+	(foreach line% (cdr lines)
+		 (if (not (member (chr (ascii line%))'("*"";")))
+		     (write-line
+		      (vl-string-trim "\r" line%)
+		      patfp)))
+	(close patfp))
+    (@::@log "WARN" "下载 pat 文件失败")
+    )
+  
+  (if (findfile patfile)
+      (progn
+	(setvar "hpname" patname)
+	(command "-hatch")
+	)))
+
+(defun at-sidebar:make-pattern-img ()
+  "开发版本"
+  (setq pat-files (vl-directory-files (strcat @::*prefix*"pattern/") "*.pat" 1))
+  (setq rec
+	(entity:make-rectangle '(0 0)'(200 200)))
+  (setq box (entity:getbox rec 0))
+  (setvar "hpscale" 75)
+  (setvar "cmdecho" 0)
+  (foreach
+   patfile% pat-files
+   (setvar "hpname" (vl-filename-base patfile%))
+
+   (if(not (findfile (strcat @::*prefix*"pattern/"(getvar "hpname")".png")))
+       (progn
+	 (command "-hatch" "s" rec "" "")
+	 (vla-regen *DOC* acAllViewports)
+	 (command "-plot" "y" "" "PublishToWeb PNG.pc3" "200x200" 
+		  "P" "n" "w" (car box)(cadr box) "f" "c" "y" (@:get-config 'base:ctb) "y" "a"
+		  (strcat @::*prefix*"pattern/" (getvar "hpname")".png")  "n" "y" )
+	 (mapcar 'entdel (pickset:to-list (ssget "x" '((0 . "hatch")))))
+	 )))
+  (setvar "cmdecho" 1)
+  (entdel rec)
+  (princ)
+  )
+(defun at-sidebar:split-acadpat ()
+  (setq patfp (open (strcat @::*prefix* "acadiso.pat") "r"))
+  (while (setq line (read-line patfp))
+    (cond
+     ((= 42 (ascii line))
+      ;;关闭前一个
+      (if opatfp (close opatfp))
+      (setq opatfile (vl-string-trim "*" (car (string:to-list line ","))))
+      (setq opatfp (open (strcat @::*prefix* opatfile".pat")"w" "utf8"))
+      (write-line line opatfp))
+     (t
+      (write-line line opatfp))))
+  (if opatfp (close opatfp))
+  (if patfp (close patfp))
+  )

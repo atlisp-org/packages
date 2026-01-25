@@ -85,9 +85,9 @@ namespace AtPaletteSet
 
 		public string SendCommand(string message)
 		{
-			doc.SendStringToExecute(message + " ", true, false, false);
-
-			return message;
+		    doc.SendStringToExecute("\u001b", true, false, false);
+		    doc.SendStringToExecute(message + " ", true, false, false);
+		    return message;
 		}
 	}
 

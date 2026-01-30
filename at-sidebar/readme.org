@@ -1,14 +1,31 @@
 * atlisp 侧边栏
+** 功能说明
+1. 自定义菜单栏
+2. @lisp菜单栏
+3. 国标库
+4. 填充库
+*** 自定义菜单栏
+一般模式下，点击菜单执行相应的功能。
+
+编辑模式下，双击菜单项及命令或表达式进行编辑
+
+
+
+* 部署说明
+@lisp安装 at-sidebar 后有自助编译的功能菜单（@lisp菜单或双击弹出的命令面板）
+
+也可以按以下说明手动编译。
 ** 编译
 为保证该功能可以正常运行，建议本地编译，需要安装 dotnet SDK(安装方法见下节内容)
-打开
+
 #+begin_src
 cd %userprofile%\@lisp\packages\at-sidebar
-dotnet build at-sidebar.sln -c release
+dotnet restore at-sidebar.slnx
+dotnet build at-sidebar.slnx -c release
 #+end_src
 
 
-* 安装 dotnet SDK
+** 安装 dotnet SDK
 #+begin_src
   winget install Microsoft.DotNet.SDK.10
 #+end_src

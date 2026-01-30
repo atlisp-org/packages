@@ -12,24 +12,20 @@ namespace AtPaletteSet
 
 	    //UserControl myui = new UserControl();
 	    //ps.Add("我的",myui);
-	    AtLispWv myui = new AtLispWv("http://s3.atlisp.cn/palette-mymenu.html");
-	    if (null != myui ){
-		ps.Add("我的", myui);
-            }
-	    AtLispWv atmenu = new AtLispWv("http://s3.atlisp.cn/palette.html");
-	    if (null != atmenu ){
-		ps.Add("@LISP", atmenu);
-            }
-	    AtLispWv gb = new AtLispWv("http://s3.atlisp.cn/gb");
-	    if (null != gb ){
-		ps.Add("国标", gb);
-            }
-	    AtLispWv dw = new AtLispWv("http://s3.atlisp.cn/dw/pattern/");
-	    if (null != dw ){
-		ps.Add("填充库", dw);
-            }
+
+	    var palettes = new Dictionary<string, string>{
+		{"我的","http://s3.atlisp.cn/palette-mymenu.html"},
+		{"@LISP","http://s3.atlisp.cn/palette.html"},
+		{"国标", "http://s3.atlisp.cn/gb"},
+		{"图库", "http://s3.atlisp.cn/dw/library/"},
+		{"填充库", "http://s3.atlisp.cn/dw/pattern/"}
+	    };
+	    for (int i = 0; i < palettes.Count; i++){
+		ps.Add(palettes.ElementAt(i).Key,
+		       new AtLispWv(palettes.ElementAt(i).Value));
+	    }
 	    ps.Visible = true;
-	    ps.DockEnabled = DockSides.Left;
+		ps.DockEnabled = DockSides.Left | DockSides.Right;
 	    ps.Dock = DockSides.Left;
 	    // 设置面板样式和透明度
 	    // ps.Style = PaletteSetStyles.ShowTabForSingle;

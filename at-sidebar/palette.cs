@@ -18,7 +18,7 @@ namespace AtPaletteSet
 		{"@LISP","http://s3.atlisp.cn/palette.html"},
 		{"国标", "http://s3.atlisp.cn/gb"},
 		{"图库", "http://s3.atlisp.cn/dw/library/"},
-		{"填充库", "http://s3.atlisp.cn/dw/pattern/"}
+		{"填充", "http://s3.atlisp.cn/dw/pattern/"}
 	    };
 	    for (int i = 0; i < palettes.Count; i++){
 		ps.Add(palettes.ElementAt(i).Key,

@@ -148,26 +148,24 @@
   (entdel rec)
   (princ)
   )
-(defun at-sidebar:insertlib (blkname / patfile content)
+(defun at-sidebar:insertlib (blkname / dwgfile content)
   ;; TODO: 下载pat
-  (setq patfile (strcat @::*prefix* blkname".dwg"))
-  (if (and (not (findfile patfile))
-	   (setq content (@::@get (strcat (@::uri)"/dw/library/"blkname".dwg"))))
-      (progn
-	;;处理乱码
-	(setq lines (string:to-list content "\n"))
-	(setq patfp  (open patfile "w"))
-	(write-line (strcat  "*" blkname) patfp)
-	(foreach line% (cdr lines)
-		 (if (not (member (chr (ascii line%))'("*"";")))
-		     (write-line
-		      (vl-string-trim "\r" line%)
-		      patfp)))
-	(close patfp))
-    (@::@log "WARN" "下载 图库 文件失败")
+  (setq dwgfile (strcat @::*prefix* "dw/" blkname".dwg"))
+  (@::mkdir (@::path (vl-filename-directory dwgfile)))
+  (if (not (findfile dwgfile))
+      (@::down-by-base64
+       (strcat (@::uri)"/dw/library/"blkname".dwg")
+       dwgfile
+       (@::timestamp)
+       )
     )
   
-  (if (findfile patfile)
+  (if (findfile dwgfile)
       (progn
-	(block:insert blkname "" (getpoint) 0 1)
-	)))
+	(block:insert (last (@::path blkname))
+		      (@::path-os
+		       (strcat (vl-filename-directory dwgfile)"/"))
+		      (getpoint) 0 1)
+	)
+    (@::@log "WARN" "下载 图库 文件失败")
+    ))

@@ -20,10 +20,12 @@
 		 (t
 		 "AutoCAD"))
 		".dll"))
-		  
+  ;; 复制最新文件
+  (vl-file-copy netdll
+		(setq new-netdll (strcat netdll "."(@::timestamp)".dll")))
   (if (findfile netdll)
       (progn
-	(command-s "netload" (findfile netdll))
+	(command-s "netload" (findfile new-netdll))
 	(command "@Palette"))
     (progn
       (@::@log "INFO" "编译 at-sidebar, 请在编译成功后重新加载.")
@@ -165,7 +167,7 @@
 	(block:insert (last (@::path blkname))
 		      (@::path-os
 		       (strcat (vl-filename-directory dwgfile)"/"))
-		      (getpoint) 0 1)
+		      (getpoint "请给出插入点:") 0 1)
 	)
     (@::@log "WARN" "下载 图库 文件失败")
     ))

@@ -49,3 +49,4 @@ Thumbs.db
 dist/
 __pycache__/
 obj/
+/*/net/

@@ -25,6 +25,7 @@
 		(setq new-netdll (strcat netdll "."(@::timestamp)".dll")))
   (if (findfile netdll)
       (progn
+	;; (vla-Load (vla-GetInterfaceObject *ACAD* (findfile new-netdll)))
 	(command-s "netload" (findfile new-netdll))
 	(command "@Palette"))
     (progn
@@ -60,31 +61,6 @@
 		 )
 	))
     ))
-(defun at-sidebar:hatch (patname / patfile content)
-  ;; TODO: 下载pat
-  (setq patfile (strcat @::*prefix* patname".pat"))
-  (if (and (not (findfile patfile))
-	   (setq content (@::@get (strcat (@::uri)"/dw/pat/"patname".pat"))))
-      (progn
-	;;处理乱码
-	(setq lines (string:to-list content "\n"))
-	(setq patfp  (open patfile "w"))
-	(write-line (strcat  "*" patname) patfp)
-	(foreach line% (cdr lines)
-		 (if (not (member (chr (ascii line%))'("*"";")))
-		     (write-line
-		      (vl-string-trim "\r" line%)
-		      patfp)))
-	(close patfp))
-    (@::@log "WARN" "下载 pat 文件失败")
-    )
-  
-  (if (findfile patfile)
-      (progn
-	(setvar "hpname" patname)
-	(command "-hatch")
-	)))
-
 (defun at-sidebar:make-pattern-img ()
   "开发版本"
   (setq pat-files (vl-directory-files (strcat @::*prefix*"pattern/") "*.pat" 1))
@@ -171,3 +147,27 @@
 	)
     (@::@log "WARN" "下载 图库 文件失败")
     ))
+(defun at-sidebar:hatch (patname / patfile content)
+  ;; TODO: 下载pat
+  (setq patfile (strcat @::*prefix* patname".pat"))
+  (if (and (not (findfile patfile))
+	   (setq content (@::@get (strcat (@::uri)"/dw/pat/"patname".pat"))))
+      (progn
+	;;处理乱码
+	(setq lines (string:to-list content "\n"))
+	(setq patfp  (open patfile "w"))
+	(write-line (strcat  "*" patname) patfp)
+	(foreach line% (cdr lines)
+		 (if (not (member (chr (ascii line%))'("*"";")))
+		     (write-line
+		      (vl-string-trim "\r" line%)
+		      patfp)))
+	(close patfp))
+    (@::@log "WARN" "下载 pat 文件失败")
+    )
+  
+  (if (findfile patfile)
+      (progn
+	(setvar "hpname" patname)
+	(command "-hatch")
+	)))

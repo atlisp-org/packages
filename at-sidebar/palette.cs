@@ -1,3 +1,4 @@
+
 namespace AtPaletteSet
 {
     public class AtLispPalette 
@@ -27,6 +28,7 @@ namespace AtPaletteSet
 	    ps.Visible = true;
 		ps.DockEnabled = DockSides.Left | DockSides.Right;
 	    ps.Dock = DockSides.Left;
+	    // ps.KeepFocus=true;
 	    // 设置面板样式和透明度
 	    // ps.Style = PaletteSetStyles.ShowTabForSingle;
 	    //ps.Opacity = 90;

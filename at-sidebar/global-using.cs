@@ -15,3 +15,4 @@ global using Microsoft.Web.WebView2.Core;
 global using Microsoft.Web.WebView2.WinForms;
 global using System.Linq;
 global using System.Runtime.InteropServices;
+global using System.Reflection;

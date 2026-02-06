@@ -3,11 +3,12 @@ namespace AtPaletteSet
 {
     public class AtLispPalette 
     {
+	public static PaletteSet ps = new PaletteSet("@LISP");
+	
         [CommandMethod("@Palette")]
 	//[CommandMethod("AtPalette")]
 	public void AtPalette()
 	{
-	    PaletteSet ps = new PaletteSet("@LISP");
 	    ps.MinimumSize = new System.Drawing.Size(150, 600);
 	    ps.Size = new System.Drawing.Size(200, 600);
 

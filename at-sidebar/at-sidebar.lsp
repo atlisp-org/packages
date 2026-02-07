@@ -20,12 +20,16 @@
 		 (t
 		 "AutoCAD"))
 		".dll"))
-  ;; 复制最新文件
-  (vl-file-copy netdll
-		(setq new-netdll (strcat netdll "."(@::timestamp)".dll")))
   (if (findfile netdll)
       (progn
 	;; (vla-Load (vla-GetInterfaceObject *ACAD* (findfile new-netdll)))
+	;;比较源和目标文件确定是否编译。
+	(if (< (@::mktime1900(vl-file-systime netdll))
+	       (@::mktime1900(vl-file-systime (strcat (@::package-path  "at-sidebar") "at-sidebar.slnx"))))
+	    (at-sidebar:compile))
+	;; 复制最新文件
+	(vl-file-copy netdll
+		      (setq new-netdll (strcat netdll "."(@::timestamp)".dll")))
 	(command-s "netload" (findfile new-netdll))
 	(command "@Palette"))
     (progn

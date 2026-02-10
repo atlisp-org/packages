@@ -134,13 +134,18 @@
   ;; TODO: 下载pat
   (setq dwgfile (strcat @::*prefix* "dw/" blkname".dwg"))
   (@::mkdir (@::path (vl-filename-directory dwgfile)))
-  (if (not (findfile dwgfile))
-      (@::down-by-base64
-       (strcat (@::uri)"/dw/library/"blkname".dwg")
-       dwgfile
-       (@::timestamp)
-       )
-    )
+  ;;比较时间
+  (if (or (not (findfile dwgfile))
+      	  (< (@::mktime1900(vl-file-systime dwgfile))
+	     (@::get-filemtime-from-web blkname)))
+      (progn
+	(vl-file-delete dwgfile)
+	(@::down-by-base64
+	 (strcat (@::uri)"/dw/library/"blkname".dwg")
+	 dwgfile
+	 (@::timestamp)
+	 )
+	))
   
   (if (findfile dwgfile)
       (progn
@@ -175,3 +180,24 @@
 	(setvar "hpname" patname)
 	(command "-hatch")
 	)))
+(defun at-sidebar:solve-self-reference ()
+  "解决自参照问题"
+  (if (member (setq bname (vl-filename-base(getvar "dwgname")))(block:list))
+      (mapcar
+       '(lambda(x)
+          (vla-explode (e2o x))
+          (entdel x)
+          )
+       (pickset:to-list (ssget "x" (list '(0 . "insert")(cons 2  bname))))))
+  (vla-purgeall *DOC*)
+  (vla-put-origin *ms*
+                  (point:to-ax
+                   (point:centroid (pickset:getbox (ssget "x")0))))
+  )
+(defun at-sidebar:thumbnail ()
+  (if (or (= acMax(vla-get-WindowState *ACAD*))
+	  (= acMin(vla-get-WindowState *ACAD*)))
+      (vla-put-WindowState *ACAD* acNorm))
+  (setvar "THUMBSAVE" 1)
+  (vla-put-width *ACAD* 1000)(vla-put-height *ACAD* 1000)(command "zoom""e")
+  )

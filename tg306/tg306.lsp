@@ -7,6 +7,7 @@
 ;; (@:set-config 'tg306:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单 
 (@:add-menu "钢连接框架" "高强螺栓排" "(tg306:menu-draw-gqls)" )
+(@:add-menu "钢连接框架" "绘预制梁" "(tg306:batch-draw-beam)" )
 (defun tg306:hello ()
   (@:help (strcat "这里的内容用于在运行这个功能开始时，对用户进行功能提示。\n"
 		  "如怎么使用，注意事项等。\n当用户设置了学习模式时，会在命令行或弹窗进行提示。\n"
@@ -345,12 +346,130 @@
     )
   
   )
+
+
 (defun tg306:get-beam-h(colu)
   "取柱周梁的最大高度"
   800 ;;应该取梁高最大值这里先按800
   )
-;;; 柱顶
+
+;;需读取四边梁数据
+(defun tg306:column-top-elev (pt-front c-b m dm )
+    "c-b 柱宽/高，m 螺栓排数，dm间距"
+    (entity:make-point pt-front)
+
+    (progn ;;顶板
+      (tg306:make-rec-by-center
+       (polar pt-front (* 1.5 pi) 15)
+       (+ c-b 120) 30)
+      (entity:putdxf ;;上柱板
+       (tg306:make-rec-by-center
+	(polar pt-front (* 0.5 pi) 15)
+	(+ c-b 120) 30)
+       62 252))
+    (progn ;;方管
+      (tg306:make-rec-by-center
+       (polar pt-front
+	      (* 1.5 pi)
+	      (+ 30 (* 0.5 (+ 260 -120 b-h (* 0.5  (max c-b c-h))))))
+       (+ c-b -130)
+       (+ 260 b-h -120 (* 0.5 (max c-b c-h))))
+      (tg306:make-rec-by-center
+       (polar pt-front
+	      (* 1.5 pi)
+	      (+ 30 (* 0.5 (+ 260 b-h -120 (* 0.5 (max c-b c-h))))))
+       (+ c-b (- -130 (* 2 square-bute-t)))
+       (+ 260 b-h -120 (* 0.5 (max c-b c-h))))
+      )
+    (progn ;; 螺栓劲板
+      (setq pt-tmp (polar pt-front pi (* 0.5 (1- m) dm)))
+      (setq i 0)
+      (repeat m
+	      (block:insert "螺栓立面" "" (polar pt-tmp 0 (* i dm)) 0 1)
+	      (setq i (1+ i)))
+      ;;劲板
+      (setq pt-tmp
+	    (polar pt-front pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
+	    )
+      (setq i 0)
+      (repeat (1- m)
+	      ;;上
+	      ;; (entity:putdxf 
+	      ;;  (tg306:make-rec-by-center
+	      ;;   (polar (polar pt-tmp 0 (* i dm))
+	      ;; 	     (* 0.5 pi)
+	      ;; 	     80)
+	      ;;   20 100)
+	      ;;  62 252)
+	      ;;下
+	      (tg306:make-rec-by-center
+	       (polar (polar pt-tmp 0 (* i dm))
+		      (* 1.5 pi)
+		      105)
+	       20 150)
+	      (setq i (1+ i))))
+    (progn ;;梁底接板，不同梁高怎么处理？
+      (tg306:make-rec-by-center
+       (polar pt-front (* 1.5 pi) (- b-h 120 10))
+       (+ c-b 120) 20)
+      ;; 梁腹接板，需读梁中位置及梁腹厚度，如与螺栓冲突，
+      (setq hf 430
+	    l1 305 )
+      
+      (tg306:column-top-beam
+       (polar 
+	(polar pt-front (* 1.5 pi) 30)
+	0 (- (* 0.5 c-b) 65))
+       hf l1 nil)
+      (tg306:column-top-beam
+       (polar 
+	(polar pt-front (* 1.5 pi) 30)
+	pi (- (* 0.5 c-b) 65))
+       hf l1 t)
+      )
+    
+    (progn ;; 环板
+      (tg306:make-rec-by-center
+       (polar pt-front (* 1.5 pi) (+ b-h -120 260 10))
+       (- c-b 40) 20)
+      )
+    ;;梁腹接板
+    
+    )
+(defun tg306:column-top-beam (pt-base hf l1 mirrorp)
+  (setq l1 (- l1 50))
+  (setq pts
+	(list (list 0 0)
+	      (list 0 (* -1 hf))
+	      (list 125 0)
+	      (list 0 30) ;; 不是50 
+	      (list l1 0)
+	      (list 0 (- hf 50))
+	      (list (* -1 l1) 0)
+	      (list 0 20)))
+  (if mirrorp
+      (setq pts
+	    (mapcar '(lambda(x)
+		       (mapcar '* '(-1 1 1)
+			       x))
+		    pts)))
+	  
+  (setq lwpts nil)
+  (setq pt-tmp pt-base)
+  (foreach pt pts
+	   (print pt)
+	   (setq lwpts
+		 (cons (setq pt-tmp
+			     (mapcar '+
+				     pt-tmp pt))
+		       lwpts)))
+  (print lwpts)
+  (entity:make-lwpolyline lwpts nil 0 1 0)
+  
+  )
+;;; 柱顶连接件
 (defun tg306:column-top-joint (pt-base c-b c-h f-b f-h m dm n s square-bute-t b-h / diff)
+  "b-h: 梁高" 
   (progn ;; 平面
     ;;法兰
     (setq diff (* 2 60))
@@ -360,51 +479,53 @@
     (tg306:make-rec-by-center pt-base (+ c-b diff)(+ c-h diff))
     (setq diff (* 2 -85))
     (tg306:make-rec-by-center pt-base (+ c-b diff)(+ c-h diff))
-    ;; 螺栓劲板
-    (setq diff 0)
-    (tg306:draw-ring-ls 
-     (polar
-      (polar pt-base pi (+(* 0.5 c-b) diff))
-      (* 1.5 pi)
-      (+ (* 0.5 c-h) diff))
-     m dm n s)
-    ;; TODO: 劲板
-    (setq pt-tmp
-	  (polar pt-base pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
-	  )
-    (setq i 0)
-    (repeat (1- m)
-	    ;;上
-	    (tg306:make-rec-by-center
-	     (polar (polar pt-tmp 0 (* i dm))
-		    (* 0.5 pi)
-		    (- (* 0.5 c-h) 2.5))
-	     20 125)
-	    ;;下
-	    (tg306:make-rec-by-center
-	     (polar (polar pt-tmp 0 (* i dm))
-		    (* 1.5 pi)
-		    (- (* 0.5 c-h)2.5))
-	     20 125)
-	    (setq i (1+ i)))
-    (setq pt-tmp
-	  (polar pt-base (* 1.5 pi) (- (* 0.5 s (1- n)) (* 0.5 s)))
-	  )
-    (setq i 0)
-    (repeat (1- n)
-	    ;;左
-	    (tg306:make-rec-by-center
-	     (polar (polar pt-tmp (* 0.5 pi) (* i s))
-		    pi
-		    (- (* 0.5 c-b) 2.5))
-	     125 20)
-	    ;;右
-	    (tg306:make-rec-by-center
-	     (polar (polar pt-tmp (* 0.5 pi) (* i s))
-		    0
-		    (- (* 0.5 c-b) 2.5))
-	     125 20)
-	    (setq i (1+ i)))
+    (progn;; 螺栓劲板
+      (setq diff 0)
+      (tg306:draw-ring-ls 
+       (polar
+	(polar pt-base pi (+(* 0.5 c-b) diff))
+	(* 1.5 pi)
+	(+ (* 0.5 c-h) diff))
+       m dm n s)
+      ;;  劲板
+     
+      (setq pt-tmp
+	    (polar pt-base pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
+	    )
+      (setq i 0)
+      (repeat (1- m)
+	      ;;上
+	      (tg306:make-rec-by-center
+	       (polar (polar pt-tmp 0 (* i dm))
+		      (* 0.5 pi)
+		      (- (* 0.5 c-h) 2.5))
+	       20 125)
+	      ;;下
+	      (tg306:make-rec-by-center
+	       (polar (polar pt-tmp 0 (* i dm))
+		      (* 1.5 pi)
+		      (- (* 0.5 c-h)2.5))
+	       20 125)
+	      (setq i (1+ i)))
+      (setq pt-tmp
+	    (polar pt-base (* 1.5 pi) (- (* 0.5 s (1- n)) (* 0.5 s)))
+	    )
+      (setq i 0)
+      (repeat (1- n)
+	      ;;左
+	      (tg306:make-rec-by-center
+	       (polar (polar pt-tmp (* 0.5 pi) (* i s))
+		      pi
+		      (- (* 0.5 c-b) 2.5))
+	       125 20)
+	      ;;右
+	      (tg306:make-rec-by-center
+	       (polar (polar pt-tmp (* 0.5 pi) (* i s))
+		      0
+		      (- (* 0.5 c-b) 2.5))
+	       125 20)
+	      (setq i (1+ i)))
+      )
     (progn ;; 标注
       ;; 水平
       (setq pt-hl
@@ -471,158 +592,18 @@
       
       )
     )
-  (progn  ;;; 正立面
+  (progn  ;;; 立面
     (setq pt-front (polar pt-base (* 0.5 pi) (+ 2000  c-h)))
-    (entity:make-point pt-front)
-    ;;顶板
-    (tg306:make-rec-by-center
-     (polar pt-front (* 1.5 pi) 15)
-     (+ c-b 120) 30)
-    (entity:putdxf ;;上柱板
-     (tg306:make-rec-by-center
-      (polar pt-front (* 0.5 pi) 15)
-      (+ c-b 120) 30)
-     62 252)
-    
-    ;;方管
-    (tg306:make-rec-by-center
-     (polar pt-front
-	    (* 1.5 pi)
-	    (+ 30 (* 0.5 (+ 260 b-h (* 0.5  (max c-b c-h))))))
-     (+ c-b -130)
-     (+ 260 b-h (* 0.5 (max c-b c-h))))
-    (tg306:make-rec-by-center
-     (polar pt-front
-	    (* 1.5 pi)
-	    (+ 30 (* 0.5 (+ 260 b-h (* 0.5 (max c-b c-h))))))
-     (+ c-b (- -130 (* 2 square-bute-t)))
-     (+ 260 b-h (* 0.5 (max c-b c-h))))
-    ;; 螺栓
-    (setq pt-tmp (polar pt-front pi (* 0.5 (1- m) dm)))
-    (setq i 0)
-    (repeat m
-	    (block:insert "螺栓立面" "" (polar pt-tmp 0 (* i dm)) 0 1)
-	    (setq i (1+ i)))
-    ;;劲板
-    (setq pt-tmp
-	  (polar pt-front pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
-	  )
-    (setq i 0)
-    (repeat (1- m)
-	    ;;上
-	    ;; (entity:putdxf 
-	    ;;  (tg306:make-rec-by-center
-	    ;;   (polar (polar pt-tmp 0 (* i dm))
-	    ;; 	     (* 0.5 pi)
-	    ;; 	     80)
-	    ;;   20 100)
-	    ;;  62 252)
-	    ;;下
-	    (tg306:make-rec-by-center
-	     (polar (polar pt-tmp 0 (* i dm))
-		    (* 1.5 pi)
-		    105)
-	     20 150)
-	    (setq i (1+ i)))
-    ;;梁底接板，不同梁高怎么处理？
-    (tg306:make-rec-by-center
-     (polar pt-front (* 1.5 pi) (- b-h 260 10))
-     (+ c-b 120) 20)
-
-    ;; 环板
-    (tg306:make-rec-by-center
-     (polar pt-front (* 1.5 pi) (+ b-h 260 10))
-     (+ c-b 90) 20)
-
-    ;;梁腹接板
-    
-    )
-  
-
-  (progn ;;; 侧立面
+    (tg306:column-top-elev pt-front c-b m dm)
     (setq pt-left
 	  (polar 
 	   (polar pt-base 0 (+ (* 1.5 c-b) c-h))
 	   (* 0.5 pi)
 	   (* 0.5 c-h )))
-    
-    (entity:make-point pt-left)
-    ;;顶板
-    (tg306:make-rec-by-center
-     (polar pt-left (* 1.5 pi) 15)
-     (+ c-h 120) 30)
-    (entity:putdxf 
-     (tg306:make-rec-by-center
-      (polar pt-left (* 0.5 pi) 15)
-      (+ c-h 120) 30)
-     62 252)
-        
-    ;;方管
-    (tg306:make-rec-by-center
-     (polar pt-left
-	    (* 1.5 pi)
-	    (+ 30 (* 0.5 (+ 260 b-h (* 0.5  (max c-b c-h))))))
-     (+ c-h -130)
-     (+ 260 b-h (* 0.5 (max c-b c-h))))
-    (tg306:make-rec-by-center
-     (polar pt-left
-	    (* 1.5 pi)
-	    (+ 30 (* 0.5 (+ 260 b-h (* 0.5 (max c-b c-h))))))
-     (+ c-h (- -130 (* 2 square-bute-t)))
-     (+ 260 b-h (* 0.5 (max c-b c-h))))
-    ;; 螺栓
-    (setq pt-tmp (polar pt-left pi (* 0.5 (1- n) s)))
-    (setq i 0)
-    (repeat n
-	    (block:insert "螺栓立面" "" (polar pt-tmp 0 (* i s)) 0 1)
-	    (setq i (1+ i)))
-    ;;劲板
-    (setq pt-tmp
-	  (polar pt-left pi (- (* 0.5 s (1- n)) (* 0.5 s)))
-	  )
-    (setq i 0)
-    (repeat (1- n)
-	    ;;上
-	    ;; (tg306:make-rec-by-center
-	    ;;  (polar (polar pt-tmp 0 (* i s))
-	    ;; 	    (* 0.5 pi)
-	    ;; 	    80)
-	    ;;  20 100)
-	    ;;下
-	    (entity:putdxf
-	     (tg306:make-rec-by-center
-	      (polar (polar pt-tmp 0 (* i s))
-		     (* 1.5 pi)
-		     105)
-	      20 150)
-	     62 252)
-	    (setq i (1+ i)))
-    ;;梁底接板，不同梁高怎么处理？
-    (tg306:make-rec-by-center
-     (polar pt-left (* 1.5 pi) (- b-h 260 10))
-     (+ c-h 120) 20)
-
-    ;; 环板
-    (tg306:make-rec-by-center
-     (polar pt-left (* 1.5 pi) (+ b-h 260 10))
-     (+ c-h 90) 20)
-    )
+    (tg306:column-top-elev pt-left c-h n s))
 
   )
-(defun c:tt ()
-  ;; (tg306:column-bottom-joint (getpoint) 500 700 620 820 6 100 6 140 20)
-  (tg306:column-top-joint (getpoint) 500 700 620 820 6 100 6 140 20 800)
-  )
 
-(setq build1-beam
-   (list
-   '("矩250x450" "WH330x190x10x14" 1 130 2 70 235)
-   '("矩250x600" "WH480x190x14x16" 4 100 5 70 445)
-   '("矩300x600" "WH480x240x10x16" 4 100 3 70 305)
-   '("矩350x600" "WH480x290x10x16" 4 100 3 70 305)
-   '("矩250x500" "WH380x190x8x14" 2 100 2 100 305)
-   '("矩200x400" "WH280x140x6x8" 1 100 2 90 305)))     
-      
 (defun tg306:get-beam-joint-info (b  h / info)
   (setq info (assoc (strcat "矩"(itoa (fix b))"x"(itoa(fix h))) build1-beam))
   (setq joint-info (string:to-list  (substr (cadr info) 3)"x"))
@@ -638,13 +619,35 @@
 	l1 (nth 6 info)
 	l2 300)
   )
+(defun tg306:get-columntop-joint-para (ct-list)
+  (setq bxh
+	(string:to-list (string:l2s-ansi (cdr (string:s2l-ansi (car ct-list))))"x"))
+  (setq f-bxh 	(string:to-list (cadr ct-list)"x"))
+  (setq c-b (read (car bxh))
+	c-h (read(cadr bxh))
+	f-b (read(car f-bxh))
+	f-h (read(cadr f-bxh))
+	m (1+ (read(nth 2 ct-list)))
+	dm (read(nth 3  ct-list))
+	n (1+ (read(nth 4 ct-list)))
+	s (read(nth 5 ct-list))
+	bute-t 20)
+  (list c-b c-h f-b f-h m dm n s bute-t)
+  )
+(defun tg306:beam-info (beam-ent)
+  "梁信息，宽高，连接件信息"
+  (list
+   (cons 10 (entity:getdxf beam-ent))
+   (cons 'b (block:get-dynprop beamblk "宽"))
+   (cons 'h (cdr (assoc "h" (block:get-attributes beam-ent))))
+   (cons 'joint 0)))
 (defun tg306:draw-beam (beamblk pt-base / b-b b-h)
   "绘制梁构件图"
   ;; 从梁宽高和连接表中取连接件信息
   (princ (strcat "\n绘制" (cdr (assoc "编号" (block:get-attributes beamblk)))))
   (setq b-b (block:get-dynprop beamblk "宽"))
   (setq b-h (read (cdr (assoc "高" (block:get-attributes beamblk)))))
-	
+  
   (tg306:get-beam-joint-info b-b b-h)
   ;;图框
   (setq tk 
@@ -687,5 +690,38 @@
   
   
   )  
+
+(setq build1-beam
+      (list
+       '("矩250x450" "WH330x190x10x14" 1 130 2 70 235)
+       '("矩250x600" "WH480x190x14x16" 4 100 5 70 445)
+       '("矩300x600" "WH480x240x10x16" 4 100 3 70 305)
+       '("矩350x600" "WH480x290x10x16" 4 100 3 70 305)
+       '("矩250x500" "WH380x190x8x14" 2 100 2 100 305)
+       '("矩200x400" "WH280x140x6x8" 1 100 2 90 305)))     
+
+(defun tg306:get-list-from-texts()
+  (setq txts
+	(pickset:sort 
+	 (pickset:to-list (ssget  '((0 . "text"))))
+	 "Yx"
+	 '(100 100)))
+  (mapcar 'tg306:get-columntop-joint-para
+	  (list:split (mapcar 'text:get-mtext  txts) 7))
+  )
+(defun tg306:draw-colutop ()
+  (setq ctop-lst (tg306:get-list-from-texts))
+  (setq pt-base (getpoint))
+  (foreach ctop ctop-lst
+	   (apply 'tg306:column-top-joint
+		  (append (list  pt-base)  ctop (list 600)))
+	   (setq pt-base (polar pt-base 0 5000))
+	   )
+  
+  )
 (defun c:tt ()
-  (tg306:batch-draw-beam))
+  ;; (tg306:column-bottom-joint (getpoint) 500 700 620 820 6 100 6 140 20)
+  ;;(tg306:column-top-joint (getpoint) 500 700 620 820 6 100 6 140 20 800)
+  ;;(tg306:batch-draw-beam)
+  (tg306:draw-colutop)
+  )

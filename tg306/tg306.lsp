@@ -8,6 +8,8 @@
 ;; 向系统中添加菜单 
 (@:add-menu "钢连接框架" "高强螺栓排" "(tg306:menu-draw-gqls)" )
 (@:add-menu "钢连接框架" "绘预制梁" "(tg306:batch-draw-beam)" )
+(@:add-menu "钢连接框架" "绘柱顶连接件" "(tg306:draw-colutop)" )
+
 (defun tg306:hello ()
   (@:help (strcat "这里的内容用于在运行这个功能开始时，对用户进行功能提示。\n"
 		  "如怎么使用，注意事项等。\n当用户设置了学习模式时，会在命令行或弹窗进行提示。\n"
@@ -350,7 +352,7 @@
 
 (defun tg306:get-beam-h(colu)
   "取柱周梁的最大高度"
-  800 ;;应该取梁高最大值这里先按800
+  600 ;;应该取梁高最大值这里先按800
   )
 
 ;;需读取四边梁数据
@@ -641,6 +643,183 @@
    (cons 'b (block:get-dynprop beamblk "宽"))
    (cons 'h (cdr (assoc "h" (block:get-attributes beam-ent))))
    (cons 'joint 0)))
+(defun tg306:stat-beam()
+  "统计梁类型并回写编号"
+  (setq beams
+	(pickset:sort 
+	 (pickset:to-list (block:ssget nil "beam-yz" nil))
+	 "xy" 10)
+	)
+  (setq lst
+	(stat:stat
+	(mapcar
+	 '(lambda(beamblk)
+	    (list
+	     ;; (cdr (assoc "编号" (block:get-attributes beamblk)))
+	     (block:get-dynprop beamblk "标志长度")
+	     (block:get-dynprop beamblk "宽")
+	     (cdr (assoc "高" (block:get-attributes beamblk)))
+	     (cdr (assoc "设计号" (block:get-attributes beamblk))))
+	    )
+	 beams)))
+  ;;绘表格
+  (setq i 0)
+  (setq lst (mapcar '(lambda(x)
+		       (setq i (1+ i))
+		       (setq bh  (strcat "L-F0-" (string:number-format
+					       (itoa i)
+					       2 0 "00")))
+		       ;;回写
+		       (mapcar
+			'(lambda(beamblk)
+			   (if 
+			       (list:equal
+				(list
+				 (block:get-dynprop beamblk "标志长度")
+				 (block:get-dynprop beamblk "宽")
+				 (cdr (assoc "高" (block:get-attributes beamblk)))
+				 (cdr (assoc "设计号" (block:get-attributes beamblk))))
+				(car x)
+				0.01)
+			       (block:set-attributes beamblk (list (cons "编号" bh)))
+			     ))
+			beams)
+		       (append
+			(list i)
+			(list bh)
+			(car x)
+			(list (cdr x))
+			))
+		    lst))
+  (print lst)
+  (table:make (getpoint) "梁信息表" '("序号""编号""标志长度""宽""高""设计号""个数")
+	      lst)
+			      
+  )
+(defun tg306:column-beam-relation (columnblk / b h base beams)
+  (setq b (block:get-dynprop columnblk "b")
+	h (block:get-dynprop columnblk "h"))
+  (setq base  (entity:getdxf columnblk 10))
+  (setq beams
+	(pickset:to-list
+	 (block:ssget
+	  (list "c"
+		(mapcar '+
+			(list (1+ b) (1+ h))
+			base)
+		(mapcar '-
+			base
+			(list (1+ b) (1+ h))
+			))
+	  "beam-yz" nil)
+	 ))
+  (setq beam-offset '((1)(2)(3)(4)))
+  (foreach
+   beam beams
+   (setq beam-o (entity:getdxf beam 10))
+   (cond
+	      ((and (equal
+		     (car base)
+		     (car beam-o)
+		     (* 0.49 b))
+		    (> (cadr base)
+		       (cadr beam-o)))
+	       (setq beam-offset
+		     (subst (cons 1
+				  (fix (- (car base)(car beam-o))))
+			    (assoc 1 beam-offset)
+			    beam-offset)))
+	      ((and (equal
+		     (car base)
+		     (car beam-o)
+		     (* 0.49 b))
+		    (< (cadr base)
+		       (cadr beam-o)))
+	       (setq beam-offset
+		     (subst (cons 3
+				  (fix (- (car base)(car beam-o))))
+			    (assoc 3 beam-offset)
+			    beam-offset)))
+	      ((and (equal
+		     (cadr base)
+		     (cadr beam-o)
+		     (* 0.49 h))
+		    (> (car base)
+		       (car beam-o)))
+	       (setq beam-offset
+		     (subst (cons 4
+				  (fix(- (cadr base)(cadr beam-o))))
+			    (assoc 4 beam-offset)
+			    beam-offset)))
+	      ((and (equal
+		     (cadr base)
+		     (cadr beam-o)
+		     (* 0.49 h))
+		    (< (car base)
+		       (car beam-o)))
+	       (setq beam-offset
+		     (subst (cons 2
+				 (fix (- (cadr base)(cadr beam-o))))
+			    (assoc 2 beam-offset)
+			    beam-offset))))
+   )
+  (list
+   b h
+   (mapcar 'cdr beam-offset)
+   ))
+
+(defun tg306:stat-column()
+  "统计柱，含与柱相连的梁信息"
+  (setq columns
+	(pickset:sort 
+	 (pickset:to-list (block:ssget nil "柱" nil))
+	 "xy" 10)
+	)
+  (setq lst
+	(stat:stat
+	(mapcar
+	 '(lambda(columnblk )
+	    (tg306:column-beam-relation columnblk)
+	    )
+	 columns)))
+  (print lst)
+  (setq i 0)
+  (setq lst (mapcar '(lambda(x / bh)
+		       (setq i (1+ i))
+		       (setq bh  (strcat "Z-F0-" (string:number-format
+					       (itoa i)
+					       2 0 "00")))
+		       回写
+		       (mapcar
+			'(lambda(columnblk)
+			   (if 
+			       (list:equal
+				(tg306:column-beam-relation columnblk)
+				(car x)
+				0.01)
+			       (block:set-attributes columnblk (list (cons "编号" bh)))
+			     ))
+			columns)
+		       (append
+			(list i)
+			(list bh)
+			(list (car (car x)))
+			(list (cadr (car x)))
+			(list 
+			 (string:from-list
+			  (mapcar '(lambda(y)
+				     (if (null y)
+					 "_"
+				       (@:to-string y)))
+				  (caddr (car x)))
+			  "|"))
+			(list (cdr x))
+			))
+		    lst))
+  (table:make (getpoint) "柱信息表" '("序号""编号""宽""高""梁关系""个数")
+	      lst)
+	
+  )
 (defun tg306:draw-beam (beamblk pt-base / b-b b-h)
   "绘制梁构件图"
   ;; 从梁宽高和连接表中取连接件信息
@@ -715,7 +894,7 @@
   (foreach ctop ctop-lst
 	   (apply 'tg306:column-top-joint
 		  (append (list  pt-base)  ctop (list 600)))
-	   (setq pt-base (polar pt-base 0 5000))
+	   (setq pt-base (polar pt-base 0 8000))
 	   )
   
   )

@@ -7,6 +7,8 @@
 ;; (@:set-config 'tg306:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单 
 (@:add-menu "钢连接框架" "高强螺栓排" "(tg306:menu-draw-gqls)" )
+(@:add-menu "钢连接框架" "统计柱" "(tg306:stat-column)" )
+(@:add-menu "钢连接框架" "统计梁" "(tg306:stat-beam)" )
 (@:add-menu "钢连接框架" "绘预制梁" "(tg306:batch-draw-beam)" )
 (@:add-menu "钢连接框架" "绘柱顶连接件" "(tg306:draw-colutop)" )
 
@@ -25,7 +27,7 @@
    (setq i 0)
    (repeat
     m
-    (block:insert "高强螺栓孔" ""
+    (block:insert "高强螺栓孔" (@::get-config '@pm:tuku)
 		  (polar
 		   (polar pt-base (* 0.5 pi) (* j s))
 		   0  (* i dm))
@@ -42,7 +44,7 @@
     m
     (if (or (= j 0)(= j (1- n))
 	    (= i 0)(= i (1- m)))
-	(block:insert "螺栓孔" ""
+	(block:insert "螺栓孔" (@::get-config '@pm:tuku)
 		      (polar
 		       (polar pt-base (* 0.5 pi) (* j s))
 		       0  (* i dm))
@@ -262,7 +264,7 @@
     (setq pt-tmp (polar pt-front pi (* 0.5 (1- m) dm)))
     (setq i 0)
     (repeat m
-	    (block:insert "螺栓立面" "" (polar pt-tmp 0 (* i dm)) 0 1)
+	    (block:insert "螺栓立面" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i dm)) 0 1)
 	    (setq i (1+ i)))
     ;;劲板
     (setq pt-tmp
@@ -316,7 +318,7 @@
     (setq pt-tmp (polar pt-left pi (* 0.5 (1- n) s)))
     (setq i 0)
     (repeat n
-	    (block:insert "螺栓立面" "" (polar pt-tmp 0 (* i s)) 0 1)
+	    (block:insert "螺栓立面" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i s)) 0 1)
 	    (setq i (1+ i)))
     ;;劲板
     (setq pt-tmp
@@ -386,7 +388,7 @@
       (setq pt-tmp (polar pt-front pi (* 0.5 (1- m) dm)))
       (setq i 0)
       (repeat m
-	      (block:insert "螺栓立面" "" (polar pt-tmp 0 (* i dm)) 0 1)
+	      (block:insert "螺栓立面" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i dm)) 0 1)
 	      (setq i (1+ i)))
       ;;劲板
       (setq pt-tmp
@@ -732,19 +734,19 @@
 			      
   )
 (defun tg306:column-beam-relation (columnblk / b h base beams)
-  (setq b (block:get-dynprop columnblk "b")
-	h (block:get-dynprop columnblk "h"))
+  (setq b (fix(block:get-dynprop columnblk "b"))
+	h (fix(block:get-dynprop columnblk "h")))
   (setq base  (entity:getdxf columnblk 10))
   (setq beams
 	(pickset:to-list
 	 (block:ssget
 	  (list "c"
 		(mapcar '+
-			(list (1+ b) (1+ h))
+			(list (+ 10 b) (+ 10 h))
 			base)
 		(mapcar '-
 			base
-			(list (1+ b) (1+ h))
+			(list (+ 10 b) (+ 10 h))
 			))
 	  "beam-yz" nil)
 	 ))
@@ -844,7 +846,7 @@
 			 (string:from-list
 			  (mapcar '(lambda(y)
 				     (if (null y)
-					 "_"
+					 "#"
 				       (@:to-string y)))
 				  (caddr (car x)))
 			  "|"))
@@ -858,7 +860,7 @@
 (defun tg306:insert-frame (frame-name pt map  draw-name)
   ;;图框
   (setq tk 
-	(block:insert frame-name ""
+	(block:insert frame-name (@::get-config '@pm:tuku)
 		      pt  
 		      0 0.1))
   (block:set-dynprop tk "map-sheet" map)
@@ -888,7 +890,7 @@
    height width ft yt d m dm n s l1 l2)
   ;;混
   (setq beam-ent
-	(block:insert "预制梁-混立" ""
+	(block:insert "预制梁-混立" (@::get-config '@pm:tuku)
 		      (polar pt-base 0 (+ 60 l1)) 0 1))
   (block:set-dynprop beam-ent "h" b-h)
   ;;标注

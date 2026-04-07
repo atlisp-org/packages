@@ -10,14 +10,10 @@
 (@:add-menu "钢连接框架" "统计柱" "(tg306:stat-column)" )
 (@:add-menu "钢连接框架" "统计梁" "(tg306:stat-beam)" )
 (@:add-menu "钢连接框架" "绘预制梁" "(tg306:batch-draw-beam)" )
-(@:add-menu "钢连接框架" "绘柱顶连接件" "(tg306:draw-colutop)" )
+(@:add-menu "钢连接框架" "绘柱顶连接件" "(tg306:menu-draw-colutop)" )
+(@:add-menu "钢连接框架" "标注板件" "(tg306:menu-dim-plate)" )
 
-(defun tg306:menu-draw-gqls ()
-  (setq m  (getint "水平排数: "))
-  (setq dm  (getreal "水平间距: "))
-  (setq n  (getint "竖向排数: "))
-  (setq s  (getreal "竖向间距: "))
-  (tg306:draw-gqls (getpoint "初始点: ") m dm n s))
+;; 绘螺栓
 (defun tg306:draw-gqls(pt-base m dm n s / i j)
   "m 水平排数，dm 水平间距，n 竖向排数，s 竖向间距"
   (setq j 0)
@@ -43,13 +39,32 @@
     m
     (if (or (= j 0)(= j (1- n))
 	    (= i 0)(= i (1- m)))
-	(block:insert "螺栓孔" (@::get-config '@pm:tuku)
+	(block:insert "高强螺栓孔" (@::get-config '@pm:tuku)
 		      (polar
 		       (polar pt-base (* 0.5 pi) (* j s))
 		       0  (* i dm))
 		      0 1))
     (setq i (1+ i)))
    (setq j (1+ j))))
+;;绘钢板
+(defun tg306:make-steel-plate (pt-base b h t1)
+  "绘制钢板:含厚度t1"
+  (setq plate
+	(entity:make-rectangle
+	 (polar
+	  (polar pt-base pi (* 0.5 b))
+	  (* 1.5 pi)
+	  (* 0.5 h))
+	 (polar
+	  (polar pt-base 0 (* 0.5 b))
+	  (* 0.5 pi)
+	  (* 0.5 h))
+	 ))
+  (entity:putdxf plate 39 t1)
+  plate
+  )
+
+;; 绘梁连接件翼缘板elev
 (defun tg306:draw-yyb (pt-base l w h po)
   "绘制翼缘板,l 长，w宽,h厚度，po:bool ,po 坡口角"
   (setq yyb
@@ -77,6 +92,7 @@
 	 (list 0 0 0 -0.414 0 -0.414)
 	 0 1 0))
   (entity:putdxf fb 39 h))
+;; 绘梁连接件腹板elev
 (defun tg306:draw-beam-joint  (pt-base height width ft yt d m dm n s l1 l2)
   "梁钢连接件,height 钢梁高，width,钢梁宽 yt 翼厚ft 腹厚，d m dm n s ：螺栓数据，l1，外露长度"
   (tg306:draw-yyb pt-base (+ l1 l2)  width yt (* 0.25 pi))
@@ -95,22 +111,7 @@
    (polar pt-tmp (* 0.5 pi) height))
   
   )
-(defun tg306:make-steel-plate (pt-base b h t1)
-  "绘制钢板:含厚度t1"
-  (setq plate
-	(entity:make-rectangle
-	 (polar
-	  (polar pt-base pi (* 0.5 b))
-	  (* 1.5 pi)
-	  (* 0.5 h))
-	 (polar
-	  (polar pt-base 0 (* 0.5 b))
-	  (* 0.5 pi)
-	  (* 0.5 h))
-	 ))
-  (entity:putdxf plate 39 t1)
-  plate
-  )
+
 ;;; 柱底
 (defun tg306:column-bottom-joint (pt-base c-b c-h f-b f-h m dm n s square-bute-t / diff)
   (progn ;; 平面
@@ -338,11 +339,8 @@
     )
   
   )
-(defun tg306:get-beam-h(colu)
-  "取柱周梁的最大高度"
-  600 ;;应该取梁高最大值这里先按800
-  )
-;;需读取四边梁数据
+
+;;; 柱顶连接件
 (defun tg306:column-top-elev (pt-front c-b m dm max-bh)
   "c-b 柱宽/高，m 螺栓排数，dm间距"
   (entity:make-point pt-front)
@@ -494,7 +492,11 @@
   (entity:make-lwpolyline lwpts nil 0 1 0)
   
   )
-;;; 柱顶连接件
+(defun tg306:get-beam-h(colu) ;;柱周最大梁高
+  "取柱周梁的最大高度"
+  600 ;;应该取梁高最大值这里先按800
+  )
+
 (defun tg306:column-top-joint (pt-base c-b c-h f-b f-h m dm n s square-bute-t max-bh / diff)
   "max-bh: 柱周最大梁高"
   (setq dim-offset 300 ;;标注偏移量
@@ -502,14 +504,39 @@
   (progn ;; 平面
     ;;法兰
     (setq diff (* 2 60))
-    (tg306:make-steel-plate pt-base (+ c-b diff) (+ c-h diff) 30)
+    (setq plate-tmp
+	  (tg306:make-steel-plate pt-base (+ c-b diff) (+ c-h diff) 30))
+    (tg306:dim-plate plate-tmp)
+    ;;键孔
+    (setq plate-tmp
+	  (tg306:make-steel-plate pt-base 250 250 30))
     ;;; 方管
-    ;;外
+    ;;上
     (setq diff (* 2 -65))
-    (tg306:make-steel-plate  pt-base (+ c-b diff)(+ c-h diff) joint-h)
-    ;;内
-    (setq diff (* 2 -85))
-    (tg306:make-steel-plate pt-base (+ c-b diff)(+ c-h diff) joint-h)
+    (setq plate-tmp
+	  (tg306:make-steel-plate
+	   (polar pt-base (* 0.5 pi) (+ (* 0.5 (+ c-h diff)) -10))
+	   (+ c-b diff) 20 joint-h))
+    (tg306:dim-plate plate-tmp)
+    ;;下
+    (setq diff (* 2 -65))
+    (setq plate-tmp
+	  (tg306:make-steel-plate
+	   (polar pt-base (* 1.5 pi) (+ (* 0.5 (+ c-h diff)) -10))
+	   (+ c-b diff) 20 joint-h))
+   ;;左
+    (setq diff (* 2 -65))
+    (setq plate-tmp
+	  (tg306:make-steel-plate
+	   (polar pt-base pi (+ (* 0.5 (+ c-b diff)) -10))
+	   20 (+ c-h diff -40) joint-h))
+    (tg306:dim-plate plate-tmp)
+    ;;右
+    (setq diff (* 2 -65))
+    (setq plate-tmp
+	  (tg306:make-steel-plate
+	   (polar pt-base 0 (+ (* 0.5 (+ c-b diff)) -10))
+	   20 (+ c-h diff -40) joint-h))
     (progn;; 螺栓劲板
       (setq diff 0)
       (tg306:draw-ring-ls 
@@ -519,18 +546,20 @@
 	(+ (* 0.5 c-h) diff))
        m dm n s)
       ;;  劲板
-     
       (setq pt-tmp
 	    (polar pt-base pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
 	    )
       (setq i 0)
       (repeat (1- m)
 	      ;;上
+	      (setq plate-tmp
 	      (tg306:make-steel-plate
 	       (polar (polar pt-tmp 0 (* i dm))
 		      (* 0.5 pi)
 		      (- (* 0.5 c-h) 2.5))
-	       12 125 150)
+	       12 125 150))
+	      (if (= i 0)
+		  (tg306:dim-plate plate-tmp))
 	      ;;下
 	      (tg306:make-steel-plate
 	       (polar (polar pt-tmp 0 (* i dm))
@@ -550,11 +579,14 @@
 		      (- (* 0.5 c-b) 2.5))
 	       125 12 150)
 	      ;;右
+	      (setq plate-tmp  
 	      (tg306:make-steel-plate
 	       (polar (polar pt-tmp (* 0.5 pi) (* i s))
 		      0
 		      (- (* 0.5 c-b) 2.5))
-	       125 12 150)
+	       125 12 150))
+	      (if (= i 0)
+		  (tg306:dim-plate plate-tmp))
 	      (setq i (1+ i)))
       )
     (progn ;; 标注
@@ -671,59 +703,8 @@
    (cons 'b (block:get-dynprop beamblk "宽"))
    (cons 'h (cdr (assoc "高" (block:get-attributes beam-ent))))
    (cons 'joint 0)))
-(defun tg306:stat-beam()
-  "统计梁类型并回写编号"
-  (setq beams
-	(pickset:sort 
-	 (pickset:to-list (block:ssget nil "beam-yz" nil))
-	 "xy" 10)
-	)
-  (setq lst
-	(stat:stat
-	(mapcar
-	 '(lambda(beamblk)
-	    (list
-	     ;; (cdr (assoc "编号" (block:get-attributes beamblk)))
-	     (fix (block:get-dynprop beamblk "标志长度"))
-	     (fix (block:get-dynprop beamblk "宽"))
-	     (cdr (assoc "高" (block:get-attributes beamblk)))
-	     (cdr (assoc "设计号" (block:get-attributes beamblk))))
-	    )
-	 beams)))
-  ;;绘表格
-  (setq i 0)
-  (setq lst (mapcar '(lambda(x)
-		       (setq i (1+ i))
-		       (setq bh  (strcat "L-F0-" (string:number-format
-					       (itoa i)
-					       2 0 "00")))
-		       ;;回写
-		       (mapcar
-			'(lambda(beamblk)
-			   (if 
-			       (list:equal
-				(list
-				 (fix (block:get-dynprop beamblk "标志长度"))
-				 (fix (block:get-dynprop beamblk "宽"))
-				 (cdr (assoc "高" (block:get-attributes beamblk)))
-				 (cdr (assoc "设计号" (block:get-attributes beamblk))))
-				(car x)
-				0.1)
-			       (block:set-attributes beamblk (list (cons "编号" bh)))
-			     ))
-			beams)
-		       (append
-			(list i)
-			(list bh)
-			(car x)
-			(list (cdr x))
-			))
-		    lst))
-  (print lst)
-  (table:make (getpoint) "梁信息表" '("序号""编号""标志长度""宽""高""设计号""个数")
-	      lst)
-			      
-  )
+
+;;需读取四边梁数据
 (defun tg306:column-beam-relation (columnblk / b h base beams)
   (setq b (fix(block:get-dynprop columnblk "b"))
 	h (fix(block:get-dynprop columnblk "h")))
@@ -795,6 +776,138 @@
    b h
    (mapcar 'cdr beam-offset)
    ))
+
+;;; 绘制梁
+(defun tg306:draw-beam (beamblk pt-base / b-b b-h)
+  "绘制梁构件图"
+  ;; 从梁宽高和连接表中取连接件信息
+  (princ (strcat "\n绘制" (cdr (assoc "编号" (block:get-attributes beamblk)))))
+  (setq b-b (block:get-dynprop beamblk "宽"))
+  (setq b-h (read (cdr (assoc "高" (block:get-attributes beamblk)))))
+  
+  (tg306:get-beam-joint-info b-b b-h)
+  ;;图框
+  (setq tk (tg306:insert-frame
+	    "图框-好逐易工程服务"
+	    (polar 
+	     (polar pt-base 0 7000)
+	     (* 1.5 pi) 3600)
+	    "A2+0.25"
+	    (cdr (assoc "编号" (block:get-attributes beamblk)))
+	    ))
+  ;; 左接头
+  (tg306:draw-beam-joint
+   (polar (polar pt-base 0 60)
+	  (* 1.5 pi) (- b-h 60))
+   height width ft yt d m dm n s l1 l2)
+  ;;混
+  (setq beam-ent
+	(block:insert "预制梁-混立" (@::get-config '@pm:tuku)
+		      (polar pt-base 0 (+ 60 l1)) 0 1))
+  (block:set-dynprop beam-ent "h" b-h)
+  ;;标注
+  (entity:dimhorizontal
+   pt-base
+   (setq pt-tmp (polar pt-base 0 (- (block:get-dynprop beamblk "标志长度") 120)))
+   (polar (point:mid pt-base pt-tmp) (* 1.5 pi) (+ b-h 200))
+   )
+  (princ "..OK")
+  )
+
+(setq build1-beam
+      (list
+       '("矩250x450" "WH330x190x10x14" 1 130 2 70 235)
+       '("矩250x600" "WH480x190x14x16" 4 100 5 70 445)
+       '("矩300x600" "WH480x240x10x16" 4 100 3 70 305)
+       '("矩350x600" "WH480x290x10x16" 4 100 3 70 305)
+       '("矩250x500" "WH380x190x8x14" 2 100 2 100 305)
+       '("矩200x400" "WH280x140x6x8" 1 100 2 90 305)))     
+(defun tg306:get-list-from-texts()
+  (setq txts
+	(pickset:sort 
+	 (pickset:to-list (ssget  '((0 . "text"))))
+	 "Yx"
+	 '(100 100)))
+  (mapcar 'tg306:get-columntop-joint-para
+	  (list:split (mapcar 'text:get-mtext  txts) 7))
+  )
+
+;;;引线标注板尺寸
+(defun tg306:dim-plate (plate / box  bh)
+  (setq box (entity:getbox plate 0))
+  (setq bh (mapcar '- (cadr box)(car box)))
+  (setq t1 (entity:getdxf plate  39))
+
+  (entity:make-multileader (list (cadr box)
+				 (polar (cadr box) (* 0.25 pi) 200))
+			   (strcat (itoa (fix(car bh)))"x"(itoa (fix(cadr bh)))
+				   "\n"(itoa (fix t1)))))
+
+;;插图框
+(defun tg306:insert-frame (frame-name pt map  draw-name)
+  ;;图框
+  (setq tk 
+	(block:insert frame-name (@::get-config '@pm:tuku)
+		      pt  
+		      0 0.1))
+  (block:set-dynprop tk "map-sheet" map)
+  (block:set-attributes tk (list  (cons "图名"  draw-name )))
+  tk)
+
+;;; menu 
+(defun tg306:stat-beam()
+  "统计梁类型并回写编号"
+  (setq beams
+	(pickset:sort 
+	 (pickset:to-list (block:ssget nil "beam-yz" nil))
+	 "xy" 10)
+	)
+  (setq lst
+	(stat:stat
+	(mapcar
+	 '(lambda(beamblk)
+	    (list
+	     ;; (cdr (assoc "编号" (block:get-attributes beamblk)))
+	     (fix (block:get-dynprop beamblk "标志长度"))
+	     (fix (block:get-dynprop beamblk "宽"))
+	     (cdr (assoc "高" (block:get-attributes beamblk)))
+	     (cdr (assoc "设计号" (block:get-attributes beamblk))))
+	    )
+	 beams)))
+  ;;绘表格
+  (setq i 0)
+  (setq lst (mapcar '(lambda(x)
+		       (setq i (1+ i))
+		       (setq bh  (strcat "L-F0-" (string:number-format
+					       (itoa i)
+					       2 0 "00")))
+		       ;;回写
+		       (mapcar
+			'(lambda(beamblk)
+			   (if 
+			       (list:equal
+				(list
+				 (fix (block:get-dynprop beamblk "标志长度"))
+				 (fix (block:get-dynprop beamblk "宽"))
+				 (cdr (assoc "高" (block:get-attributes beamblk)))
+				 (cdr (assoc "设计号" (block:get-attributes beamblk))))
+				(car x)
+				0.1)
+			       (block:set-attributes beamblk (list (cons "编号" bh)))
+			     ))
+			beams)
+		       (append
+			(list i)
+			(list bh)
+			(car x)
+			(list (cdr x))
+			))
+		    lst))
+  (print lst)
+  (table:make (getpoint) "梁信息表" '("序号""编号""标志长度""宽""高""设计号""个数")
+	      lst)
+			      
+  )
 (defun tg306:stat-column()
   "统计柱，含与柱相连的梁信息"
   (setq columns
@@ -847,50 +960,6 @@
 	      lst)
 	
   )
-(defun tg306:insert-frame (frame-name pt map  draw-name)
-  ;;图框
-  (setq tk 
-	(block:insert frame-name (@::get-config '@pm:tuku)
-		      pt  
-		      0 0.1))
-  (block:set-dynprop tk "map-sheet" map)
-  (block:set-attributes tk (list  (cons "图名"  draw-name )))
-  tk)
-(defun tg306:draw-beam (beamblk pt-base / b-b b-h)
-  "绘制梁构件图"
-  ;; 从梁宽高和连接表中取连接件信息
-  (princ (strcat "\n绘制" (cdr (assoc "编号" (block:get-attributes beamblk)))))
-  (setq b-b (block:get-dynprop beamblk "宽"))
-  (setq b-h (read (cdr (assoc "高" (block:get-attributes beamblk)))))
-  
-  (tg306:get-beam-joint-info b-b b-h)
-  ;;图框
-  (setq tk (tg306:insert-frame
-	    "图框-好逐易工程服务"
-	    (polar 
-	     (polar pt-base 0 7000)
-	     (* 1.5 pi) 3600)
-	    "A2+0.25"
-	    (cdr (assoc "编号" (block:get-attributes beamblk)))
-	    ))
-  ;; 左接头
-  (tg306:draw-beam-joint
-   (polar (polar pt-base 0 60)
-	  (* 1.5 pi) (- b-h 60))
-   height width ft yt d m dm n s l1 l2)
-  ;;混
-  (setq beam-ent
-	(block:insert "预制梁-混立" (@::get-config '@pm:tuku)
-		      (polar pt-base 0 (+ 60 l1)) 0 1))
-  (block:set-dynprop beam-ent "h" b-h)
-  ;;标注
-  (entity:dimhorizontal
-   pt-base
-   (setq pt-tmp (polar pt-base 0 (- (block:get-dynprop beamblk "标志长度") 120)))
-   (polar (point:mid pt-base pt-tmp) (* 1.5 pi) (+ b-h 200))
-   )
-  (princ "..OK")
-  )
 (defun tg306:batch-draw-beam ()
   (setq beams
 	(pickset:sort 
@@ -909,25 +978,7 @@
 		 (setq pt-base (polar pt-base 0 7600))
 		 )))
   )
-
-(setq build1-beam
-      (list
-       '("矩250x450" "WH330x190x10x14" 1 130 2 70 235)
-       '("矩250x600" "WH480x190x14x16" 4 100 5 70 445)
-       '("矩300x600" "WH480x240x10x16" 4 100 3 70 305)
-       '("矩350x600" "WH480x290x10x16" 4 100 3 70 305)
-       '("矩250x500" "WH380x190x8x14" 2 100 2 100 305)
-       '("矩200x400" "WH280x140x6x8" 1 100 2 90 305)))     
-(defun tg306:get-list-from-texts()
-  (setq txts
-	(pickset:sort 
-	 (pickset:to-list (ssget  '((0 . "text"))))
-	 "Yx"
-	 '(100 100)))
-  (mapcar 'tg306:get-columntop-joint-para
-	  (list:split (mapcar 'text:get-mtext  txts) 7))
-  )
-(defun tg306:draw-colutop ()
+(defun tg306:menu-draw-colutop ()
   (setq ctop-lst (tg306:get-list-from-texts))
   (setq pt-base (getpoint))
   (foreach ctop ctop-lst
@@ -948,9 +999,14 @@
 	   )
   
   )
-(defun c:tt ()
-  ;; (tg306:column-bottom-joint (getpoint) 500 700 620 820 6 100 6 140 20)
-  ;;(tg306:column-top-joint (getpoint) 500 700 620 820 6 100 6 140 20 800)
-  ;;(tg306:batch-draw-beam)
-  (tg306:draw-colutop)
-  )
+(defun tg306:menu-draw-gqls ()
+  (setq m  (getint "水平排数: "))
+  (setq dm  (getreal "水平间距: "))
+  (setq n  (getint "竖向排数: "))
+  (setq s  (getreal "竖向间距: "))
+  (tg306:draw-gqls (getpoint "初始点: ") m dm n s))
+
+(defun tg306:menu-dim-plate ()
+  (mapcar 'tg306:dim-plate
+	  (pickset:to-list (ssget  '((0 . "lwpolyline"))))))
+

@@ -1,33 +1,32 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'tg306:first ÓÃÓÚ Ó¦ÓÃ°ü tg306 µÄ µÚÒ»¸öÅäÖÃÏî first 
-(@:define-config 'tg306:first "ÎÒÊÇÅäÖÃÏî tg306:first µÄÖµ" "Õâ¸öÅäÖÃÏîµÄÓÃÍ¾ËµÃ÷¡£")
-;; (@:get-config 'tg306:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'tg306:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "¸ÖÁ¬½Ó¿ò¼Ü" "¸ßÇ¿ÂİË¨ÅÅ" "(tg306:menu-draw-gqls)" )
-(@:add-menu "¸ÖÁ¬½Ó¿ò¼Ü" "Í³¼ÆÖù" "(tg306:stat-column)" )
-(@:add-menu "¸ÖÁ¬½Ó¿ò¼Ü" "Í³¼ÆÁº" "(tg306:stat-beam)" )
-(@:add-menu "¸ÖÁ¬½Ó¿ò¼Ü" "»æÔ¤ÖÆÁº" "(tg306:batch-draw-beam)" )
-(@:add-menu "¸ÖÁ¬½Ó¿ò¼Ü" "»æÖù¶¥Á¬½Ó¼ş" "(tg306:draw-colutop)" )
+;; å®šä¹‰é…ç½®é¡¹ 'tg306:first ç”¨äº åº”ç”¨åŒ… tg306 çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+(@:define-config 'tg306:first "æˆ‘æ˜¯é…ç½®é¡¹ tg306:first çš„å€¼" "è¿™ä¸ªé…ç½®é¡¹çš„ç”¨é€”è¯´æ˜ã€‚")
+;; (@:get-config 'tg306:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'tg306:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "é’¢è¿æ¥æ¡†æ¶" "é«˜å¼ºèºæ “æ’" "(tg306:menu-draw-gqls)" )
+(@:add-menu "é’¢è¿æ¥æ¡†æ¶" "ç»Ÿè®¡æŸ±" "(tg306:stat-column)" )
+(@:add-menu "é’¢è¿æ¥æ¡†æ¶" "ç»Ÿè®¡æ¢" "(tg306:stat-beam)" )
+(@:add-menu "é’¢è¿æ¥æ¡†æ¶" "ç»˜é¢„åˆ¶æ¢" "(tg306:batch-draw-beam)" )
+(@:add-menu "é’¢è¿æ¥æ¡†æ¶" "ç»˜æŸ±é¡¶è¿æ¥ä»¶" "(tg306:draw-colutop)" )
 
 (defun tg306:menu-draw-gqls ()
-  (setq m  (getint "Ë®Æ½ÅÅÊı: "))
-  (setq dm  (getreal "Ë®Æ½¼ä¾à: "))
-  (setq n  (getint "ÊúÏòÅÅÊı: "))
-  (setq s  (getreal "ÊúÏò¼ä¾à: "))
-  (tg306:draw-gqls (getpoint "³õÊ¼µã: ") m dm n s))
-
+  (setq m  (getint "æ°´å¹³æ’æ•°: "))
+  (setq dm  (getreal "æ°´å¹³é—´è·: "))
+  (setq n  (getint "ç«–å‘æ’æ•°: "))
+  (setq s  (getreal "ç«–å‘é—´è·: "))
+  (tg306:draw-gqls (getpoint "åˆå§‹ç‚¹: ") m dm n s))
 (defun tg306:draw-gqls(pt-base m dm n s / i j)
-  "m Ë®Æ½ÅÅÊı£¬dm Ë®Æ½¼ä¾à£¬n ÊúÏòÅÅÊı£¬s ÊúÏò¼ä¾à"
+  "m æ°´å¹³æ’æ•°ï¼Œdm æ°´å¹³é—´è·ï¼Œn ç«–å‘æ’æ•°ï¼Œs ç«–å‘é—´è·"
   (setq j 0)
   (repeat
    n
    (setq i 0)
    (repeat
     m
-    (block:insert "¸ßÇ¿ÂİË¨¿×" (@::get-config '@pm:tuku)
+    (block:insert "é«˜å¼ºèºæ “å­”" (@::get-config '@pm:tuku)
 		  (polar
 		   (polar pt-base (* 0.5 pi) (* j s))
 		   0  (* i dm))
@@ -35,7 +34,7 @@
     (setq i (1+ i)))
    (setq j (1+ j))))
 (defun tg306:draw-ring-ls (pt-base m dm n s / i j)
-  "m Ë®Æ½ÅÅÊı£¬dm Ë®Æ½¼ä¾à£¬n ÊúÏòÅÅÊı£¬s ÊúÏò¼ä¾à"
+  "m æ°´å¹³æ’æ•°ï¼Œdm æ°´å¹³é—´è·ï¼Œn ç«–å‘æ’æ•°ï¼Œs ç«–å‘é—´è·"
   (setq j 0)
   (repeat
    n
@@ -44,27 +43,25 @@
     m
     (if (or (= j 0)(= j (1- n))
 	    (= i 0)(= i (1- m)))
-	(block:insert "ÂİË¨¿×" (@::get-config '@pm:tuku)
+	(block:insert "èºæ “å­”" (@::get-config '@pm:tuku)
 		      (polar
 		       (polar pt-base (* 0.5 pi) (* j s))
 		       0  (* i dm))
 		      0 1))
     (setq i (1+ i)))
    (setq j (1+ j))))
-
 (defun tg306:draw-yyb (pt-base l w h po)
-  "»æÖÆÒíÔµ°å,l ³¤£¬w¿í,hºñ¶È£¬po:bool ,po ÆÂ¿Ú½Ç"
+  "ç»˜åˆ¶ç¿¼ç¼˜æ¿,l é•¿ï¼Œwå®½,håšåº¦ï¼Œpo:bool ,po å¡å£è§’"
   (setq yyb
 	(entity:make-lwpline-bold
 	 (list pt-base
 	       (polar pt-base 0 l)
 	       (polar (polar pt-base 0 l) (* 0.5 pi) h)
-	       (polar (polar pt-base 0 10) (* 0.5 pi) h));;45¶ÈÆÂ¿Ú
+	       (polar (polar pt-base 0 10) (* 0.5 pi) h));;45åº¦å¡å£
 	 nil 0 1 0))
   (entity:putdxf yyb 39  w))
-
 (defun tg306:draw-fb (pt-base l w h )
-  "»æÖÆ¸¹°å,l ³¤£¬w¿í,hºñ¶È£¬po:bool ,ÊÇ·ñ´òÆÂ¿Ú"
+  "ç»˜åˆ¶è…¹æ¿,l é•¿ï¼Œwå®½,håšåº¦ï¼Œpo:bool ,æ˜¯å¦æ‰“å¡å£"
   (setq fb
 	(entity:make-lwpline-bold
 	 (list (polar pt-base 0 35)
@@ -80,9 +77,8 @@
 	 (list 0 0 0 -0.414 0 -0.414)
 	 0 1 0))
   (entity:putdxf fb 39 h))
-
 (defun tg306:draw-beam-joint  (pt-base height width ft yt d m dm n s l1 l2)
-  "Áº¸ÖÁ¬½Ó¼ş,height ¸ÖÁº¸ß£¬width,¸ÖÁº¿í yt Òíºñft ¸¹ºñ£¬d m dm n s £ºÂİË¨Êı¾İ£¬l1£¬ÍâÂ¶³¤¶È"
+  "æ¢é’¢è¿æ¥ä»¶,height é’¢æ¢é«˜ï¼Œwidth,é’¢æ¢å®½ yt ç¿¼åšft è…¹åšï¼Œd m dm n s ï¼šèºæ “æ•°æ®ï¼Œl1ï¼Œå¤–éœ²é•¿åº¦"
   (tg306:draw-yyb pt-base (+ l1 l2)  width yt (* 0.25 pi))
   (tg306:draw-yyb (polar pt-base (* 0.5 pi) (- height yt)) (+ l1 l2)  width yt (* 0.25 pi))
   (tg306:draw-fb
@@ -90,18 +86,17 @@
    (- (+ l1 l2) 10)
    (- height yt yt)
    ft)
-  ;; ÂİË¨
+  ;; èºæ “
   (tg306:draw-gqls (polar (polar pt-base 0 60) (* 0.5 pi) d)
 		   m dm n s)
-  ;;»ìÄıÍÁ½çÏß
+  ;;æ··å‡åœŸç•Œçº¿
   (entity:make-line
    (setq pt-tmp (polar pt-base 0 l1))
    (polar pt-tmp (* 0.5 pi) height))
   
   )
-
 (defun tg306:make-steel-plate (pt-base b h t1)
-  "»æÖÆ¸Ö°å:º¬ºñ¶Èt1"
+  "ç»˜åˆ¶é’¢æ¿:å«åšåº¦t1"
   (setq plate
 	(entity:make-rectangle
 	 (polar
@@ -116,19 +111,18 @@
   (entity:putdxf plate 39 t1)
   plate
   )
-
-;;; Öùµ×
+;;; æŸ±åº•
 (defun tg306:column-bottom-joint (pt-base c-b c-h f-b f-h m dm n s square-bute-t / diff)
-  (progn ;; Æ½Ãæ
-    ;;·¨À¼
+  (progn ;; å¹³é¢
+    ;;æ³•å…°
     (setq diff (* 2 60))
     (tg306:make-rec-by-center pt-base (+ c-b diff)(+ c-h diff))
-    ;; ·½¹Ü
+    ;; æ–¹ç®¡
     (setq diff (* 2 -65))
     (tg306:make-rec-by-center pt-base (+ c-b diff)(+ c-h diff))
     (setq diff (* 2 -85))
     (tg306:make-rec-by-center pt-base (+ c-b diff)(+ c-h diff))
-    ;; ÂİË¨¾¢°å
+    ;; èºæ “åŠ²æ¿
     (setq diff 0)
     (tg306:draw-ring-ls 
      (polar
@@ -136,19 +130,19 @@
       (* 1.5 pi)
       (+ (* 0.5 c-h) diff))
      m dm n s)
-    ;; TODO: ¾¢°å
+    ;; TODO: åŠ²æ¿
     (setq pt-tmp
 	  (polar pt-base pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
 	  )
     (setq i 0)
     (repeat (1- m)
-	    ;;ÉÏ
+	    ;;ä¸Š
 	    (tg306:make-rec-by-center
 	     (polar (polar pt-tmp 0 (* i dm))
 		    (* 0.5 pi)
 		    (- (* 0.5 c-h) 2.5))
 	     20 125)
-	    ;;ÏÂ
+	    ;;ä¸‹
 	    (tg306:make-rec-by-center
 	     (polar (polar pt-tmp 0 (* i dm))
 		    (* 1.5 pi)
@@ -160,21 +154,21 @@
 	  )
     (setq i 0)
     (repeat (1- n)
-	    ;;×ó
+	    ;;å·¦
 	    (tg306:make-rec-by-center
 	     (polar (polar pt-tmp (* 0.5 pi) (* i s))
 		    pi
 		    (- (* 0.5 c-b) 2.5))
 	     125 20)
-	    ;;ÓÒ
+	    ;;å³
 	    (tg306:make-rec-by-center
 	     (polar (polar pt-tmp (* 0.5 pi) (* i s))
 		    0
 		    (- (* 0.5 c-b) 2.5))
 	     125 20)
 	    (setq i (1+ i)))
-    (progn ;; ±ê×¢
-      ;; Ë®Æ½
+    (progn ;; æ ‡æ³¨
+      ;; æ°´å¹³
       (setq pt-hl
 	    (polar 
 	     (polar pt-base (* 1.5 pi) (+ 60 (* 0.5 c-h)))
@@ -191,12 +185,12 @@
        pt-hl (setq pt-tmp (polar pt-hl 0 60))
        (polar (point:mid pt-hl pt-tmp) (* 1.5 pi) 120)
        )
-      ;;×Ü
+      ;;æ€»
       (entity:dimhorizontal
        pt-hl pt-hr
        (polar (point:mid pt-hl pt-hr) (* 1.5 pi) 200)
        )
-      ;;ÂİË¨
+      ;;èºæ “
       (setq i  0)
       (repeat
        (1- m)
@@ -207,13 +201,13 @@
        (setq pt-tmp pt-tmp2)
        (setq i (1+ i)))
       
-      ;; ÊúÏò
+      ;; ç«–å‘
       (setq pt-vb
 	    (polar 
 	     (polar pt-base (* 1.5 pi) (+ 60 (* 0.5 c-h)))
 	     pi (+ 60(* 0.5 c-b))))
       (setq pt-vt (polar pt-vb (* 0.5 pi) (+ c-h  60 60)))
-      ;;×Ü
+      ;;æ€»
       (entity:dimvertical
        pt-vb pt-vt
        (polar (point:mid pt-vb pt-vt) pi 200)
@@ -226,7 +220,7 @@
        pt-vb (setq pt-tmp(polar pt-vb (* 0.5 pi) 60))
        (polar (point:mid pt-vb pt-tmp) pi 120)
        )
-      ;;±êÂİË¨
+      ;;æ ‡èºæ “
       (setq i  0)
       (repeat
        (1- n)
@@ -239,10 +233,10 @@
       
       )
     )
-  (progn  ;;; ÕıÁ¢Ãæ
+  (progn  ;;; æ­£ç«‹é¢
     (setq pt-front (polar pt-base (* 0.5 pi) (* 1.5 c-h)))
     (entity:make-point pt-front)
-    ;;µ×°å
+    ;;åº•æ¿
     (tg306:make-rec-by-center
      (polar pt-front (* 0.5 pi) 15)
      (+ c-b 120) 30)
@@ -253,32 +247,32 @@
      62 252)
 
     
-    ;;·½¹Ü
+    ;;æ–¹ç®¡
     (tg306:make-rec-by-center
      (polar pt-front (* 0.5 pi) (+ 30 (* 0.5 (+ 200(* 0.5  (max c-b c-h))))))
      (+ c-b -130) (+ 200 (* 0.5 (max c-b c-h))))
     (tg306:make-rec-by-center
      (polar pt-front (* 0.5 pi) (+ 30 (* 0.5 (+ 200 (* 0.5 (max c-b c-h))))))
      (+ c-b (- -130 (* 2 square-bute-t))) (+ 200 (* 0.5 (max c-b c-h))))
-    ;; ÂİË¨
+    ;; èºæ “
     (setq pt-tmp (polar pt-front pi (* 0.5 (1- m) dm)))
     (setq i 0)
     (repeat m
-	    (block:insert "ÂİË¨Á¢Ãæ" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i dm)) 0 1)
+	    (block:insert "èºæ “ç«‹é¢" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i dm)) 0 1)
 	    (setq i (1+ i)))
-    ;;¾¢°å
+    ;;åŠ²æ¿
     (setq pt-tmp
 	  (polar pt-front pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
 	  )
     (setq i 0)
     (repeat (1- m)
-	    ;;ÉÏ
+	    ;;ä¸Š
 	    (tg306:make-rec-by-center
 	     (polar (polar pt-tmp 0 (* i dm))
 		    (* 0.5 pi)
 		    80)
 	     20 100)
-	    ;;ÏÂ
+	    ;;ä¸‹
 	    (entity:putdxf 
 	     (tg306:make-rec-by-center
 	      (polar (polar pt-tmp 0 (* i dm))
@@ -289,7 +283,7 @@
 	    (setq i (1+ i)))
     )
 
-  (progn ;;; ²àÁ¢Ãæ
+  (progn ;;; ä¾§ç«‹é¢
     (setq pt-left
 	  (polar 
 	   (polar pt-base 0 (+ (* 1.5 c-b) c-h))
@@ -297,7 +291,7 @@
 	   (* 0.5 c-h )))
     
     (entity:make-point pt-left)
-    ;;µ×°å
+    ;;åº•æ¿
     (tg306:make-rec-by-center
      (polar pt-left (* 0.5 pi) 15)
      (+ c-h 120) 30)
@@ -306,7 +300,7 @@
       (polar pt-left (* 1.5 pi) 15)
       (+ c-h 120) 30)
      62 252)
-    ;;·½¹Ü
+    ;;æ–¹ç®¡
     (tg306:make-rec-by-center
      (polar pt-left (* 0.5 pi) (+ 30 (* 0.5 (+ 200(* 0.5  (max c-b c-h))))))
      (+ c-h -130) (+ 200 (* 0.5 (max c-b c-h))))
@@ -314,25 +308,25 @@
      (polar pt-left (* 0.5 pi) (+ 30 (* 0.5 (+ 200 (* 0.5 (max c-b c-h))))))
      (+ c-h (- -130 (* 2 square-bute-t))) (+ 200 (* 0.5 (max c-b c-h))))
 
-    ;; ÂİË¨
+    ;; èºæ “
     (setq pt-tmp (polar pt-left pi (* 0.5 (1- n) s)))
     (setq i 0)
     (repeat n
-	    (block:insert "ÂİË¨Á¢Ãæ" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i s)) 0 1)
+	    (block:insert "èºæ “ç«‹é¢" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i s)) 0 1)
 	    (setq i (1+ i)))
-    ;;¾¢°å
+    ;;åŠ²æ¿
     (setq pt-tmp
 	  (polar pt-left pi (- (* 0.5 s (1- n)) (* 0.5 s)))
 	  )
     (setq i 0)
     (repeat (1- n)
-	    ;;ÉÏ
+	    ;;ä¸Š
 	    (tg306:make-rec-by-center
 	     (polar (polar pt-tmp 0 (* i s))
 		    (* 0.5 pi)
 		    80)
 	     20 100)
-	    ;;ÏÂ
+	    ;;ä¸‹
 	    (entity:putdxf
 	     (tg306:make-rec-by-center
 	      (polar (polar pt-tmp 0 (* i s))
@@ -344,30 +338,28 @@
     )
   
   )
-
 (defun tg306:get-beam-h(colu)
-  "È¡ÖùÖÜÁºµÄ×î´ó¸ß¶È"
-  600 ;;Ó¦¸ÃÈ¡Áº¸ß×î´óÖµÕâÀïÏÈ°´800
+  "å–æŸ±å‘¨æ¢çš„æœ€å¤§é«˜åº¦"
+  600 ;;åº”è¯¥å–æ¢é«˜æœ€å¤§å€¼è¿™é‡Œå…ˆæŒ‰800
   )
-
-;;Ğè¶ÁÈ¡ËÄ±ßÁºÊı¾İ
+;;éœ€è¯»å–å››è¾¹æ¢æ•°æ®
 (defun tg306:column-top-elev (pt-front c-b m dm max-bh)
-  "c-b Öù¿í/¸ß£¬m ÂİË¨ÅÅÊı£¬dm¼ä¾à"
+  "c-b æŸ±å®½/é«˜ï¼Œm èºæ “æ’æ•°ï¼Œdmé—´è·"
   (entity:make-point pt-front)
-  (progn ;;¶¥°å
+  (progn ;;é¡¶æ¿
       (tg306:make-steel-plate 
        (polar pt-front (* 1.5 pi) 15)
        (+ c-b 120) 30
        (+ c-h 120)
        )
-      (entity:putdxf ;;ÉÏÖù°å
+      (entity:putdxf ;;ä¸ŠæŸ±æ¿
        (tg306:make-steel-plate
 	(polar pt-front (* 0.5 pi) 15)
 	(+ c-b 120) 30
 	(+ c-h 120)
 	)
        62 252))
-  (progn ;;·½¹Ü
+  (progn ;;æ–¹ç®¡
       (tg306:make-steel-plate
        (polar pt-front
 	      (* 1.5 pi)
@@ -384,19 +376,19 @@
        joint-h
        20)
       )
-  (progn ;; ÂİË¨¾¢°å
+  (progn ;; èºæ “åŠ²æ¿
       (setq pt-tmp (polar pt-front pi (* 0.5 (1- m) dm)))
       (setq i 0)
       (repeat m
-	      (block:insert "ÂİË¨Á¢Ãæ" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i dm)) 0 1)
+	      (block:insert "èºæ “ç«‹é¢" (@::get-config '@pm:tuku) (polar pt-tmp 0 (* i dm)) 0 1)
 	      (setq i (1+ i)))
-      ;;¾¢°å
+      ;;åŠ²æ¿
       (setq pt-tmp
 	    (polar pt-front pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
 	    )
       (setq i 0)
       (repeat (1- m)
-	      ;;ÉÏ
+	      ;;ä¸Š
 	      ;; (entity:putdxf 
 	      ;;  (tg306:make-rec-by-center
 	      ;;   (polar (polar pt-tmp 0 (* i dm))
@@ -404,7 +396,7 @@
 	      ;; 	     80)
 	      ;;   20 100)
 	      ;;  62 252)
-	      ;;ÏÂ
+	      ;;ä¸‹
 	      (tg306:make-steel-plate
 	       (polar (polar pt-tmp 0 (* i dm))
 		      (* 1.5 pi)
@@ -412,14 +404,14 @@
 	       20 150
 	       125)
 	      (setq i (1+ i))))
-  (progn ;;Áºµ×½Ó°å£¬¹áÍ¨°å£¬Í¬»·°å£¬ÔÙÍâ½ÓÁºµ×ÒíÔµ°å£¨Í¬ÁºÒíÔµ¿í£©
+  (progn ;;æ¢åº•æ¥æ¿ï¼Œè´¯é€šæ¿ï¼ŒåŒç¯æ¿ï¼Œå†å¤–æ¥æ¢åº•ç¿¼ç¼˜æ¿ï¼ˆåŒæ¢ç¿¼ç¼˜å®½ï¼‰
       (tg306:make-steel-plate
        (setq pt-tmp (polar pt-front (* 1.5 pi) (- max-bh 120 10)))
        (+ c-b 120) 20
        (+ c-h 120)
        )
       
-      ;; Áº¸¹½Ó°å£¬Ğè¶ÁÁºÖĞÎ»ÖÃ¼°Áº¸¹ºñ¶È£¬ÈçÓëÂİË¨³åÍ»£¬
+      ;; æ¢è…¹æ¥æ¿ï¼Œéœ€è¯»æ¢ä¸­ä½ç½®åŠæ¢è…¹åšåº¦ï¼Œå¦‚ä¸èºæ “å†²çªï¼Œ
       (setq hf 430
 	    l1 305 )
       
@@ -435,17 +427,17 @@
        hf l1 t)
       )
   
-  (progn ;; »·°å
+  (progn ;; ç¯æ¿
       (tg306:make-steel-plate
        (polar pt-front (* 1.5 pi) (+ max-bh -120 260 10))
        (- c-b 40) 20
        (- c-h 40)
        )
       )
-  (progn ;;±êÖù
+  (progn ;;æ ‡æŸ±
       (setq pt-vt (polar pt-front 0 (+ (* 0.5 c-b) 400)))
       (setq pt-vb (polar pt-vt (* 1.5 pi) (+ joint-h 30)))
-      ;;×Ü
+      ;;æ€»
       (entity:dimvertical
        pt-vt pt-vb
        (polar (point:mid pt-vb pt-vt) 0 280)
@@ -477,7 +469,7 @@
 	(list (list 0 0)
 	      (list 0 (* -1 hf))
 	      (list 125 0)
-	      (list 0 30) ;; ²»ÊÇ50 
+	      (list 0 30) ;; ä¸æ˜¯50 
 	      (list l1 0)
 	      (list 0 (- hf 50))
 	      (list (* -1 l1) 0)
@@ -502,23 +494,23 @@
   (entity:make-lwpolyline lwpts nil 0 1 0)
   
   )
-;;; Öù¶¥Á¬½Ó¼ş
+;;; æŸ±é¡¶è¿æ¥ä»¶
 (defun tg306:column-top-joint (pt-base c-b c-h f-b f-h m dm n s square-bute-t max-bh / diff)
-  "max-bh: ÖùÖÜ×î´óÁº¸ß"
-  (setq dim-offset 300 ;;±ê×¢Æ«ÒÆÁ¿
-	joint-h (+ 260 max-bh -120 (* 0.5 (- (max c-b c-h) 130))));;·½¹Ü¸ß¶È
-  (progn ;; Æ½Ãæ
-    ;;·¨À¼
+  "max-bh: æŸ±å‘¨æœ€å¤§æ¢é«˜"
+  (setq dim-offset 300 ;;æ ‡æ³¨åç§»é‡
+	joint-h (+ 260 max-bh -120 (* 0.5 (- (max c-b c-h) 130))));;æ–¹ç®¡é«˜åº¦
+  (progn ;; å¹³é¢
+    ;;æ³•å…°
     (setq diff (* 2 60))
     (tg306:make-steel-plate pt-base (+ c-b diff) (+ c-h diff) 30)
-    ;;; ·½¹Ü
-    ;;Íâ
+    ;;; æ–¹ç®¡
+    ;;å¤–
     (setq diff (* 2 -65))
     (tg306:make-steel-plate  pt-base (+ c-b diff)(+ c-h diff) joint-h)
-    ;;ÄÚ
+    ;;å†…
     (setq diff (* 2 -85))
     (tg306:make-steel-plate pt-base (+ c-b diff)(+ c-h diff) joint-h)
-    (progn;; ÂİË¨¾¢°å
+    (progn;; èºæ “åŠ²æ¿
       (setq diff 0)
       (tg306:draw-ring-ls 
        (polar
@@ -526,20 +518,20 @@
 	(* 1.5 pi)
 	(+ (* 0.5 c-h) diff))
        m dm n s)
-      ;;  ¾¢°å
+      ;;  åŠ²æ¿
      
       (setq pt-tmp
 	    (polar pt-base pi (- (* 0.5 dm (1- m)) (* 0.5 dm)))
 	    )
       (setq i 0)
       (repeat (1- m)
-	      ;;ÉÏ
+	      ;;ä¸Š
 	      (tg306:make-steel-plate
 	       (polar (polar pt-tmp 0 (* i dm))
 		      (* 0.5 pi)
 		      (- (* 0.5 c-h) 2.5))
 	       12 125 150)
-	      ;;ÏÂ
+	      ;;ä¸‹
 	      (tg306:make-steel-plate
 	       (polar (polar pt-tmp 0 (* i dm))
 		      (* 1.5 pi)
@@ -551,13 +543,13 @@
 	    )
       (setq i 0)
       (repeat (1- n)
-	      ;;×ó
+	      ;;å·¦
 	      (tg306:make-steel-plate
 	       (polar (polar pt-tmp (* 0.5 pi) (* i s))
 		      pi
 		      (- (* 0.5 c-b) 2.5))
 	       125 12 150)
-	      ;;ÓÒ
+	      ;;å³
 	      (tg306:make-steel-plate
 	       (polar (polar pt-tmp (* 0.5 pi) (* i s))
 		      0
@@ -565,8 +557,8 @@
 	       125 12 150)
 	      (setq i (1+ i)))
       )
-    (progn ;; ±ê×¢
-      ;; Ë®Æ½
+    (progn ;; æ ‡æ³¨
+      ;; æ°´å¹³
       (setq pt-hl
 	    (polar 
 	     (polar pt-base (* 1.5 pi) (+ 150 (* 0.5 c-h)))
@@ -583,12 +575,12 @@
        pt-hl (setq pt-tmp (polar pt-hl 0 60))
        (polar (point:mid pt-hl pt-tmp) (* 1.5 pi) dim-offset)
        )
-      ;;×Ü
+      ;;æ€»
       (entity:dimhorizontal
        pt-hl pt-hr
        (polar (point:mid pt-hl pt-hr) (* 1.5 pi) (+ 80  dim-offset))
        )
-      ;;ÂİË¨
+      ;;èºæ “
       (setq i  0)
       (repeat
        (1- m)
@@ -599,13 +591,13 @@
        (setq pt-tmp pt-tmp2)
        (setq i (1+ i)))
       
-      ;; ÊúÏò
+      ;; ç«–å‘
       (setq pt-vb
 	    (polar 
 	     (polar pt-base (* 1.5 pi) (+ 60 (* 0.5 c-h)))
 	     pi (+ 60(* 0.5 c-b))))
       (setq pt-vt (polar pt-vb (* 0.5 pi) (+ c-h  60 60)))
-      ;;×Ü
+      ;;æ€»
       (entity:dimvertical
        pt-vb pt-vt
        (polar (point:mid pt-vb pt-vt) pi (+ 80 dim-offset))
@@ -618,7 +610,7 @@
        pt-vb (setq pt-tmp(polar pt-vb (* 0.5 pi) 60))
        (polar (point:mid pt-vb pt-tmp) pi dim-offset)
        )
-      ;;±êÂİË¨
+      ;;æ ‡èºæ “
       (setq i  0)
       (repeat
        (1- n)
@@ -631,7 +623,7 @@
       
       )
     )
-  (progn  ;;; Á¢Ãæ
+  (progn  ;;; ç«‹é¢
     (setq pt-front (polar pt-base (* 1.5 pi) 1200 ))
     (tg306:column-top-elev pt-front c-b m dm max-bh)
     (setq pt-left
@@ -642,9 +634,8 @@
     (tg306:column-top-elev pt-left c-h n s max-bh))
 
   )
-
 (defun tg306:get-beam-joint-info (b  h / info)
-  (setq info (assoc (strcat "¾Ø"(itoa (fix b))"x"(itoa(fix h))) build1-beam))
+  (setq info (assoc (strcat "çŸ©"(itoa (fix b))"x"(itoa(fix h))) build1-beam))
   (setq joint-info (string:to-list  (substr (cadr info) 3)"x"))
   (setq height (read (car joint-info)))
   (setq width  (read (cadr joint-info)))
@@ -674,14 +665,14 @@
   (list c-b c-h f-b f-h m dm n s bute-t)
   )
 (defun tg306:beam-info (beam-ent)
-  "ÁºĞÅÏ¢£¬¿í¸ß£¬Á¬½Ó¼şĞÅÏ¢"
+  "æ¢ä¿¡æ¯ï¼Œå®½é«˜ï¼Œè¿æ¥ä»¶ä¿¡æ¯"
   (list
    (cons 10 (entity:getdxf beam-ent))
-   (cons 'b (block:get-dynprop beamblk "¿í"))
-   (cons 'h (cdr (assoc "¸ß" (block:get-attributes beam-ent))))
+   (cons 'b (block:get-dynprop beamblk "å®½"))
+   (cons 'h (cdr (assoc "é«˜" (block:get-attributes beam-ent))))
    (cons 'joint 0)))
 (defun tg306:stat-beam()
-  "Í³¼ÆÁºÀàĞÍ²¢»ØĞ´±àºÅ"
+  "ç»Ÿè®¡æ¢ç±»å‹å¹¶å›å†™ç¼–å·"
   (setq beams
 	(pickset:sort 
 	 (pickset:to-list (block:ssget nil "beam-yz" nil))
@@ -692,33 +683,33 @@
 	(mapcar
 	 '(lambda(beamblk)
 	    (list
-	     ;; (cdr (assoc "±àºÅ" (block:get-attributes beamblk)))
-	     (fix (block:get-dynprop beamblk "±êÖ¾³¤¶È"))
-	     (fix (block:get-dynprop beamblk "¿í"))
-	     (cdr (assoc "¸ß" (block:get-attributes beamblk)))
-	     (cdr (assoc "Éè¼ÆºÅ" (block:get-attributes beamblk))))
+	     ;; (cdr (assoc "ç¼–å·" (block:get-attributes beamblk)))
+	     (fix (block:get-dynprop beamblk "æ ‡å¿—é•¿åº¦"))
+	     (fix (block:get-dynprop beamblk "å®½"))
+	     (cdr (assoc "é«˜" (block:get-attributes beamblk)))
+	     (cdr (assoc "è®¾è®¡å·" (block:get-attributes beamblk))))
 	    )
 	 beams)))
-  ;;»æ±í¸ñ
+  ;;ç»˜è¡¨æ ¼
   (setq i 0)
   (setq lst (mapcar '(lambda(x)
 		       (setq i (1+ i))
 		       (setq bh  (strcat "L-F0-" (string:number-format
 					       (itoa i)
 					       2 0 "00")))
-		       ;;»ØĞ´
+		       ;;å›å†™
 		       (mapcar
 			'(lambda(beamblk)
 			   (if 
 			       (list:equal
 				(list
-				 (fix (block:get-dynprop beamblk "±êÖ¾³¤¶È"))
-				 (fix (block:get-dynprop beamblk "¿í"))
-				 (cdr (assoc "¸ß" (block:get-attributes beamblk)))
-				 (cdr (assoc "Éè¼ÆºÅ" (block:get-attributes beamblk))))
+				 (fix (block:get-dynprop beamblk "æ ‡å¿—é•¿åº¦"))
+				 (fix (block:get-dynprop beamblk "å®½"))
+				 (cdr (assoc "é«˜" (block:get-attributes beamblk)))
+				 (cdr (assoc "è®¾è®¡å·" (block:get-attributes beamblk))))
 				(car x)
 				0.1)
-			       (block:set-attributes beamblk (list (cons "±àºÅ" bh)))
+			       (block:set-attributes beamblk (list (cons "ç¼–å·" bh)))
 			     ))
 			beams)
 		       (append
@@ -729,7 +720,7 @@
 			))
 		    lst))
   (print lst)
-  (table:make (getpoint) "ÁºĞÅÏ¢±í" '("ĞòºÅ""±àºÅ""±êÖ¾³¤¶È""¿í""¸ß""Éè¼ÆºÅ""¸öÊı")
+  (table:make (getpoint) "æ¢ä¿¡æ¯è¡¨" '("åºå·""ç¼–å·""æ ‡å¿—é•¿åº¦""å®½""é«˜""è®¾è®¡å·""ä¸ªæ•°")
 	      lst)
 			      
   )
@@ -804,12 +795,11 @@
    b h
    (mapcar 'cdr beam-offset)
    ))
-
 (defun tg306:stat-column()
-  "Í³¼ÆÖù£¬º¬ÓëÖùÏàÁ¬µÄÁºĞÅÏ¢"
+  "ç»Ÿè®¡æŸ±ï¼Œå«ä¸æŸ±ç›¸è¿çš„æ¢ä¿¡æ¯"
   (setq columns
 	(pickset:sort 
-	 (pickset:to-list (block:ssget nil "Öù" nil))
+	 (pickset:to-list (block:ssget nil "æŸ±" nil))
 	 "xy" 10)
 	)
   (setq lst
@@ -826,7 +816,7 @@
 		       (setq bh  (strcat "Z-F0-" (string:number-format
 					       (itoa i)
 					       2 0 "00")))
-		       »ØĞ´
+		       å›å†™
 		       (mapcar
 			'(lambda(columnblk)
 			   (if 
@@ -834,7 +824,7 @@
 				(tg306:column-beam-relation columnblk)
 				(car x)
 				0.01)
-			       (block:set-attributes columnblk (list (cons "±àºÅ" bh)))
+			       (block:set-attributes columnblk (list (cons "ç¼–å·" bh)))
 			     ))
 			columns)
 		       (append
@@ -853,50 +843,50 @@
 			(list (cdr x))
 			))
 		    lst))
-  (table:make (getpoint) "ÖùĞÅÏ¢±í" '("ĞòºÅ""±àºÅ""¿í""¸ß""Áº¹ØÏµ""¸öÊı")
+  (table:make (getpoint) "æŸ±ä¿¡æ¯è¡¨" '("åºå·""ç¼–å·""å®½""é«˜""æ¢å…³ç³»""ä¸ªæ•°")
 	      lst)
 	
   )
 (defun tg306:insert-frame (frame-name pt map  draw-name)
-  ;;Í¼¿ò
+  ;;å›¾æ¡†
   (setq tk 
 	(block:insert frame-name (@::get-config '@pm:tuku)
 		      pt  
 		      0 0.1))
   (block:set-dynprop tk "map-sheet" map)
-  (block:set-attributes tk (list  (cons "Í¼Ãû"  draw-name )))
+  (block:set-attributes tk (list  (cons "å›¾å"  draw-name )))
   tk)
 (defun tg306:draw-beam (beamblk pt-base / b-b b-h)
-  "»æÖÆÁº¹¹¼şÍ¼"
-  ;; ´ÓÁº¿í¸ßºÍÁ¬½Ó±íÖĞÈ¡Á¬½Ó¼şĞÅÏ¢
-  (princ (strcat "\n»æÖÆ" (cdr (assoc "±àºÅ" (block:get-attributes beamblk)))))
-  (setq b-b (block:get-dynprop beamblk "¿í"))
-  (setq b-h (read (cdr (assoc "¸ß" (block:get-attributes beamblk)))))
+  "ç»˜åˆ¶æ¢æ„ä»¶å›¾"
+  ;; ä»æ¢å®½é«˜å’Œè¿æ¥è¡¨ä¸­å–è¿æ¥ä»¶ä¿¡æ¯
+  (princ (strcat "\nç»˜åˆ¶" (cdr (assoc "ç¼–å·" (block:get-attributes beamblk)))))
+  (setq b-b (block:get-dynprop beamblk "å®½"))
+  (setq b-h (read (cdr (assoc "é«˜" (block:get-attributes beamblk)))))
   
   (tg306:get-beam-joint-info b-b b-h)
-  ;;Í¼¿ò
+  ;;å›¾æ¡†
   (setq tk (tg306:insert-frame
-	    "Í¼¿ò-ºÃÖğÒ×¹¤³Ì·şÎñ"
+	    "å›¾æ¡†-å¥½é€æ˜“å·¥ç¨‹æœåŠ¡"
 	    (polar 
 	     (polar pt-base 0 7000)
 	     (* 1.5 pi) 3600)
 	    "A2+0.25"
-	    (cdr (assoc "±àºÅ" (block:get-attributes beamblk)))
+	    (cdr (assoc "ç¼–å·" (block:get-attributes beamblk)))
 	    ))
-  ;; ×ó½ÓÍ·
+  ;; å·¦æ¥å¤´
   (tg306:draw-beam-joint
    (polar (polar pt-base 0 60)
 	  (* 1.5 pi) (- b-h 60))
    height width ft yt d m dm n s l1 l2)
-  ;;»ì
+  ;;æ··
   (setq beam-ent
-	(block:insert "Ô¤ÖÆÁº-»ìÁ¢" (@::get-config '@pm:tuku)
+	(block:insert "é¢„åˆ¶æ¢-æ··ç«‹" (@::get-config '@pm:tuku)
 		      (polar pt-base 0 (+ 60 l1)) 0 1))
   (block:set-dynprop beam-ent "h" b-h)
-  ;;±ê×¢
+  ;;æ ‡æ³¨
   (entity:dimhorizontal
    pt-base
-   (setq pt-tmp (polar pt-base 0 (- (block:get-dynprop beamblk "±êÖ¾³¤¶È") 120)))
+   (setq pt-tmp (polar pt-base 0 (- (block:get-dynprop beamblk "æ ‡å¿—é•¿åº¦") 120)))
    (polar (point:mid pt-base pt-tmp) (* 1.5 pi) (+ b-h 200))
    )
   (princ "..OK")
@@ -911,10 +901,10 @@
   (setq i 0)
   (setq nums nil)
   (foreach beam beams
-	   ;;Ìø¹ıÒÑÓĞ±àºÅµÄ¿é
-	   (if(null (member (cdr (assoc "±àºÅ" (block:get-attributes beam )))nums))
+	   ;;è·³è¿‡å·²æœ‰ç¼–å·çš„å—
+	   (if(null (member (cdr (assoc "ç¼–å·" (block:get-attributes beam )))nums))
 	       (progn
-		 (setq nums (cons (cdr (assoc "±àºÅ" (block:get-attributes beam )))nums))
+		 (setq nums (cons (cdr (assoc "ç¼–å·" (block:get-attributes beam )))nums))
 		 (tg306:draw-beam beam pt-base)
 		 (setq pt-base (polar pt-base 0 7600))
 		 )))
@@ -922,13 +912,12 @@
 
 (setq build1-beam
       (list
-       '("¾Ø250x450" "WH330x190x10x14" 1 130 2 70 235)
-       '("¾Ø250x600" "WH480x190x14x16" 4 100 5 70 445)
-       '("¾Ø300x600" "WH480x240x10x16" 4 100 3 70 305)
-       '("¾Ø350x600" "WH480x290x10x16" 4 100 3 70 305)
-       '("¾Ø250x500" "WH380x190x8x14" 2 100 2 100 305)
-       '("¾Ø200x400" "WH280x140x6x8" 1 100 2 90 305)))     
-
+       '("çŸ©250x450" "WH330x190x10x14" 1 130 2 70 235)
+       '("çŸ©250x600" "WH480x190x14x16" 4 100 5 70 445)
+       '("çŸ©300x600" "WH480x240x10x16" 4 100 3 70 305)
+       '("çŸ©350x600" "WH480x290x10x16" 4 100 3 70 305)
+       '("çŸ©250x500" "WH380x190x8x14" 2 100 2 100 305)
+       '("çŸ©200x400" "WH280x140x6x8" 1 100 2 90 305)))     
 (defun tg306:get-list-from-texts()
   (setq txts
 	(pickset:sort 
@@ -944,15 +933,15 @@
   (foreach ctop ctop-lst
 	   (apply 'tg306:column-top-joint
 		  (append (list  pt-base)  ctop (list 600)))
-	   ;;²åÍ¼¿ò
-	   ;;Í¼¿ò
+	   ;;æ’å›¾æ¡†
+	   ;;å›¾æ¡†
 	   (setq tk (tg306:insert-frame
-		     "Í¼¿ò-ºÃÖğÒ×¹¤³Ì·şÎñ"
+		     "å›¾æ¡†-å¥½é€æ˜“å·¥ç¨‹æœåŠ¡"
 		     (polar 
 		      (polar pt-base 0 4800)
 		      (* 1.5 pi) 3300)
 		     "A2"
-		     (strcat "¾Ø" (itoa (car ctop))"x"(itoa(cadr ctop)))
+		     (strcat "çŸ©" (itoa (car ctop))"x"(itoa(cadr ctop)))
 		     ))
 	   
 	   (setq pt-base (polar pt-base 0 8000))

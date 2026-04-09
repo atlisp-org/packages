@@ -357,22 +357,47 @@
 	(+ c-h 120)
 	)
        62 252))
-  (progn ;;方管
+  (progn ;;方管 ，两段，由贯通板隔开
       (tg306:make-steel-plate
        (polar pt-front
 	      (* 1.5 pi)
-	      (+ 30 (* 0.5 joint-h)))
+	      (+ 30 (* 0.5 (- max-bh 120 50))))
        (+ c-b -130)
-       joint-h
+       (- max-bh 120 20 30) ;; joint-h
        20
        )
       (tg306:make-steel-plate
        (polar pt-front
 	      (* 1.5 pi)
-	      (+ 30 (* 0.5 joint-h)))
+	      (+ 30 (* 0.5 (- max-bh 120  50))))
        (+ c-b (- -130 (* 2 square-bute-t)))
-       joint-h
+       (- max-bh 120 20 30) ;; joint-h
        20)
+      ;;下方管
+      (tg306:make-steel-plate
+       (polar pt-front
+	      (* 1.5 pi)
+	      (+ max-bh -120 (* 0.5 (- joint-h max-bh -120))))
+       (+ c-b -130)
+       (- joint-h max-bh -120)
+       20
+       )
+      (tg306:make-steel-plate
+       (polar pt-front
+	      (* 1.5 pi)
+	      (+ max-bh -120 (* 0.5 (- joint-h max-bh -120))))
+       (+ c-b (- -130 (* 2 square-bute-t)))
+       (- joint-h max-bh -120)
+       20)
+      
+  
+      ;; (tg306:make-steel-plate
+      ;;  (polar pt-front
+      ;; 	      (* 1.5 pi)
+      ;; 	      (+ 30 (* 0.5 joint-h)))
+      ;;  (+ c-b (- -130 (* 2 square-bute-t)))
+      ;;  joint-h
+      ;;  20)
       )
   (progn ;; 螺栓劲板
       (setq pt-tmp (polar pt-front pi (* 0.5 (1- m) dm)))
@@ -434,7 +459,7 @@
       )
   (progn ;;标柱
       (setq pt-vt (polar pt-front 0 (+ (* 0.5 c-b) 400)))
-      (setq pt-vb (polar pt-vt (* 1.5 pi) (+ joint-h 30)))
+      (setq pt-vb (polar pt-vt (* 1.5 pi) (+ joint-h 0)))
       ;;总
       (entity:dimvertical
        pt-vt pt-vb
@@ -500,7 +525,7 @@
 (defun tg306:column-top-joint (pt-base c-b c-h f-b f-h m dm n s square-bute-t max-bh / diff)
   "max-bh: 柱周最大梁高"
   (setq dim-offset 300 ;;标注偏移量
-	joint-h (+ 260 max-bh -120 (* 0.5 (- (max c-b c-h) 130))));;方管高度
+	joint-h (+ 260 max-bh -120 (* 0.5 (- (max c-b c-h) 124))));;钢件总高度
   (progn ;; 平面
     ;;法兰
     (setq diff (* 2 60))
@@ -516,27 +541,27 @@
     (setq plate-tmp
 	  (tg306:make-steel-plate
 	   (polar pt-base (* 0.5 pi) (+ (* 0.5 (+ c-h diff)) -10))
-	   (+ c-b diff) 20 joint-h))
+	   (+ c-b diff) 20 (- joint-h 30)))
     (tg306:dim-plate plate-tmp)
     ;;下
     (setq diff (* 2 -65))
     (setq plate-tmp
 	  (tg306:make-steel-plate
 	   (polar pt-base (* 1.5 pi) (+ (* 0.5 (+ c-h diff)) -10))
-	   (+ c-b diff) 20 joint-h))
+	   (+ c-b diff) 20 (- joint-h 30)))
    ;;左
     (setq diff (* 2 -65))
     (setq plate-tmp
 	  (tg306:make-steel-plate
 	   (polar pt-base pi (+ (* 0.5 (+ c-b diff)) -10))
-	   20 (+ c-h diff -40) joint-h))
+	   20 (+ c-h diff -40) (- joint-h 30)))
     (tg306:dim-plate plate-tmp)
     ;;右
     (setq diff (* 2 -65))
     (setq plate-tmp
 	  (tg306:make-steel-plate
 	   (polar pt-base 0 (+ (* 0.5 (+ c-b diff)) -10))
-	   20 (+ c-h diff -40) joint-h))
+	   20 (+ c-h diff -40) (- joint-h 30)))
     (progn;; 螺栓劲板
       (setq diff 0)
       (tg306:draw-ring-ls 
@@ -703,7 +728,89 @@
    (cons 'b (block:get-dynprop beamblk "宽"))
    (cons 'h (cdr (assoc "高" (block:get-attributes beam-ent))))
    (cons 'joint 0)))
+(defun tg306:column-beam-bottom-plate (pt c-b c-h beam4-info)
 
+  )
+(defun tg306:draw-column (columnblk floor-h)
+ "绘制柱构件图 floor-h"
+  ;; 从梁宽高和连接表中取连接件信息
+  (princ (strcat "\n绘制" (cdr (assoc "编号" (block:get-attributes columnblk)))))
+  (setq c-b (block:get-dynprop columnblk "b"))
+  (setq c-h (block:get-dynprop columnblk "h"))
+  (setq mark-length  (block:get-dynprop beamblk "标志长度"))
+  (tg306:get-beam-joint-info b-b b-h)
+  ;;图框
+  (setq tk (tg306:insert-frame
+	    "图框-好逐易工程服务"
+	    (polar 
+	     (polar pt-base 0
+		    (cond
+		     ((<= mark-length 4700) 5510)
+		     ((< 4700 mark-length 6200) 7000)
+		     ((>= mark-length 6200) 8480))
+		    )
+	     (* 1.5 pi) 3600)
+	    (cond
+	     ((<= mark-length 4700)"A2")
+	     ((< 4700 mark-length 6200) "A2+0.25")
+	     ((>= mark-length 6200) "A2+0.5"))
+	    (cdr (assoc "编号" (block:get-attributes beamblk)))
+	    ))
+  ;; 底接头
+  (tg306:column-bottom-joint
+   (polar (polar pt-base 0 65)
+	  (* 1.5 pi) (- b-h 60))
+   height width ft yt d m dm n s l1 l2)
+  ;;混
+  (setq beam-ent
+	(block:insert "预制柱-混立" (@::get-config '@pm:tuku)
+		      (polar pt-base 0 (+ 60 l1)) 0 1))
+  (block:set-dynprop beam-ent "h" b-h)
+  ;;;标注
+  ;;;标志长度
+  (entity:dimhorizontal
+   pt-base
+   (setq pt-tmp (polar pt-base 0 (block:get-dynprop beamblk "标志长度")))
+   (polar (point:mid pt-base pt-tmp) (* 1.5 pi) (+ b-h 300))
+   )
+  ;; 柱翼接点长度
+  (setq pt-b-base (polar pt-base(* 1.5 pi) b-h))
+  (entity:dimhorizontal
+   pt-b-base
+   (setq pt-tmp (polar pt-b-base 0  60))
+   (polar (point:mid pt-b-base pt-tmp) (* 1.5 pi) 200)
+   )
+   ;; 柱翼接点长度
+  (entity:dimhorizontal
+   pt-tmp
+   (setq pt-tmp1 (polar pt-tmp 0 5))
+   (polar (point:mid pt-tmp pt-tmp1) (* 1.5 pi) 200)
+   )
+  ;; 梁L1-5
+  (entity:dimhorizontal
+   pt-tmp1
+   (setq pt-tmp (polar pt-tmp1 0 (- l1 5)))
+  (polar (point:mid pt-tmp pt-tmp1) (* 1.5 pi) 200)
+  )
+  ;; 混凝土
+  (entity:dimhorizontal
+   pt-tmp
+   (setq pt-tmp1 (polar
+		  pt-tmp 0
+		  (- (block:get-dynprop beamblk "标志长度")
+		    (* 2 (+ 60 l1)))))
+   (polar (point:mid pt-tmp pt-tmp1) (* 1.5 pi) 200)
+  )
+  (princ "..OK")
+  ;;返回下一个图的绘制基点
+  (polar pt-base 0
+	 (cond
+	  ((<= mark-length 4700) 6110)
+	  ((< 4700 mark-length 6200) 7600)
+	  ((>= mark-length 6200) 9080))
+	 )
+
+  )
 ;;需读取四边梁数据
 (defun tg306:column-beam-relation (columnblk / b h base beams)
   (setq b (fix(block:get-dynprop columnblk "b"))
@@ -784,20 +891,28 @@
   (princ (strcat "\n绘制" (cdr (assoc "编号" (block:get-attributes beamblk)))))
   (setq b-b (block:get-dynprop beamblk "宽"))
   (setq b-h (read (cdr (assoc "高" (block:get-attributes beamblk)))))
-  
+  (setq mark-length  (block:get-dynprop beamblk "标志长度"))
   (tg306:get-beam-joint-info b-b b-h)
   ;;图框
   (setq tk (tg306:insert-frame
 	    "图框-好逐易工程服务"
 	    (polar 
-	     (polar pt-base 0 7000)
+	     (polar pt-base 0
+		    (cond
+		     ((<= mark-length 4700) 5510)
+		     ((< 4700 mark-length 6200) 7000)
+		     ((>= mark-length 6200) 8480))
+		    )
 	     (* 1.5 pi) 3600)
-	    "A2+0.25"
+	    (cond
+	     ((<= mark-length 4700)"A2")
+	     ((< 4700 mark-length 6200) "A2+0.25")
+	     ((>= mark-length 6200) "A2+0.5"))
 	    (cdr (assoc "编号" (block:get-attributes beamblk)))
 	    ))
   ;; 左接头
   (tg306:draw-beam-joint
-   (polar (polar pt-base 0 60)
+   (polar (polar pt-base 0 65)
 	  (* 1.5 pi) (- b-h 60))
    height width ft yt d m dm n s l1 l2)
   ;;混
@@ -805,13 +920,49 @@
 	(block:insert "预制梁-混立" (@::get-config '@pm:tuku)
 		      (polar pt-base 0 (+ 60 l1)) 0 1))
   (block:set-dynprop beam-ent "h" b-h)
-  ;;标注
+  ;;;标注
+  ;;;标志长度
   (entity:dimhorizontal
    pt-base
-   (setq pt-tmp (polar pt-base 0 (- (block:get-dynprop beamblk "标志长度") 120)))
-   (polar (point:mid pt-base pt-tmp) (* 1.5 pi) (+ b-h 200))
+   (setq pt-tmp (polar pt-base 0 (block:get-dynprop beamblk "标志长度")))
+   (polar (point:mid pt-base pt-tmp) (* 1.5 pi) (+ b-h 300))
    )
+  ;; 柱翼接点长度
+  (setq pt-b-base (polar pt-base(* 1.5 pi) b-h))
+  (entity:dimhorizontal
+   pt-b-base
+   (setq pt-tmp (polar pt-b-base 0  60))
+   (polar (point:mid pt-b-base pt-tmp) (* 1.5 pi) 200)
+   )
+   ;; 柱翼接点长度
+  (entity:dimhorizontal
+   pt-tmp
+   (setq pt-tmp1 (polar pt-tmp 0 5))
+   (polar (point:mid pt-tmp pt-tmp1) (* 1.5 pi) 200)
+   )
+  ;; 梁L1-5
+  (entity:dimhorizontal
+   pt-tmp1
+   (setq pt-tmp (polar pt-tmp1 0 (- l1 5)))
+  (polar (point:mid pt-tmp pt-tmp1) (* 1.5 pi) 200)
+  )
+  ;; 混凝土
+  (entity:dimhorizontal
+   pt-tmp
+   (setq pt-tmp1 (polar
+		  pt-tmp 0
+		  (- (block:get-dynprop beamblk "标志长度")
+		    (* 2 (+ 60 l1)))))
+   (polar (point:mid pt-tmp pt-tmp1) (* 1.5 pi) 200)
+  )
   (princ "..OK")
+  ;;返回下一个图的绘制基点
+  (polar pt-base 0
+	 (cond
+	  ((<= mark-length 4700) 6110)
+	  ((< 4700 mark-length 6200) 7600)
+	  ((>= mark-length 6200) 9080))
+	 )
   )
 
 (setq build1-beam
@@ -833,15 +984,18 @@
   )
 
 ;;;引线标注板尺寸
-(defun tg306:dim-plate (plate / box  bh)
+(defun tg306:dim-plate (plate / box bh)
+  ;; box  中已包含厚度
   (setq box (entity:getbox plate 0))
   (setq bh (mapcar '- (cadr box)(car box)))
-  (setq t1 (entity:getdxf plate  39))
-
+  (if (< (car bh) 35)
+      (setq  bh (list (cadr bh)(car bh)(caddr bh))))
+  (if (< (caddr bh) 35)
+      (setq  bh (list (car bh)(caddr bh)(cadr bh))))
   (entity:make-multileader (list (cadr box)
 				 (polar (cadr box) (* 0.25 pi) 200))
 			   (strcat (itoa (fix(car bh)))"x"(itoa (fix(cadr bh)))
-				   "\n"(itoa (fix t1)))))
+				   "\n"(itoa (fix (caddr bh))))))
 
 ;;插图框
 (defun tg306:insert-frame (frame-name pt map  draw-name)
@@ -973,9 +1127,8 @@
 	   ;;跳过已有编号的块
 	   (if(null (member (cdr (assoc "编号" (block:get-attributes beam )))nums))
 	       (progn
-		 (setq nums (cons (cdr (assoc "编号" (block:get-attributes beam )))nums))
-		 (tg306:draw-beam beam pt-base)
-		 (setq pt-base (polar pt-base 0 7600))
+		 (setq nums (cons (cdr (assoc "编号" (block:get-attributes beam)))nums))
+		 (setq pt-base (tg306:draw-beam beam pt-base))
 		 )))
   )
 (defun tg306:menu-draw-colutop ()

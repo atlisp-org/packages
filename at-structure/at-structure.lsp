@@ -26,6 +26,7 @@
    (getint "请输入钢筋直径:")
    ))
 (defun at-structure:menu-draw-stirrup ()
+  (@::help "绘制箍筋，当给出的两点为水平或垂直时，绘制单肢箍")
   (setq pt-start (getpoint "起始点:"))
   (setq pt-end (getpoint pt-start "终止点:"))
   (at-structure:draw-stirrup

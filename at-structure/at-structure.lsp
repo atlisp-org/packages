@@ -8,6 +8,31 @@
 ;; 向系统中添加菜单 
 (@:add-menu "结构工具" "动态查面积" "(at-structure:query-steelbar)" )
 (@:add-menu "结构工具" "查钢筋面积" "(at-structure:menu-get-area)" )
+(@:add-menu "结构工具" "画点钢筋" " (at-structure:menu-draw-one-rebar)" )
+(@:add-menu "结构工具" "画钢筋排" " (at-structure:menu-draw-edge-rebar)" )
+(@:add-menu "结构工具" "画箍筋" " (at-structure:menu-draw-stirrup)")
+(defun at-structure:menu-draw-one-rebar()
+  (@::help "画点钢筋")
+  (at-structure:draw-one-rebar
+   (getpoint "请点取位置点:")
+   (getint "请输入钢筋直径:")
+   ))
+(defun at-structure:menu-draw-edge-rebar()
+  (@::help "画钢筋排")
+  (at-structure:draw-edge-rebar
+   (setq pt-start (getpoint "起始点:"))
+   (getpoint pt-start "终止点:")
+   (getint "请输入个数:")
+   (getint "请输入钢筋直径:")
+   ))
+(defun at-structure:menu-draw-stirrup ()
+  (setq pt-start (getpoint "起始点:"))
+  (setq pt-end (getpoint pt-start "终止点:"))
+  (at-structure:draw-stirrup
+   pt-start
+   (- (car pt-end)(car pt-start))
+   (- (cadr pt-end)(cadr pt-start))
+   ))
 (defun at-structure:menu-get-area (/ steelbar-str)
   (@:help "选中钢筋字符串的单行文本，如 %%1328@100,2%%13220+3%%13222 等，返回钢筋面积。")
   (setq steelbar-str (string:parse-by-lst (cdr (assoc 1 (entget (car (entsel))))) '(";" "；")))

@@ -14,4 +14,5 @@
             "seismic"
             "stat"
             "beam"
+	    "column"
             "hotkey")))

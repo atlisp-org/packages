@@ -1,20 +1,44 @@
 (defun at-structure:draw-stirrup (pt-base b h)
-  "绘制箍筋，b h为矩形箍内相对纵筋的宽和高"
-  (setq pt5 (polar pt-base (* 1.25 pi) (* 18 (sqrt 2)))
-	pt6 (polar pt5 0 (+ b 36))
-	pt4 (polar pt5 (* 0.5 pi)  (+ h 36))
-	pt3 (polar pt4 0 (+ b 36))
-	pt7 pt3
-	pt2 (polar pt3 (* 1.5 pi) 30)
-	pt1 (polar pt2 (* 1.25 pi) 80)
-	pt8 (polar pt3 pi 30)
-	pt9 (polar pt8 (* 1.25 pi) 80))
+  "绘制箍筋，b h为矩形箍内相对纵筋的宽和高，如果一个为0，则绘制单肢箍"
+  
+  (setq pt5 (polar pt-base (* 1.25 pi) (* 18 (sqrt 2))))
   (entity:make-point pt-base)
-  (entity:make-point (polar pt3 (* 1.25 pi) (* 18 (sqrt 2))))
-  (entity:make-lwpline-bold
-   (list pt1 pt2 pt3 pt4 pt5 pt6 pt7 pt8 pt9)
-   nil 0 0 8)
-  )
+  (cond
+   ((zerop b)
+    (setq pt6 (polar pt5 (* 0.75 pi) 80)
+	  pt4 (polar pt5 0 33)
+	  pt3 (polar pt4 (* 0.5 pi) (+ h 36))
+	  pt2 (polar pt3 pi 33)
+	  pt1 (polar pt2 (* 1.25 pi) 80))
+    (entity:make-lwpline-bold
+     (list pt1 pt2 pt3 pt4 pt5 pt6 )
+     nil 0 0 8)
+    )
+   ((zerop h)
+    (setq pt6 (polar pt5 (* 1.75 pi) 80)
+	  pt4 (polar pt5 (* 0.5 pi) 33)
+	  pt3 (polar pt4 0 (+ b 36))
+	  pt2 (polar pt3 (* 1.5 pi) 33)
+	  pt1 (polar pt2 (* 1.25 pi) 80))
+    (entity:make-lwpline-bold
+     (list pt1 pt2 pt3 pt4 pt5 pt6 )
+     nil 0 0 8)
+    )
+   (t
+    (setq pt6 (polar pt5 0 (+ b 36))
+	  pt4 (polar pt5 (* 0.5 pi)  (+ h 36))
+	  pt3 (polar pt4 0 (+ b 36))
+	  pt7 pt3
+	  pt2 (polar pt3 (* 1.5 pi) 30)
+	  pt1 (polar pt2 (* 1.25 pi) 80)
+	  pt8 (polar pt3 pi 30)
+	  pt9 (polar pt8 (* 1.25 pi) 80))
+    (entity:make-point (polar pt3 (* 1.25 pi) (* 18 (sqrt 2))))
+    (entity:make-lwpline-bold
+     (list pt1 pt2 pt3 pt4 pt5 pt6 pt7 pt8 pt9)
+     nil 0 0 8)
+    )))
+
 (defun at-structure:draw-one-rebar (pt dia)
     "绘制点筋 , pt为中心点，dia 为直径"
     (entity:make-circle pt (* 0.5 dia)))
@@ -25,7 +49,7 @@
 			  (1- count)))
 	  (setq i -1)
 	  (repeat count
-		  (draw-one-rebar
+		  (at-structure:draw-one-rebar
 		   (polar start
 			  (angle start end)
 			  (* (setq i (1+ i)) delta))
@@ -55,17 +79,17 @@
    p (list pt1 pt2
 	   (polar pt1 0 inner-w)
 	   (polar pt1 (* 0.5 pi) inner-h))
-   (draw-one-rebar p (nth 1 rebar-config)))
+   (at-structure:draw-one-rebar p (nth 1 rebar-config)))
   ;; b 中间纵筋
   (setq delta (/ (- width (* 2.0 cover))
 		 (1+ (nth 2 rebar-config))))
 		  
-  (draw-edge-rebar
+  (at-structure:draw-edge-rebar
    (polar pt1 0 delta)
    (polar pt1 0 (* delta (nth 2 rebar-config)))
    (nth 2 rebar-config)
    (nth 3 rebar-config))
-  (draw-edge-rebar
+  (at-structure:draw-edge-rebar
    (polar pt2 pi delta)
    (polar pt2 pi (* delta (nth 2 rebar-config)))
    (nth 2 rebar-config)
@@ -73,12 +97,12 @@
   ;; h 中间纵筋
   (setq delta (/ (- height (* 2.0 cover))
 		  (1+ (nth 4 rebar-config))))
-  (draw-edge-rebar
+  (at-structure:draw-edge-rebar
    (polar pt1 (* 0.5 pi) delta)
    (polar pt1 (* 0.5 pi) (* delta (nth 4 rebar-config)))
    (nth 4 rebar-config)
    (nth 5 rebar-config))
-  (draw-edge-rebar
+  (at-structure:draw-edge-rebar
    (polar pt2 (* 1.5 pi) delta)
    (polar pt2 (* 1.5 pi) (* delta (nth 4 rebar-config)))
    (nth 4 rebar-config)

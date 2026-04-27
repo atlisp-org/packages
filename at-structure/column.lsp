@@ -44,8 +44,11 @@
 (defun at-structure:draw-edge-rebar (start end count dia / delta)
     (if (> count 0)
 	(progn
-	  (setq delta (/ (distance start end)
-			  (1- count)))
+	  (setq delta 
+		(if (> count 1)
+		    (/ (distance start end)
+		       (1- count))
+		  0))
 	  (setq i -1)
 	  (repeat count
 		  (at-structure:draw-one-rebar

@@ -1,6 +1,6 @@
-;; ´òÓ¡ÑùÊ½±í
+;; æ‰“å°æ ·å¼è¡¨
 (@:define-config 'base:ctb "monochrome.ctb" (_"Print style file."))
-;;´òÓ¡Çı¶¯ÅäÖÃ
+;;æ‰“å°é©±åŠ¨é…ç½®
 (@:define-config 'base:plotter "VitalPDF.pc3" "Please change it to your ploter,and setup page sizes.")
 (cond
  (is-zwcad
@@ -9,14 +9,14 @@
   (@:define-config 'base:plotter-pdf "VitalPDFg.pc3" "PDF Printer"))
  (t
   (@:define-config 'base:plotter-pdf "VitalPDF.pc3" "PDF Printer")))
-;; (@:define-config 'base:projects-output "D:\\Output" "±¾µØÊä³öÄ¿Â¼")
+;; (@:define-config 'base:projects-output "D:\\Output" "æœ¬åœ°è¾“å‡ºç›®å½•")
 (defun @:update-ctb-dialog ()
   (@:set-config 'base:ctb
 		(nth (atoi (get_tile "ctbName")) list-ctb))
   (done_dialog))
 (setq list-ctb '())
 (defun @:set-ctb (/ path-ctb fn dcl_fp update-ctb-dialog) 
-  "Ñ¡Ôñ´òÓ¡ÑùÊ½±í¡£"
+  "é€‰æ‹©æ‰“å°æ ·å¼è¡¨ã€‚"
   (defun update-ctb-dialog ()
     (@:set-config 'base:ctb
 		  (nth (atoi (get_tile "ctbName")) list-ctb))
@@ -26,7 +26,7 @@
     (setq path-ctb (strcat (getvar "roamablerootprefix") "Printstyle\\")))
    (is-gcad
     (setq path-ctb (strcat (system:dir (getvar "roamablerootprefix")) "PrintStyles\\")))
-   ((and (< (@:acadver) 18) (not is-zwcad)) ;;¾É°æacad
+   ((and (< (@:acadver) 18) (not is-zwcad)) ;;æ—§ç‰ˆacad
     (setq path-ctb (strcat (getvar "roamablerootprefix") "Plot Styles\\")))
    (t
     (setq path-ctb (strcat (getvar "roamablerootprefix") "Plotters\\Plot Styles\\"))))
@@ -50,7 +50,7 @@
   (start_list "ctbName")
   (mapcar 'add_list list-ctb)
   (end_list)
-  ;; ÉèÖÃÄ¬ÈÏÖµ
+  ;; è®¾ç½®é»˜è®¤å€¼
   (set_tile "ctbName" (@:to-string
 		       (- (length list-ctb)
 			  (length (member (@:get-config 'base:ctb)
@@ -64,7 +64,7 @@
 
 (defun plot:to-pdf ( tufu zongheng pt1 pt2 file-name
 		     / minpoint maxpoint oldosmode )
-  "´òÓ¡µ½PDFÎÄ¼ş¡£²ÎÊı£º Í¼·ù ×İºá µÚÒ»µã µÚ¶şµã Êä³öÎÄ¼şÃû¡£"
+  "æ‰“å°åˆ°PDFæ–‡ä»¶ã€‚å‚æ•°ï¼š å›¾å¹… çºµæ¨ª ç¬¬ä¸€ç‚¹ ç¬¬äºŒç‚¹ è¾“å‡ºæ–‡ä»¶åã€‚"
   (cond
    (is-zwcad
     (if (null (and
@@ -79,9 +79,10 @@
 			    (strcat (getvar "roamablerootprefix") "Plotters\\VitalPDFzw.pc5"))
 	      )
 	  (progn
-	    (@:down-pkg-file (@:uri) "base/VitalPDFzw.pc5" @:*edition*)
-	    (@:down-pkg-file (@:uri) "base/VitalPDFzw.pmp" @:*edition*)
-	    (alert "ÏÂÔØPDF´òÓ¡ÅäÖÃÎÄ¼ş£¬ÇëÉÔºò...")
+	    (@::load-module 'pkgman)
+	    (@::down-pkg-file (@:uri) "base/VitalPDFzw.pc5" @:*edition*)
+	    (@::down-pkg-file (@:uri) "base/VitalPDFzw.pmp" @:*edition*)
+	    (@::alert "ä¸‹è½½PDFæ‰“å°é…ç½®æ–‡ä»¶ï¼Œè¯·ç¨å€™...")
 	    (vl-file-copy (strcat (@:package-path "base") "VitalPDFzw.pmp")
 			  (strcat (getvar "roamablerootprefix") "Plotters\\PMP Files\\VitalPDFzw.pmp"))
 	    (vl-file-copy (strcat (@:package-path "base") "VitalPDFzw.pc5")
@@ -101,9 +102,10 @@
 			    (strcat (system:dir (getvar "roamablerootprefix")) "Plot\\VitalPDFg.pc3"))
 	      )
 	  (progn
-	    (@:down-pkg-file (@:uri) "base/VitalPDFg.pc3" @:*edition*)
-	    (@:down-pkg-file (@:uri) "base/VitalPDFg.pmp" @:*edition*)
-	    (alert "ÏÂÔØPDF´òÓ¡ÅäÖÃÎÄ¼ş£¬ÇëÉÔºò...")
+	    (@::load-module 'pkgman)	      
+	    (@::down-pkg-file (@:uri) "base/VitalPDFg.pc3" @:*edition*)
+	    (@::down-pkg-file (@:uri) "base/VitalPDFg.pmp" @:*edition*)
+	    (@::alert "ä¸‹è½½PDFæ‰“å°é…ç½®æ–‡ä»¶ï¼Œè¯·ç¨å€™...")
 	    (vl-file-copy (strcat (@:package-path "base") "VitalPDFg.pmp")
 			  (strcat(system:dir  (getvar "roamablerootprefix")) "Plot\\PMP\\VitalPDFg.pmp"))
 	    (vl-file-copy (strcat (@:package-path "base") "VitalPDFg.pc3")
@@ -122,9 +124,10 @@
 			    (strcat (getvar "roamablerootprefix") "Plotters\\VitalPDF.pc3"))
 	      )
 	  (progn
-	    (@:down-pkg-file (@:uri) "base/VitalPDF.pc3" @:*edition*)
-	    (@:down-pkg-file (@:uri) "base/VitalPDF.pmp" @:*edition*)
-	    (alert "ÏÂÔØPDF´òÓ¡ÅäÖÃÎÄ¼ş£¬ÇëÉÔºò...")
+	    (@::load-module 'pkgman)
+	    (@::down-pkg-file (@:uri) "base/VitalPDF.pc3" @:*edition*)
+	    (@::down-pkg-file (@:uri) "base/VitalPDF.pmp" @:*edition*)
+	    (@::alert "ä¸‹è½½PDFæ‰“å°é…ç½®æ–‡ä»¶ï¼Œè¯·ç¨å€™...")
 	    (vl-file-copy (strcat (@:package-path "base") "VitalPDF.pmp")
 			  (strcat (getvar "roamablerootprefix") "Plotters\\PMP Files\\VitalPDF.pmp"))
 	    (vl-file-copy (strcat (@:package-path "base") "VitalPDF.pc3")
@@ -139,7 +142,7 @@
   
   (if (null (findfile (strcat path-ctb (@:get-config 'base:ctb))))
       (progn
-	(princ (strcat "Ã»ÓĞ·¢ÏÖ´òÓ¡ÑùÊ½±íÎÄ¼ş: " (@:get-config 'base:ctb) "\n ½«Ê¹ÓÃ monochrome.ctb."))
+	(princ (strcat "æ²¡æœ‰å‘ç°æ‰“å°æ ·å¼è¡¨æ–‡ä»¶: " (@:get-config 'base:ctb) "\n å°†ä½¿ç”¨ monochrome.ctb."))
 	(@:set-config 'base:ctb "monochrome.ctb")
 	))
   
@@ -156,7 +159,7 @@
 		       (max (nth 1 pt1) (nth 1 pt2))
 		       0))
   ;;(setq minpoint p1)(setq maxpoint p2)
-  ;;²¼¾Ö¿Õ¼ä²ÉÓÃ²»Í¬µÄ·½·¨
+  ;;å¸ƒå±€ç©ºé—´é‡‡ç”¨ä¸åŒçš„æ–¹æ³•
   (if (= (getvar "ctab") "Model")
       (command "-plot" "y" "" (@:get-config 'base:plotter-pdf) tufu "M"
 	       zongheng "n" "w" minpoint maxpoint "f" "c" "y" (@:get-config 'base:ctb) "y" "a"
@@ -170,7 +173,7 @@
 
 (defun plot:to-dev ( tufu zongheng p1 p2 
 		    / minpoint maxpoint oldosmode )
-  "´òÓ¡µ½Éè±¸¡£²ÎÊı£º Í¼·ù ×İºá µÚÒ»µã µÚ¶şµã Êä³öÎÄ¼şÃû¡£"
+  "æ‰“å°åˆ°è®¾å¤‡ã€‚å‚æ•°ï¼š å›¾å¹… çºµæ¨ª ç¬¬ä¸€ç‚¹ ç¬¬äºŒç‚¹ è¾“å‡ºæ–‡ä»¶åã€‚"
   (push-var nil)
   (setvar "filedia" 0)
   ;;(command "ucs" "w")
@@ -191,10 +194,10 @@
 (defun plot:Plot->File (ConfigName MediaName Window FileName  /
 				   AcadObj ActiveDocObj  ActiveLayoutObj PlotObj ret)
 
-  ;; ConfigName -- ÅäÖÃÎÄ¼şÃû
-  ;; MediaName -- Í¼Ö½³ß´ç
-  ;; Window -- ±í£¨´°¿Ú×óÏÂµã ÓÒÉÏµã)
-  ;; FileName -- Êä³öÎÄ¼şÃû
+  ;; ConfigName -- é…ç½®æ–‡ä»¶å
+  ;; MediaName -- å›¾çº¸å°ºå¯¸
+  ;; Window -- è¡¨ï¼ˆçª—å£å·¦ä¸‹ç‚¹ å³ä¸Šç‚¹)
+  ;; FileName -- è¾“å‡ºæ–‡ä»¶å
   (setq
    AcadObj         (vlax-get-acad-object)
    ActiveDocObj    (vla-get-ActiveDocument AcadObj)

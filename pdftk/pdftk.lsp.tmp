@@ -1,0 +1,5 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; This file was created by @lisp DEV-tools
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; define a first config item  'pdftk:first for package pdftk 's configitem first 
+(@:define-config 'pdftk:stamp "D:\\Design\\standard\\stamp.pdf" "鐢ㄤ簬鍔犱负鎴宠

@@ -1,12 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-documents:first ÓÃÓÚ Ó¦ÓÃ°ü at-documents µÄ µÚÒ»¸öÅäÖÃÏî first 
-;;(@:define-config 'at-documents:first "ÎÒÊÇÅäÖÃÏî at-documents:first µÄÖµ" "Õâ¸öÅäÖÃÏîµÄÓÃÍ¾ËµÃ÷¡£")
-;; (@:get-config 'at-documents:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-documents:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-devmenu  (_"Support") "@Í¨ÓÃº¯Êı¿â" "(at-documents:lib-manager-dialog)" )
+;; å®šä¹‰é…ç½®é¡¹ 'at-documents:first ç”¨äº åº”ç”¨åŒ… at-documents çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+;;(@:define-config 'at-documents:first "æˆ‘æ˜¯é…ç½®é¡¹ at-documents:first çš„å€¼" "è¿™ä¸ªé…ç½®é¡¹çš„ç”¨é€”è¯´æ˜ã€‚")
+;; (@:get-config 'at-documents:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-documents:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-devmenu  (_"Support") "@é€šç”¨å‡½æ•°åº“" "(at-documents:lib-manager-dialog)" )
 (if (findfile "packages/base/base-whole-dev.lsp")
     (load "packages/base/base-whole-dev.lsp")
   (@:down-pkg-file (@:uri) "base/base-whole-dev.lsp" "stable")
@@ -56,18 +56,18 @@
     (show-libdocs-list))
   (defun show-detail (number / func-info)
     (setq func-info (nth (+ (* 20 curr-page) (1- number)) libdocs-list))
-    (alert (strcat "º¯ÊıÃû:  " (@:to-string(car func-info))
-		   "\n¹¦ÄÜËµÃ÷: " (@:to-string(cadr func-info))
-		   "\nÓÃ·¨:\n  "(@:to-string (caddr func-info))
-		   "\n²ÎÊı:\n"(@:to-string(nth 3 func-info))
-		   "\n·µ»ØÖµ:\n   "(@:to-string(nth 4 func-info))
-		   "\nÊ¾Àı:\n  "(@:to-string (nth 5 func-info))
+    (alert (strcat "å‡½æ•°å:  " (@:to-string(car func-info))
+		   "\nåŠŸèƒ½è¯´æ˜: " (@:to-string(cadr func-info))
+		   "\nç”¨æ³•:\n  "(@:to-string (caddr func-info))
+		   "\nå‚æ•°:\n"(@:to-string(nth 3 func-info))
+		   "\nè¿”å›å€¼:\n   "(@:to-string(nth 4 func-info))
+		   "\nç¤ºä¾‹:\n  "(@:to-string (nth 5 func-info))
 		   ))
     )
   (defun show-src (number / func-info)
     (setq func-info (nth (+ (* 20 curr-page) (1- number)) libdocs-list))
     (alert (fun:src-code (car func-info)))
-    ;; (alert (strcat "º¯ÊıÃû:  " (@:to-string(car func-info))
+    ;; (alert (strcat "å‡½æ•°å:  " (@:to-string(car func-info))
 		;;    "\n----\n"
 		;;    (indent
 		;;     (strcase
@@ -126,11 +126,11 @@
     (setq libdocs-list @:*libdoc*)
     (setq curr-page 0)
     (show-libdocs-list))
-  ;; ¶ÁÈ¡°üÁĞ±í
+  ;; è¯»å–åŒ…åˆ—è¡¨
   (at-documents:load-libdoc)
   (setq libdocs-list @:*libdoc*)
   (setq curr-page 0)
-  ;; Éú³É dcl ÎÄ¼ş
+  ;; ç”Ÿæˆ dcl æ–‡ä»¶
   (setq dcl-tmp (strcat @:*tmp-path* "tmp-lib-man.dcl" ))
   ;; (setq dcl-tmp (vl-filename-mktemp nil nil ".dcl" ))
   (setq dcl_fp (open dcl-tmp "w"))
@@ -188,7 +188,7 @@
   (unload_dialog dcl_id)
   )
 (defun at-documents:gen-libdoc (/ files fp opt%)
-  ;; É¾³ıÔ­ÁÙÊ±
+  ;; åˆ é™¤åŸä¸´æ—¶
   (while (setq files (vl-directory-files (strcat @:*prefix* "packages\\base\\") "lib-*.to-gendoc.lsp" 1))
     (foreach file% files
 	     (vl-file-delete (strcat @:*prefix* "packages\\base\\" file%))))
@@ -199,7 +199,7 @@
       (foreach file% files
 	       (vl-file-delete (strcat @:*prefix* "packages\\base\\" file%))))
   
-  ;; É¾³ı¿ÕÎÄµµ
+  ;; åˆ é™¤ç©ºæ–‡æ¡£
   (if (setq files (vl-directory-files (strcat @:*prefix* "packages\\at-documents\\") "*.libdoc" 1))
       (foreach file% files
 	       (if (= 0 (vl-file-size (strcat @:*prefix* "packages\\at-documents\\" file%)))
@@ -210,20 +210,20 @@
 (defun @doc:gen-openai (/ fp)
   (at-documents:load-libdoc)
   (setq fp (open (strcat @:*prefix* "openai.csv") "w"))
-  (write-line "¼¼ÄÜÃû³Æ,±ê×¼ÎÊÌâ,±ê×¼ÎÊÌâµÄÏàËÆ¶ÈãĞÖµ,²¹³äÓÃ»§ÎÊ·¨£¨¶à¸öÓÃ##·Ö¸ô£©,»úÆ÷ÈË»Ø´ğ£¨¶à¸öÓÃ##·Ö¸ô£©,ÒâÍ¼ÓÅÏÈ¼¶,ÊÇ·ñ½ûÓÃ"
+  (write-line "æŠ€èƒ½åç§°,æ ‡å‡†é—®é¢˜,æ ‡å‡†é—®é¢˜çš„ç›¸ä¼¼åº¦é˜ˆå€¼,è¡¥å……ç”¨æˆ·é—®æ³•ï¼ˆå¤šä¸ªç”¨##åˆ†éš”ï¼‰,æœºå™¨äººå›ç­”ï¼ˆå¤šä¸ªç”¨##åˆ†éš”ï¼‰,æ„å›¾ä¼˜å…ˆçº§,æ˜¯å¦ç¦ç”¨"
 	      fp)
-  (write-line (strcat "@lispº¯Êı¿â,@lispº¯Êı¿â,0.91,,* Ìá¹©ÒÔÏÂÀà±ğ£º"
+  (write-line (strcat "@lispå‡½æ•°åº“,@lispå‡½æ•°åº“,0.91,,* æä¾›ä»¥ä¸‹ç±»åˆ«ï¼š"
 		      (string:from-lst @:*libdoc-category* "LINE_BREAK")
-		      "LINE_BREAKÇëÊäÈë Àà±ğ:* »ñÈ¡¸ÃÀà±ğÏÂµÄº¯Êı¡£e.g.  block:* LINE_BREAK"
-		      "ÇëÊäÈë º¯ÊıÃû»ñÈ¡µÄº¯ÊıÓÃ·¨¡£e.g.  block:insert "
+		      "LINE_BREAKè¯·è¾“å…¥ ç±»åˆ«:* è·å–è¯¥ç±»åˆ«ä¸‹çš„å‡½æ•°ã€‚e.g.  block:* LINE_BREAK"
+		      "è¯·è¾“å…¥ å‡½æ•°åè·å–çš„å‡½æ•°ç”¨æ³•ã€‚e.g.  block:insert "
 		      ",1,false") fp)
   (foreach category% @:*libdoc-category*
 	   (write-line
-	    (strcat "@lispº¯Êı¿â,"
+	    (strcat "@lispå‡½æ•°åº“,"
 		    category%":*,"
 		    "0.91,"
-		    ",";;0.8<eos>1<eos>ÎÊ·¨1##0.8<eos>1<eos>ÎÊ·¨2
-		    ;; Éú³É¸ÃÀàµÄº¯ÊıÁĞ±í³¤¶È²»´óÓÚ600  »»ĞĞÓÃ LINE_BREAK
+		    ",";;0.8<eos>1<eos>é—®æ³•1##0.8<eos>1<eos>é—®æ³•2
+		    ;; ç”Ÿæˆè¯¥ç±»çš„å‡½æ•°åˆ—è¡¨é•¿åº¦ä¸å¤§äº600  æ¢è¡Œç”¨ LINE_BREAK
 		    (string:from-list
 		     (vl-remove
 		      nil
@@ -237,13 +237,13 @@
 	    fp))
   (foreach func-info @:*libdoc*
 	   (write-line
-	    (strcat "@lispº¯Êı¿â,"
+	    (strcat "@lispå‡½æ•°åº“,"
 		    (string:subst-all
-		     "£¬" ","(@:to-string (car func-info)))","
+		     "ï¼Œ" ","(@:to-string (car func-info)))","
 		    "0.91,"
-		    ",";;0.8<eos>1<eos>ÎÊ·¨1##0.8<eos>1<eos>ÎÊ·¨2
-		    ;; Éú³É¸ÃÀàµÄº¯ÊıÁĞ±í³¤¶È²»´óÓÚ600  »»ĞĞÓÃ LINE_BREAK
-		    ;; È¥ ,
+		    ",";;0.8<eos>1<eos>é—®æ³•1##0.8<eos>1<eos>é—®æ³•2
+		    ;; ç”Ÿæˆè¯¥ç±»çš„å‡½æ•°åˆ—è¡¨é•¿åº¦ä¸å¤§äº600  æ¢è¡Œç”¨ LINE_BREAK
+		    ;; å» ,
 		    (if (member 34 (vl-string->list
 				    (setq str
 			  (string:subst-all
@@ -251,13 +251,13 @@
 			   (string:subst-all
 			    "LINE_BREAK" "\n"
 			    (string:subst-all
-			     "£¬" ","
+			     "ï¼Œ" ","
 			     (strcat
-			      "º¯ÊıÓÃ·¨:\n  "(@:to-string (caddr func-info))
-			      "\n* ¹¦ÄÜËµÃ÷:\n  " (@:to-string(cadr func-info))
-			      "\n* ²ÎÊı:\n"(@:to-string(nth 3 func-info))
-			      "\n* ·µ»ØÖµ:\n   "(@:to-string(nth 4 func-info))
-			      "\n* Ê¾Àı:\n  "(@:to-string (nth 5 func-info))
+			      "å‡½æ•°ç”¨æ³•:\n  "(@:to-string (caddr func-info))
+			      "\n* åŠŸèƒ½è¯´æ˜:\n  " (@:to-string(cadr func-info))
+			      "\n* å‚æ•°:\n"(@:to-string(nth 3 func-info))
+			      "\n* è¿”å›å€¼:\n   "(@:to-string(nth 4 func-info))
+			      "\n* ç¤ºä¾‹:\n  "(@:to-string (nth 5 func-info))
 			      )))))))
 			(strcat "\""str"\"")
 		      str)
@@ -267,20 +267,20 @@
 (defun @doc:gen-openai-pkg (/ fp)
   (@:package-update)
   (setq fp (open (strcat @:*prefix* "openai-pkg.csv") "w"))
-  (write-line "¼¼ÄÜÃû³Æ,±ê×¼ÎÊÌâ,±ê×¼ÎÊÌâµÄÏàËÆ¶ÈãĞÖµ,²¹³äÓÃ»§ÎÊ·¨£¨¶à¸öÓÃ##·Ö¸ô£©,»úÆ÷ÈË»Ø´ğ£¨¶à¸öÓÃ##·Ö¸ô£©,ÒâÍ¼ÓÅÏÈ¼¶,ÊÇ·ñ½ûÓÃ"
+  (write-line "æŠ€èƒ½åç§°,æ ‡å‡†é—®é¢˜,æ ‡å‡†é—®é¢˜çš„ç›¸ä¼¼åº¦é˜ˆå€¼,è¡¥å……ç”¨æˆ·é—®æ³•ï¼ˆå¤šä¸ªç”¨##åˆ†éš”ï¼‰,æœºå™¨äººå›ç­”ï¼ˆå¤šä¸ªç”¨##åˆ†éš”ï¼‰,æ„å›¾ä¼˜å…ˆçº§,æ˜¯å¦ç¦ç”¨"
 	      fp)
-  (write-line (strcat "CADÓ¦ÓÃÔÆ,Ó¦ÓÃÁĞ±í,0.91,,* Ìá¹©ÒÔÏÂÀà±ğµÄÓ¦ÓÃ£ºLINE_BREAK"
+  (write-line (strcat "CADåº”ç”¨äº‘,åº”ç”¨åˆ—è¡¨,0.91,,* æä¾›ä»¥ä¸‹ç±»åˆ«çš„åº”ç”¨ï¼šLINE_BREAK"
 		      (string:from-lst @:*pkgs-category* "LINE_BREAK")
-		      "LINE_BREAKÇëÊäÈë Àà±ğ:* »ñÈ¡¸ÃÀà±ğÏÂµÄÓ¦ÓÃ¡£"
+		      "LINE_BREAKè¯·è¾“å…¥ ç±»åˆ«:* è·å–è¯¥ç±»åˆ«ä¸‹çš„åº”ç”¨ã€‚"
 		      ",1,false") fp)
   (foreach category% @:*pkgs-category*
 	   (write-line
-	    (strcat "CADÓ¦ÓÃÔÆ,"
+	    (strcat "CADåº”ç”¨äº‘,"
 		    category%":*,"
 		    "0.91,"
-		    ",";;0.8<eos>1<eos>ÎÊ·¨1##0.8<eos>1<eos>ÎÊ·¨2
-		    ;; Éú³É¸ÃÀàµÄº¯ÊıÁĞ±í³¤¶È²»´óÓÚ600  »»ĞĞÓÃ LINE_BREAK
-		    "¸Ã·ÖÀàÓĞÒÔÏÂÓ¦ÓÃ°ü£ºLINE_BREAK"
+		    ",";;0.8<eos>1<eos>é—®æ³•1##0.8<eos>1<eos>é—®æ³•2
+		    ;; ç”Ÿæˆè¯¥ç±»çš„å‡½æ•°åˆ—è¡¨é•¿åº¦ä¸å¤§äº600  æ¢è¡Œç”¨ LINE_BREAK
+		    "è¯¥åˆ†ç±»æœ‰ä»¥ä¸‹åº”ç”¨åŒ…ï¼šLINE_BREAK"
 		    (string:from-list
 		     (vl-remove
 		      nil
@@ -288,20 +288,20 @@
 				 (strcat "* "(@:pkg x ':full-name) "  ID: " (@:pkg x ':name)))
 			      (@:package-get-pkgs-by-category category%)))
 		     "LINE_BREAK")
-		    "LINE_BREAK ÇëÊäÈë°üÃû»ò°üID»ñÈ¡Ó¦ÓÃ°üĞÅÏ¢¡£"
+		    "LINE_BREAK è¯·è¾“å…¥åŒ…åæˆ–åŒ…IDè·å–åº”ç”¨åŒ…ä¿¡æ¯ã€‚"
 		    ",1,false")
 	    fp))
   (foreach pkg% @:*pkgs*
 	   (write-line
-	    (strcat "CADÓ¦ÓÃÔÆ,"
+	    (strcat "CADåº”ç”¨äº‘,"
 		    (string:subst-all
-		     "£¬" ","(@:pkg pkg% ':name))","
+		     "ï¼Œ" ","(@:pkg pkg% ':name))","
 		     "0.91,"
 		    "0.8<eos>1<eos>"
 		    (@:pkg pkg% ':full-name)
-		    ",";;0.8<eos>1<eos>ÎÊ·¨1##0.8<eos>1<eos>ÎÊ·¨2
-		    ;; Éú³É¸ÃÀàµÄº¯ÊıÁĞ±í³¤¶È²»´óÓÚ600  »»ĞĞÓÃ LINE_BREAK
-		    ;; È¥ ,
+		    ",";;0.8<eos>1<eos>é—®æ³•1##0.8<eos>1<eos>é—®æ³•2
+		    ;; ç”Ÿæˆè¯¥ç±»çš„å‡½æ•°åˆ—è¡¨é•¿åº¦ä¸å¤§äº600  æ¢è¡Œç”¨ LINE_BREAK
+		    ;; å» ,
 		    (if (member 34 (vl-string->list
 				    (setq str
 			  (string:subst-all
@@ -309,13 +309,13 @@
 			   (string:subst-all
 			    "LINE_BREAK" "\n"
 			    (string:subst-all
-			     "£¬" ","
+			     "ï¼Œ" ","
 			     (strcat
-			      "Ó¦ÓÃ°ü:\n  "(@:to-string (@:pkg pkg% ':full-name))
-			      "\n* ×÷Õß:\n  "(@:to-string (@:pkg pkg% ':author))
-			      "\n* °æ±¾:\n"(@:to-string (@:pkg pkg% ':version))
-			      "\n* ¼ò½é:\n   "(@:to-string (@:pkg pkg% ':DESCRIPTION))
-			      "\n¸ü¶àÄÚÈİÇë·ÃÎÊ http://atlisp.cn/package-info/"
+			      "åº”ç”¨åŒ…:\n  "(@:to-string (@:pkg pkg% ':full-name))
+			      "\n* ä½œè€…:\n  "(@:to-string (@:pkg pkg% ':author))
+			      "\n* ç‰ˆæœ¬:\n"(@:to-string (@:pkg pkg% ':version))
+			      "\n* ç®€ä»‹:\n   "(@:to-string (@:pkg pkg% ':DESCRIPTION))
+			      "\næ›´å¤šå†…å®¹è¯·è®¿é—® http://atlisp.cn/package-info/"
 			      (@:pkg pkg% ':name) 
 			      )))))))
 			(strcat "\""str"\"")

@@ -2,20 +2,20 @@
     (setenv "ACAD" (strcat (vl-string-right-trim ";" (getenv "ACAD"))
 			   ";"
 			   @:*prefix* "packages\\fonts;")))
-;; ´´½¨ @@hztxt.shx×ÖÌå£¬ÓÃÓÚ¿ìËÙÌæ´úÈ±Ê¡×ÖÌå
+;; åˆ›å»º @@hztxt.shxå­—ä½“ï¼Œç”¨äºå¿«é€Ÿæ›¿ä»£ç¼ºçœå­—ä½“
 (if (and (null (findfile (strcat @:*prefix* "packages\\fonts\\@@hztxt.shx")))
 	 (findfile (strcat @:*prefix* "packages\\fonts\\Tssdchn.shx")))
     (vl-file-copy (findfile (strcat @:*prefix* "packages\\fonts\\Tssdchn.shx"))
 		  (strcat @:*prefix* "packages\\fonts\\@@hztxt.shx")))
 
 (defun fonts:merge (/ date1 date2 font font_obj fontlist fontname n to-shx to-ttf)
-  "¹é²¢×ÖÌåÑùÊ½¡£"
+  "å½’å¹¶å­—ä½“æ ·å¼ã€‚"
   (setq date1 (getvar "millisecs"))
   (defun to-shx(shxx shxb / a3)
-    (setq a3 (entget (tblobjname "style" font)));È¡³ö×ÖÌåµÄÊı¾İ´®ĞĞ
-    (setq a3 (subst (cons 3 shxx )(assoc 3 a3) a3));½«×ÖÌå×ÖĞÍ¸Ä³ÉĞÂ×ÖĞÍ
-    (setq a3 (subst (cons 4 shxb )(assoc 4 a3) a3));½«×ÖÌå×ÖĞÍ¸Ä³ÉĞÂ×ÖĞÍ
-    (entmod a3);¸üĞÂ×ÖÌå
+    (setq a3 (entget (tblobjname "style" font)));å–å‡ºå­—ä½“çš„æ•°æ®ä¸²è¡Œ
+    (setq a3 (subst (cons 3 shxx )(assoc 3 a3) a3));å°†å­—ä½“å­—å‹æ”¹æˆæ–°å­—å‹
+    (setq a3 (subst (cons 4 shxb )(assoc 4 a3) a3));å°†å­—ä½“å­—å‹æ”¹æˆæ–°å­—å‹
+    (entmod a3);æ›´æ–°å­—ä½“
     )
   (defun to-ttf(ttf / obj)
     (setq obj (vla-add font_obj font))
@@ -30,49 +30,49 @@
   (repeat (length fontlist)
           (setq font (nth n fontlist))
           (cond
-            ((wcmatch font "*·ÂËÎ*")(to-ttf "·ÂËÎ"))
-            ((wcmatch font "*ËÎÌå*")(to-ttf "ËÎÌå"))
-            ((wcmatch font "*ºÚÌå*")(to-ttf "ºÚÌå"))
+            ((wcmatch font "*ä»¿å®‹*")(to-ttf "ä»¿å®‹"))
+            ((wcmatch font "*å®‹ä½“*")(to-ttf "å®‹ä½“"))
+            ((wcmatch font "*é»‘ä½“*")(to-ttf "é»‘ä½“"))
             (t(to-shx "tssdeng.shx" "hztxt.shx"))
             )
           (setq n (+ n 1))
           )
   (repeat 1 (vl-cmdf "regen"))
   (setq date2 (getvar "millisecs"))
-  (princ (strcat "£¬ºÄÊ±" (rtos(/(- date2 date1)1000.000)2 3) "Ãë¡£"))
+  (princ (strcat "ï¼Œè€—æ—¶" (rtos(/(- date2 date1)1000.000)2 3) "ç§’ã€‚"))
   )
 
 (defun fonts:merge1(/ a1 a2 date1 date2 to-shx to-ttf)
   (setq date1 (getvar "millisecs"))
   (defun to-shx(shxx shxb / a3)
-    (setq a3 (entget (tblobjname "style" a2)));È¡³ö×ÖÌåµÄÊı¾İ´®ĞĞ
-    (setq a3 (subst (cons 3 shxx )(assoc 3 a3) a3));½«×ÖÌå×ÖĞÍ¸Ä³ÉĞÂ×ÖĞÍ
-    (setq a3 (subst (cons 4 shxb )(assoc 4 a3) a3));½«×ÖÌå×ÖĞÍ¸Ä³ÉĞÂ×ÖĞÍ
-    (entmod a3);¸üĞÂ×ÖÌå
+    (setq a3 (entget (tblobjname "style" a2)));å–å‡ºå­—ä½“çš„æ•°æ®ä¸²è¡Œ
+    (setq a3 (subst (cons 3 shxx )(assoc 3 a3) a3));å°†å­—ä½“å­—å‹æ”¹æˆæ–°å­—å‹
+    (setq a3 (subst (cons 4 shxb )(assoc 4 a3) a3));å°†å­—ä½“å­—å‹æ”¹æˆæ–°å­—å‹
+    (entmod a3);æ›´æ–°å­—ä½“
     )
   (defun to-ttf(ttf / font_obj obj)
     (setq font_obj (vla-get-TextStyles(vla-get-ActiveDocument(vlax-get-acad-object))))
     (setq obj (vla-add font_obj a2))
     (vla-setFont obj ttf :vlax-false :vlax-false 134 2)
     )
-  (setq a1 (tblnext "style" t));½«Ö¸ÕëÒÆµ½µÚÒ»¸ö×ÖÌå
+  (setq a1 (tblnext "style" t));å°†æŒ‡é’ˆç§»åˆ°ç¬¬ä¸€ä¸ªå­—ä½“
   (while a1
-    (setq a2 (cdr (assoc 2 a1)));È¡³ö×ÖÌåÃû³Æ
+    (setq a2 (cdr (assoc 2 a1)));å–å‡ºå­—ä½“åç§°
     (cond
-      ((wcmatch a2 "*·ÂËÎ*")(to-ttf "·ÂËÎ"))
-      ((wcmatch a2 "*ËÎÌå*")(to-ttf "ËÎÌå"))
-      ((wcmatch a2 "*ºÚÌå*")(to-ttf "ºÚÌå"))
+      ((wcmatch a2 "*ä»¿å®‹*")(to-ttf "ä»¿å®‹"))
+      ((wcmatch a2 "*å®‹ä½“*")(to-ttf "å®‹ä½“"))
+      ((wcmatch a2 "*é»‘ä½“*")(to-ttf "é»‘ä½“"))
       (t(to-shx "tssdeng.shx" "hztxt.shx"))
       )
-    (setq a1 (tblnext "style"));ÕÒ³öÏÂÒ»¸ö×ÖÌå
+    (setq a1 (tblnext "style"));æ‰¾å‡ºä¸‹ä¸€ä¸ªå­—ä½“
     )
   (repeat 1 (vl-cmdf "regen"))
   (setq date2 (getvar "millisecs"))
-  (princ (strcat "£¬ºÄÊ±" (rtos(/(- date2 date1)1000.000)2 3) "Ãë¡£"))
+  (princ (strcat "ï¼Œè€—æ—¶" (rtos(/(- date2 date1)1000.000)2 3) "ç§’ã€‚"))
   )
 (defun fonts:nulltoFonts(shxx shxb ttf / err font_obj)
   (setq font_obj (vla-get-TextStyles(vla-get-ActiveDocument(vlax-get-acad-object))))
-  (vlax-for x font_obj ;µ¥¶À·ÖÀëº¯ÊıÊ±ĞèÖØĞÂ¶¨Òåfont_obj
+  (vlax-for x font_obj ;å•ç‹¬åˆ†ç¦»å‡½æ•°æ—¶éœ€é‡æ–°å®šä¹‰font_obj
 	    (vla-getfont x 'a 'b 'c 'd 'e)
 	    (if (= a "")
 		(progn
@@ -98,13 +98,13 @@
 		  )
 		)
 	    )
-  (princ(strcat "\n>>>¿Õ×ÖÌå·Ö±ğÌæ»»Îª" shxx "¡¢" shxb "¡¢" ttf))
+  (princ(strcat "\n>>>ç©ºå­—ä½“åˆ†åˆ«æ›¿æ¢ä¸º" shxx "ã€" shxb "ã€" ttf))
   (repeat 1 (vl-cmdf "regen"))
   (princ)
   )
 
 (defun fonts:check (/ lst-missing st)
-  "¼ì²éÊÇ·ñÓĞ×ÖÌåÎÄ¼ş"
+  "æ£€æŸ¥æ˜¯å¦æœ‰å­—ä½“æ–‡ä»¶"
   (setq st (tblnext "style" t))
   (setq lst-missing
 	(cons (list (cdr (assoc 3 st))(cdr (assoc 4 st)))

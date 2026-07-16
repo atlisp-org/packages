@@ -1,5 +1,5 @@
 (defun @layout:lock-all-vp (/ vps)
-  (@::prompt "锁定全部视口")
+  (@::prompt "閿佸畾鍏ㄩ儴瑙嗗彛")
   (setq vps (pickset:to-list (ssget"x"'((0 . "viewport")(-4 .  ">")(69 . 1)))))
   (mapcar '(lambda(x)
 	    (vla-put-displaylocked (e2o x) :vlax-true))

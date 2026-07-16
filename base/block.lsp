@@ -1,11 +1,11 @@
 
 
 (defun block:get-effectivename (blk / tem blkname)
-  "È¡µÃ¿éÕæÊµÃû³Æ£¬Ö§³Ö MAC"
+  "å–å¾—å—çœŸå®åç§°ï¼Œæ”¯æŒ MAC"
   (if (= 'ename (type blk))
       (progn
-	(setq blkname (cdr (assoc 2 (entget blk))));;È¡µÃµ±Ç°¶¯Ì¬¿éÃû
-	(if (wcmatch blkname "`**");;Èç¹ûÊÇÄäÃû¿é
+	(setq blkname (cdr (assoc 2 (entget blk))));;å–å¾—å½“å‰åŠ¨æ€å—å
+	(if (wcmatch blkname "`**");;å¦‚æœæ˜¯åŒ¿åå—
 	    (if (and
 		 (setq tem
 		       (cdadr
@@ -14,8 +14,8 @@
 				(cdr
 				 (assoc 330
 					(entget
-					 (tblobjname "block" blkname);;¸ù¾İ¶¯Ì¬¿éÃû³ÆÈ¡µÃÍ¼ÔªÃû
-					 );;¸ù¾İÍ¼ÔªÃûÈ¡µÃÊµÌå
+					 (tblobjname "block" blkname);;æ ¹æ®åŠ¨æ€å—åç§°å–å¾—å›¾å…ƒå
+					 );;æ ¹æ®å›¾å…ƒåå–å¾—å®ä½“
 					)
 				 )
 				'("AcDbBlockRepBTag")
@@ -33,7 +33,7 @@
       nil))
 
 (defun block:get-attributes (blk / lst)
-  "»ñÈ¡¿éÊôĞÔ,·µ»ØÊôĞÔÃûºÍÖµµÄµã¶ÔÁĞ±í¡£"
+  "è·å–å—å±æ€§,è¿”å›å±æ€§åå’Œå€¼çš„ç‚¹å¯¹åˆ—è¡¨ã€‚"
   (if (= 'ename (type blk))
       (if (safearray-value (setq lst (vlax-variant-value (vla-getattributes (vlax-ename->vla-object blk)))))
 	  (mapcar '(lambda (x) (cons (vla-get-tagstring x) (vla-get-textstring x)))
@@ -44,7 +44,7 @@
 )
 
 (defun block:set-attributes (blk lst / n atts)
-  "ÉèÖÃ¿éÊôĞÔÖµ"
+  "è®¾ç½®å—å±æ€§å€¼"
   (if (= 'ename (type blk))
       (if (safearray-value (setq atts (vlax-variant-value (vla-getattributes (vlax-ename->vla-object blk)))))
 	  (progn (foreach n lst
@@ -63,22 +63,22 @@
   )
 
 (defun block:get-dynamic-properties (blk / oblk props)
-  "»ñÈ¡¶¯Ì¬¿éµÄ¶¯Ì¬ÊôĞÔÁĞ±í£ºÊôĞÔÃû£¬µ±Ç°Öµ£¬Ö»¶ÁĞÔ£¬ÊÇ·ñÏÔÊ¾£¬ÔÊĞíÖµ"
+  "è·å–åŠ¨æ€å—çš„åŠ¨æ€å±æ€§åˆ—è¡¨ï¼šå±æ€§åï¼Œå½“å‰å€¼ï¼Œåªè¯»æ€§ï¼Œæ˜¯å¦æ˜¾ç¤ºï¼Œå…è®¸å€¼"
   (if (= 'ename (type blk))
       (progn
 	(setq oblk  (vlax-ename->vla-object blk))
-	;;»ñÈ¡¶¯Ì¬¿éµÄÊôĞÔ
+	;;è·å–åŠ¨æ€å—çš„å±æ€§
 	(setq props (vlax-invoke oblk 'getdynamicblockproperties))
-	;;»ñÈ¡ÊôĞÔÃû
+	;;è·å–å±æ€§å
 	(list 
 	 (mapcar '(lambda (x) (vlax-get x 'propertyName)) props)
-	 ;;»ñÈ¡ËùÓĞÊôĞÔµÄµ±Ç°Öµ
+	 ;;è·å–æ‰€æœ‰å±æ€§çš„å½“å‰å€¼
 	 (mapcar '(lambda (x) (vlax-get x 'Value)) props)
-	 ;;»ñÈ¡ÊôĞÔÊÇ·ñÎªÖ»¶Á
+	 ;;è·å–å±æ€§æ˜¯å¦ä¸ºåªè¯»
 	 (mapcar 'vla-get-readOnly props)
-	 ;;»ñÈ¡ÊôĞÔÊÇ·ñÏÔÊ¾
+	 ;;è·å–å±æ€§æ˜¯å¦æ˜¾ç¤º
 	 (mapcar 'vla-get-show props)
-	 ;;»ñÈ¡ËùÓĞÊôĞÔµÄÔÊĞíÖµ
+	 ;;è·å–æ‰€æœ‰å±æ€§çš„å…è®¸å€¼
 	 (mapcar '(lambda (x) (vlax-get x 'allowedValues)) props)
 	 ))
       nil)
@@ -93,7 +93,7 @@
   lst)
   
 (defun block:set-dynprop (blk prp val)
-  "ÉèÖÃ¶¯Ì¬¿éÌØĞÔÖµ"
+  "è®¾ç½®åŠ¨æ€å—ç‰¹æ€§å€¼"
   (setq prp (strcase prp))
   (vl-some
    '(lambda (x)

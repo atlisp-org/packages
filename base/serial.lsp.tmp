@@ -1,0 +1,3 @@
+;;;鑾峰彇mac鍦板潃-32浣嶇郴缁熺敤
+(defun-q hdinfo:get-mac (/ i mac s str svr wmi)
+  "鑾峰彇mac鍦板潃锛屼笉涓€瀹氭湁鐢ㄣ€

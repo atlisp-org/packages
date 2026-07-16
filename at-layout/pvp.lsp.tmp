@@ -1,0 +1,2 @@
+(defun @layout:pvp-v (/ clayout vps)
+  (@::prompt "瑙嗗彛鍧愭爣闅忚

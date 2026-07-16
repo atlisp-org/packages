@@ -1,10 +1,10 @@
-;;; @:add-menu ²ÎÊıËµÃ÷
-;;; 1. Ò»¼¶²Ëµ¥ hello
-;;; 2. ¶ş¼¶²Ëµ¥ helloworld
-;;; 3. ²Ëµ¥Ö´ĞĞµÄÃüÁî (helloworld)
+;;; @:add-menu å‚æ•°è¯´æ˜
+;;; 1. ä¸€çº§èœå• hello
+;;; 2. äºŒçº§èœå• helloworld
+;;; 3. èœå•æ‰§è¡Œçš„å‘½ä»¤ (helloworld)
 (@:add-menu "Hello" "helloworld" '(helloworld))
 (defun helloworld ()
-  (@:help "Êä³öhello world µ½ÃüÁîĞĞ¼°¶Ô»°¿òÌáÊ¾¡£")
+  (@:help "è¾“å‡ºhello world åˆ°å‘½ä»¤è¡ŒåŠå¯¹è¯æ¡†æç¤ºã€‚")
   (princ "hello world.\n")
   (alert "hello world.")
   (princ)

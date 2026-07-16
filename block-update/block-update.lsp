@@ -1,11 +1,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; This file was created by @lisp DEV-tools
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(@:define-config 'block-update:path "D:\\block" "Òª¸üĞÂ¿éµÄÄ¿Â¼.")
-(@:define-config 'block-update:number 5 "Òª¸üĞÂ¿éµÄÊıÁ¿.")
-(@:add-menu "¿é²Ù×÷" "¸üĞÂ¿é" "(block-update:update)" )
+(@:define-config 'block-update:path "D:\\block" "è¦æ›´æ–°å—çš„ç›®å½•.")
+(@:define-config 'block-update:number 5 "è¦æ›´æ–°å—çš„æ•°é‡.")
+(@:add-menu "å—æ“ä½œ" "æ›´æ–°å—" "(block-update:update)" )
 (defun block-update:update (/ blks n%)
-  (alert "Òª¸üĞÂµÄÍ¼¿éÎÄ¼ş²»ÄÜÔÚCADÖĞ´¦ÓÚ´ò¿ª×´Ì¬¡£ÇëÑ¡±£´æ¹Ø±ÕºóÊ¹ÓÃ¡£")
+  (alert "è¦æ›´æ–°çš„å›¾å—æ–‡ä»¶ä¸èƒ½åœ¨CADä¸­å¤„äºæ‰“å¼€çŠ¶æ€ã€‚è¯·é€‰ä¿å­˜å…³é—­åä½¿ç”¨ã€‚")
   (setq blks
 	(vl-directory-files (@:get-config 'block-update:path) "*.dwg"))
   (vl-sort blks '(lambda (x y)
@@ -22,13 +22,13 @@
   (setvar "attreq" 1)
   (princ)
   )
-(@:add-menu "¿é²Ù×÷" "ÉèÖÃ¸üĞÂ¿é" "(block-update:setup)" )
+(@:add-menu "å—æ“ä½œ" "è®¾ç½®æ›´æ–°å—" "(block-update:setup)" )
 (defun block-update:setup ()
   (@:set-config 'block-update:path
-		(system:get-folder "ÇëÑ¡ÔñÒª¸üĞÂµÄ¿éÎÄ¼şµÄÄ¿Â¼£º"))
+		(system:get-folder "è¯·é€‰æ‹©è¦æ›´æ–°çš„å—æ–‡ä»¶çš„ç›®å½•ï¼š"))
   (@:set-config 'block-update:number
-		(getint (strcat "ÇëÑ¡ÔñÒª¸üĞÂµÄ¿éµÄÊıÁ¿ <"(itoa (@:get-config 'block-update:number))">£º")))
-  (alert (strcat "Ä¿Â¼:"(@:get-config 'block-update:path)"\nÊıÁ¿:" (itoa(@:get-config 'block-update:number))))
+		(getint (strcat "è¯·é€‰æ‹©è¦æ›´æ–°çš„å—çš„æ•°é‡ <"(itoa (@:get-config 'block-update:number))">ï¼š")))
+  (alert (strcat "ç›®å½•:"(@:get-config 'block-update:path)"\næ•°é‡:" (itoa(@:get-config 'block-update:number))))
  
   (princ)
   )

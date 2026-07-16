@@ -1,0 +1,2 @@
+(defun @dim:sum-dim(/ total dims)
+  "閫夋嫨瑕佹眰鍜岀殑灏哄

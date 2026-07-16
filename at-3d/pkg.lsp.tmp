@@ -1,0 +1,10 @@
+(@:def-pkg '((:NAME . "at-3d")
+        (:FULL-NAME . "@lisp 3D鐩稿叧")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.4")
+        (:LOCALE . "chs")
+        (:CATEGORY . "Common")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "3D鐩稿叧锛屾洸闈

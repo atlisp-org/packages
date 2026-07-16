@@ -1,23 +1,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-stat:first ÓÃÓÚ Ó¦ÓÃ°ü at-stat µÄ µÚÒ»¸öÅäÖÃÏî first 
-;;(@:define-config 'at-stat:first "ÎÒÊÇÅäÖÃÏî at-stat:first µÄÖµ" "Õâ¸öÅäÖÃÏîµÄÓÃÍ¾ËµÃ÷¡£")
-;; (@:get-config 'at-stat:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-stat:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "Í³¼Æ±í¸ñ" "Ô²ĞÄ°ë¾¶" "(at-stat:stat-circle)" )
-(@:add-menu "Í³¼Æ±í¸ñ" "¶à¶ÎÏßµã×ø±ê" "(at-stat:stat-lwpl)" )
-;;(@:add-menu "Í³¼Æ±í¸ñ" "¾ØĞÎ" "(list-rec-wxh:stat)" )
+;; å®šä¹‰é…ç½®é¡¹ 'at-stat:first ç”¨äº åº”ç”¨åŒ… at-stat çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+;;(@:define-config 'at-stat:first "æˆ‘æ˜¯é…ç½®é¡¹ at-stat:first çš„å€¼" "è¿™ä¸ªé…ç½®é¡¹çš„ç”¨é€”è¯´æ˜ã€‚")
+;; (@:get-config 'at-stat:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-stat:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "ç»Ÿè®¡è¡¨æ ¼" "åœ†å¿ƒåŠå¾„" "(at-stat:stat-circle)" )
+(@:add-menu "ç»Ÿè®¡è¡¨æ ¼" "å¤šæ®µçº¿ç‚¹åæ ‡" "(at-stat:stat-lwpl)" )
+;;(@:add-menu "ç»Ÿè®¡è¡¨æ ¼" "çŸ©å½¢" "(list-rec-wxh:stat)" )
 
 (defun at-stat:stat-circle (/ grp-by-y grp% flag)
-  ;;Ò»ÌõÁúÅÅĞò£¬ÏÈy
+  ;;ä¸€æ¡é¾™æ’åºï¼Œå…ˆy
   (setq circles
 	(vl-sort (pickset:to-list (ssget '((0 . "circle"))))
 		 '(lambda (x y)
 		    (<= (cadr (entity:getdxf x 10))
 		       (cadr (entity:getdxf y 10))))))
-  ;;·Ö×é
+  ;;åˆ†ç»„
   (setq grp-by-y '())
   (setq grp% (cons (car circles) nil))
   (setq flag T)
@@ -57,9 +57,9 @@
 		     (entity:getdxf ent% 10)
 		     (* 1.5 (entity:getdxf ent% 40))
 		     0 0.8 0 "MM")))
-  ;; °ë¾¶£¬×ø±ê
+  ;; åŠå¾„ï¼Œåæ ‡
   (setq grp-by-y (apply 'append grp-by-y))
-  (table:make (getpoint ) "Í³¼Æ" '("No." "R" "X" "Y")
+  (table:make (getpoint ) "ç»Ÿè®¡" '("No." "R" "X" "Y")
 	      (mapcar '(lambda (x) (list
 				    (1+ (- (length grp-by-y)
 					   (length (member x grp-by-y))))
@@ -69,14 +69,14 @@
 		      grp-by-y))
   )
 (defun at-stat:stat-lwpl ()
-  (setq pl (car (entsel "ÇëÑ¡ÔñÒ»¸ö¶à¶ÎÏß£º")));;Ñ¡¶à¶ÎÏß
-  (setq pts (curve:pline-3dpoints pl));;È¡µã
+  (setq pl (car (entsel "è¯·é€‰æ‹©ä¸€ä¸ªå¤šæ®µçº¿ï¼š")));;é€‰å¤šæ®µçº¿
+  (setq pts (curve:pline-3dpoints pl));;å–ç‚¹
   (setq res '())
   (setq pre-pt (car pts))
   (setq i 100)
   (foreach pt pts
 	   (entity:make-text
-	    (strcat "J"(itoa (setq i (1+ i)))) pt 300 0 0.8 0 "LB") ;;µã±àºÅ
+	    (strcat "J"(itoa (setq i (1+ i)))) pt 300 0 0.8 0 "LB") ;;ç‚¹ç¼–å·
 	   (setq res
 		 (cons (list
 			(strcat "J" (itoa i))
@@ -86,13 +86,13 @@
 		       res))
 	   (setq pre-pt pt))
   (setq res (reverse res))
-  (table:make (getpoint "ÇëÊäÈë±í¸ñÎ»ÖÃµã£º") "±í¸ñ" '("NO" "X" "Y" "L") res)
+  (table:make (getpoint "è¯·è¾“å…¥è¡¨æ ¼ä½ç½®ç‚¹ï¼š") "è¡¨æ ¼" '("NO" "X" "Y" "L") res)
   )
   
 (defun at-stat:get-wxh (ent / pts result-pts tmp-pts angle% area% i%)
-  "»ñÈ¡¿íºÍ¸ßµÄÁĞ±í"
+  "è·å–å®½å’Œé«˜çš„åˆ—è¡¨"
   (setq pts (@:get-lwpoints ent))
-  ;; ×ø±ê±ä»»Ö±µ½Ãæ»ı×îĞ¡
+  ;; åæ ‡å˜æ¢ç›´åˆ°é¢ç§¯æœ€å°
   (setq i% 0)
   (setq tmp-pts pts)
   (setq result-pts pts)

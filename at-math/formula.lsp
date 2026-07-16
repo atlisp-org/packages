@@ -1,10 +1,10 @@
-;;; ¸ÐÐ»fxsmÎªÎÒÃÇ×öµÄÕâ¸ö×ª»¯±í´ïÊ½Îªlispº¯ÊýµÄ³ÌÐò
+;;; æ„Ÿè°¢fxsmä¸ºæˆ‘ä»¬åšçš„è¿™ä¸ªè½¬åŒ–è¡¨è¾¾å¼ä¸ºlispå‡½æ•°çš„ç¨‹åº
 (defun formula->lisp (str / lst format1 format1_1 Fsxm-Apply
 			 format2 format3 format4 ln lg sqr ASIN
 			 acos tan ctan sin2 cos2 tan2
 			 )
 
-;;;·ÖÀë³ö±äÁ¿Óëº¯Êý
+;;;åˆ†ç¦»å‡ºå˜é‡ä¸Žå‡½æ•°
   (defun format1 (str / char funs lastfun lst tmp lastchar)
     (setq lastfun "(")
     (setq funs '("+" "-" "*" "/" "^" "%" "(" ")" " "))
@@ -13,7 +13,7 @@
       (setq char (substr str 1 1))
       (setq str (substr str 2))
       (if	(and (member char funs)
-		     ;;¸ººÅÌØ±ð´¦Àí
+		     ;;è´Ÿå·ç‰¹åˆ«å¤„ç†
 		     (not (and lastfun (/= lastfun ")") (= char "-")))
 		     (not (and lastchar (or (= char "-") (= char "+"))))
 		     )
@@ -30,13 +30,13 @@
 		lastfun  nil
 		lastchar (= char "E")
 		)
-	  ;;"e"¿ÆÑ§¼ÆÊý·¨ÌØ±ð´¦Àí"2.718281828459045"
+	  ;;"e"ç§‘å­¦è®¡æ•°æ³•ç‰¹åˆ«å¤„ç†"2.718281828459045"
 	  )
 	)
       )
     (vl-remove "" (vl-remove " " (reverse (cons tmp lst))))
     )
-;;;´¦Àí¼òµ¥ÎÞÓÅÏÈ¼¶±ðº¯ÊýÔËËã
+;;;å¤„ç†ç®€å•æ— ä¼˜å…ˆçº§åˆ«å‡½æ•°è¿ç®—
   (defun format1_1 (lst funs / fun lasta nlst tmp)
     (foreach a lst
 	     (cond
@@ -58,7 +58,7 @@
 	     )
     (reverse nlst)
     )
-;;;´øreturnµÄapply
+;;;å¸¦returnçš„apply
   (defun Fsxm-Apply ($Sym $Lst / $$ return $rt)
     (defun Return (var) (setq Return nil) (setq $$ var) (exit))
     (setq $rt (vl-catch-all-apply $Sym $Lst))
@@ -67,7 +67,7 @@
       $$
       )
     )
-  ;;µÝ¹é´¦ÀíÀ¨ºÅ
+  ;;é€’å½’å¤„ç†æ‹¬å·
   (defun format2 (lst / a i lst2 nlst tmp var)
     (setq i 0)
     (while lst
@@ -92,7 +92,7 @@
       )
     (reverse nlst)
     )
-  ;;µÝ¹é×ª»¯¼ÆËãÊ½¸ñÊ½
+  ;;é€’å½’è½¬åŒ–è®¡ç®—å¼æ ¼å¼
   (defun format3 (lst funs / lasta nlst tmp fun)
     (foreach a lst
 	     (cond ((setq fun (assoc a funs))
@@ -116,8 +116,8 @@
 	     )
     (reverse nlst)
     )
-  ;;µÝ¹é´¦Àíµô¶àÓàµÄÀ¨ºÅ,
-  ;;³£Á¿str->¸¡µãÊýreal ±äÁ¿str->·ûºÅsym
+  ;;é€’å½’å¤„ç†æŽ‰å¤šä½™çš„æ‹¬å·,
+  ;;å¸¸é‡str->æµ®ç‚¹æ•°real å˜é‡str->ç¬¦å·sym
   (defun format4 (lst)
     (mapcar '(lambda (a / x)
 	       (cond ((listp a)
@@ -138,31 +138,31 @@
 	    lst
 	    )
     )
-;;;×ÔÈ»¶ÔÊý
+;;;è‡ªç„¶å¯¹æ•°
   (defun ln (d)
     (log d)
     )
-;;;¶ÔÊý
+;;;å¯¹æ•°
   (defun lg (d)
     (* 0.4342944819032518276511289189166 (log d))
     )
-;;;Æ½·½º¯Êý
+;;;å¹³æ–¹å‡½æ•°
   (defun sqr (d)
     (* d d)
     )
-;;;·´ÕýÏÒº¯Êý
+;;;åæ­£å¼¦å‡½æ•°
   (defun asin (d)
     (atan d (sqrt (- 1 (* d d))))
     )
-;;;·´ÓàÏÒº¯Êý
+;;;åä½™å¼¦å‡½æ•°
   (defun acos (d)
     (atan (sqrt (- 1 (* d d))) d)
     )
-;;;ÕýÇÐº¯Êý
+;;;æ­£åˆ‡å‡½æ•°
   (defun tan (d)
     (/ (sin d) (cos d))
     )
-;;;ÓàÇÐº¯Êý
+;;;ä½™åˆ‡å‡½æ•°
   (defun ctan (d)
     (/ (cos d) (sin d))
     )
@@ -177,12 +177,12 @@
     (/ (sin r) (cos r))
     )
 
-  ;;Ô¤´¦Àí È¥¿Õ×Ö·û&×ªÀ¨ºÅ
+  ;;é¢„å¤„ç† åŽ»ç©ºå­—ç¬¦&è½¬æ‹¬å·
   (setq str (vl-string-translate "{[]}\t\n," "(())   " str))
   (setq str (strcase str))
-  ;;·ÖÀë³ö±äÁ¿Óëº¯Êý
+  ;;åˆ†ç¦»å‡ºå˜é‡ä¸Žå‡½æ•°
   (setq lst (format1 str))
-  ;;´¦ÀíÎÞÓÅÏÈ¼¶±ðº¯ÊýÔËËã
+  ;;å¤„ç†æ— ä¼˜å…ˆçº§åˆ«å‡½æ•°è¿ç®—
   ;;(setq lst (format1_1 lst '(("COS" cos2) ("SIN" sin2) ("TAN" tan2))))
   (setq	lst (format1_1 lst
 		       '(("LN" ln)
@@ -195,18 +195,18 @@
 			 )
 		       )
 	)
-  ;;µÝ¹é´¦ÀíÀ¨ºÅ
+  ;;é€’å½’å¤„ç†æ‹¬å·
   (setq lst (format2 lst))
-  ;;ÓÅÏÈ¼ÆËã  ¿ª·½
+  ;;ä¼˜å…ˆè®¡ç®—  å¼€æ–¹
   (setq lst (format3 lst '(("^" expt))))
-  ;;ÔÙ´Î¼ÆËã  ³Ë ³ý È¡Ä£
+  ;;å†æ¬¡è®¡ç®—  ä¹˜ é™¤ å–æ¨¡
   (setq lst (format3 lst '(("*" *) ("/" /) ("%" rem))))
-  ;;×îºó¼ÆËã ¼Ó¼õ
+  ;;æœ€åŽè®¡ç®— åŠ å‡
   (setq lst (format3 lst '(("+" +) ("-" -))))
-  ;;ºó´¦Àí
+  ;;åŽå¤„ç†
   (car (format4 lst))
   )
-;; ;;====================¹¦ÄÜ²âÊÔ1:====================
+;; ;;====================åŠŸèƒ½æµ‹è¯•1:====================
 ;; (setq str1 (strcat "(1/(cos(-2)*-3)+"
 ;; 		   "min(22,abs(-5),0.5,8)"
 ;; 		   "*(2-5))/3^(sin(pi/5)+2)-1e+2*5"
@@ -214,49 +214,49 @@
 ;; )
 ;; (eval (trans_format str1))		;-> -500.201
 ;; (eval (trans_format "min(22 , abs(-5) , 0.5 , 8)")) ;-> 0.5
-;; ;;Òòmin(22,abs(-5),0.5,8) -> 0.5 ÏÖÔÚÓÃcalÑéÖ¤½á¹û
+;; ;;å› min(22,abs(-5),0.5,8) -> 0.5 çŽ°åœ¨ç”¨caléªŒè¯ç»“æžœ
 ;; (setq str2 "(1/(cos(-2)*-3)+0.5*(2-5))/3^(sin(pi/5)+2)-1e+2*5")
 ;; (c:cal str2)				;-> -500.201
 
-;; ;;¹¦ÄÜ²âÊÔÍ¨¹ý
+;; ;;åŠŸèƒ½æµ‹è¯•é€šè¿‡
 
 
-;; ;;====================Ð§ÂÊ²âÊÔ====================
-;; ;;¼ÆÊ±×Óº¯Êý
+;; ;;====================æ•ˆçŽ‡æµ‹è¯•====================
+;; ;;è®¡æ—¶å­å‡½æ•°
 ;; (defun time0 () (setq t0 (getvar "TDUSRTIMER")))
 ;; (defun time1 ()
-;;   (princ "ÓÃÊ±:")
+;;   (princ "ç”¨æ—¶:")
 ;;   (princ (* (- (getvar "TDUSRTIMER") t0) 86400))
 ;;   (princ "(S)")
 ;;   (princ)
 ;; )
 ;; (setq str "(1/(cos(-2)*-3)+0.5*(2-5))/3^(sin(pi/5)+2)-1e+2*5")
-;; (defun c:t1 (/ t0)			;ÓÃCAL¶Ô±È
+;; (defun c:t1 (/ t0)			;ç”¨CALå¯¹æ¯”
 ;;   (time0)
 ;;   (repeat 5000 (cal str))
 ;;   (time1)
 ;; )
-;; (defun c:t2 (/ t0)			;¶à´Îeval+¶à´Îtrans_format(±ÈcalÂý)
+;; (defun c:t2 (/ t0)			;å¤šæ¬¡eval+å¤šæ¬¡trans_format(æ¯”calæ…¢)
 ;;   (time0)
 ;;   (repeat 5000 (eval (trans_format str)))
 ;;   (time1)
 ;; )
-;; (defun c:t3 (/ t0)			;¶à´Îeval+1´Îtrans_format(Óëcal²î²»¶à)
+;; (defun c:t3 (/ t0)			;å¤šæ¬¡eval+1æ¬¡trans_format(ä¸Žcalå·®ä¸å¤š)
 ;;   (time0)
 ;;   (setq trans_lst (trans_format str))
 ;;   (repeat 5000 (eval trans_lst))
 ;;   (time1)
 ;; )
-;; (defun c:t4 (/ t0 test)			;1´Îeval+1´Îtrans_format(±Ècal¿ì)
+;; (defun c:t4 (/ t0 test)			;1æ¬¡eval+1æ¬¡trans_format(æ¯”calå¿«)
 ;;   (time0)
 ;;   (eval (list 'defun 'test nil (trans_format str)))
 ;;   (repeat 5000 (test))
 ;;   (time1)
 ;; )
 
-;; ;;ÎÞºÛÌá³öµÄÒ»ÖÖ·½·¨
+;; ;;æ— ç—•æå‡ºçš„ä¸€ç§æ–¹æ³•
 ;; ;;(setq wcs (vla-GetInterfaceObject (vlax-get-acad-object) "ScriptControl"))
 ;; ;;(vlax-put-property wcs "language" "vbs")
-;; ;;(vla-eval wcs "1+4+5*2+(5+5)/2+((6+6)/2+(5+5)/2)")  ;·µ»Ø ->31.0
+;; ;;(vla-eval wcs "1+4+5*2+(5+5)/2+((6+6)/2+(5+5)/2)")  ;è¿”å›ž ->31.0
 
 

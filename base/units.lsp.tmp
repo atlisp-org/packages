@@ -1,0 +1,13 @@
+(setq @:*units*
+      '("m" "kg" "s" "h" "A" "K" "mol" "cd"
+	"m虏" "m鲁" "m鲁/mol" "m鲁/kg" "Hz"
+	"kg/m鲁" "kg/mol" "m/s"  "rad/s" "N"
+	"Pa" "N/m" "N路s"  "J" "N路m"  "J/mol"
+	"W""J/s""J/K" "J/(mol路K)" "J/(kg路K)"
+	"N路s/m虏" "W/(m路K)"  "m虏/s"
+	"C" "V" "惟"
+	"m"  "mm""cm" "dm""km"
+	"g""mg"
+	"k""M"
+	"kN""MPa""kPa"
+	"dB" "鈩

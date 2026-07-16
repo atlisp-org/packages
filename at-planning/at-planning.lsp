@@ -1,46 +1,46 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-planning:first ÓÃÓÚ Ó¦ÓÃ°ü at-planning µÄ µÚÒ»¸öÅäÖÃÏî first 
-(@:define-config '@planning:land-layer "ÓÃµØºìÏß,ÓÃµØ½çÏß" "ÓÃµØºìÏßÍ¼²ã¡£")
-(@:define-config '@planning:building-layer "½¨ÖşÂÖÀª" "½¨Öş»ùµ×ÂÖÀªÏßÍ¼²ã¡£")
-(@:define-config '@planning:green-layer "ÂÌµØÏß" "ÂÌµØÍ¼²ã¡£")
-(@:define-config '@planning:road-layer "µÀÂ·" "µÀÂ·Í¼²ã¡£")
-(@:define-config '@planning:openspace-layer "¿ª³¨¿Õ¼ä" "³ÇÊĞ¿ª³¨¿Õ¼äÍ¼²ã¡£")
-(@:define-config '@planning:square-layer "³ÇÊĞ¹ã³¡" "³ÇÊĞ¹ã³¡Í¼²ã¡£")
-(@:define-config '@planning:parking-layer "Í£³µ³¡" "ÓÃÓÚÍ³¼ÆÍ£³µ³¡Ãæ»ıµÄÍ¼²ã")
-(@:define-config '@planning:parking "*³µÎ»*" "ÓÃÓÚÍ³¼ÆÍ£³µÎ»µÄÍ¼¿éÃû")
-(@:define-config '@planning:floor-area-ratio-limit 2.0 "Èİ»ıÂÊÏŞÖµ,µ¥Î»10000m2/ha")
-(@:define-config '@planning:building-density-limit 35 "½¨ÖşÃÜ¶ÈÏŞÖµ,µ¥Î»%")
-(@:define-config '@planning:greening-rate-limit 20 "ÂÌµØÂÊÏŞÖµ")
-(@:define-config '@planning:floor-num 3 "½¨Öş²ãÊı£¬µ±Ã»ÓĞ¸ø³ö½¨ÖşÃæ»ıÊ±£¬°´Õ¼µØÃæ»ıx²ãÊı¼ÆÈë×ÜÃæ»ı")
+;; å®šä¹‰é…ç½®é¡¹ 'at-planning:first ç”¨äº åº”ç”¨åŒ… at-planning çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+(@:define-config '@planning:land-layer "ç”¨åœ°çº¢çº¿,ç”¨åœ°ç•Œçº¿" "ç”¨åœ°çº¢çº¿å›¾å±‚ã€‚")
+(@:define-config '@planning:building-layer "å»ºç­‘è½®å»“" "å»ºç­‘åŸºåº•è½®å»“çº¿å›¾å±‚ã€‚")
+(@:define-config '@planning:green-layer "ç»¿åœ°çº¿" "ç»¿åœ°å›¾å±‚ã€‚")
+(@:define-config '@planning:road-layer "é“è·¯" "é“è·¯å›¾å±‚ã€‚")
+(@:define-config '@planning:openspace-layer "å¼€æ•ç©ºé—´" "åŸå¸‚å¼€æ•ç©ºé—´å›¾å±‚ã€‚")
+(@:define-config '@planning:square-layer "åŸå¸‚å¹¿åœº" "åŸå¸‚å¹¿åœºå›¾å±‚ã€‚")
+(@:define-config '@planning:parking-layer "åœè½¦åœº" "ç”¨äºç»Ÿè®¡åœè½¦åœºé¢ç§¯çš„å›¾å±‚")
+(@:define-config '@planning:parking "*è½¦ä½*" "ç”¨äºç»Ÿè®¡åœè½¦ä½çš„å›¾å—å")
+(@:define-config '@planning:floor-area-ratio-limit 2.0 "å®¹ç§¯ç‡é™å€¼,å•ä½10000m2/ha")
+(@:define-config '@planning:building-density-limit 35 "å»ºç­‘å¯†åº¦é™å€¼,å•ä½%")
+(@:define-config '@planning:greening-rate-limit 20 "ç»¿åœ°ç‡é™å€¼")
+(@:define-config '@planning:floor-num 3 "å»ºç­‘å±‚æ•°ï¼Œå½“æ²¡æœ‰ç»™å‡ºå»ºç­‘é¢ç§¯æ—¶ï¼ŒæŒ‰å åœ°é¢ç§¯xå±‚æ•°è®¡å…¥æ€»é¢ç§¯")
 
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
 (@:add-menus
- '("¹æ»®"
-   ("¹æ»®ÉèÖÃ"(at-planning:setup))
-   ("Ö¸¶¨·¶Î§"(at-planning:set-range))
-   ("Éú³ÉÂÌµØ"(at-planning:gen-greenland))
+ '("è§„åˆ’"
+   ("è§„åˆ’è®¾ç½®"(at-planning:setup))
+   ("æŒ‡å®šèŒƒå›´"(at-planning:set-range))
+   ("ç”Ÿæˆç»¿åœ°"(at-planning:gen-greenland))
    
-   ("ÓÃµØÃæ»ı"(at-planning:land-area))
-   ("ÂÌµØÃæ»ı" (at-planning:area-of-green))
-   ("Ìî³äÎï¼ş" (at-planning:hatch-zone))
-   ("³µÎ»ÕÛ¼õ" (at-planning:reduction-green))
-   ("ËãÂÌµØÂÊ" (at-planning:greening-rate))
-   ("Êı¾İÊäÈë" (at-planning:input))
-   ("¾­¼ÃÖ¸±ê" (at-planning:make-index))
+   ("ç”¨åœ°é¢ç§¯"(at-planning:land-area))
+   ("ç»¿åœ°é¢ç§¯" (at-planning:area-of-green))
+   ("å¡«å……ç‰©ä»¶" (at-planning:hatch-zone))
+   ("è½¦ä½æŠ˜å‡" (at-planning:reduction-green))
+   ("ç®—ç»¿åœ°ç‡" (at-planning:greening-rate))
+   ("æ•°æ®è¾“å…¥" (at-planning:input))
+   ("ç»æµæŒ‡æ ‡" (at-planning:make-index))
    ))
 
 (defun at-planning:setup (/ res)
    (setq @::tmp-search-str "@planning")
   (@::edit-config-dialog))
 (defun at-planning:set-range ()
-  (@::help "Ö¸¶¨Òª¼ÆËãµÄ¾ØĞÎ·¶Î§")
-  (@::prompt "ÇëÖ¸¶¨¼ÆËã·¶Î§")
+  (@::help "æŒ‡å®šè¦è®¡ç®—çš„çŸ©å½¢èŒƒå›´")
+  (@::prompt "è¯·æŒ‡å®šè®¡ç®—èŒƒå›´")
   (setq at-planning:range-pt1
-	(getpoint "×óÏÂ½Çµã:"))
+	(getpoint "å·¦ä¸‹è§’ç‚¹:"))
   (setq at-planning:range-pt2
-	(getcorner at-planning:range-pt1 "ÓÒÉÏ½Çµã:"))
+	(getcorner at-planning:range-pt1 "å³ä¸Šè§’ç‚¹:"))
 
   (if (or (null at-planning:range-pt1)
 	  (null at-planning:range-pt2))
@@ -62,9 +62,9 @@
      (apply '+ lst))))
 
 (defun at-planning:calc (/ sum-area land-curve green-cruve)
-  "¼ÆËãÃæ»ıÖ¸±ê"
+  "è®¡ç®—é¢ç§¯æŒ‡æ ‡"
   (at-planning:zoom)
-  ;;µØ¿éÃæ»ı
+  ;;åœ°å—é¢ç§¯
   (setq land-curve (pickset:to-list
                    (ssget "w" at-planning:range-pt1 at-planning:range-pt2
 			  (list (cons 0 "lwpolyline")
@@ -73,7 +73,7 @@
   (setq @planning:*land-area* (mapcar '(lambda(x)(vla-get-area (e2o x))) land-curve))
   (if (> (at-planning:sum @planning:*land-area*) 0)
       (progn
-	;; ÂÌµØÃæ»ı
+	;; ç»¿åœ°é¢ç§¯
 	(setq green-curve (pickset:to-list
 			   (ssget "w" at-planning:range-pt1 at-planning:range-pt2
 				  (list (cons 0 "lwpolyline")
@@ -82,28 +82,28 @@
 	(setq @planning:*greening-area* (mapcar '(lambda(x)(vla-get-area (e2o x))) green-curve))
 	(setq @planning:*green-all-area* (at-planning:sum @planning:*greening-area*))
 	
-	;; ÁÖÒñ³µÎ»ÕÛ¼õ
+	;; æ—è«è½¦ä½æŠ˜å‡
 	(setq lst-car (pickset:to-list
                        (ssget"w" at-planning:range-pt1 at-planning:range-pt2
 			     (list (cons 0 "insert")
-				   (cons 2 "ÁÖÒñ³µÎ»")
+				   (cons 2 "æ—è«è½¦ä½")
 				   ))))
 	(setq @planning:*green-reduction-area* (* -1 0.6 2.4 5.3 (length lst-car)))
-	;; ÂÌµØÂÊ
+	;; ç»¿åœ°ç‡
 	(setq @planning:*greening-rate*
 	      (/ (+ @planning:*green-all-area*
 		    @planning:*green-reduction-area*
 		    )
 		 (at-planning:sum @planning:*land-area*))
 	      )
-	;; ½¨Öş»ùµ×Ãæ»ı
+	;; å»ºç­‘åŸºåº•é¢ç§¯
 	(setq building-curve (pickset:to-list
 			 (ssget"w" at-planning:range-pt1 at-planning:range-pt2
 			       (list (cons 0 "lwpolyline")
 				     (cons 8 (@:get-config '@planning:building-layer))
 				     ))))
 	(setq @planning:*building-floor1-area* (mapcar '(lambda(x)(vla-get-area (e2o x))) building-curve))
-	;; ³µÎ»
+	;; è½¦ä½
 	(setq @planning:*parking-overground*
 	      (length
 	       (pickset:to-list
@@ -113,8 +113,8 @@
 			    )))))
 	)))
 (defun at-planning:land-area (/ sum-area)
-  (@::help "Éú³É¸÷ÓÃµØµØ¿éµÄÃæ»ı£¬¼°»ã×ÜÃæ»ı")
-  (@:prompt "ÇëÑ¡ÔñÓÃµØºìÏß±ÕºÏÇúÏß:")
+  (@::help "ç”Ÿæˆå„ç”¨åœ°åœ°å—çš„é¢ç§¯ï¼ŒåŠæ±‡æ€»é¢ç§¯")
+  (@:prompt "è¯·é€‰æ‹©ç”¨åœ°çº¢çº¿é—­åˆæ›²çº¿:")
   (at-planning:zoom)
   (setq lst-curve (pickset:to-list
                    (ssget "w" at-planning:range-pt1 at-planning:range-pt2
@@ -141,14 +141,14 @@
   (@m:draw)
   (princ))
 (defun at-planning:area-of-green (/ sum-area)
-  (@::help "Éú³É¸÷ÂÌµØµØ¿éµÄÃæ»ı£¬¼°»ã×ÜÃæ»ı")
+  (@::help "ç”Ÿæˆå„ç»¿åœ°åœ°å—çš„é¢ç§¯ï¼ŒåŠæ±‡æ€»é¢ç§¯")
   (at-planning:zoom)
   (if (setq ss-tmp (ssget  "w" at-planning:range-pt1 at-planning:range-pt2
 		  (list (cons 0 "text")
 				  (cons 8 (@:get-config '@planning:green-layer))
 				  )))
       (pickset:erase ss-tmp))
-  (@:prompt "ÇëÑ¡ÔñÂÌµØ±ÕºÏÇúÏß:")
+  (@:prompt "è¯·é€‰æ‹©ç»¿åœ°é—­åˆæ›²çº¿:")
   (setq lst-curve (pickset:to-list
                    (ssget "w" at-planning:range-pt1 at-planning:range-pt2
 		    (list (cons 0 "lwpolyline")
@@ -174,8 +174,8 @@
   (@m:draw)
   (princ))
 (defun at-planning:hatch-zone ()
-  (@::help "ÖØĞÂÌî³ä½¨ÖşÎï¡¢ÂÌµØ¡¢¹ã³¡¡¢¿ª³¨¿Õ¼äµØ¿é")
-  ;; (@:prompt "ÇëÑ¡ÔñÂÌµØ±ÕºÏÇúÏß:")
+  (@::help "é‡æ–°å¡«å……å»ºç­‘ç‰©ã€ç»¿åœ°ã€å¹¿åœºã€å¼€æ•ç©ºé—´åœ°å—")
+  ;; (@:prompt "è¯·é€‰æ‹©ç»¿åœ°é—­åˆæ›²çº¿:")
   (at-planning:zoom)
   (foreach hatchlayer
 	   (list
@@ -207,22 +207,22 @@
       )
   (princ))
 (defun at-planning:reduction-green ()
-  (@::help '("¼ÆËãÌî³äÂÌµØÁÖÒñ³µÎ»ÕÛ¼õÃæ»ı¡£"
-	     "³µÎ»³ß´ç 2.4x5.3m2£¬°´60%ÕÛ¼õ¡£"))
-  (@:prompt "ÇëÑ¡ÔñÁÖÒñ³µÎ»:")
+  (@::help '("è®¡ç®—å¡«å……ç»¿åœ°æ—è«è½¦ä½æŠ˜å‡é¢ç§¯ã€‚"
+	     "è½¦ä½å°ºå¯¸ 2.4x5.3m2ï¼ŒæŒ‰60%æŠ˜å‡ã€‚"))
+  (@:prompt "è¯·é€‰æ‹©æ—è«è½¦ä½:")
   (setq lst-car (pickset:to-list
                  (ssget "w" at-planning:range-pt1 at-planning:range-pt2
 			(list (cons 0 "insert")
-			      (cons 2 "ÁÖÒñ³µÎ»")
+			      (cons 2 "æ—è«è½¦ä½")
 			      ))))
   ;; (setq @planning:*green-reduction-area*  (* -1 0.6 2.4 5.3 (length lst-car)))
-  (@:prompt (strcat "·¢ÏÖÁÖÒñ³µÎ» " (itoa (length lst-car))" ¸ö"))
+  (@:prompt (strcat "å‘ç°æ—è«è½¦ä½ " (itoa (length lst-car))" ä¸ª"))
   (setq @m:*result*  (* -1 0.6 2.4 5.3 (length lst-car)))
   (@m:draw)
   (princ))
 
 (defun at-planning:greening-rate ()
-  (@::help "¼ÆËãÂÌµØÂÊ")
+  (@::help "è®¡ç®—ç»¿åœ°ç‡")
   (if (and (numberp @planning:*land-area*)
 	   (numberp @planning:*green-all-area*)
 	   (numberp @planning:*green-reduction-area*))
@@ -233,16 +233,16 @@
 		    )
 		 @planning:*land-area*))
 	(@m:draw))
-      (@::prompt "ÇëÏÈ½øĞĞµØ¿é¼°ÂÌµØ¼ÆËã¡£"))
+      (@::prompt "è¯·å…ˆè¿›è¡Œåœ°å—åŠç»¿åœ°è®¡ç®—ã€‚"))
   (princ))
 (defun at-planning:area-of-building (/ sum-area)
-  (@::help "Éú³É¸÷½¨Öş»ùµ×µÄÃæ»ı£¬¼°»ã×ÜÃæ»ı")
+  (@::help "ç”Ÿæˆå„å»ºç­‘åŸºåº•çš„é¢ç§¯ï¼ŒåŠæ±‡æ€»é¢ç§¯")
   (at-planning:zoom)
   (pickset:erase (ssget "w" at-planning:range-pt1 at-planning:range-pt2
 		  (list (cons 0 "text")
 				  (cons 8 (@:get-config '@planning:building-layer))
 				  )))
-  (@:prompt "ÇëÑ¡Ôñ½¨Öş»ùµ×±ÕºÏÇúÏß:")
+  (@:prompt "è¯·é€‰æ‹©å»ºç­‘åŸºåº•é—­åˆæ›²çº¿:")
   (setq lst-curve (pickset:to-list
                    (ssget "w" at-planning:range-pt1 at-planning:range-pt2
 		    (list (cons 0 "lwpolyline")
@@ -290,70 +290,70 @@
 		 @planning:*building-underground-area*))
 	(ui:dyndraw (table:make
 		     '(0 0 0)
-		     "Ö÷Òª¼¼Êõ¾­¼ÃÖ¸±êÒ»ÀÀ±í"
-		     '("ÏîÄ¿Ãû³Æ""µ¥Î»""ÊıÁ¿""±¸×¢")
+		     "ä¸»è¦æŠ€æœ¯ç»æµæŒ‡æ ‡ä¸€è§ˆè¡¨"
+		     '("é¡¹ç›®åç§°""å•ä½""æ•°é‡""å¤‡æ³¨")
 		   (append
 		    (list
-		     (list "×Ü½¨ÉèÓÃµØ" "©O"
+		     (list "æ€»å»ºè®¾ç”¨åœ°" "ã¡"
 			   (at-planning:sum  @planning:*land-area*)
 			   (strcat (rtos (/ (at-planning:sum  @planning:*land-area*) 666.6) 2 3)
-				   "Ä¶")
+				   "äº©")
 			   ))
 		    (if (> (length @planning:*land-area*)1)
 			(progn
 			  (setq i 0)
 			  (mapcar '(lambda(x)
-				     (list (strcat "ÆäÖĞ:  µØ¿é"(itoa (setq i (1+ i))))
-					   "©O"
+				     (list (strcat "å…¶ä¸­:  åœ°å—"(itoa (setq i (1+ i))))
+					   "ã¡"
 					   x
 				     ""))
 				  @planning:*land-area*)))
 		    (list
-		     (list "×Ü½¨ÖşÃæ»ı" "©O" @planning:*building-all-area* "")
-		     (list "ÆäÖĞ£ºµØÉÏ½¨ÖşÃæ»ı" "©O" @planning:*building-overground-area* "")
-		     (list "ÆäÖĞ£ºµØÏÂ½¨ÖşÃæ»ı" "©O" @planning:*building-underground-area* "")
-		     (list "¼ÆÈİÃæ»ı" "©O" @planning:*plot-area* "")
-		     (list "½¨Öş»ùµ×Ãæ»ı" "©O" (at-planning:sum @planning:*building-floor1-area*) "")
-		     (list "ÂÌµØÃæ»ı" "©O" (+ @planning:*green-all-area*
+		     (list "æ€»å»ºç­‘é¢ç§¯" "ã¡" @planning:*building-all-area* "")
+		     (list "å…¶ä¸­ï¼šåœ°ä¸Šå»ºç­‘é¢ç§¯" "ã¡" @planning:*building-overground-area* "")
+		     (list "å…¶ä¸­ï¼šåœ°ä¸‹å»ºç­‘é¢ç§¯" "ã¡" @planning:*building-underground-area* "")
+		     (list "è®¡å®¹é¢ç§¯" "ã¡" @planning:*plot-area* "")
+		     (list "å»ºç­‘åŸºåº•é¢ç§¯" "ã¡" (at-planning:sum @planning:*building-floor1-area*) "")
+		     (list "ç»¿åœ°é¢ç§¯" "ã¡" (+ @planning:*green-all-area*
 					      @planning:*green-reduction-area*)
 			   "")
-		     (list "½¨ÖşÃÜ¶È" "%" (strcat (@:to-string(* 100 (/ (at-planning:sum @planning:*building-floor1-area*) (at-planning:sum @planning:*land-area*))))"%") (strcat "¡Ü" (itoa(fix(@:get-config '@planning:building-density-limit))) "%"))
-		     (list "Èİ»ıÂÊ" "Íò©O/ha"
+		     (list "å»ºç­‘å¯†åº¦" "%" (strcat (@:to-string(* 100 (/ (at-planning:sum @planning:*building-floor1-area*) (at-planning:sum @planning:*land-area*))))"%") (strcat "â‰¤" (itoa(fix(@:get-config '@planning:building-density-limit))) "%"))
+		     (list "å®¹ç§¯ç‡" "ä¸‡ã¡/ha"
 			   (/ @planning:*plot-area*
 			      (at-planning:sum @planning:*land-area*)
 			      )
-			   (strcat "¡Ü"(@:to-string(@:get-config '@planning:floor-area-ratio-limit))))
-		     (list "ÂÌµØÂÊ" "%" (strcat (@:to-string (* 100 @planning:*greening-rate*))"%")
-			   (strcat "¡İ" (itoa(fix(@:get-config '@planning:greening-rate-limit))) "%"))
-		     (list "·Ç»ú¶¯³µÍ£³µÎ»" "©O" "" "")
-		     (list "×Ü³µÎ»" "¸ö" (itoa (+ @planning:*parking-overground*
+			   (strcat "â‰¤"(@:to-string(@:get-config '@planning:floor-area-ratio-limit))))
+		     (list "ç»¿åœ°ç‡" "%" (strcat (@:to-string (* 100 @planning:*greening-rate*))"%")
+			   (strcat "â‰¥" (itoa(fix(@:get-config '@planning:greening-rate-limit))) "%"))
+		     (list "éæœºåŠ¨è½¦åœè½¦ä½" "ã¡" "" "")
+		     (list "æ€»è½¦ä½" "ä¸ª" (itoa (+ @planning:*parking-overground*
 						  @planning:*parking-underground*))
 			   "")
-		     (list "ÆäÖĞ£ºµØÉÏ" "¸ö" (itoa @planning:*parking-overground*) "")
-		     (list "ÆäÖĞ£ºµØÏÂ" "¸ö" (itoa @planning:*parking-underground*) "")
+		     (list "å…¶ä¸­ï¼šåœ°ä¸Š" "ä¸ª" (itoa @planning:*parking-overground*) "")
+		     (list "å…¶ä¸­ï¼šåœ°ä¸‹" "ä¸ª" (itoa @planning:*parking-underground*) "")
 		     )))
 		  '(0 0 0))
       
       )))
 (defun at-planning:input (/  res)
-  (@::help "ĞèÒªÊÖ¶¯ÊäÈë×ÜÍ¼ÖĞÎŞ·¨¼ÆËãµÄÊı¾İ")
+  (@::help "éœ€è¦æ‰‹åŠ¨è¾“å…¥æ€»å›¾ä¸­æ— æ³•è®¡ç®—çš„æ•°æ®")
   (setq res 
 	(ui:input
-	 "½¨ÖşÊı¾İ"
-	 (list (list "µØÉÏ½¨ÖşÃæ»ı" (if @planning:*building-overground-area*  @planning:*building-overground-area* 0.0))
-	       (list "µØÏÂ½¨ÖşÃæ»ı" (if @planning:*building-underground-area*   @planning:*building-underground-area* 0.0))
-	       (list "¼ÆÈİÃæ»ı" (if @planning:*plot-area* @planning:*plot-area*  0.0))
-	       (list "µØÏÂ³µÎ»Êı" (if @planning:*parking-underground* @planning:*parking-underground* 0)))))
+	 "å»ºç­‘æ•°æ®"
+	 (list (list "åœ°ä¸Šå»ºç­‘é¢ç§¯" (if @planning:*building-overground-area*  @planning:*building-overground-area* 0.0))
+	       (list "åœ°ä¸‹å»ºç­‘é¢ç§¯" (if @planning:*building-underground-area*   @planning:*building-underground-area* 0.0))
+	       (list "è®¡å®¹é¢ç§¯" (if @planning:*plot-area* @planning:*plot-area*  0.0))
+	       (list "åœ°ä¸‹è½¦ä½æ•°" (if @planning:*parking-underground* @planning:*parking-underground* 0)))))
   (list
-   ;; (setq @planning:*building-all-area* (cdr (assoc "½¨Öş×ÜÃæ»ı" res)))
-   (setq @planning:*building-overground-area* (cdr (assoc "µØÉÏ½¨ÖşÃæ»ı" res)))
-   (setq @planning:*building-underground-area* (cdr (assoc "µØÏÂ½¨ÖşÃæ»ı" res)))
-   (setq @planning:*plot-area* (cdr (assoc "¼ÆÈİÃæ»ı" res)))
-   (setq @planning:*parking-underground* (cdr (assoc "µØÏÂ³µÎ»Êı" res)))
+   ;; (setq @planning:*building-all-area* (cdr (assoc "å»ºç­‘æ€»é¢ç§¯" res)))
+   (setq @planning:*building-overground-area* (cdr (assoc "åœ°ä¸Šå»ºç­‘é¢ç§¯" res)))
+   (setq @planning:*building-underground-area* (cdr (assoc "åœ°ä¸‹å»ºç­‘é¢ç§¯" res)))
+   (setq @planning:*plot-area* (cdr (assoc "è®¡å®¹é¢ç§¯" res)))
+   (setq @planning:*parking-underground* (cdr (assoc "åœ°ä¸‹è½¦ä½æ•°" res)))
    ))
   
 (defun at-planning:gen-greenland ()
-  (@::help "ÔÚµã»÷Î»ÖÃÉú³É±ÕºÏµÄÂÌµØÇúÏß")
+  (@::help "åœ¨ç‚¹å‡»ä½ç½®ç”Ÿæˆé—­åˆçš„ç»¿åœ°æ›²çº¿")
   (command  "boundary" (getpoint) "")
   (entity:putdxf (entlast) 8
 		 (string:subst-all "" "*"

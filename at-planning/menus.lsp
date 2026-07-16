@@ -1,8 +1,8 @@
 (@:add-menus
- '(("¹æ»®"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(at-planning:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(at-planning:hello)")))
-   ("¹æ»®1"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(at-planning:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(at-planning:hello)")))
+ '(("è§„åˆ’"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(at-planning:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(at-planning:hello)")))
+   ("è§„åˆ’1"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(at-planning:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(at-planning:hello)")))
    )

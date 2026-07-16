@@ -5,12 +5,12 @@
 ;; (@:get-config 'agan-vport-syn:first) 
 ;; (@:set-config 'agan-vport-syn:first  "New Value")
 ;; Add menu in @lisp panel
-(@:add-menu "²¼¾Ö¹¤¾ß" "°¢¸Ê¶ÔÍ¼" "(agan-vport-syn:load)")
+(@:add-menu "å¸ƒå±€å·¥å…·" "é˜¿ç”˜å¯¹å›¾" "(agan-vport-syn:load)")
 
 (defun agan-vport-syn:load (/ vers filesize)
   (setq vers (substr (getvar "acadver") 1 2))
   (if (< (atoi vers) 18)
-      (princ "CAD °æ±¾¹ýµÍ£¬°¢¸Ê¶ÔÍ¼Æ÷²»Ö§³Ö¸ÃCAD°æ±¾¡£")
+      (princ "CAD ç‰ˆæœ¬è¿‡ä½Žï¼Œé˜¿ç”˜å¯¹å›¾å™¨ä¸æ”¯æŒè¯¥CADç‰ˆæœ¬ã€‚")
       (progn
 	(setq dllname (strcat "aganvportsyn.dll"))
 	(setvar "filedia" 0)

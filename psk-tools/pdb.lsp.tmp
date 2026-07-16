@@ -1,0 +1,26 @@
+(defun pdb-ctl-disable (ctl)
+  (mode_tile ctl 1)
+)
+
+(defun pdb-ctl-enable (ctl)
+  (mode_tile ctl 0)
+)
+
+(defun pdb-text-focus (ctl)
+  (mode_tile ctl 2) ;_ Set focus to tile
+)
+
+(defun pdb-text-select (ctl)
+  (mode_tile ctl 3) ;_Select edit box contents
+)
+
+
+
+(defun pdb-list-fill (ctl texts /)
+  (start_list ctl)
+  (mapcar (function add_list) texts)
+  (end_list)
+)
+
+(defun pdb-list-update (ctl idx text /)
+  (start_list ctl 1 idx) ;_ 淇

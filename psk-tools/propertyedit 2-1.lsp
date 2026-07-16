@@ -1,6 +1,6 @@
-;; Í¨ÓÃÊôĞÔ±à¼­¶Ô»°¿ò v2.0 2017-1-12
-;; Í¨ÓÃÊôĞÔ±à¼­¶Ô»°¿ò v2.1 2017-9-28
-;; Í¨ÓÃÊôĞÔ±à¼­¶Ô»°¿ò v3.0 2021-2-22 ĞèÒªfuncions.lsp
+;; é€šç”¨å±æ€§ç¼–è¾‘å¯¹è¯æ¡† v2.0 2017-1-12
+;; é€šç”¨å±æ€§ç¼–è¾‘å¯¹è¯æ¡† v2.1 2017-9-28
+;; é€šç”¨å±æ€§ç¼–è¾‘å¯¹è¯æ¡† v3.0 2021-2-22 éœ€è¦funcions.lsp
 
 
 
@@ -10,9 +10,9 @@
     (nth idx des)
   )
 )
-;; (setq options '(("AL" 1000 "¶ÔÆë·½Ê½" "AL\n·ç¹Ü¶ÔÆë·½Ê½" (("T" "¶¥") ("C" "ÖĞĞÄ") ("B" "µ×") ""))))
+;; (setq options '(("AL" 1000 "å¯¹é½æ–¹å¼" "AL\né£ç®¡å¯¹é½æ–¹å¼" (("T" "é¡¶") ("C" "ä¸­å¿ƒ") ("B" "åº•") ""))))
 ;;;_$ (desc-gettype "AL")
-;;;"¶ÔÆë·½Ê½"
+;;;"å¯¹é½æ–¹å¼"
 (defun desc-gettype (key / r)
   (if (setq r (desc-item key 1))
     r
@@ -26,14 +26,14 @@
   )
 )
 ;;;_$ (desc-getnameshow "AL")
-;;;"¶ÔÆë·½Ê½"
+;;;"å¯¹é½æ–¹å¼"
 (defun desc-getnameshow (key) (desc-item key 2))
 ;;;_$ (desc-gettip "AL")
-;;;"AL\n·ç¹Ü¶ÔÆë·½Ê½"
+;;;"AL\né£ç®¡å¯¹é½æ–¹å¼"
 (defun desc-gettip (key) (desc-item key 3))
-;; Ñ¡Ïî±í×îºóÒ»ÏîÎª""Ê± £¬±íÊ¾ÔÊĞíÓÃ»§ÊäÈëÁĞ±íÍâµÄÊı¾İ£¬·ñÔò½öÄÜÑ¡ÔñÁĞ±íÖĞµÄÄÚÈİ
+;; é€‰é¡¹è¡¨æœ€åä¸€é¡¹ä¸º""æ—¶ ï¼Œè¡¨ç¤ºå…è®¸ç”¨æˆ·è¾“å…¥åˆ—è¡¨å¤–çš„æ•°æ®ï¼Œå¦åˆ™ä»…èƒ½é€‰æ‹©åˆ—è¡¨ä¸­çš„å†…å®¹
 ;;;_$ (desc-getoptions "AL")
-;;;(("T" "¶¥") ("C" "ÖĞĞÄ") ("B" "µ×") "")
+;;;(("T" "é¡¶") ("C" "ä¸­å¿ƒ") ("B" "åº•") "")
 (defun desc-getoptions (key) (desc-item key 4))
 
 (defun desc-getfunc (key / r)
@@ -50,18 +50,18 @@
 ;; (prop-rowtext '("A" . 1))
 (defun prop-rowtext (prop / key text value mark options)
   (setq	key  (car prop)
-	mark "" ;_ĞŞ¸Ä±ê¼Ç
+	mark "" ;_ä¿®æ”¹æ ‡è®°
   )
   (if (and key (/= "" key))
-    (progn ;; ÊôĞÔÃû³Æ
+    (progn ;; å±æ€§åç§°
 	   (if (null (setq text (desc-getnameshow key)))
-	     ;; ÊôĞÔÏÔÊ¾Ãû³ÆÎ´Ìá¹©Ê± Ê¹ÓÃÊôĞÔÃû³Æ×öÎªÏÔÊ¾Ãû³Æ
+	     ;; å±æ€§æ˜¾ç¤ºåç§°æœªæä¾›æ—¶ ä½¿ç”¨å±æ€§åç§°åšä¸ºæ˜¾ç¤ºåç§°
 	     (setq text key)
 	   )
-	   ;; ÊôĞÔÖµ
+	   ;; å±æ€§å€¼
 	   (if (setq value (p-get _changes key))
-	     ;; ÊôĞÔÔÚ±¾´Î»á»°ÖĞÒÑĞŞ¸Ä
-	     (setq mark "\t*") ;_ ĞŞ¸Ä±ê¼Ç
+	     ;; å±æ€§åœ¨æœ¬æ¬¡ä¼šè¯ä¸­å·²ä¿®æ”¹
+	     (setq mark "\t*") ;_ ä¿®æ”¹æ ‡è®°
 	     (setq value (p-get _props key))
 	   )
 	   (setq options (desc-getoptions key))
@@ -71,7 +71,7 @@
 	       (setq value (car value))
 	     )
 	   )
-	   (setq text (strcat " " ;_ ¿ªÍ·Ëõ½ø
+	   (setq text (strcat " " ;_ å¼€å¤´ç¼©è¿›
 			      text
 			      "\t"
 			      (if value
@@ -98,19 +98,19 @@
   (if key
     (progn
       (if (setq oldvalue (p-get _changes key))
-	;; ÕÒµ½¸ÃÊôĞÔµÄĞŞ¸Ä¼ÇÂ¼
+	;; æ‰¾åˆ°è¯¥å±æ€§çš„ä¿®æ”¹è®°å½•
 	(if (= newvalue (p-get _props key))
-	  ;; ÊôĞÔ»¹Ô­Îª³õÊ¼Öµ£¨Ïû³ıĞŞ¸Ä¼ÇÂ¼£©
+	  ;; å±æ€§è¿˜åŸä¸ºåˆå§‹å€¼ï¼ˆæ¶ˆé™¤ä¿®æ”¹è®°å½•ï¼‰
 	  (setq _changes (p-unset _changes key))
-	  ;; Ìí¼ÓĞŞ¸Ä¼ÇÂ¼
+	  ;; æ·»åŠ ä¿®æ”¹è®°å½•
 	  (setq _changes (p-set _changes (cons key newvalue)))
 	)
-	;; ¸ÃÊôĞÔÉĞÎ´ĞŞ¸Ä
+	;; è¯¥å±æ€§å°šæœªä¿®æ”¹
 	(if (/= newvalue (p-get _props key))
 	  (setq _changes (p-set _changes (cons key newvalue)))
 	)
       )
-      ;; Ö´ĞĞ×Ô¶¨Òå¹ı³Ì
+      ;; æ‰§è¡Œè‡ªå®šä¹‰è¿‡ç¨‹
 ;;;	(if (and
 ;;;	      (setq func (assoc key _desc))
 ;;;	      (setq func (nth 5 func))
@@ -134,7 +134,7 @@
 	_changes  (vl-remove-if '(lambda (e) (/= ".TYPE" (car e))) _changes)
 	propitems (mapcar 'prop-rowtext _props)
   )
-  ;; Ìî³äÊôĞÔ¿ò
+  ;; å¡«å……å±æ€§æ¡†
   (pdb-list-fill "PROP_LIST" propitems)
   (if (null _selkey)
     (setq _cursel "0")
@@ -161,13 +161,13 @@
 
 
 (defun propbox-onchange	(newsel / tip value)
-  ;; Ä¬ÈÏ½ûÓÃ±à¼­¿Ø¼ş
+  ;; é»˜è®¤ç¦ç”¨ç¼–è¾‘æ§ä»¶
   (mapcar 'pdb-ctl-disable '("VALUE_TEXT" "VALUE_LIST"))
   (if (setq _cursel newsel)
     (setq _curkey (car (nth (atoi _cursel) _props)))
   )
 ;;;    (if	(= "" _curkey)
-;;;      ;; Îª·Ö¸ô·û»òÎŞĞ§ÊôĞÔÊ±
+;;;      ;; ä¸ºåˆ†éš”ç¬¦æˆ–æ— æ•ˆå±æ€§æ—¶
 ;;;      (progn
 ;;;	(setq _options nil)
 ;;;	(valuebox-update "")
@@ -175,19 +175,19 @@
 ;;;	(infobox-update "")
 ;;;      )
   (if (null _desc)
-    (progn ;; Î´Ìá¹©descptionÊ±£¬Ä¬ÈÏÆôÓÃÎÄ±¾¿Ø¼ş
+    (progn ;; æœªæä¾›descptionæ—¶ï¼Œé»˜è®¤å¯ç”¨æ–‡æœ¬æ§ä»¶
 	   (pdb-ctl-enable "VALUE_TEXT")
-	   (valuebox-update (prop-get _curkey)) ;_ ÎÄ±¾¿òÖĞÖµÍ¬²½¸üĞÂ
+	   (valuebox-update (prop-get _curkey)) ;_ æ–‡æœ¬æ¡†ä¸­å€¼åŒæ­¥æ›´æ–°
 	   (setq _options nil)
 	   (optionbox-update nil)
     )
     (progn
       (setq _options (desc-getoptions _curkey))
       (if (and _options (listp _options))
-	;; ÉèÖÃÁËÓĞĞ§µÄÑ¡ÔñÁĞ±íÊ±
-	(progn (pdb-ctl-enable "VALUE_LIST") ;_ ÆôÓÃÁĞ±í¿Ø¼ş
+	;; è®¾ç½®äº†æœ‰æ•ˆçš„é€‰æ‹©åˆ—è¡¨æ—¶
+	(progn (pdb-ctl-enable "VALUE_LIST") ;_ å¯ç”¨åˆ—è¡¨æ§ä»¶
 	       (if (= "" (last _options))
-		 (pdb-ctl-enable "VALUE_TEXT") ;_ Î´ÉèÖÃ½öÏŞ¶¨ÔÚÁĞ±íÖĞÑ¡ÔñÊ±ÆôÓÃÎÄ±¾¿Ø¼ş
+		 (pdb-ctl-enable "VALUE_TEXT") ;_ æœªè®¾ç½®ä»…é™å®šåœ¨åˆ—è¡¨ä¸­é€‰æ‹©æ—¶å¯ç”¨æ–‡æœ¬æ§ä»¶
 	       )
 	       (if (vl-every 'vl-consp _options)
 		 (setq value (cadr (assoc (prop-get _curkey) _options)))
@@ -196,9 +196,9 @@
 	       (valuebox-update value)
 	       (optionbox-update (prop-get _curkey))
 	)
-	;; Î´ÉèÖÃÑ¡ÔñÁĞ±íÍ¬Ê±¸ÃÊôĞÔ·Ç¹«Ê½Ê±Ä¬ÈÏÆôÓÃÎÄ±¾¿Ø¼ş
+	;; æœªè®¾ç½®é€‰æ‹©åˆ—è¡¨åŒæ—¶è¯¥å±æ€§éå…¬å¼æ—¶é»˜è®¤å¯ç”¨æ–‡æœ¬æ§ä»¶
 	(progn (if (and	(not (desc-getfunc _curkey))
-			(/= "." (p-string-left _curkey 1)) ;_ ½ûÖ¹±à¼­Ë½ÓĞÊôĞÔ
+			(/= "." (p-string-left _curkey 1)) ;_ ç¦æ­¢ç¼–è¾‘ç§æœ‰å±æ€§
 		   )
 		 (pdb-ctl-enable "VALUE_TEXT")
 	       )
@@ -213,15 +213,15 @@
     )
   )
 )
-;; Ñ¡Ïî¿òÄÚÈİ¸üĞÂ
+;; é€‰é¡¹æ¡†å†…å®¹æ›´æ–°
 (defun optionbox-update	(selvalue / e pos)
   (if (vl-consp _options)
     (progn (pdb-list-fill
 	     "VALUE_LIST"
 	     (mapcar (function (lambda (e)
 				 (if (vl-consp e)
-;;;				   (if (and (cadr e) (/= "" (cadr e))) ;_ ("SA" "ËÍ·ç") ("SA")
-;;;				     (strcat (cadr e) "(" (car e) ")") ;_"ËÍ·ç"
+;;;				   (if (and (cadr e) (/= "" (cadr e))) ;_ ("SA" "é€é£") ("SA")
+;;;				     (strcat (cadr e) "(" (car e) ")") ;_"é€é£"
 ;;;				     (car e) ;_"SA"
 ;;;				   )
 				   (cadr e)
@@ -237,19 +237,19 @@
 	     (setq pos (vl-position selvalue _options))
 	   )
 	   (if pos
-	     (pdb-list-select "VALUE_LIST" pos) ;_ ÉèÖÃÑ¡ÔñÁĞ±íÖĞµÄµ±Ç°ÖµÎªÑ¡¶¨×´Ì¬
+	     (pdb-list-select "VALUE_LIST" pos) ;_ è®¾ç½®é€‰æ‹©åˆ—è¡¨ä¸­çš„å½“å‰å€¼ä¸ºé€‰å®šçŠ¶æ€
 	   )
     )
-    (progn ;; Îª¹«Ê½»òÎŞĞ§Êı¾İÊ±Çå¿ÕÁĞ±í¿ò
+    (progn ;; ä¸ºå…¬å¼æˆ–æ— æ•ˆæ•°æ®æ—¶æ¸…ç©ºåˆ—è¡¨æ¡†
 	   (pdb-list-clear "VALUE_LIST")
     )
   )
 )
-;; Ñ¡Ïî¿òÑ¡¶¨Ïî±ä¸ü
+;; é€‰é¡¹æ¡†é€‰å®šé¡¹å˜æ›´
 (defun optionbox-onchange (idx / newvalue)
   (setq newvalue (nth (atoi idx) _options))
   (if (vl-consp newvalue)
-    (progn (prop-set _curkey (car newvalue)) ;_ ("SA" "ËÍ·ç")
+    (progn (prop-set _curkey (car newvalue)) ;_ ("SA" "é€é£")
 	   (valuebox-update
 	     (if (cadr newvalue)
 	       (cadr newvalue)
@@ -257,7 +257,7 @@
 	     )
 	   )
 	   (if (caddr newvalue)
-	     ;; ÔËĞĞº¯Êı
+	     ;; è¿è¡Œå‡½æ•°
 	     (eval (read (caddr newvalue)))
 	   )
     )
@@ -303,7 +303,7 @@
   (foreach e _props
 ;;;    (if	(and (/= ".TYPE" (car e)) (setq func (desc-getfunc (car e))))
     (if (setq func (desc-getfunc (car e)))
-      ;; ¼ÆËã¹«Ê½
+      ;; è®¡ç®—å…¬å¼
       (progn (prop-set (car e) (expr-eval func))
              (propbox-updaterow (car e) nil)
       )
@@ -329,7 +329,7 @@
 
 (defun propertybag-init	()
   (propbox-update props _desc)
-  (propbox-onchange _cursel) ;_ Ç¿ÖÆ¸üĞÂÁĞ±í¼°ÎÄ±¾¿Ø¼şÄÚÈİ
+  (propbox-onchange _cursel) ;_ å¼ºåˆ¶æ›´æ–°åˆ—è¡¨åŠæ–‡æœ¬æ§ä»¶å†…å®¹
   (action_tile "PROP_LIST" "(propbox-onchange $VALUE)")
   (action_tile "VALUE_TEXT" "(valuebox-onchange $VALUE)")
   (action_tile "VALUE_LIST" "(optionbox-onchange $VALUE)")
@@ -337,11 +337,11 @@
 )
 
 (defun propertybag-result (rt)
-  ;; ±£´æµ±Ç°±à¼­ÊôĞÔµÄĞòºÅµ½Ö¸¶¨·ûºÅÖĞ£¬¿É×öÎªÏÂ´Î´ò¿ª¶Ô»°¿òÊ±µÄÄ¬ÈÏÑ¡ÖĞÌõÄ¿
+  ;; ä¿å­˜å½“å‰ç¼–è¾‘å±æ€§çš„åºå·åˆ°æŒ‡å®šç¬¦å·ä¸­ï¼Œå¯åšä¸ºä¸‹æ¬¡æ‰“å¼€å¯¹è¯æ¡†æ—¶çš„é»˜è®¤é€‰ä¸­æ¡ç›®
   (if (and _selkey (= 'sym (type _selkey)))
     (set _selkey _curkey)
   )
-  ;; OK¹Ø±Õ¶Ô»°¿òÊ±·µ»ØÒ»¸öĞŞ¸ÄÄÚÈİÁĞ±í£¬·ñÔò·µ»Ønil
+  ;; OKå…³é—­å¯¹è¯æ¡†æ—¶è¿”å›ä¸€ä¸ªä¿®æ”¹å†…å®¹åˆ—è¡¨ï¼Œå¦åˆ™è¿”å›nil
   (setq
     _changes (vl-remove-if
 	       (function (lambda (e) (vl-catch-all-error-p (cdr e))))

@@ -1,0 +1,9 @@
+(defun @hvac:equip-balance ()
+  (@::help '("鍒嗛泦姘村櫒骞宠　鍒嗘瀽"))
+  (setq hequips (pickset:to-list (ssget '((0  . "TCH_DBHEQUIPMENT")))))
+  (setq hvac-jfsqs
+	(vl-remove-if-not '(lambda(x)
+			    (equal (vlax-get-property (e2o x) 'hvac_s5)
+			     "閲囨殩鍒嗛泦姘村櫒"))
+			  hequips))
+  (@:prompt (strcat "閫変腑"(itoa(length hvac-jfsqs))"涓

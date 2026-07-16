@@ -1,0 +1,7 @@
+(in-package :autolisp)
+(defun @:load-opendcl ()
+  (if (null dcl_getversionex)
+      (progn
+	(defun Load_OdclRuntime (/ vers arxname darx filesize)
+          (setq vers (substr (getvar "acadver") 1 2))
+          (setq arxname (strcat "OpenDCL." (if (= (getenv "PROCESSOR_ARCHITECTURE") "AMD64") "x64." "") vers ".arx"))  ;;鍖哄垎 CAD 浣

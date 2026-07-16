@@ -1,28 +1,28 @@
-;;; ²¼ÖÃ¹ÜµÀÂ·¾¶
+;;; å¸ƒç½®ç®¡é“è·¯å¾„
 (defun psk-editor-createpath (/ bst p path paths rt ss)
   (if (/= 0 (psk-createvalue-prompt))
   (while (/= "" (car paths))
     (if	(null paths)
-      ;; Ö¸¶¨ÆğµãÊ±µÄÌáÊ¾ĞÅÏ¢
+      ;; æŒ‡å®šèµ·ç‚¹æ—¶çš„æç¤ºä¿¡æ¯
       (progn (initget "C R W")
 	     (setq p (getpoint
-		       "\nÖ¸¶¨Æğµã»ò [ÉèÖÃ(C)/Ïà¶Ô(R)/³¤¿í»¥»»(W)]:"
+		       "\næŒ‡å®šèµ·ç‚¹æˆ– [è®¾ç½®(C)/ç›¸å¯¹(R)/é•¿å®½äº’æ¢(W)]:"
 		     )
 	     )
       )
-      ;; Ö¸¶¨ÏÂÒ»µãÊ±µÄÌáÊ¾ĞÅÏ¢
+      ;; æŒ‡å®šä¸‹ä¸€ç‚¹æ—¶çš„æç¤ºä¿¡æ¯
       (progn (initget "C S P R U")
 	     (setq p
 		    (getpoint
 		      (trans (cadar paths) 0 1)
-		      "\nÖ¸¶¨ÏÂÒ»¸öµã»ò [ÉèÖÃ(C)/ÖØĞÂÖ¸¶¨Æğµã(S)/×ø±ê(P)/Ïà¶Ô(R)/ºóÍË(U)]:"
+		      "\næŒ‡å®šä¸‹ä¸€ä¸ªç‚¹æˆ– [è®¾ç½®(C)/é‡æ–°æŒ‡å®šèµ·ç‚¹(S)/åæ ‡(P)/ç›¸å¯¹(R)/åé€€(U)]:"
 		    )
 	     )
       )
     )
     (cond
       ((null p)
-       (setq paths (cons "" paths)) ;_ ½«½áÊø»æÖÆ
+       (setq paths (cons "" paths)) ;_ å°†ç»“æŸç»˜åˆ¶
       )
       ((= p "C") (psk-createvalue-prompt))
 ;;;      ((= p "G")
@@ -52,7 +52,7 @@
        )
        (command "._UNDO" "B")
       )
-      ;; ÓÃ»§Ö¸¶¨ÁËÒ»¸öÓĞĞ§µÄµã
+      ;; ç”¨æˆ·æŒ‡å®šäº†ä¸€ä¸ªæœ‰æ•ˆçš„ç‚¹
       ((or (= p "P") (= p "R") (and p (listp p)))
        (cond
 ;;;	 ((= p "C")
@@ -61,8 +61,8 @@
 ;;;	  )
 ;;;	 )
 	 ((= p "R")
-	  (if (setq p (getpoint "\nÖ¸¶¨²Î¿¼µã:"))
-	    (setq p (getpoint p "\nÖ¸¶¨Ïà¶ÔÎ»ÖÃ:"))
+	  (if (setq p (getpoint "\næŒ‡å®šå‚è€ƒç‚¹:"))
+	    (setq p (getpoint p "\næŒ‡å®šç›¸å¯¹ä½ç½®:"))
 	  )
 	 )
        )
@@ -71,16 +71,16 @@
 	 (progn
 	   (setq p (trans p 1 0))
 	   (if (null paths)
-	     ;; Ö¸¶¨µÚÒ»¸öµã
+	     ;; æŒ‡å®šç¬¬ä¸€ä¸ªç‚¹
 	     (progn
 ;;;	   (psk-createvalue-prompt)
 ;;;               (if (null bst)
-               ;; ÔÚÖ¸¶¨µÚÒ»¸öµãÊ±Éú³ÉÂ·¾¶±í¼°»æÍ¼ÁĞ±í£¬ºóĞø²Ù×÷¸´ÓÃ¸ÃÁ½±íÒÔÌá¸ß´óÍ¼Ê±²Ù×÷ËÙ¶È
-               ;; ²Ù×÷¹ı³ÌÖĞËõĞ¡Æ½ÒÆ´°¿ÚÊ±¿ÉÄÜÔì³É»æÍ¼½á¹û²»×¼È·£¨»æÍ¼¸ÃÉ¾Î´É¾£©
+               ;; åœ¨æŒ‡å®šç¬¬ä¸€ä¸ªç‚¹æ—¶ç”Ÿæˆè·¯å¾„è¡¨åŠç»˜å›¾åˆ—è¡¨ï¼Œåç»­æ“ä½œå¤ç”¨è¯¥ä¸¤è¡¨ä»¥æé«˜å¤§å›¾æ—¶æ“ä½œé€Ÿåº¦
+               ;; æ“ä½œè¿‡ç¨‹ä¸­ç¼©å°å¹³ç§»çª—å£æ—¶å¯èƒ½é€ æˆç»˜å›¾ç»“æœä¸å‡†ç¡®ï¼ˆç»˜å›¾è¯¥åˆ æœªåˆ ï¼‰
                (setq $psk-drafts nil)
 ;;;               (if (= $psk-autoredraw "Y")
 ;;;                 (progn
-;;;                   (princ "\n»º´æ¶ÔÏóÊı¾İ...")
+;;;                   (princ "\nç¼“å­˜å¯¹è±¡æ•°æ®...")
 ;;;                   (p-timer-start)
 ;;;
 ;;;                   (setq bst         (psk-comps-buildbst
@@ -89,7 +89,7 @@
 ;;;                                     )
 ;;;                         $psk-drafts (psk-drafts-fromviewport)
 ;;;                   )
-;;;                   (princ (strcat "\r»º´æÍê³É, ºÄÊ± "
+;;;                   (princ (strcat "\rç¼“å­˜å®Œæˆ, è€—æ—¶ "
 ;;;                                  (rtos (/ (p-timer-stop) 1000.) 2 2)
 ;;;                                  " s"
 ;;;                          )
@@ -102,18 +102,18 @@
 		 (and rt
 		      (= 1 (length rt))
 		 )
-		  ;; ºÍÒÑÓĞÂ·¾¶¿ª·Å¹Ü¿ÚÏàÁ¬
+		  ;; å’Œå·²æœ‰è·¯å¾„å¼€æ”¾ç®¡å£ç›¸è¿
 		  (setq	paths
 			 (cons (list (psk-comp-load (car rt)) p) paths)
 		  )
 		  (setq paths (cons (list nil p) paths))
 	       )
 	     )
-	     ;; Ö¸¶¨µÚ2+µã
+	     ;; æŒ‡å®šç¬¬2+ç‚¹
 	     (if
 	       (wcmatch (p-get $psk-path-createvalue ".TYPE") "DUCT*")
 		(progn
-		  ;; ´´½¨¹ÜµÀ
+		  ;; åˆ›å»ºç®¡é“
 		  (command "._UNDO" "M")
 
 		  (psk-set-customlayerbyid
@@ -218,7 +218,7 @@
     (and
       (setq $psk-createpipe-serv
 	     (p-getkword1
-	       "Ñ¡Ôñ·şÎñ½éÖÊ"
+	       "é€‰æ‹©æœåŠ¡ä»‹è´¨"
 ;;;	       $psk-services
 	       (mapcar
 		 (function
@@ -231,8 +231,8 @@
 	       $psk-createpipe-serv
 	     )
       )
-      (setq p1 (getpoint "\nÖ¸¶¨Æğµã: "))
-      (setq p2 (getpoint p1 "\nÖ¸¶¨ÖÕµã: "))
+      (setq p1 (getpoint "\næŒ‡å®šèµ·ç‚¹: "))
+      (setq p2 (getpoint p1 "\næŒ‡å®šç»ˆç‚¹: "))
     )
 
      (psk-editor-createpipe-inner
@@ -248,8 +248,8 @@
 (defun psk-create-pipegroup (servs offset / a p1 p2)
   (if
     (and
-      (setq p1 (getpoint "\nÖ¸¶¨Æğµã: "))
-      (setq p2 (getpoint p1 "\nÖ¸¶¨ÖÕµã: "))
+      (setq p1 (getpoint "\næŒ‡å®šèµ·ç‚¹: "))
+      (setq p2 (getpoint p1 "\næŒ‡å®šç»ˆç‚¹: "))
     )
      (progn
        (setq p1	(trans p1 1 0)
@@ -270,8 +270,8 @@
 (defun psk-editor-createduct-inner (serv tp / p1 p2)
   (if
     (and
-      (setq p1 (getpoint "\nÖ¸¶¨Æğµã: "))
-      (setq p2 (getpoint p1 "\nÖ¸¶¨ÖÕµã: "))
+      (setq p1 (getpoint "\næŒ‡å®šèµ·ç‚¹: "))
+      (setq p2 (getpoint p1 "\næŒ‡å®šç»ˆç‚¹: "))
     )
      (progn
        (psk-set-customlayerbyid
@@ -291,7 +291,7 @@
 (defun psk-editor-createduct (/)
   (setq	$psk-createduct-serv
 	 (p-getkword1
-	   "Ñ¡Ôñ·şÎñ½éÖÊ"
+	   "é€‰æ‹©æœåŠ¡ä»‹è´¨"
 	   $psk-services-duct
 	   $psk-createduct-serv
 	 )
@@ -304,7 +304,7 @@
 (defun psk-editor-createductr (/)
   (setq	$psk-createduct-serv
 	 (p-getkword1
-	   "Ñ¡Ôñ·şÎñ½éÖÊ"
+	   "é€‰æ‹©æœåŠ¡ä»‹è´¨"
 	   $psk-services-duct
 	   $psk-createduct-serv
 	 )
@@ -320,21 +320,21 @@
 ;;;      (setq ss (psk-comps-ssget1))
       (setq ss (ssget '((0 . "LINE"))))
       (setq pname (p-getkword1
-		    "Ñ¡ÔñÒªĞŞ¸ÄµÄÊôĞÔ"
-		    '(("FLR" "Á÷Á¿")
-		      ("CLD" "Àä¸ººÉ")
-		      ("HLD" "ÈÈ¸ººÉ")
-		      ("TD" "ÎÂ²î")
-		      ("DN" "¹«³ÆÖ±¾¶")
-		      ("SERV" "·şÎñ½éÖÊ")
-		      (".TYPE" "¹ÜµÀÀàĞÍ")
-		      ("FRCF" "¾Ö²¿×èÁ¦ÏµÊı")
+		    "é€‰æ‹©è¦ä¿®æ”¹çš„å±æ€§"
+		    '(("FLR" "æµé‡")
+		      ("CLD" "å†·è´Ÿè·")
+		      ("HLD" "çƒ­è´Ÿè·")
+		      ("TD" "æ¸©å·®")
+		      ("DN" "å…¬ç§°ç›´å¾„")
+		      ("SERV" "æœåŠ¡ä»‹è´¨")
+		      (".TYPE" "ç®¡é“ç±»å‹")
+		      ("FRCF" "å±€éƒ¨é˜»åŠ›ç³»æ•°")
 		     )
 		    "CLD"
 		  )
       )
       (setq value (p-edit-value
-		    "\nÊäÈë²ÎÊıÖµ"
+		    "\nè¾“å…¥å‚æ•°å€¼"
 		    (cond ((= pname "SERV")
 			   "CS"
 			  )
@@ -374,19 +374,19 @@
   )
 )
 
-;; ½«Ö¸¶¨Ö±ÏßÉèÖÃÎª¹Ü¿Ú
+;; å°†æŒ‡å®šç›´çº¿è®¾ç½®ä¸ºç®¡å£
 (defun c:port (/ en serv) 
   (if 
     (and 
-      (setq en (entsel "\nÑ¡Ôñ½Ó¹Ü:"))
+      (setq en (entsel "\né€‰æ‹©æ¥ç®¡:"))
 ;;;      (setq serv (p-getkword1 
-;;;                   "Ñ¡Ôñ·şÎñ½éÖÊ"
+;;;                   "é€‰æ‹©æœåŠ¡ä»‹è´¨"
 ;;;                   $psk-services
 ;;;                   "CHS"
 ;;;                 )
 ;;;      )
       (setq serv (getstring 
-                   "Ñ¡Ôñ·şÎñ½éÖÊ"
+                   "é€‰æ‹©æœåŠ¡ä»‹è´¨"
                    )
       )
     )
@@ -427,7 +427,7 @@
   r
 )
 (setq $p-ports-cache nil)
-;; »ñÈ¡¿éÊµÀıÖĞ¹Ü¿ÚÖ±ÏßÆğÖÕµã
+;; è·å–å—å®ä¾‹ä¸­ç®¡å£ç›´çº¿èµ·ç»ˆç‚¹
 ;; (p-get-portsforinsert (car (entsel)))
 (defun p-get-portsforinsert (en / geom p ports tr)
   (defun tr (e / p1 p2)
@@ -457,12 +457,12 @@
     )
   )
 )
-;;; ×Ô¶¯Á¬½Ó¹Ü¿ÚÓë¸É¹Ü
+;;; è‡ªåŠ¨è¿æ¥ç®¡å£ä¸å¹²ç®¡
 (defun psk-connect-ports (/	a     dxf   en	  ints	line  n
 			  p	p1    p2    p3	  p4	port  ports
 			  ss	offset	    remain	sys
 			 )
-  (princ "Ñ¡Ôñ¿é\n")
+  (princ "é€‰æ‹©å—\n")
   (if (and (setq ss (ssget '((0 . "INSERT") (-3 ("PSK-PORT"))))))
     (progn
       (foreach en (p-ss->enames ss)
@@ -472,7 +472,7 @@
 
       (while
 	(and ports
-	     (setq line (entsel "Ñ¡ÔñÖ÷¹Ü:"))
+	     (setq line (entsel "é€‰æ‹©ä¸»ç®¡:"))
 	)
 	 (setq p    (trans (cadr line) 1 0)
 	       line (car line)
@@ -483,7 +483,7 @@
 	       sys  (p-xprop-get line "PSK-PATH" "SERV")
 	 )
 
-	 ;; »æÖÆÃ¿¸öµ½Éè±¸µÄÖ§¹Ü
+	 ;; ç»˜åˆ¶æ¯ä¸ªåˆ°è®¾å¤‡çš„æ”¯ç®¡
 	 (foreach port ports
 	   (if (= sys (car port))
 	     (progn
@@ -515,7 +515,7 @@
 	   )
 	 )
 
-	 ;; ¸É¹ÜÓëÃ¿¸öÖ§¹Ü½»µã´¦´ò¶Ï
+	 ;; å¹²ç®¡ä¸æ¯ä¸ªæ”¯ç®¡äº¤ç‚¹å¤„æ‰“æ–­
 	 (entdel line)
 	 (while	ints
 	   (if (> (distance p (caar ints)) 1.)
@@ -540,7 +540,7 @@
 ;;;
 ;;;_$ (get-near-number 12700 '(7100 12500 14000) 0.1 0)
 ;;;12500
-;;; ·µ»Ø'(7100 12500 14000)ÁĞ±íÖĞ×î½Ó½ü12700µÄÊı£¬ÔÊĞí·µ»ØµÄÊı±ÈÖ¸¶¨µÄÊıĞ¡ 10 % »ò´ó 0 %
+;;; è¿”å›'(7100 12500 14000)åˆ—è¡¨ä¸­æœ€æ¥è¿‘12700çš„æ•°ï¼Œå…è®¸è¿”å›çš„æ•°æ¯”æŒ‡å®šçš„æ•°å° 10 % æˆ–å¤§ 0 %
 ;;;(defun get-near-number (n nl lt gt / l g r)
 ;;;  (setq	l (* n (- 1.0 lt))
 ;;;	g (* n (+ 1.0 gt))
@@ -625,7 +625,7 @@
   (if
     (setq
       r	(getkword
-	  (strcat "\nÑ¡ÔñÆ«ĞÄ¹Ü¼ş¶ÔÆë·½Ê½ [×ó(L)/¾ÓÖĞ(C)/ÓÒ(R)]: <"
+	  (strcat "\né€‰æ‹©åå¿ƒç®¡ä»¶å¯¹é½æ–¹å¼ [å·¦(L)/å±…ä¸­(C)/å³(R)]: <"
 		  $psk-alignmode
 		  ">"
 	  )
@@ -640,7 +640,7 @@
 
 
 
-;;; BOOKMARK ±äÁ¿´¦Àí¸¨Öúº¯Êı
+;;; BOOKMARK å˜é‡å¤„ç†è¾…åŠ©å‡½æ•°
 (defun psk-propbox-change (name /)
   (propbox-update
     (psk-get-createvalue name)
@@ -711,9 +711,9 @@
                     ((wcmatch (car e) "AL")
                      (append e
                              (list '(("" "")
-                                     ("T" "¶¥")
-                                     ("C" "ÖĞĞÄ")
-                                     ("B" "µ×")
+                                     ("T" "é¡¶")
+                                     ("C" "ä¸­å¿ƒ")
+                                     ("B" "åº•")
                                     )
                              )
                      )
@@ -741,15 +741,15 @@
                      (append e
                              (list
                                '(("DUCT-RECT"
-                                  "¾ØĞÎ·ç¹Ü"
+                                  "çŸ©å½¢é£ç®¡"
                                   "(psk-propbox-change \"DUCT-RECT\")"
                                  )
                                  ("DUCT-ROUND"
-                                  "Ô²ĞÎ·ç¹Ü"
+                                  "åœ†å½¢é£ç®¡"
                                   "(psk-propbox-change \"DUCT-ROUND\")"
                                  )
                                  ("PIPE"
-                                  "Ë®¹Ü"
+                                  "æ°´ç®¡"
                                   "(psk-propbox-change \"PIPE\")"
                                  )
                                 )
@@ -784,12 +784,12 @@
                     ((wcmatch (car e) "MAT")
                      (append e
                              '((("" "")
-                                ("GS" "¶ÆĞ¿¸Ö°å")
-                                ("SS" "²»Ğâ¸Ö°å")
-                                ("AL" "ÂÁ°å")
-                                ("UPVC" "Ó²¾ÛÂÈÒÒÏ©")
-                                ("PMMA" "ÓĞ»ú²£Á§¸Ö")
-                                ("FRP" "ÎŞ»ú²£Á§¸Ö")
+                                ("GS" "é•€é”Œé’¢æ¿")
+                                ("SS" "ä¸é”ˆé’¢æ¿")
+                                ("AL" "é“æ¿")
+                                ("UPVC" "ç¡¬èšæ°¯ä¹™çƒ¯")
+                                ("PMMA" "æœ‰æœºç»ç’ƒé’¢")
+                                ("FRP" "æ— æœºç»ç’ƒé’¢")
                                )
                               )
                      )
@@ -860,13 +860,13 @@
                 "SAD-V"
                 "RAD-V"
               )
-              (getpoint "\nÖ¸¶¨²åÈëµã:")
+              (getpoint "\næŒ‡å®šæ’å…¥ç‚¹:")
               (p-get comp "W")
               (p-get comp "H")
             )
             (psk-create-ductvert
               "PIPE-V"
-              (getpoint "\nÖ¸¶¨²åÈëµã:")
+              (getpoint "\næŒ‡å®šæ’å…¥ç‚¹:")
               (p-get comp "DN")
               (p-get comp "DN")
             )
@@ -912,7 +912,7 @@
 ;;;	       (p-set $psk-path-createvalue change)
 ;;;	)
 
-	;; ±£´æÀúÊ·¼ÇÂ¼·½±ãÏÂ´ÎÊ¹ÓÃ
+	;; ä¿å­˜å†å²è®°å½•æ–¹ä¾¿ä¸‹æ¬¡ä½¿ç”¨
 	(setq $psk-path-createvaluelast
 	       (p-set
 		 $psk-path-createvaluelast
@@ -928,7 +928,7 @@
 	$psk-path-createvalue
       )
     )
-    0 ;_ ÓÃ»§È¡ÏûÁË¶Ô»°¿ò
+    0 ;_ ç”¨æˆ·å–æ¶ˆäº†å¯¹è¯æ¡†
   )
 )
 ;;
@@ -937,7 +937,7 @@
   (if (and (setq comps (psk-comps-ssget)))
     (progn
       (foreach comp comps
-	(setq comp (cdr comp)) ;_ È¥µô-1 ÊµÌåÃû
+	(setq comp (cdr comp)) ;_ å»æ‰-1 å®ä½“å
 	(if (null r)
 	  (setq r comp)
 	  (progn
@@ -946,15 +946,15 @@
 	      (if (null v)
 		(setq r (p-set r e))
 		(if (not (equal v (cdr e)))
-		  (setq r (p-set r (cons (car e) "*¶àÖÖ*")))
+		  (setq r (p-set r (cons (car e) "*å¤šç§*")))
 		)
 	      )
 	    )
 	  )
 	)
       )
-      (if (= "*¶àÖÖ*" (p-get r ".TYPE"))
-	(princ "\nÔİ²»Ö§³Ö²»Í¬Àà±ğ¹Ü¼şÅúÁ¿±à¼­")
+      (if (= "*å¤šç§*" (p-get r ".TYPE"))
+	(princ "\næš‚ä¸æ”¯æŒä¸åŒç±»åˆ«ç®¡ä»¶æ‰¹é‡ç¼–è¾‘")
 	(if
 	  (/= 0
 	      (setq rt (propertybag-edit
@@ -970,7 +970,7 @@
 	  )
 	   (progn
 	     (foreach comp comps
-               ;; ¿ØÖÆÀàĞÍĞŞ¸Ä½«¿ØÖÆÏß·ÅÖÃµ½ÏàÓ¦µÄÍ¼²ãÖĞ
+               ;; æ§åˆ¶ç±»å‹ä¿®æ”¹å°†æ§åˆ¶çº¿æ”¾ç½®åˆ°ç›¸åº”çš„å›¾å±‚ä¸­
                (if
                  (and (setq serv (p-get rt "SERV"))
                       (/= serv (p-get comp "SERV"))
@@ -990,7 +990,7 @@
                     )
                   )
                )
-               ;; D DN W ÊôĞÔÉèÖÃ¶îÍâ´¦ÀíTODO
+               ;; D DN W å±æ€§è®¾ç½®é¢å¤–å¤„ç†TODO
                (psk-comp-set (psk-comp-getename comp) rt)
 
                (if

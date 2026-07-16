@@ -1,37 +1,37 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; condition ×´¿ö´¦Àíº¯Êı
-;;; ¸ÃÎÄ¼şĞèÒª @lisp ±àÒë´¦Àí
+;;; condition çŠ¶å†µå¤„ç†å‡½æ•°
+;;; è¯¥æ–‡ä»¶éœ€è¦ @lisp ç¼–è¯‘å¤„ç†
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq @:*var-stack* nil) ;; ±äÁ¿×´Ì¬Õ»,ÔÚÆô¶¯Ê±³õÊ¼»¯
+(setq @:*var-stack* nil) ;; å˜é‡çŠ¶æ€æ ˆ,åœ¨å¯åŠ¨æ—¶åˆå§‹åŒ–
 (@:define-config
     'base:sysvar
     "autosnap;snapmode;blipmode;cmdecho;clayer;delobj;luprec;orthomode;osmode;plinewid;textstyle;filedia"
   (_"push vars list"))
   
 (defun push-var (varlst)
-  "µ±Ç°±äÁ¿×´Ì¬ÈëÕ», ²ÎÊıÖ§³Öµ¥¸ö×Ö·û´®£¬·ûºÅ£¬nil(Ä¬ÈÏ±äÁ¿±í) "
+  "å½“å‰å˜é‡çŠ¶æ€å…¥æ ˆ, å‚æ•°æ”¯æŒå•ä¸ªå­—ç¬¦ä¸²ï¼Œç¬¦å·ï¼Œnil(é»˜è®¤å˜é‡è¡¨) "
   (if (= 'list (type (car varlst)))
       (setq varlst (car varlst)))
   (if (or (null (car varlst))
 	  (null varlst))
       (setq varlst (@:string-to-list (@:get-config 'base:sysvar) ";")))
   (if (null varlst)
-      (setq varlst '("autosnap";²¶×½±ê¼Ç
+      (setq varlst '("autosnap";æ•æ‰æ ‡è®°
 		     "snapmode"; 
-		     "blipmode";¹â±êºÛ¼£
-		     "cmdecho";ÆÕÍ¨ÃüÁîµÄÌáÊ¾
-		     "clayer";Í¼²ã
-		     "delobj"	;¿ØÖÆ´´½¨ÃæÓòÊ±ÊÇ·ñ±£ÁôÔ­pline£¬0Îª±£Áô£¬1Îª²»±£Áô
-		     "luprec";³¤¶È¾«¶È
-		     "orthomode";Õı½»Ä£Ê½
-		     "osmode";²¶×½Ä£Ê½
-		     "plinewid";¶àÏß¶Î¿í¶È
-		     "textstyle";×ÖÌåÑùÊ½
+		     "blipmode";å…‰æ ‡ç—•è¿¹
+		     "cmdecho";æ™®é€šå‘½ä»¤çš„æç¤º
+		     "clayer";å›¾å±‚
+		     "delobj"	;æ§åˆ¶åˆ›å»ºé¢åŸŸæ—¶æ˜¯å¦ä¿ç•™åŸplineï¼Œ0ä¸ºä¿ç•™ï¼Œ1ä¸ºä¸ä¿ç•™
+		     "luprec";é•¿åº¦ç²¾åº¦
+		     "orthomode";æ­£äº¤æ¨¡å¼
+		     "osmode";æ•æ‰æ¨¡å¼
+		     "plinewid";å¤šçº¿æ®µå®½åº¦
+		     "textstyle";å­—ä½“æ ·å¼
 		     "filedia"
 		     )))
   (if (= 'str (type varlst)) (setq varlst (list varlst)))
   (if (= 'sym (type varlst)) (setq varlst (list varlst)))
-  (setq varlst (vl-remove-if 'null varlst));;É¾³ı¿ÕÔª
+  (setq varlst (vl-remove-if 'null varlst));;åˆ é™¤ç©ºå…ƒ
   (if (= 'list (type varlst))
       (setq @:*var-stack*
 	    (append 
@@ -39,6 +39,6 @@
 	     @:*var-stack*))))
 
 (defun pop-var ()
-  ;;"»Ö¸´±£´æµÄ±äÁ¿"
+  ;;"æ¢å¤ä¿å­˜çš„å˜é‡"
   (mapcar '(lambda (x) (setvar (car x) (cdr x))) (car @:*var-stack*))
   (setq @:*var-stack* (cdr @:*var-stack*)))

@@ -1,0 +1,4 @@
+
+(@:add-menu "閫氱敤鎵撳嵃" "鎵规墦杈撳嚭" "(@plot:plot-all)")
+(defun @plot:plot-all (/ tf tufu zongheng)
+  (@:help "鎵撳嵃鏍囪

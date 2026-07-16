@@ -1,0 +1,34 @@
+(defun getxx (x / xy xl a b bb) 
+  (setq xy (entity:getdxf x 10)
+        xl (entget (entity:getdxf (tblsearch "block" (entity:getdxf x 2)) -2))
+        A  (angle (entity:getdxf xl 10) (entity:getdxf xl 11)))
+  (cond 
+    ((equal (abs (sin A)) 1 1e-6) ;;姘村钩
+     (list (cadr xy) (sin A)))
+    ((equal (sin A) 0 1e-6) ;;鍨傜洿
+     (list (car xy) (sin A)))
+    (t
+     (setq B  (+ A (* 0.5 pi))
+           bb (- (cadr xy) (* (/ (sin B) (cos B)) (car xy))))
+     (list bb (sin A)))))
+(defun getmxy (ssent / ptx xx yy) 
+  (foreach x ssent 
+    (setq ptx (cons (entity:getdxf (entget x)13) ptx)
+          ptx (cons (entity:getdxf (entget x) 14) ptx)))
+  (setq xl (entget (entity:getdxf(tblsearch "block" (entity:getdxf(entget (car ssent))2))-2))
+        A  (angle (entity:getdxf xl 10) (entity:getdxf xl 11)))
+  (cond 
+    ((equal SA 1 1e-6) (setq ppt (Lsort ptx 0)))
+    ((equal SA 0 1e-6) (setq ppt (Lsort ptx 1)))
+    (t (setq ppt (Lsort ptx 2))))
+  (list (car ppt) (last ppt)))
+
+(defun Lsort (LT i) 
+  (cond 
+    ((or (= i 0) (= i 2))
+     (setq Lt (vl-sort LT (function (lambda (e1 e2) (< (car e1) (car e2)))))))
+    ((or (= i 1) (= i 2))
+     (setq Lt (vl-sort LT (function (lambda (e1 e2) (< (cadr e1) (cadr e2)))))))))
+
+(defun @dim:merge-dim (/ ss ic xic aa bb n ent1) 
+  (@:help "鍚堝苟澶氫釜杩炵画鐨勬爣娉ㄤ负涓€涓

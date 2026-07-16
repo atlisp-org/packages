@@ -1,0 +1,2 @@
+(defun @lab:named-first-layout-from-filename(/ *error* dir% dwgs)
+  (@::prompt "鎵归噺淇

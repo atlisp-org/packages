@@ -1,5 +1,5 @@
 (@:def-pkg '((:NAME . "at-documents")
-        (:FULL-NAME . "@lisp¿ª·¢ÎÄµµ")
+        (:FULL-NAME . "@lispå¼€å‘æ–‡æ¡£")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
         (:VERSION . "0.6.41")
@@ -7,7 +7,7 @@
         (:CATEGORY . "DevelopTools")
         (:REQUIRED . "dev-tools")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "Í¨ÓÃº¯Êı¿âÎÄµµ¼°ËÑË÷¹¤¾ß.")
+        (:DESCRIPTION . "é€šç”¨å‡½æ•°åº“æ–‡æ¡£åŠæœç´¢å·¥å…·.")
         (:URL . "http://atlisp.cn")
         (:FILES "at-documents"
             "block.libdoc"

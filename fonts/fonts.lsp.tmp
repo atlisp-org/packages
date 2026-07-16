@@ -1,0 +1,5 @@
+(if (null (member (strcat @:*prefix* "packages\\fonts") (@:string-to-list (getenv "ACAD") ";")))
+    (setenv "ACAD" (strcat (vl-string-right-trim ";" (getenv "ACAD"))
+			   ";"
+			   @:*prefix* "packages\\fonts;")))
+;; 鍒涘缓 @@hztxt.shx瀛椾綋锛岀敤浜庡揩閫熸浛浠ｇ己鐪佸瓧浣

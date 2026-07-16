@@ -1,0 +1,11 @@
+;;;(defun c:tt (/ id rt)
+;;;  (setq id (load_dialog (psk-get-filename "catelogExplor.dcl")))
+;;;  (if (and (>= id 0)
+;;;           (new_dialog "catelogExplor" id)
+;;;      )
+;;;    (progn
+;;;
+;;;      (setq rows
+;;;             (p-csvfile-read
+;;;               (psk-get-filename
+;;;                 "\\catelog\\vrf\\daikin\\澶氳仈鏈虹┖璋冨

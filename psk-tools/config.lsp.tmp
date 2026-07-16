@@ -1,0 +1,8 @@
+(setq $psk-about "绠￠亾姹傝В缁勪欢 PSK 0.61")
+
+(setq $psk-regroot	"HKEY_CURRENT_USER\\Software\\InkPaint Computing\\PSK"
+      $psk-install-path	(vl-registry-read $psk-regroot "Install Path")
+)
+
+(if (or (null $psk-install-path) (= $psk-install-path ""))
+  (progn (princ "\n鏈

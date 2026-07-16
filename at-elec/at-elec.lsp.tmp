@@ -1,0 +1,7 @@
+(@:add-menus
+ '("@鐢垫皵"
+   ("鐢垫皵璇存槑" (@elec:draw-readme))
+   ("鐢垫皵鏍蜂緥" (@elec:draw-plan-example))
+   ))
+(defun @elec:draw-readme ()
+  (@:help '("鎻掑叆鏆栭€氳

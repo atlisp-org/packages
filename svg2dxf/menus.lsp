@@ -1,8 +1,8 @@
 (@:add-menus
  '(("svg2dxf"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(svg2dxf:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(svg2dxf:hello)")))
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(svg2dxf:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(svg2dxf:hello)")))
    ("svg2dxf1"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(svg2dxf:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(svg2dxf:hello)")))
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(svg2dxf:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(svg2dxf:hello)")))
    )

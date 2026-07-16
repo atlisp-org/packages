@@ -19,7 +19,7 @@
   (p-make-line p2 p4)
   (list p1 p2 p3 p4)
 )
-;; ´´½¨¿íl ¸ßh Ô­µãÔÚ×ó±ßÖĞµãÉÏµÄ¼òµ¥¾ØĞÎ
+;; åˆ›å»ºå®½l é«˜h åŸç‚¹åœ¨å·¦è¾¹ä¸­ç‚¹ä¸Šçš„ç®€å•çŸ©å½¢
 ;; P1 P3
 ;; P2 P4
 ;; (psk-draw-rectangle 200 100)
@@ -40,7 +40,7 @@
   (p-make-line p1 p3)
   (p-make-line p2 p4)
 )
-;; ´´½¨¿íl ¸ßh Ô­µã¾ØĞÎÖĞĞÄµÄ¾ØĞÎ
+;; åˆ›å»ºå®½l é«˜h åŸç‚¹çŸ©å½¢ä¸­å¿ƒçš„çŸ©å½¢
 ;; P1 P3
 ;; P0
 ;; P2 P4
@@ -59,7 +59,7 @@
   (p-make-line p2 p4)
   (list p1 p2 p3 p4)
 )
-;; ´´½¨¿ía ¸ßb ¾ØĞÎÖĞĞÄÔÚ(x, y) µÄ¼òµ¥¾ØĞÎ
+;; åˆ›å»ºå®½a é«˜b çŸ©å½¢ä¸­å¿ƒåœ¨(x, y) çš„ç®€å•çŸ©å½¢
 ;;;(defun psk-draw-rectangle-at (x y a b /)
 ;;;  (p-make-polyline
 ;;;    (list (list (- x (/ a 2.)) (+ y (/ b 2.)))
@@ -73,7 +73,7 @@
 ;;;)
 
 
-;; Ò»°ã·§ÃÅ l = ·§ÌåÖ±¾¶ d = ·§Ìå³¤¶È
+;; ä¸€èˆ¬é˜€é—¨ l = é˜€ä½“ç›´å¾„ d = é˜€ä½“é•¿åº¦
 ;; (psk-draw-valvebody 200 100)
 (defun psk-draw-valvebody (l d / p1 p2 p3 p4)
   (setq	p1 (polar $psk-block-base (+ $psk-block-angle $pi/2) (* d 0.5))
@@ -91,7 +91,7 @@
 )
 
 
-;; ½ØÖ¹·§ÃÅ¶¥ÊÓ d = ·§ÌåÖ±¾¶ l = ·§Ìå³¤¶È c = ÊÖÂÖÖ±¾¶
+;; æˆªæ­¢é˜€é—¨é¡¶è§† d = é˜€ä½“ç›´å¾„ l = é˜€ä½“é•¿åº¦ c = æ‰‹è½®ç›´å¾„
 ;; (psk-draw-global-valve-top 200 100 50)
 (defun psk-draw-global-valve-top (l d c /)
   (psk-draw-valvebody l d)
@@ -104,7 +104,7 @@
 
 
 
-;; Õ¢·§ÃÅÇ°ÊÓ d = ·§ÌåÖ±¾¶ l = ·§Ìå³¤¶È c = ÊÖÂÖÖ±¾¶ hw = ·§¸Ë¸ß¶È
+;; é—¸é˜€é—¨å‰è§† d = é˜€ä½“ç›´å¾„ l = é˜€ä½“é•¿åº¦ c = æ‰‹è½®ç›´å¾„ hw = é˜€æ†é«˜åº¦
 ;; (psk-draw-gate-valve-fr 200 100 50 100)
 (defun psk-draw-gate-valve-fr (l d c hw / p1 p2)
   (psk-draw-valvebody l d)
@@ -121,7 +121,7 @@
 )
 ;;
 
-;; ½ØÖ¹·§ÃÅÇ°ÊÓ d = ·§ÌåÖ±¾¶ l = ·§Ìå³¤¶È c = ÊÖÂÖÖ±¾¶ hw = ·§¸Ë¸ß¶È
+;; æˆªæ­¢é˜€é—¨å‰è§† d = é˜€ä½“ç›´å¾„ l = é˜€ä½“é•¿åº¦ c = æ‰‹è½®ç›´å¾„ hw = é˜€æ†é«˜åº¦
 ;; (psk-draw-global-valve-fr 200 100 50 100)
 (defun psk-draw-global-valve-fr	(l d c hw / p1 p3 p5)
   (psk-draw-gate-valve-fr l d c hw)
@@ -168,7 +168,7 @@
   )
   (setq $addnew-linetype "BYLAYER")
 )
-;; ³£¿ª·À»ğ·§ w = ¿í l = ºñ fl = ·¨À¼Éì³ö³¤¶È
+;; å¸¸å¼€é˜²ç«é˜€ w = å®½ l = åš fl = æ³•å…°ä¼¸å‡ºé•¿åº¦
 ;; (psk-draw-firedamper-o 320 500 50)
 (defun psk-draw-firedamper-o (l w fl /)
   (setq $addnew-linetype "BYBLOCK")
@@ -184,7 +184,7 @@
   )
   (setq $addnew-linetype "BYLAYER")
 )
-;; ³£±Õ·À»ğ·§
+;; å¸¸é—­é˜²ç«é˜€
 ;; (psk-draw-firedamper-c 320 500 50)
 (defun psk-draw-firedamper-c (l w fl / p1)
   (setq	$addnew-linetype "BYBLOCK"
@@ -202,7 +202,7 @@
   )
   (setq $addnew-linetype "BYLAYER")
 )
-;; Ö¹»Ø·§
+;; æ­¢å›é˜€
 ;; (psk-draw-checkvalve 320 500 50)
 (defun psk-draw-checkvalve (l w fl / p1)
   (psk-draw-hvacinline
@@ -228,7 +228,7 @@
     (polar p (+ $pi/4 a) -150)
   )
 )
-;; µ÷½Ú·§
+;; è°ƒèŠ‚é˜€
 ;; (psk-draw-dvalve 320 500 50)
 (defun psk-draw-dvalve	(l w fl / p1)
   (psk-draw-hvacinline
@@ -237,7 +237,7 @@
   (setq p1 (polar $psk-block-base $psk-block-angle (* l 0.5)))
   (psk-draw-blade p1 $psk-block-angle)
 )
-;; ¶àÒ¶µ÷½Ú·§
+;; å¤šå¶è°ƒèŠ‚é˜€
 ;; (psk-draw-ddvalve 320 500 50)
 (defun psk-draw-ddvalve (l w fl / p1)
   (psk-draw-hvacinline
@@ -261,7 +261,7 @@
 
   (p-make-line p2 (polar p2 $psk-block-angle 150))
 )
-;; ÏûÒôÆ÷
+;; æ¶ˆéŸ³å™¨
 ;; (psk-draw-noisereducer 320 500 50)
 (defun psk-draw-noisereducer (l w fl / len p1)
   (psk-draw-rectangle l (+ (* 2 fl) w))
@@ -278,7 +278,7 @@
     (polar p1 (+ $pi/2 $psk-block-angle) (- len))
   )
 )
-;; Ë«²ã°ÙÒ¶·ç¿Ú
+;; åŒå±‚ç™¾å¶é£å£
 ;; (psk-draw-doubleshutter 300 200)
 (defun psk-draw-doubleshutter (a b / r)
   (setq $addnew-linetype "BYBLOCK")
@@ -288,7 +288,7 @@
   (p-make-line (cadr r) (caddr r))
   (setq $addnew-linetype "BYLAYER")
 )
-;; µ¥²ã°ÙÒ¶·ç¿Ú
+;; å•å±‚ç™¾å¶é£å£
 ;; (psk-draw-singleshutter 300 200)
 (defun psk-draw-singleshutter (a b / r)
   (setq $addnew-linetype "BYBLOCK")
@@ -298,7 +298,7 @@
   (setq $addnew-linetype "BYLAYER")
 )
 
-;; ²àËÍ·ç¿Ú w = ·ç¹Ü¿í¶È a1 = ·ç¿Ú·½Ïò
+;; ä¾§é€é£å£ w = é£ç®¡å®½åº¦ a1 = é£å£æ–¹å‘
 ;; P1    P2
 ;; P3 P1 P4
 ;;          W/2
@@ -311,7 +311,7 @@
   
   (setq $addnew-linetype "BYLAYER")
 )
-;; ÌìÔ²µØ·½·ç¹Ü
+;; å¤©åœ†åœ°æ–¹é£ç®¡
 ;; (psk-draw-stor 800 500 150 50)
 (defun psk-draw-stor (w d l fl / p1 p2 p3 p4 p5)
   (setq	p1 (polar $psk-block-base (+ $psk-block-angle $pi/2) (* w 0.5))
@@ -330,7 +330,7 @@
   (p-make-line p2 p4)
   (p-make-line p2 p5)
 )
-;; ÖáÁ÷·ç»ú
+;; è½´æµé£æœº
 ;; (psk-draw-fan 800 500)
 (defun psk-draw-fan (l d / p1 p2 p3 p4)
   (psk-draw-rectangle l d)
@@ -360,7 +360,7 @@
   (psk-draw-hvacflange $psk-block-base $psk-block-angle w fl)
   (setq $addnew-linetype "BYLAYER")
 )
-;; ·ç¹ÜÉÏÍäÏÔÊ¾ÆÊÃæ a - ¿í b - ºñ
+;; é£ç®¡ä¸Šå¼¯æ˜¾ç¤ºå‰–é¢ a - å®½ b - åš
 (defun psk-draw-duct-up	(a b r f / c x y)
   (setq	x (* b (- r 0.5))
 	y (+ x b)
@@ -401,7 +401,7 @@
 )
 
 
-;; ·ç¹ÜÏÂÍä a - ¿í b - ºñ r - ÍäÍ·°ë¾¶(0.8b) f ·¨À¼ºñ
+;; é£ç®¡ä¸‹å¼¯ a - å®½ b - åš r - å¼¯å¤´åŠå¾„(0.8b) f æ³•å…°åš
 (defun psk-draw-duct-down (a b r f / x y)
   (setq	x (* b (- r 0.5))
 	y (+ x b)
@@ -412,7 +412,7 @@
   (p-make-line (list 0 (* a -0.5)) (list y (* a -0.5)))
   (p-make-line (list 0 (* a 0.5)) (list y (* a 0.5)))
 
-  ;; ĞéÏß
+  ;; è™šçº¿
   (setq $addnew-linetype "HIDDEN")
   (p-make-line (list x (* a -0.5)) (list x (* a 0.5)))
   (setq $addnew-linetype "BYLAYER")

@@ -1,30 +1,30 @@
 
 (defun-q datetime:current-time (str-fmt)
-  "¸ñÊ½»¯ÈÕÆÚÊ±¼ä£¬yyyy Äê mo ÔÂ dd ÈÕ hh Ê± mm ·Ö ss Ãë"
-  "ÈÕÆÚÊ±¼ä×Ö·û´®"
+  "æ ¼å¼åŒ–æ—¥æœŸæ—¶é—´ï¼Œyyyy å¹´ mo æœˆ dd æ—¥ hh æ—¶ mm åˆ† ss ç§’"
+  "æ—¥æœŸæ—¶é—´å­—ç¬¦ä¸²"
   "(datetime:current-time \"yyyy-mo-dd hh:mm:ss\""
   (menucmd (strcat "M=$(edtime,$(getvar,date)," str-fmt ")")))
 
 (defun-q datetime:get-current-day ()
-  "·µ»ØÈÕÆÚ"
+  "è¿”å›æ—¥æœŸ"
   (substr (itoa (fix (getvar "CDATE"))) 7 2)
   )
 (defun-q datetime:get-current-month ()
-  "·µ»ØÔÂ·İ"
+  "è¿”å›æœˆä»½"
   (substr (itoa (fix (getvar "CDATE"))) 5 2)
   )
 (defun-q datetime:get-current-year ()
-  "·µ»ØÄê·İ"
+  "è¿”å›å¹´ä»½"
   (substr (itoa (fix (getvar "CDATE"))) 1 4)
   )
 (defun-q timer:begin ()
-  "¼ÆÊ±Æ÷¿ªÊ¼"
+  "è®¡æ—¶å™¨å¼€å§‹"
   (if (> (@:acadver) 20.1)
       (setq *timer* (getvar "millisecs"))
     (setq *timer* (getvar "TDUSRTIMER"))
     ))
-(defun-q timer:end (time p / usetime) ;¼ÆÊ±Æ÷½áÊø
-  "¼ÆÊ±Æ÷½áÊø¡£time ¿ªÊ¼Ê±¼ä p ÊÇ·ñ´òÓ¡¡£"
+(defun-q timer:end (time p / usetime) ;è®¡æ—¶å™¨ç»“æŸ
+  "è®¡æ—¶å™¨ç»“æŸã€‚time å¼€å§‹æ—¶é—´ p æ˜¯å¦æ‰“å°ã€‚"
   (if (not time)(setq time *timer*))
   (if (> (@:acadver) 20.1)
       (setq usetime (-  (getvar "millisecs") time))
@@ -33,7 +33,7 @@
   usetime
   )
 (defun-q datetime:leap-yearp (year)
-  "ÅĞ¶ÏÄ³¸öÊÇ·ñÎªÈòÄê¡£"
+  "åˆ¤æ–­æŸä¸ªæ˜¯å¦ä¸ºé—°å¹´ã€‚"
   (if (= 0 (mod year 100))
       (if (= 0 (mod year 400))
 	  T
@@ -44,7 +44,7 @@
   
 (defun-q datetime:mktime (lst / )
   ;;        '(0 31 28 31  30  31  30  31  31  30  31 30  31))
-  "¼ÆËãÄ³Ò»Ê±¼ä(ÁĞ±í)µ½1970Äê01ÔÂ01ÈÕ¾­¹ıµÄÃëÊı,ÊÊºÏ×ª»»vl-file-systimeµÄ½á¹û"
+  "è®¡ç®—æŸä¸€æ—¶é—´(åˆ—è¡¨)åˆ°1970å¹´01æœˆ01æ—¥ç»è¿‡çš„ç§’æ•°,é€‚åˆè½¬æ¢vl-file-systimeçš„ç»“æœ"
   "Timestamp"
   "(datetime:mktime (vl-file-systime (findfile \"acad.pgp\")))"
   (setq days-of-month
@@ -56,16 +56,16 @@
 	 (* 60.
 	    (+
 	     (* 24.
-		(+ (* (- (nth 0 lst) 1970.) 365.) ;; Äê²î¾­¹ıµÄÌìÊı
-		   (fix (/ (- (nth 0 lst) 1970) 4)) ;; ²¹Èò
-		   (nth (1- (nth 1 lst)) days-of-month) ;;ÔÂ·İÖ®Ç°µÄÌìÊı
-		   (nth 3 lst)))  ;; µ±ÔÂ¾­¹ıµÄÌìÊı
+		(+ (* (- (nth 0 lst) 1970.) 365.) ;; å¹´å·®ç»è¿‡çš„å¤©æ•°
+		   (fix (/ (- (nth 0 lst) 1970) 4)) ;; è¡¥é—°
+		   (nth (1- (nth 1 lst)) days-of-month) ;;æœˆä»½ä¹‹å‰çš„å¤©æ•°
+		   (nth 3 lst)))  ;; å½“æœˆç»è¿‡çš„å¤©æ•°
 	     (nth 4 lst)
-	     (- 8))) ;; Ğ¡Ê±Êı¼õÊ±Çø
+	     (- 8))) ;; å°æ—¶æ•°å‡æ—¶åŒº
 	 (nth 5 lst) ))
      (nth 6 lst)))
 (defun-q datetime:mktime1900 (timestamp)
-  "unix timestamp ×ª µ½1900Äê01ÔÂ01ÈÕ¾­¹ıµÄÃëÊı."
+  "unix timestamp è½¬ åˆ°1900å¹´01æœˆ01æ—¥ç»è¿‡çš„ç§’æ•°."
   "real"
   "(datetime:mktime1900 (datetime:mktime (vl-file-systime (findfile \"acad.pgp\"))))"
   (+ (* 22089.0 100000.) 88800.0 timestamp)

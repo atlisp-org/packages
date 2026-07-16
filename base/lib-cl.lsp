@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; base : autolisp »ù´¡¿â
+;;; base : autolisp åŸºç¡€åº“
 ;;; Author: VitalGG<vitalgg@gmail.com>
-;;; Description: »ùÓÚ AutoLisp/VisualLisp ¿ª·¢µÄ»æÍ¼¹¤¾ß¼¯
+;;; Description: åŸºäº AutoLisp/VisualLisp å¼€å‘çš„ç»˜å›¾å·¥å…·é›†
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;(defun push (atom alist)
@@ -18,7 +18,7 @@
 
 ;; String
 (defun string (para)
-  "½«ÆäËüÀàĞÍ×ª»¯Îª×Ö·û´®¡£"
+  "å°†å…¶å®ƒç±»å‹è½¬åŒ–ä¸ºå­—ç¬¦ä¸²ã€‚"
   (cond
     ;((= 'INT (type para)) (itoa para))
     ;'((= 'REAL (type para)) (rtos para))

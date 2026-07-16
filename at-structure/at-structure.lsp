@@ -1,37 +1,64 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-structure:first ÓÃÓÚ Ó¦ÓÃ°ü at-structure µÄ µÚÒ»¸öÅäÖÃÏî first 
-;;(@:define-config 'at-structure:first "ÎÒÊÇÅäÖÃÏî at-structure:first µÄÖµ" "Õâ¸öÅäÖÃÏîµÄÓÃÍ¾ËµÃ÷¡£")
-;; (@:get-config 'at-structure:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-structure:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "½á¹¹¹¤¾ß" "¶¯Ì¬²éÃæ»ı" "(at-structure:query-steelbar)" )
-(@:add-menu "½á¹¹¹¤¾ß" "²é¸Ö½îÃæ»ı" "(at-structure:menu-get-area)" )
+;; å®šä¹‰é…ç½®é¡¹ 'at-structure:first ç”¨äº åº”ç”¨åŒ… at-structure çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+;;(@:define-config 'at-structure:first "æˆ‘æ˜¯é…ç½®é¡¹ at-structure:first çš„å€¼" "è¿™ä¸ªé…ç½®é¡¹çš„ç”¨é€”è¯´æ˜ã€‚")
+;; (@:get-config 'at-structure:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-structure:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "ç»“æ„å·¥å…·" "åŠ¨æ€æŸ¥é¢ç§¯" "(at-structure:query-steelbar)" )
+(@:add-menu "ç»“æ„å·¥å…·" "æŸ¥é’¢ç­‹é¢ç§¯" "(at-structure:menu-get-area)" )
+(@:add-menu "ç»“æ„å·¥å…·" "ç”»ç‚¹é’¢ç­‹" "(at-structure:menu-draw-one-rebar)" )
+(@:add-menu "ç»“æ„å·¥å…·" "ç”»é’¢ç­‹æ’" "(at-structure:menu-draw-edge-rebar)" )
+(@:add-menu "ç»“æ„å·¥å…·" "ç”»ç®ç­‹" "(at-structure:menu-draw-stirrup)")
+(@:add-menu "ç»“æ„å·¥å…·" "ç»˜æŸ±æˆªé¢" "(at-structure:menu-draw-columns)")
+(defun at-structure:menu-draw-one-rebar()
+  (@::help "ç”»ç‚¹é’¢ç­‹")
+  (at-structure:draw-one-rebar
+   (getpoint "è¯·ç‚¹å–ä½ç½®ç‚¹:")
+   (getint "è¯·è¾“å…¥é’¢ç­‹ç›´å¾„:")
+   ))
+(defun at-structure:menu-draw-edge-rebar()
+  (@::help "ç”»é’¢ç­‹æ’")
+  (at-structure:draw-edge-rebar
+   (setq pt-start (getpoint "èµ·å§‹ç‚¹:"))
+   (getpoint pt-start "ç»ˆæ­¢ç‚¹:")
+   (getint "è¯·è¾“å…¥ä¸ªæ•°:")
+   (getint "è¯·è¾“å…¥é’¢ç­‹ç›´å¾„:")
+   ))
+(defun at-structure:menu-draw-stirrup ()
+  (@::help "ç»˜åˆ¶ç®ç­‹ï¼Œå½“ç»™å‡ºçš„ä¸¤ç‚¹ä¸ºæ°´å¹³æˆ–å‚ç›´æ—¶ï¼Œç»˜åˆ¶å•è‚¢ç®")
+  (setq pt-start (getpoint "èµ·å§‹ç‚¹:"))
+  (setq pt-end (getcorner pt-start "ç»ˆæ­¢ç‚¹:"))
+  (at-structure:draw-stirrup
+   pt-start
+   (- (car pt-end)(car pt-start))
+   (- (cadr pt-end)(cadr pt-start))
+   ))
 (defun at-structure:menu-get-area (/ steelbar-str)
-  (@:help "Ñ¡ÖĞ¸Ö½î×Ö·û´®µÄµ¥ĞĞÎÄ±¾£¬Èç %%1328@100,2%%13220+3%%13222 µÈ£¬·µ»Ø¸Ö½îÃæ»ı¡£")
-  (setq steelbar-str (string:parse-by-lst (cdr (assoc 1 (entget (car (entsel))))) '(";" "£»")))
+  (@:help "é€‰ä¸­é’¢ç­‹å­—ç¬¦ä¸²çš„å•è¡Œæ–‡æœ¬ï¼Œå¦‚ %%1328@100,2%%13220+3%%13222 ç­‰ï¼Œè¿”å›é’¢ç­‹é¢ç§¯ã€‚")
+  (setq steelbar-str (string:parse-by-lst (cdr (assoc 1 (entget (car (entsel))))) '(";" "ï¼›")))
   (foreach x steelbar-str
-	   (format t "¸Ö½îÃæ»ı: ~d"
+	   (format t "é’¢ç­‹é¢ç§¯: ~d"
 		   (at-structure:get-steel-area x))))
 
 (defun at-structure:get-steel-area (steelbar-str / steelbar-lst steelbar-to-area gujin-zhishu)
-  "¼ÆËã¸Ö½îÎÄ×ÖµÃµ½¸Ö½îÃæ»ı"
+  "è®¡ç®—é’¢ç­‹æ–‡å­—å¾—åˆ°é’¢ç­‹é¢ç§¯"
   "Real number"
   (defun steel-to-area (steelbar-str / nxd)
-    (setq nxd (string:parse-by-lst steelbar-str '("%%132" "%%130" "%%131"))) ;;¸Ö½î·ûºÅ
-    (if (= 2 (length nxd )) ; nxd = (list ¸ùÊı  Ö±¾¶)
+    (setq nxd (string:parse-by-lst steelbar-str '("%%132" "%%130" "%%131"))) ;;é’¢ç­‹ç¬¦å·
+    (if (= 2 (length nxd )) ; nxd = (list æ ¹æ•°  ç›´å¾„)
 	(cons * (list (if (= "" (car nxd)) 1.0 (atof (car nxd))) 0.25 pi (atof (cadr nxd)) (atof (cadr nxd))))))
   (setq steelbar-str (vl-string-left-trim "GN BTXY&:" steelbar-str)) 
   (if (vl-string-search "@" steelbar-str)
-      (progn;; ¹¿½î/°å½î/Ç½½î
-	(setq steelbar-lst  (string:parse-by-lst steelbar-str '("@"))) ;; ¼ä¾à·ûºÅ
+      (progn;; ç®ç­‹/æ¿ç­‹/å¢™ç­‹
+	(setq steelbar-lst  (string:parse-by-lst steelbar-str '("@"))) ;; é—´è·ç¬¦å·
 	(setq gujin-steel (string:parse-by-lst (car steelbar-lst) '("/")))
 	(if (setq gujin-zhishu 
 		  (cadr (string:parse-by-lst (cadr steelbar-lst) '("(" ")"))))
 	    (setq gujin-zhishu (atoi gujin-zhishu))
-	    (setq gujin-zhishu 1))
-	    
+	  (setq gujin-zhishu 1))
+	
 	(eval (cons *
 		    (cons
 		     (cons /
@@ -39,25 +66,72 @@
 				       (vl-remove nil (mapcar 'steel-to-area gujin-steel)))
 				 (cons (length gujin-steel) (cons (atof (cadr steelbar-lst)) (cons 0.001  nil)))))
 		     (cons gujin-zhishu nil)))))
-      (progn ;; ×İ½î
-	;; È¥¼ÜÁ¢½îÀ¨ºÅ
-	(setq steelbar-str (string:subst-all "" ")" (string:subst-all "" "(" steelbar-str)))
-	(eval (cons +  (vl-remove nil (mapcar 'steel-to-area (string:parse-by-lst steelbar-str '("+" "/"))))))))
+    (progn ;; çºµç­‹
+      ;; å»æ¶ç«‹ç­‹æ‹¬å·
+      (setq steelbar-str (string:subst-all "" ")" (string:subst-all "" "(" steelbar-str)))
+      (eval (cons +  (vl-remove nil (mapcar 'steel-to-area (string:parse-by-lst steelbar-str '("+" "/"))))))))
   )
 
 (defun at-structure:query-steelbar()
-  "¶¯Ì¬²é¸Ö½îÃæ»ı¡£"
+  "åŠ¨æ€æŸ¥é’¢ç­‹é¢ç§¯ã€‚"
   (ui:dynquery '(lambda(x)
-		 (cond
+		  (cond
 		   ((or (= name "TEXT")(= name "TCH_TEXT"))
 		    (setq lst
 			  (mapcar '(lambda (x / area )
-				    (if (> (setq area (at-structure:get-steel-area x)) 0)
-					(format nil "¸Ö½îÃæ»ı: ~d" area )
-					"·Ç¸Ö½îÎÄ×Ö"))
-				  (string:parse-by-lst (entity:getdxf ent 1) '(";" "£»"))))
+				     (if (> (setq area (at-structure:get-steel-area x)) 0)
+					 (format nil "é’¢ç­‹é¢ç§¯: ~d" area )
+				       "éé’¢ç­‹æ–‡å­—"))
+				  (string:parse-by-lst (entity:getdxf ent 1) '(";" "ï¼›"))))
 		    (setq lst (vl-remove nil lst)))
-		   (T (setq lst (list "·ÇÎÄ×Ö" name )))
+		   (T (setq lst (list "éæ–‡å­—" name )))
 		   )
-		 lst)
-  ))
+		  lst)
+	       ))
+(defun at-structure:menu-draw-columns ()
+  (@::help "ä»é’¢ç­‹è¡¨ä¸­å–ä¿¡æ¯ç»˜åˆ¶æŸ±æˆªé¢")
+  (setq columns (text:get-matrix))
+  (setq pt-base (getpoint "ç»˜åˆ¶åŸºç‚¹:"))
+  (foreach colu (cdr columns)
+	   (setq bxh (nth 2 colu))
+	   (setq b (read (car (string:to-list bxh "x"))))
+	   (setq h (read (cadr (string:to-list bxh "x"))))
+	   (if (eq "" (nth 3 colu))
+	       (setq rebar-config
+		     (mapcar  'read
+			      (append 
+			       (string:to-list (nth 4 colu) "%%132")
+			       (string:to-list (nth 5 colu) "%%132")
+			       (string:to-list (nth 6 colu) "%%132")
+			       (cdr (string:parse-by-lst (nth 8 colu) '("%%132" "@")))
+			       (string:parse-by-lst (nth 7 colu) '("(" "x" ")"))
+			       )))
+	     (progn
+	       (setq rebars (mapcar 'read (string:to-list (nth 3 colu) "%%132")))
+	       (setq rebar-config
+		     (append
+		      (list
+		       4
+		       (cadr rebars)
+		       (/ (- (car rebars) 4) 4)
+		       (cadr rebars)
+		       (/ (- (car rebars) 4) 4)
+		       (cadr rebars))
+		      (mapcar 'read
+			      (append
+			       (cdr (string:parse-by-lst (nth 8 colu) '("%%132" "@")))
+			       (string:parse-by-lst (nth 7 colu) '("(" "x" ")")))
+			      )))))
+	   (at-structure:draw-column-section
+	    pt-base
+	    b h
+	    40
+	    rebar-config)
+	   (entity:make-text
+	    (strcat  (car colu)" "(cadr colu))
+	    (polar pt-base (* 1.5 pi) 250)
+	    50 0 0.7 0 "lb")
+	   (setq pt-base (polar pt-base 0 (* 2 b)))
+	   ))
+	    
+	    

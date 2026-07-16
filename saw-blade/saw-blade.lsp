@@ -1,25 +1,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(@:define-config 'saw-blade:outer-diameter 700.0 "Ô²ÅÌÍâ¾¶")
-(@:define-config 'saw-blade:inner-diameter 100.25 "Ô²ÅÌÄÚ¾¶")
-(@:define-config 'saw-blade:hole-diameter 250.0 "Ô²ÅÌ¿×µÄ·Ö²¼Ô²Ö±¾¶")
+(@:define-config 'saw-blade:outer-diameter 700.0 "åœ†ç›˜å¤–å¾„")
+(@:define-config 'saw-blade:inner-diameter 100.25 "åœ†ç›˜å†…å¾„")
+(@:define-config 'saw-blade:hole-diameter 250.0 "åœ†ç›˜å­”çš„åˆ†å¸ƒåœ†ç›´å¾„")
 
-(@:define-config 'saw-blade:radius 1.5 "×Ô¶¯Ô²½ÇµÄ°ë¾¶")
-(@:define-config 'saw-blade:maxlength-corner 3.0 "×Ô¶¯Ô²½ÇµÄÔ­Ê¼µ¹½Ç×î´óÏß³¤")
-(@:define-config 'saw-blade:max-angle "80.0" "×Ô¶¯Ô²½ÇµÄ×ª½Ç×î´ó½Ç¶È")
-(@:define-config 'saw-blade:min-angle "20.0" "×Ô¶¯Ô²½ÇµÄ×ª½Ç×îĞ¡½Ç¶È")
-(@:define-config 'saw-blade:hole-number 6 "Ô²ÅÌÉÏµÄ¿×¶´Êı")
-(@:define-config 'saw-blade:hole-d 19.0  "Ô²ÅÌÉÏµÄ¿×¾¶")
-(@:define-config 'saw-blade:tooth-number 280 "Ô²ÅÌÉÏµÄ¾â³İÊı")
-(@:define-config 'saw-blade:tooth-height 10 "Ô²ÅÌÉÏµÄ¾â³İÉî¶È")
-(@:define-config 'saw-blade:tooth-step 10 "Ö±¾âµÄ³İ¾à")
+(@:define-config 'saw-blade:radius 1.5 "è‡ªåŠ¨åœ†è§’çš„åŠå¾„")
+(@:define-config 'saw-blade:maxlength-corner 3.0 "è‡ªåŠ¨åœ†è§’çš„åŸå§‹å€’è§’æœ€å¤§çº¿é•¿")
+(@:define-config 'saw-blade:max-angle "80.0" "è‡ªåŠ¨åœ†è§’çš„è½¬è§’æœ€å¤§è§’åº¦")
+(@:define-config 'saw-blade:min-angle "20.0" "è‡ªåŠ¨åœ†è§’çš„è½¬è§’æœ€å°è§’åº¦")
+(@:define-config 'saw-blade:hole-number 6 "åœ†ç›˜ä¸Šçš„å­”æ´æ•°")
+(@:define-config 'saw-blade:hole-d 19.0  "åœ†ç›˜ä¸Šçš„å­”å¾„")
+(@:define-config 'saw-blade:tooth-number 280 "åœ†ç›˜ä¸Šçš„é”¯é½¿æ•°")
+(@:define-config 'saw-blade:tooth-height 10 "åœ†ç›˜ä¸Šçš„é”¯é½¿æ·±åº¦")
+(@:define-config 'saw-blade:tooth-step 10 "ç›´é”¯çš„é½¿è·")
 
 (@:add-menus
- '(("¾âÆ¬"
-    ("¾âÆ¬ÉèÖÃ" "(saw-blade:setup)")
-    ("»æÔ²¾âÆ¬" "(saw-blade:draw-circle)")
-    ("»æÖ±¾â³İ" "(saw-blade:draw-sawtooth)")
+ '(("é”¯ç‰‡"
+    ("é”¯ç‰‡è®¾ç½®" "(saw-blade:setup)")
+    ("ç»˜åœ†é”¯ç‰‡" "(saw-blade:draw-circle)")
+    ("ç»˜ç›´é”¯é½¿" "(saw-blade:draw-sawtooth)")
     )))
 
 (defun saw-blade:setup (/ res)
@@ -101,7 +101,7 @@
        (list pt-n2 pt-n3 O)
        ))
 (defun saw-blade:sawtooth (pts / segs res n1 n2 n3 n4 fuzz rad max-angle min-angle maxlength-corner ang)
-  "Â·¿ÚÔ²½Ç"
+  "è·¯å£åœ†è§’"
   (setq rad (@::get-config 'saw-blade:radius)
       maxlength-corner  (@::get-config 'saw-blade:maxlength-corner)
       max-angle (angtof (@::get-config 'saw-blade:max-angle))
@@ -189,10 +189,10 @@
 	   ))
      ((and (= 0 (cdr n1))
 	   (= 0 (cdr n3))
-	   ;; n2 ¶Ì
+	   ;; n2 çŸ­
 	   (< (distance (car n2)
 			(car n3))
-	      maxlength-corner) ;; ;; ½Ç¶È
+	      maxlength-corner) ;; ;; è§’åº¦
 	   (< min-angle
 	      (progn
 		(setq ang
@@ -232,8 +232,8 @@
 			    0)
   )
 (defun saw-blade:draw-circle-by-params (pt-O m n)
-  "pt Î»ÖÃ£¬m ¶¨Î»¿×Êı£¬n³İÊı"
-  ;; Èı¸öÍ¬ĞÄÔ²
+  "pt ä½ç½®ï¼Œm å®šä½å­”æ•°ï¼Œné½¿æ•°"
+  ;; ä¸‰ä¸ªåŒå¿ƒåœ†
   (setq 2pi (* pi 2))
   (entity:make-circle
    pt-O
@@ -242,11 +242,11 @@
 	    (@::get-config 'saw-blade:inner-diameter)
 	    (@::get-config 'saw-blade:hole-diameter)
 	    (@::get-config 'saw-blade:outer-diameter))))
-  ;; m¸ö¶¨Î»¿×
+  ;; mä¸ªå®šä½å­”
   (entity:make-circle
    (mapcar '(lambda(x)(polar pt-O x 125.0)) (list:range 0 2pi (/ 2pi m)))
    (* 0.5 (@::get-config 'saw-blade:hole-d)))
-  ;; ¾ç³İn
+  ;; å‰§é½¿n
   (mapcar '(lambda(x / pt0)
 	    (saw-blade:sawtooth
 	     (reverse
@@ -256,7 +256,7 @@
 	  (list:range 0 2pi (/ 2pi n)))
   (princ))
 (defun saw-blade:draw-circle(/ pt-O m n)
-  (if (null pt-O)(setq pt-O (getpoint  "»æÖÆÔ²ĞÄÎ»ÖÃ:")))
+  (if (null pt-O)(setq pt-O (getpoint  "ç»˜åˆ¶åœ†å¿ƒä½ç½®:")))
   (if pt-O
       (saw-blade:draw-circle-by-params
        pt-O
@@ -264,8 +264,8 @@
        (@::get-config 'saw-blade:tooth-number)
        )))
 (defun saw-blade:draw-sawtooth (/ pt-start pt-end)
-  (if (and (setq pt-start (getpoint "Æğµã:"))
-	   (setq pt-end  (getpoint pt-start "ÖÕµã:")))
+  (if (and (setq pt-start (getpoint "èµ·ç‚¹:"))
+	   (setq pt-end  (getpoint pt-start "ç»ˆç‚¹:")))
       (progn
 	(setq ang (angle pt-start pt-end))
 	(mapcar '(lambda(i)

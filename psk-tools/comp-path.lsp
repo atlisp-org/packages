@@ -1,8 +1,8 @@
 ;;;2016-9-30
 ;;;2021-2-4
 
-;;; Â·¾¶µÄ´úÀí¶ÔÏóÎªLINE»òCIRCLE£¬ÓÃÓÚÉú³É¹ÜµÀÀà²¿¼ş£¬ÈçË®¹Ü¡¢·ç¹ÜµÈ
-;;; Â·¾¶¶ÔÏóÓĞÁ½¸ö¿ÉÒÔÊµÏÖ×ÔÓÉÉìËõµÄ¹Ü¿Ú×é³É ÓÉLINE¶ÔÏóµÄ 10 11×éÂë±íÊ¾
+;;; è·¯å¾„çš„ä»£ç†å¯¹è±¡ä¸ºLINEæˆ–CIRCLEï¼Œç”¨äºç”Ÿæˆç®¡é“ç±»éƒ¨ä»¶ï¼Œå¦‚æ°´ç®¡ã€é£ç®¡ç­‰
+;;; è·¯å¾„å¯¹è±¡æœ‰ä¸¤ä¸ªå¯ä»¥å®ç°è‡ªç”±ä¼¸ç¼©çš„ç®¡å£ç»„æˆ ç”±LINEå¯¹è±¡çš„ 10 11ç»„ç è¡¨ç¤º
 
 
 (defun psk-path-getservice (path)
@@ -13,7 +13,7 @@
 ;;;  (getpoint p)
 ;;;  '( (".TYPE" . "DUCT-RECT") ("SERV" . "OA") ("W" . 500) ("H" . 320) ("ERF" . 0.8))
 ;;;)
-;; ((-1 . <Í¼ÔªÃû: 7ff4e823f070>) (".CLASS" . "PATH") (".TYPE" . "DUCT-RECT") ("SERV" . "OA") ("W" . 500) ("H" . 320) ("ERF" . 0.8))
+;; ((-1 . <å›¾å…ƒå: 7ff4e823f070>) (".CLASS" . "PATH") (".TYPE" . "DUCT-RECT") ("SERV" . "OA") ("W" . 500) ("H" . 320) ("ERF" . 0.8))
 (defun psk-path-create (p1 p2 prop / comp line)
   (setq line (p-make-line p1 p2))
 
@@ -47,7 +47,7 @@
 
   (apply 'distance (p-dxf path '(10 11)))
 )
-;; ½«Â·¾¶¿¿½üÖ¸¶¨µãµÄ¶ËµãÒÆµ½ĞÂµÄÎ»ÖÃ£¬·µ»ØºóĞøÒÆ¶¯Á¿¼°ĞèÒªÒÆ¶¯µÄµã
+;; å°†è·¯å¾„é è¿‘æŒ‡å®šç‚¹çš„ç«¯ç‚¹ç§»åˆ°æ–°çš„ä½ç½®ï¼Œè¿”å›åç»­ç§»åŠ¨é‡åŠéœ€è¦ç§»åŠ¨çš„ç‚¹
 ;; (psk-path-moveport (car (entsel)) (trans (getpoint) 1 0) (trans (getpoint) 1 0) t)
 ;; ((0.0 -172.645 0.0) (2714.66 2453.51 0.0) ...)
 (defun psk-path-moveport (path p np resize / np2 offset p2 ports rp)
@@ -59,8 +59,8 @@
 
   (if resize
     (progn
-      ;; ÔÊĞíÉìËõ¹ÜµÀ
-      ;; ¶ÔÒÆ¶¯µãµ½ĞÂµã£¬¶ÔºóĞøµã½öÓ¦ÓÃ·ÇÖáÏòµÄÆ«ÒÆ·ÖÁ¿
+      ;; å…è®¸ä¼¸ç¼©ç®¡é“
+      ;; å¯¹ç§»åŠ¨ç‚¹åˆ°æ–°ç‚¹ï¼Œå¯¹åç»­ç‚¹ä»…åº”ç”¨éè½´å‘çš„åç§»åˆ†é‡
       (setq offset (mapcar '-
                            np
                            (vlax-curve-getclosestpointto
@@ -87,7 +87,7 @@
       )
     )
     (progn
-      ;; ½«¹ÜµÀ×öÎª¸ÕĞÔÕûÌå´¦Àí
+      ;; å°†ç®¡é“åšä¸ºåˆšæ€§æ•´ä½“å¤„ç†
       (setq offset (mapcar '- np (psk-port-pos (car ports))))
 
       (if (not (equal '(0. 0. 0.) offset 0.1))
@@ -135,7 +135,7 @@
   (while (and
            (not (initget "  "))
            (< (length paths) limit)
-           (/= "" (setq r (entsel "Ñ¡ÔñÂ·¾¶:")))
+           (/= "" (setq r (entsel "é€‰æ‹©è·¯å¾„:")))
          )
     (if (and r
              (setq path (psk-comp-load (car r)))
@@ -146,15 +146,15 @@
         (redraw (psk-comp-getename path) 3)
       )
     )
-    (princ (strcat "\rÑ¡ÖĞÁË " (itoa (length paths)) " ¸ö¶ÔÏó, "))
+    (princ (strcat "\ré€‰ä¸­äº† " (itoa (length paths)) " ä¸ªå¯¹è±¡, "))
   )
 
   (mapcar '(lambda (e) (redraw (psk-comp-getename (car e)) 4)) paths)
   (reverse paths)
 )
 ;; (psk-line-keepend (car (entsel)) (getpoint) (getpoint))
-;; ½«Ö±ÏßÔÚpµã´¦·Ö¶Ï£¬±£ÁôpkeepËùÔÚµÄ²¿·Ö
-;; ·µ»ØÒ»¸öµã±í ¿¿Ç°µÄÊÇĞèÒªÒÆ¶¯µ½pµÄµã
+;; å°†ç›´çº¿åœ¨pç‚¹å¤„åˆ†æ–­ï¼Œä¿ç•™pkeepæ‰€åœ¨çš„éƒ¨åˆ†
+;; è¿”å›ä¸€ä¸ªç‚¹è¡¨ é å‰çš„æ˜¯éœ€è¦ç§»åŠ¨åˆ°pçš„ç‚¹
 (defun psk-line-keepend (line p pkeep / a e ps)
   (setq p  (p-line-closestpoint line p t)
         ps (p-dxf line '(10 11))
@@ -205,7 +205,7 @@
   (cond
     ((= 2 (length paths))
      (if (p-line-parallel (car lines) (cadr lines))
-       ;; Éú³ÉÒì¾¶
+       ;; ç”Ÿæˆå¼‚å¾„
        (progn
          (setq ports1 (psk-comp-getports (car paths))
                p      (p-line-closestpoint
@@ -217,8 +217,8 @@
          )
          (setq r (psk-create-reducer
                    p
-;;;                   (setq $psk-reducer-length (p-edit-value "ÊäÈëÒì¾¶³¤¶È" $psk-reducer-length))
-		   (setq $psk-reducer-length (p-getdist "ÊäÈëÒì¾¶³¤¶È" $psk-reducer-length (trans p 0 1)))
+;;;                   (setq $psk-reducer-length (p-edit-value "è¾“å…¥å¼‚å¾„é•¿åº¦" $psk-reducer-length))
+		   (setq $psk-reducer-length (p-getdist "è¾“å…¥å¼‚å¾„é•¿åº¦" $psk-reducer-length (trans p 0 1)))
                    (psk-port-angle (car ports1))
                    (psk-path-getportsize (car paths))
                    (psk-path-getportsize (last paths))
@@ -243,7 +243,7 @@
            t
          )
        )
-       ;; Éú³ÉÍäÍ·
+       ;; ç”Ÿæˆå¼¯å¤´
        (progn
          (setq p1  (p-dxf (car lines) '(10 11))
                p2  (p-dxf (last lines) '(10 11))
@@ -287,7 +287,7 @@
     )
     ((= 3 (length paths))
      (cond
-       ;; ÑàÎ²ÈıÍ¨
+       ;; ç‡•å°¾ä¸‰é€š
        ((and (equal $pi/2
                     (p-angle-include
                       (p-line-getangle (car lines))
@@ -351,7 +351,7 @@
           t
         )
        )
-       ;; ·ÖÖ§ÈıÍ¨
+       ;; åˆ†æ”¯ä¸‰é€š
        ((and (p-line-parallel (car lines) (cadr lines))
              (equal $pi/2
                     (p-angle-include
@@ -416,10 +416,10 @@
             )
           )
           (progn
-            ;; Ö÷¹ÜÍ¬¾¶
+            ;; ä¸»ç®¡åŒå¾„
             (if (atom d1)
               (progn
-                ;; Ë®¹Ü·ç¸ñ
+                ;; æ°´ç®¡é£æ ¼
                 (setq r (psk-create-pipetee
                           p
                           a1
@@ -453,7 +453,7 @@
                 )
               )
               (progn
-                ;; ·ç¹Ü
+                ;; é£ç®¡
                 (setq r (psk-create-branch
                           p
                           a1
@@ -574,9 +574,9 @@
   )
   (if (and draw r)
     (progn
-      ;; »æÖÆÉú³ÉµÄ¹Ü¼ş
+      ;; ç»˜åˆ¶ç”Ÿæˆçš„ç®¡ä»¶
       (psk-comp-draw (psk-comp-load (car r)))
-      ;; »æÖÆÉú³É¹Ü¼şµÄËùÓĞÂ·¾¶
+      ;; ç»˜åˆ¶ç”Ÿæˆç®¡ä»¶çš„æ‰€æœ‰è·¯å¾„
       (foreach path paths
         (psk-comp-redraw1 path)
       )
@@ -588,7 +588,7 @@
 ;;;(setq $psk-angle-tolerance 0.02)
 
 ;; (psk-line-break (car (entsel)) (getpoint) (getpoint))
-;; Èç¹û´´½¨ÁËĞÂ¶ÔÏó ·µ»Ø¸Ã¶ÔÏó ·ñÔò·µ»Ønil
+;; å¦‚æœåˆ›å»ºäº†æ–°å¯¹è±¡ è¿”å›è¯¥å¯¹è±¡ å¦åˆ™è¿”å›nil
 (defun psk-line-break (line p1 p2 / a1 a2 a3 dxf en p0 p3 pts)
   (setq dxf (entget line '("*"))
         p0  (p-get dxf 10)
@@ -604,9 +604,9 @@
                   (list a2 (distance p0 p2) p2)
                   (list a3 (distance p0 p3) p3 11)
             )
-        ;; °´¾àÀëÅÅĞò
+        ;; æŒ‰è·ç¦»æ’åº
         pts (vl-sort pts '(lambda (e1 e2) (< (cadr e1) (cadr e2))))
-        ;; °´·½ÏòÅÅĞò
+        ;; æŒ‰æ–¹å‘æ’åº
         pts (vl-sort pts
                      '(lambda (e1 e2)
                         (and (not (equal (car e1) (car e2) 1e-6))
@@ -616,14 +616,14 @@
             )
   )
 
-  ;; ´ò¶ÏµãÓëÖ±Ïß¶Ëµã´æÔÚ5ÖÖ¹ØÏµ ÆäÖĞ3ÖÖ´ò¶Ïµã·Ö²¼ÔÚÆğµãÍ¬Ò»²à
+  ;; æ‰“æ–­ç‚¹ä¸ç›´çº¿ç«¯ç‚¹å­˜åœ¨5ç§å…³ç³» å…¶ä¸­3ç§æ‰“æ–­ç‚¹åˆ†å¸ƒåœ¨èµ·ç‚¹åŒä¸€ä¾§
   (if (and
-        ;; ¸ù¾İ½Ç¶ÈÅĞ¶ÏËùÓĞµã·Ö²¼ÔÚÆğµãÍ¬Ò»²à
+        ;; æ ¹æ®è§’åº¦åˆ¤æ–­æ‰€æœ‰ç‚¹åˆ†å¸ƒåœ¨èµ·ç‚¹åŒä¸€ä¾§
         (equal (caar pts) (caadr pts) 1e-6)
         (equal (caar pts) (caaddr pts) 1e-6)
       )
     (if (= 11 (last (last pts)))
-      ;; Çé¿ö1/3 ´ò¶Ïµã¾ùÂäÔÚÖ±ÏßÄÚ
+      ;; æƒ…å†µ1/3 æ‰“æ–­ç‚¹å‡è½åœ¨ç›´çº¿å†…
       (progn
         (p-entmod line (cons 11 (caddr (car pts))))
         (setq dxf (p-unset dxf '(-1 5)))
@@ -631,26 +631,26 @@
         (setq en (entlast))
       )
       (if (/= 11 (last (car pts)))
-        ;; Çé¿ö2/3 ÓĞÒ»¸ö´ò¶ÏµãÂäÔÚÖ±ÏßÄÚ£¬Ëõ¶ÌÖ±Ïß£¬²»´´½¨µÚ¶şÌõÖ±Ïß
+        ;; æƒ…å†µ2/3 æœ‰ä¸€ä¸ªæ‰“æ–­ç‚¹è½åœ¨ç›´çº¿å†…ï¼Œç¼©çŸ­ç›´çº¿ï¼Œä¸åˆ›å»ºç¬¬äºŒæ¡ç›´çº¿
         (p-entmod line (cons 11 (caddr (car pts))))
       )
-      ;; Çé¿ö3/3 ´ò¶Ïµã¾ù²»ÔÚÖ±ÏßÄÚ£¨²»´¦Àí£©
+      ;; æƒ…å†µ3/3 æ‰“æ–­ç‚¹å‡ä¸åœ¨ç›´çº¿å†…ï¼ˆä¸å¤„ç†ï¼‰
     )
-    ;; Çé¿ö1/2 Á½´ò¶ÏµãÔÚÆğµãÁ½²à
+    ;; æƒ…å†µ1/2 ä¸¤æ‰“æ–­ç‚¹åœ¨èµ·ç‚¹ä¸¤ä¾§
     (if (equal a1 a3 1e-6)
       (p-entmod line (cons 10 p1))
       (if (equal a2 a3 1e-6)
         (p-entmod line (cons 10 p2))
       )
     )
-    ;; Çé¿ö2/2 Á½´ò¶ÏµãÔÚÆğµãÍâ£¨²»´¦Àí£©
+    ;; æƒ…å†µ2/2 ä¸¤æ‰“æ–­ç‚¹åœ¨èµ·ç‚¹å¤–ï¼ˆä¸å¤„ç†ï¼‰
   )
   en
 )
 
 
 ;;;(psk-line-breakat (car (entsel)) (getpoint))
-;; Èç¹û´´½¨ÁËĞÂ¶ÔÏó ·µ»Ø¸Ã¶ÔÏó ·ñÔò·µ»Ønil
+;; å¦‚æœåˆ›å»ºäº†æ–°å¯¹è±¡ è¿”å›è¯¥å¯¹è±¡ å¦åˆ™è¿”å›nil
 (defun psk-line-breakat (line p2 / a1 a2 dxf en p0 p1)
   (setq dxf (entget line '("*"))
         p0  (p-get dxf 10)
@@ -661,30 +661,30 @@
         a2  (angle p0 p2)
   )
 
-  ;; Èç¹û´ò¶ÏµãÔÚÖ±Ïß¶ËµãÉÏÊ±²»×öÈÎºÎ´¦Àí
+  ;; å¦‚æœæ‰“æ–­ç‚¹åœ¨ç›´çº¿ç«¯ç‚¹ä¸Šæ—¶ä¸åšä»»ä½•å¤„ç†
   (if (and (not (equal p2 p1 1e-3))
            (not (equal p2 p0 1e-3))
       )
-    ;; ´ò¶ÏµãÓëÖ±Ïß¶Ëµã´æÔÚ3ÖÖ¹ØÏµ
+    ;; æ‰“æ–­ç‚¹ä¸ç›´çº¿ç«¯ç‚¹å­˜åœ¨3ç§å…³ç³»
     (if (equal (p-angle-include a1 a2) 0. 1e-6)
       (if (< (distance p0 p2) (distance p0 p1))
-        ;; 1.µãÔÚÖ±ÏßÄÚ
+        ;; 1.ç‚¹åœ¨ç›´çº¿å†…
         (progn
           (p-entmod line (cons 11 p2))
           (setq dxf (p-unset dxf '(-1 5)))
           (entmake (p-set dxf (cons 10 p2)))
           (setq en (entlast))
         )
-        ;; 2.µãÔÚÖ±ÏßÖÕµãÍâ
+        ;; 2.ç‚¹åœ¨ç›´çº¿ç»ˆç‚¹å¤–
         (p-entmod line (cons 11 p2))
       )
-      ;; 3.´ò¶ÏµãÔÚÖ±ÏßÆğµãÖ®Ç°
+      ;; 3.æ‰“æ–­ç‚¹åœ¨ç›´çº¿èµ·ç‚¹ä¹‹å‰
       (p-entmod line (cons 10 p2))
     )
   )
   en
 )
-;; ¹²ÏßÖ±ÏßºÏ²¢ ²»¼ì²é¹²Ïß
+;; å…±çº¿ç›´çº¿åˆå¹¶ ä¸æ£€æŸ¥å…±çº¿
 ;;;(p-line-join (car (entsel)) (car (entsel)))
 (defun p-line-join (line1 line2 / dist p1 p2 p3 p4)
   (if (not (equal line1 line2))
@@ -692,8 +692,8 @@
       (mapcar (function set) '(p1 p2) (p-dxf line1 '(10 11)))
       (mapcar (function set) '(p3 p4) (p-dxf line2 '(10 11)))
 
-      ;; ÇóºÏ²¢ºóÖ±ÏßµÄÁ½¶Ëµã£¨Ö±Ïß×î³¤£©
-      ;; ×ª»»¸÷µãµ½ p1ÎªÔ­µã p1->p2ÎªxÖáµÄ×ø±êÏµÍ³ÉÏ·½±ã±È½Ï
+      ;; æ±‚åˆå¹¶åç›´çº¿çš„ä¸¤ç«¯ç‚¹ï¼ˆç›´çº¿æœ€é•¿ï¼‰
+      ;; è½¬æ¢å„ç‚¹åˆ° p1ä¸ºåŸç‚¹ p1->p2ä¸ºxè½´çš„åæ ‡ç³»ç»Ÿä¸Šæ–¹ä¾¿æ¯”è¾ƒ
       (setq dist (mapcar '- p2 p1)
             dist (list (list (last (trans p1 0 dist)) p1)
                        (list (last (trans p2 0 dist)) p2)
@@ -713,7 +713,7 @@
     )
   )
 )
-;; (psk-path-createattach (caar (psk-paths-pick 1)) (getpoint "Ö¸¶¨²åÈëµã") '(("NAME" . "DS") ("A" . 500) ("B" . 250)))
+;; (psk-path-createattach (caar (psk-paths-pick 1)) (getpoint "æŒ‡å®šæ’å…¥ç‚¹") '(("NAME" . "DS") ("A" . 500) ("B" . 250)))
 (defun psk-path-createattach (path p prop / a en line)
   (setq line (psk-comp-getename path)
         p    (p-line-closestpoint line p t)
@@ -746,7 +746,7 @@
 )
 
 
-;; ÅúÁ¿ÔÚ½»µã´¦²åÈë·ÖÆç¹Ü
+;; æ‰¹é‡åœ¨äº¤ç‚¹å¤„æ’å…¥åˆ†æ­§ç®¡
 ;; (psk-vrf-branchs (psk-paths-pick 2))
 (defun psk-vrf-branchs (paths / a1 a2 en lines p p1 p2 p3 p4 picks)
   (setq picks (mapcar 'cadr paths)

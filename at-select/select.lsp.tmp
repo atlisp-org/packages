@@ -1,0 +1,2 @@
+(defun at-select:select-closed-lwpl (/ s1 filters)
+  (@::prompt '("閫夋嫨闂

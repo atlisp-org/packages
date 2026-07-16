@@ -1,25 +1,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'align-all:first ÓÃÓÚ Ó¦ÓÃ°ü align-all µÄ µÚÒ»¸öÅäÖÃÏî first 
-(@:define-config 'align-all:hangju 2000.0 "ÅÅÁĞÍ¼ËØÊ±µÄÄ¬ÈÏĞĞ¾à¡£")
-;; (@:get-config 'align-all:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'align-all:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "´´Òâ»æÍ¼" "¶ÔÆëÍ¼ËØ" "(align-all:entity)")
+;; å®šä¹‰é…ç½®é¡¹ 'align-all:first ç”¨äº åº”ç”¨åŒ… align-all çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+(@:define-config 'align-all:hangju 2000.0 "æ’åˆ—å›¾ç´ æ—¶çš„é»˜è®¤è¡Œè·ã€‚")
+;; (@:get-config 'align-all:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'align-all:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "åˆ›æ„ç»˜å›¾" "å¯¹é½å›¾ç´ " "(align-all:entity)")
 
-;;µ÷ÕûĞĞ¾àhj Ö§³ÖCADÎÄ×Ö¡¢ÌìÕıµ¥ĞĞºÍ¶àĞĞÎÄ×Ö¡¢Í¼¿é¡¢ÊôĞÔ×Ö¡¢ÌìÕı±ê¸ß¡¢cad±í¸ñ¡¢cad³ß´ç
+;;è°ƒæ•´è¡Œè·hj æ”¯æŒCADæ–‡å­—ã€å¤©æ­£å•è¡Œå’Œå¤šè¡Œæ–‡å­—ã€å›¾å—ã€å±æ€§å­—ã€å¤©æ­£æ ‡é«˜ã€cadè¡¨æ ¼ã€cadå°ºå¯¸
 ;;(setq BGhangju nil)
 (defun align-all:entity (/ *error* a all b c e hangju1 hangju2 l m n p snap x x0 xyz 
                          xyz_new y y0 z) 
-  (defun *error* (msg)  ;´íÎó´¦Àíº¯Êı
+  (defun *error* (msg)  ;é”™è¯¯å¤„ç†å‡½æ•°
     (pop-var)
-    ;; (if snap (setvar "osmode" snap)) ;»Ö¸´²¶×½
-    (if (< 18 (atoi (substr (getvar "acadver") 1 2)))  ;ÅĞ¶ÏCAD°æ±¾£¬¸ß°æ±¾ÓÃcommand-s
-      (command-s "undo" "e") ;CAD¸ß°æ±¾ÓÃ
-      (command "undo" "e") ;µÍ°æ±¾ÓÃ
+    ;; (if snap (setvar "osmode" snap)) ;æ¢å¤æ•æ‰
+    (if (< 18 (atoi (substr (getvar "acadver") 1 2)))  ;åˆ¤æ–­CADç‰ˆæœ¬ï¼Œé«˜ç‰ˆæœ¬ç”¨command-s
+      (command-s "undo" "e") ;CADé«˜ç‰ˆæœ¬ç”¨
+      (command "undo" "e") ;ä½ç‰ˆæœ¬ç”¨
     )
-    ;;(setvar "cmdecho" 1) ;´ò¿ªÃüÁîĞĞÌáÊ¾
+    ;;(setvar "cmdecho" 1) ;æ‰“å¼€å‘½ä»¤è¡Œæç¤º
     (princ msg))
   (push-var nil)
 
@@ -33,7 +33,7 @@
       (while (< m n) 
         (setq all (append all (list (entget (ssname a m)))))
         (setq m (1+ m)))
-      (setq l 0) ;°´y×ø±ê½µĞòÅÅÁĞ
+      (setq l 0) ;æŒ‰yåæ ‡é™åºæ’åˆ—
       (setq m 1)
       (while (< l n) 
         (setq b (nth l all))
@@ -50,36 +50,36 @@
         (setq l (1+ l))
         (setq m (1+ l)))
       (setq p (cdr (assoc '10 (car all))))
-      ;;(setq hangju2 2000) ;Ä¬ÈÏĞĞ¾àÎª2000£¬×ÔĞĞĞŞ¸Ä
+      ;;(setq hangju2 2000) ;é»˜è®¤è¡Œè·ä¸º2000ï¼Œè‡ªè¡Œä¿®æ”¹
       (setvar "osmode" 16383)
       (setq hangju2 (getdist 
                       (strcat 
-                        "\nÊäÈëĞĞ¾à Ö§³ÖÊó±êµãÑ¡ <"
+                        "\nè¾“å…¥è¡Œè· æ”¯æŒé¼ æ ‡ç‚¹é€‰ <"
                         (rtos (@:get-config 'align-all:hangju) 2 2)
-                        ">£º")))
+                        ">ï¼š")))
       (if (and (= 'real (type hangju2)) (> hangju2 0)) 
         (@:set-config 'align-all:hangju hangju2)
         (setq hangju2 (@:get-config 'align-all:hangju)))
       (setq x0 (car p))
       (setq y0 (cadr p))
       (setq m 0)
-      (setvar "cmdecho" 0) ;¹Ø±ÕÃüÁîĞĞÌáÊ¾
-      (vl-cmdf "undo" "be") ;ÃüÁî¿ªÊ¼±ê¼Ç
-      (setvar "osmode" 0) ;¹Ø±Õ²¶×½
+      (setvar "cmdecho" 0) ;å…³é—­å‘½ä»¤è¡Œæç¤º
+      (vl-cmdf "undo" "be") ;å‘½ä»¤å¼€å§‹æ ‡è®°
+      (setvar "osmode" 0) ;å…³é—­æ•æ‰
       (while (< m n) 
         (setq b (nth m all))
-        (setq e (cdr (assoc -1 b))) ;Í¼Ô­Ãû
+        (setq e (cdr (assoc -1 b))) ;å›¾åŸå
         (setq z (nth 3 (assoc 10 b)))
         (setq x (nth 1 (assoc 10 b)))
         (setq y (nth 2 (assoc 10 b)))
-        (setq xyz (list x y z)) ;ÀÏ×ø±ê
-        (setq xyz_new (list x0 y0 z)) ;ĞÂ×ø±ê
-        (vl-cmdf "move" e "" xyz xyz_new) ;ÒÆ¶¯
+        (setq xyz (list x y z)) ;è€åæ ‡
+        (setq xyz_new (list x0 y0 z)) ;æ–°åæ ‡
+        (vl-cmdf "move" e "" xyz xyz_new) ;ç§»åŠ¨
         (setq y0 (- y0 hangju2))
         (setq m (1+ m)))
-      ;; (setvar "osmode" snap) ;´ò¿ª²¶×½
-      (vl-cmdf "undo" "e") ;ÃüÁî½áÊø±ê¼Ç
-      (setvar "cmdecho" 1) ;´ò¿ªÃüÁîĞĞÌáÊ¾
+      ;; (setvar "osmode" snap) ;æ‰“å¼€æ•æ‰
+      (vl-cmdf "undo" "e") ;å‘½ä»¤ç»“æŸæ ‡è®°
+      (setvar "cmdecho" 1) ;æ‰“å¼€å‘½ä»¤è¡Œæç¤º
     ))
   (pop-var)
   (princ))

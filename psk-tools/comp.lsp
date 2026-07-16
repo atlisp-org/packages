@@ -27,7 +27,7 @@
 ;;
 
 ;; (psk-comp-load (car (entsel)))
-;; ((-1 . <Í¼ÔªÃû: 7ff47770d020>) ("CLASS" . "PATH") ("TYPE" . "RECTANGULAR") ("SERV" . "OA") ("W" . 500) ("H" . 320))
+;; ((-1 . <å›¾å…ƒå: 7ff47770d020>) ("CLASS" . "PATH") ("TYPE" . "RECTANGULAR") ("SERV" . "OA") ("W" . 500) ("H" . 320))
 (defun psk-comp-load (ename / x xdata)
   (setq xdata (p-xdata-all ename))
 
@@ -57,7 +57,7 @@
 	 )
 	)
 	(t
-	 nil ;_ÏàÓ¦µÄappid²»´æÔÚÊ± £¬²»Éú³É¶ÔÏó
+	 nil ;_ç›¸åº”çš„appidä¸å­˜åœ¨æ—¶ ï¼Œä¸ç”Ÿæˆå¯¹è±¡
 	)
   )
 )
@@ -88,8 +88,8 @@
          (p-xprop-set en "PSK-EQUIP" prop)
         )
         (t
-         (princ "\nÎÞ·¨ÉèÖÃ¶ÔÏóÊôÐÔ")
-         nil ;_ÏàÓ¦µÄappid²»´æÔÚÊ± £¬²»Éú³É¶ÔÏó
+         (princ "\næ— æ³•è®¾ç½®å¯¹è±¡å±žæ€§")
+         nil ;_ç›¸åº”çš„appidä¸å­˜åœ¨æ—¶ ï¼Œä¸ç”Ÿæˆå¯¹è±¡
         )
   )
 )
@@ -166,16 +166,16 @@
   (ssget '((-3 ("PSK-PATH,PSK-PART,PSK-PARTSET,PSK-EQUIP"))))
 )
 (defun psk-ss-getduct ()
-  (ssget '((-3 ("PSK-PATH,PSK-PART,PSK-PARTSET")) (8 . "M-*·ç¹Ü*")))
+  (ssget '((-3 ("PSK-PATH,PSK-PART,PSK-PARTSET")) (8 . "M-*é£Žç®¡*")))
 )
 (defun psk-ss-getductpath ()
-  (ssget '((-3 ("PSK-PATH")) (8 . "M-*·ç¹Ü*")))
+  (ssget '((-3 ("PSK-PATH")) (8 . "M-*é£Žç®¡*")))
 )
 (defun psk-ss-getpipe ()
-  (ssget '((-3 ("PSK-PATH,PSK-PART,PSK-PARTSET")) (8 . "M-*Ë®¹Ü*,M-*¹ÜµÀ*")))
+  (ssget '((-3 ("PSK-PATH,PSK-PART,PSK-PARTSET")) (8 . "M-*æ°´ç®¡*,M-*ç®¡é“*")))
 )
 (defun psk-ss-getpipepath ()
-  (ssget '((-3 ("PSK-PATH")) (8 . "M-*Ë®¹Ü*,M-*¹ÜµÀ*")))
+  (ssget '((-3 ("PSK-PATH")) (8 . "M-*æ°´ç®¡*,M-*ç®¡é“*")))
 )
 (defun psk-comps-ssget ()
   (psk-ss->comps (ssget '((-3 ("PSK-PATH,PSK-PART,PSK-PARTSET,PSK-EQUIP")))))

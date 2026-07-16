@@ -1,8 +1,8 @@
-;; PSKÀ©Õ¹¹¤¾ß
+;; PSKæ‰©å±•å·¥å…·
 
-;; Çå³ı¶ÔÏóÉÏµÄËùÓĞÀ©Õ¹Êı¾İ
+;; æ¸…é™¤å¯¹è±¡ä¸Šçš„æ‰€æœ‰æ‰©å±•æ•°æ®
 (defun xdata-clear (/ ss)
-  (princ "\nÑ¡ÔñÒªÇå³ıÀ©Õ¹Êı¾İµÄ¶ÔÏó:")
+  (princ "\né€‰æ‹©è¦æ¸…é™¤æ‰©å±•æ•°æ®çš„å¯¹è±¡:")
   (if (setq ss (ssget))
     (progn
       (foreach en (p-ss->enames ss)
@@ -11,10 +11,10 @@
     )
   )
 )
-;; Æ¥ÅäÀ©Õ¹Êı¾İ
+;; åŒ¹é…æ‰©å±•æ•°æ®
 (defun xdata-match (/ en ss xdata)
-  (if (and (setq en (car (entsel "\nÑ¡ÔñÔ´¶ÔÏó:")))
-	   (princ "\nÑ¡ÔñÒªÆ¥ÅäÀ©Õ¹Êı¾İµÄ¶ÔÏó:")
+  (if (and (setq en (car (entsel "\né€‰æ‹©æºå¯¹è±¡:")))
+	   (princ "\né€‰æ‹©è¦åŒ¹é…æ‰©å±•æ•°æ®çš„å¯¹è±¡:")
 	   (setq ss (ssget))
       )
     (progn
@@ -25,9 +25,9 @@
     )
   )
 )
-;; É¾³ıAPPIDÎª"PSK-PATH"ÖĞµÄÖ¸¶¨ÊôĞÔ"FRIC"
+;; åˆ é™¤APPIDä¸º"PSK-PATH"ä¸­çš„æŒ‡å®šå±æ€§"FRIC"
 (defun prop-clear (/ ss)
-  (princ "\nÑ¡ÔñÒªÉ¾³ıÊôĞÔµÄ¶ÔÏó:")
+  (princ "\né€‰æ‹©è¦åˆ é™¤å±æ€§çš„å¯¹è±¡:")
   (if (setq ss (ssget))
     (progn
       (foreach en (p-ss->enames ss)
@@ -36,9 +36,9 @@
     )
   )
 )
-;; ½«ÆÕÍ¨Ö±Ïß×ª»»Îª"PSK-PATH"¶ÔÏó
+;; å°†æ™®é€šç›´çº¿è½¬æ¢ä¸º"PSK-PATH"å¯¹è±¡
 (defun convert-path (/ ss)
-  (princ "\nÑ¡ÔñÒª×ª»»ÎªÂ·¾¶µÄ¶ÔÏó:")
+  (princ "\né€‰æ‹©è¦è½¬æ¢ä¸ºè·¯å¾„çš„å¯¹è±¡:")
   (if (setq ss (ssget '((0 . "LINE"))))
     (progn
       (foreach en (p-ss->enames ss)
@@ -66,7 +66,7 @@
 )
 ;;
 
-;; ÅúÁ¿ÉèÖÃ¶ÔÏóµÄÊôĞÔ
+;; æ‰¹é‡è®¾ç½®å¯¹è±¡çš„å±æ€§
 ;;;(setprop '(lambda (en) (p-xprop-set en "PSK-PART" '("FLR" . 500))))
 ;;;(setprop '(lambda (en) (p-xprop-set en "PSK-EQUIP" '("CLD" . 4.3))))
 (defun setprop (fun)
@@ -78,7 +78,7 @@
     )
   )
 )
-;; ÅúÁ¿×ª»»½éÖÊ£¨ÓÃÓÚ°æ±¾ 0.60Ç°µÄ¾ÉÍ¼×ª»»£©
+;; æ‰¹é‡è½¬æ¢ä»‹è´¨ï¼ˆç”¨äºç‰ˆæœ¬ 0.60å‰çš„æ—§å›¾è½¬æ¢ï¼‰
 (defun convertserv ()
   (if (setq ss (ssget))
     (progn
@@ -105,7 +105,7 @@
   )
 )
 
-;; »ã×ÜÀä¸ººÉ
+;; æ±‡æ€»å†·è´Ÿè·
 (defun psk-cld-total (/ tot)
   (setq tot 0.)
   (if (setq ss (ssget))
@@ -121,7 +121,7 @@
 
 
 
-;; ¹ÜÏß¸¨Öú¹¤¾ß 2021-4-1
+;; ç®¡çº¿è¾…åŠ©å·¥å…· 2021-4-1
 (defun p-groupby (ents sortby / e lst p r)
   (setq	ents (mapcar (function (lambda (e) (list (p-dxf e sortby) e)))
 		     ents
@@ -133,13 +133,13 @@
 	       )
 	     )
   )
-  ;;  ·Ö×é
+  ;;  åˆ†ç»„
   (while ents
     (setq e (car ents)
 	  p (car e)
     )
     (while (equal (car e) p)
-      (setq lst	 (cons (cadr e) lst) ;_ ½«ÏàÍ¬ÏîºÏ²¢
+      (setq lst	 (cons (cadr e) lst) ;_ å°†ç›¸åŒé¡¹åˆå¹¶
 	    ents (cdr ents)
 	    e	 (car ents)
       )
@@ -150,7 +150,7 @@
   )
   r
 )
-;; Á½ÌõÖ±ÏßÁ¬½Ó´ò¶Ï
+;; ä¸¤æ¡ç›´çº¿è¿æ¥æ‰“æ–­
 ;;;(mt-line-interbreak (car (entsel)) (car (entsel)))
 (defun mt-line-interbreak (line1 line2 / p)
   (if (and (not (equal line1 line2))
@@ -162,9 +162,9 @@
     )
   )
 )
-;; Ñ¡¶¨Ò»×éÖ±Ïß£¬°´Í¼²ã·Ö×é£¬Èç¹ûÃ¿¸öÍ¼²ãÖĞµÄÖ±ÏßÊÇÁ½Ìõ£¬¶Ô¸ÃÁ½Ö±Ïß½øĞĞÁ¬½Ó´ò¶Ï²Ù×÷
+;; é€‰å®šä¸€ç»„ç›´çº¿ï¼ŒæŒ‰å›¾å±‚åˆ†ç»„ï¼Œå¦‚æœæ¯ä¸ªå›¾å±‚ä¸­çš„ç›´çº¿æ˜¯ä¸¤æ¡ï¼Œå¯¹è¯¥ä¸¤ç›´çº¿è¿›è¡Œè¿æ¥æ‰“æ–­æ“ä½œ
 (defun mt-lines-interbreak (/ ents)
-  (princ "\nÑ¡ÔñÒªÁ¬½Ó´ò¶ÏµÄÖ±Ïß:")
+  (princ "\né€‰æ‹©è¦è¿æ¥æ‰“æ–­çš„ç›´çº¿:")
   (if (setq ents (ssget))
     (progn
       (setq ents (p-ss->enames ents)
@@ -214,7 +214,7 @@
   (p-commandrun '(psk-cld-total))
 )
 
-;; ²âÊÔ½ø¶ÈÌáÊ¾
+;; æµ‹è¯•è¿›åº¦æç¤º
 ;;;(defun run (/ r)
 ;;;  (pdb-list-clear "LIST")
 ;;;  (setq r 0)
@@ -256,9 +256,9 @@
 ;;;  )
 ;;;)
 ;;;(defun sav (name / h p1 w)
-;;;  (if (and (setq p1 (getpoint "\nÖ¸¶¨²åÈëµã:"))
-;;;           (setq w (p-edit-value "ÊäÈë¿í¶È" 1600.))
-;;;           (setq h (p-edit-value "ÊäÈë¸ß¶È" 400.))
+;;;  (if (and (setq p1 (getpoint "\næŒ‡å®šæ’å…¥ç‚¹:"))
+;;;           (setq w (p-edit-value "è¾“å…¥å®½åº¦" 1600.))
+;;;           (setq h (p-edit-value "è¾“å…¥é«˜åº¦" 400.))
 ;;;      )
 ;;;    (psk-create-ductvert name p1 w h)
 ;;;  )
@@ -286,11 +286,11 @@
 ;;(vlax-ldata-put "PSK" "CREATEVALUELAST" nil)
 
 
-;; ¹Ø±Õ·ç¹ÜÏà¹ØÍ¼²ã
+;; å…³é—­é£ç®¡ç›¸å…³å›¾å±‚
 (defun psk-ductlayeroff	()
-  (command "._-LAYER" "OFF" "M-*·ç*,M-*ÑÌ*" "")
+  (command "._-LAYER" "OFF" "M-*é£*,M-*çƒŸ*" "")
 )
-;; ´ò¿ª·ç¹ÜÏà¹ØÍ¼²ã
+;; æ‰“å¼€é£ç®¡ç›¸å…³å›¾å±‚
 (defun psk-ductlayeron	()
-  (command "._-LAYER" "ON" "M-*·ç*,M-*ÑÌ*" "")
+  (command "._-LAYER" "ON" "M-*é£*,M-*çƒŸ*" "")
 )

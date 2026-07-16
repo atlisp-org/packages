@@ -1,5 +1,5 @@
 (defun @text:string-to-table ( / dcl-fp strs)
-  (@::prompt "ÅúÁ¿½«µ¥ĞĞÎÄ±¾°´¹æÂÉ·Ö¸ô²¢»æÖÆ±í¸ñ£¬")
+  (@::prompt "æ‰¹é‡å°†å•è¡Œæ–‡æœ¬æŒ‰è§„å¾‹åˆ†éš”å¹¶ç»˜åˆ¶è¡¨æ ¼ï¼Œ")
   (defun align-str (n str / flag)
     (if (null str)(setq str ""))
     (setq flag nil)
@@ -22,14 +22,14 @@
   (progn
     (dcl:begin-cluster "column" "")
     (write-line (strcat ":text{label=\""
-			"ËµÃ÷:²»Í¬µÄ·Ö¸ô·ûÖ®¼äÓÃ &&& ¶Ï¿ª¡£É¾¼õ×Ö·ûÓÃÓÚÉ¾³ı×Ö´®ÖĞÇ°ºó²»ĞèÒªµÄ×Ö·û¡£"
+			"è¯´æ˜:ä¸åŒçš„åˆ†éš”ç¬¦ä¹‹é—´ç”¨ &&& æ–­å¼€ã€‚åˆ å‡å­—ç¬¦ç”¨äºåˆ é™¤å­—ä¸²ä¸­å‰åä¸éœ€è¦çš„å­—ç¬¦ã€‚"
 			"\";}"
 			)
 		dcl-fp)
-    (write-line (strcat ":edit_box{key=\"sepa\";label=\"·Ö¸ô·û:\";}"
+    (write-line (strcat ":edit_box{key=\"sepa\";label=\"åˆ†éš”ç¬¦:\";}"
 			)
 		dcl-fp)
-    (write-line (strcat ":edit_box{key=\"trim\";label=\"É¾¼õ×Ö·û:\";}"
+    (write-line (strcat ":edit_box{key=\"trim\";label=\"åˆ å‡å­—ç¬¦:\";}"
 			)
 		dcl-fp)
     (dcl:hr 0.08)
@@ -68,13 +68,13 @@
   
   (action_tile "sepa" "(update-strs)")
   (action_tile "trim" "(update-strs)")
-  (set_tile "title" "ÎÄ±¾×ª±í¸ñ")
+  (set_tile "title" "æ–‡æœ¬è½¬è¡¨æ ¼")
   (dcl:show)
   (setq @:tmp-result strs)
   
   (table:make
-   (getpoint "±í¸ñ²åÈëµã:")
-   "·Ö¸ô½á¹û"
+   (getpoint "è¡¨æ ¼æ’å…¥ç‚¹:")
+   "åˆ†éš”ç»“æœ"
    (mapcar 'chr
 	   (list:range (ascii "A")
 		       (+ (ascii "A")

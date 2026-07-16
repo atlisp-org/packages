@@ -1,4 +1,4 @@
-;; ÊµÌåLINE´ú±íµÄ¹Ü¿ÚÊµÏÖ£¬ÒòÎªĞÔÄÜÌ«²î£¬ÒÑ·ÏÆú2021-2-9
+;; å®ä½“LINEä»£è¡¨çš„ç®¡å£å®ç°ï¼Œå› ä¸ºæ€§èƒ½å¤ªå·®ï¼Œå·²åºŸå¼ƒ2021-2-9
 ;;;  (if (= 'ename (type fit))
 ;;;    (setq fit (psk-comp-load fit))
 ;;;  )
@@ -28,7 +28,7 @@
 ;;;_$ (p-benchmark '(psk-fit-getports en) 1000)
 ;;;"Benchmark loops = 1000, in 94 ms, 10638 invoke / s"
 
-;; ·µ»Ø¹Ü¿ÚÊı¾İ£¨Ïà½ÏÓÚ¿é²åÈëµãµÄÆ«ÒÆÁ¿ ¹Ü¿Ú·½Ïò ÌØÕ÷³ß´ç£©
+;; è¿”å›ç®¡å£æ•°æ®ï¼ˆç›¸è¾ƒäºå—æ’å…¥ç‚¹çš„åç§»é‡ ç®¡å£æ–¹å‘ ç‰¹å¾å°ºå¯¸ï¼‰
 ;; (psk-fit-getports (car (entsel)))
 ;; ((1 (43178.8 13384.1 0.0) (1.0 0.0 0.0) 10.0) (2 (42778.8 13784.1 0.0) (0.0 1.0 0.0) 10.0))
 (defun psk-fit-getports	(fit / p)
@@ -40,7 +40,7 @@
   (setq ports (psk-ports-fetch fit))
   ;; (("CD" (0 0 0) (1 0 0) 20) ("REF" (0 0 0) (1 0 0) 20))
 
-  ;; ¼ÆËã¹Ü¿ÚÎ»ÖÃ
+  ;; è®¡ç®—ç®¡å£ä½ç½®
   (mapcar (function (lambda (e) (append (list (car e) (mapcar '+ p (cadr e))) (cddr e)))) ports)
 )
 
@@ -106,7 +106,7 @@
 )
 
 
-;; ÍäÍ·Àà¹Ü¼ş (psk-fit-create-elbow Â·¾¶½»µã ..)
+;; å¼¯å¤´ç±»ç®¡ä»¶ (psk-fit-create-elbow è·¯å¾„äº¤ç‚¹ ..)
 (defun psk-create-elbow	(p a1 a2 d erf prop / a3 a4 a5 d1 p1 p2 p3 r)
   (if (null erf)
     (setq erf  $psk-erf-create
@@ -166,7 +166,7 @@
   )
   (cond	((= "L" al)
 	 ;; (setq p2 (polar p2 (+ a $pi/2) (/ (abs (- (car d1) (car d2)) 2.))))
-	 ;; È¡Ïûabsºó ¶ÔÆë¾ÍµÚ1µã»÷¿´ÏòµÚ2µã»÷¿¿ÄÄ±ß¶ÔÆë
+	 ;; å–æ¶ˆabså å¯¹é½å°±ç¬¬1ç‚¹å‡»çœ‹å‘ç¬¬2ç‚¹å‡»é å“ªè¾¹å¯¹é½
 	 (setq p2 (polar p2 (+ a $pi/2) (/ (- (car d1) (car d2)) 2.)))
 	)
 	((= "R" al)
@@ -313,7 +313,7 @@
 )
 ;;
 (defun psk-create-branch (p a1 a2 d1 d2 erf prop / p2 v1 v2)
-  ;; ·ç¹ÜÑùÊ½
+  ;; é£ç®¡æ ·å¼
   (if (null erf)
     (setq erf  $psk-erf-create
           prop (p-set prop (cons "ERF" erf))
@@ -348,7 +348,7 @@
   )
 )
 (defun psk-create-pipetee (p a1 a2 d1 d2 prop / p1 p2 p3)
-  ;; Ë®¹ÜÑùÊ½
+  ;; æ°´ç®¡æ ·å¼
   (setq p1 (polar p a1 (/ d2 2.))
         p2 (polar p a1 (/ d2 -2.))
         p3 (polar p a2 (/ d1 2.))

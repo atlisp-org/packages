@@ -1,10 +1,10 @@
-;;; Êª¿ÕÆø²ÎÊý¼ÆËã¿â
+;;; æ¹¿ç©ºæ°”å‚æ•°è®¡ç®—åº“
 
-;;; ÉãÊÏÎÂ±ê×ª»¯Îª¿ªÊ½ÎÂ±ê
+;;; æ‘„æ°æ¸©æ ‡è½¬åŒ–ä¸ºå¼€å¼æ¸©æ ‡
 (defun psy-c->k (tt) (+ tt 273.15))
-;;; ¿ªÊÏÎÂ±ê×ª»¯ÎªÉãÊ½ÎÂ±ê
+;;; å¼€æ°æ¸©æ ‡è½¬åŒ–ä¸ºæ‘„å¼æ¸©æ ‡
 (defun psy-k->c (tt) (- tt 273.15))
-;;; ¸ÉÇòÎÂ¶È(K)Çó±¥ºÍË®ÕôÆø·ÖÑ¹Pws (Pa) 
+;;; å¹²çƒæ¸©åº¦(K)æ±‚é¥±å’Œæ°´è’¸æ°”åˆ†åŽ‹Pws (Pa) 
 ;;;_$ (psy-db->pws (psy-c->k -1))
 ;;;562.823
 ;;;_$ (psy-db->pws (psy-c->k 10))
@@ -55,7 +55,7 @@
   (setq a (+ (* a db db) (* b db) c (/ d db)))
   (* (exp a) 1000.)
 )
-;;; ±¥ºÍË®ÕôÆø·ÖÑ¹Pws (Pa) Çó¸ÉÇòÎÂ¶È(K)
+;;; é¥±å’Œæ°´è’¸æ°”åˆ†åŽ‹Pws (Pa) æ±‚å¹²çƒæ¸©åº¦(K)
 (defun psy-pws->db (pws / b e f g h k)
   (cond ((and (>= pws 1) (< pws 611))
          (setq e 1.004926534E-03
@@ -112,62 +112,62 @@
 ;;;(vl-sort (test) '(lambda (e1 e2) (> (abs (cdr e1))(abs (cdr e2)))))
 ;;;((213.15 . 0.0109878) (214.15 . 0.00653634) (221.15 . 0.00517123) (222.15 . 0.00512335)..
 
-;;; Í¨¹ý±¥ºÍË®ÕôÆø·ÖÑ¹(Pa)¼°Ïà¶ÔÊª¶ÈË®ÕôÆø·ÖÑ¹(Pa)
+;;; é€šè¿‡é¥±å’Œæ°´è’¸æ°”åˆ†åŽ‹(Pa)åŠç›¸å¯¹æ¹¿åº¦æ°´è’¸æ°”åˆ†åŽ‹(Pa)
 (defun psy-rh->pw (pws rh)
   (* pws rh)
 )
-;;; ÓÉ±¥ºÍË®ÕôÆø·ÖÑ¹Pws(Pa)¼°Ë®ÕôÆø·ÖÑ¹Pw(Pa)¼ÆËãÏà¶ÔÊª¶ÈRH
+;;; ç”±é¥±å’Œæ°´è’¸æ°”åˆ†åŽ‹Pws(Pa)åŠæ°´è’¸æ°”åˆ†åŽ‹Pw(Pa)è®¡ç®—ç›¸å¯¹æ¹¿åº¦RH
 (defun psy-pw->rh (pws pw)
   (/ pw pws)
 )
 
 (setq $psy-ap 101325.)
 
-;;; ÓÉË®ÕôÆø·ÖÑ¹(Pa)¼ÆËãº¬ÊªÁ¿(g/kg)
+;;; ç”±æ°´è’¸æ°”åˆ†åŽ‹(Pa)è®¡ç®—å«æ¹¿é‡(g/kg)
 ;;; (psy-pw->w (psy-rh->pw (psy-db->pws (psy-c->k 26.)) 0.6))
 ;;; 12.6388
 (defun psy-pw->w (pw)
    (/ (* 0.62198 pw) (- $psy-ap pw) 1e-3) 
 )
-;;; ÓÉº¬ÊªÁ¿(g/kg)¼ÆËãË®ÕôÆø·ÖÑ¹(Pa)
+;;; ç”±å«æ¹¿é‡(g/kg)è®¡ç®—æ°´è’¸æ°”åˆ†åŽ‹(Pa)
 ;;; (psy-w->pw 12.6388)
 ;;; 2017.95
 (defun psy-w->pw (d)
   (/ (* $psy-ap (/ d 1000.)) (+ 0.62198 (/ d 1000.)))
 )
-;;; ¸ÉÇòÎÂ¶È(ÉãÊÏC)º¬ÊªÁ¿(g/kg)ÇóìÊ(kJ/kg)
+;;; å¹²çƒæ¸©åº¦(æ‘„æ°C)å«æ¹¿é‡(g/kg)æ±‚ç„“(kJ/kg)
 ;;;_$ (psy-get-enthalpy (psy-c->k 26.) (psy-pw->w (psy-rh->pw (psy-db->pws (psy-c->k 26.)) 0.6)))
 ;;;58.3587
 (defun psy-get-enthalpy (db w /)
   (setq db (psy-k->c db))
   (+ (* 1.006 db) (* 0.001 w (+ 2501 (* 1.805 db))))
 )
-;;;ÓÉÎÂ¶Èt(in C)ºÍìÊh¼ÆËãº¬ÊªÁ¿d(W)
+;;;ç”±æ¸©åº¦t(in C)å’Œç„“hè®¡ç®—å«æ¹¿é‡d(W)
 ;;;inline double CMoistAir::Pw2W(double t, double h) {return (h - 1.006L * t)/ (2501 + 1.805 * t);}
 
-;;; º¬ÊªÁ¿(g/kg)±¥ºÍÊª¿ÕÆøÂ¶µãÎÂ¶È
+;;; å«æ¹¿é‡(g/kg)é¥±å’Œæ¹¿ç©ºæ°”éœ²ç‚¹æ¸©åº¦
 ;;; (psy-k->c (psy-get-dewpoint 12.6388))
 ;;; 17.6392
 (defun psy-get-dewpoint (w)
   (psy-pws->db (psy-w->pw w))
 )
-;;; ¸ÉÇòÎÂ¶È(K)Ë®ÕôÆø·ÖÑ¹(Pa)ÇóÊª¿ÕÆøÃÜ¶È(kg/m3)
+;;; å¹²çƒæ¸©åº¦(K)æ°´è’¸æ°”åˆ†åŽ‹(Pa)æ±‚æ¹¿ç©ºæ°”å¯†åº¦(kg/m3)
 ;;;_$ (psy-get-density (psy-c->k 26.) (psy-rh->pw (psy-db->pws (psy-c->k 26.)) 0.6))
 ;;;1.16981
 (defun psy-get-density (db pw)
   (- (* 0.00348 (/ $psy-ap db)) (* 0.00132 (/ pw db)))
 )
-;;; ¸ÉÇòÎÂ¶È(K)±¥ºÍìÊ(kJ/kg)
+;;; å¹²çƒæ¸©åº¦(K)é¥±å’Œç„“(kJ/kg)
 ;;;_$ (psy-get-enthalpysaturation (psy-c->K 26))
 ;;;80.5642
 (defun psy-get-enthalpysaturation (db)
   (psy-get-enthalpy (psy-k->c db) (psy-pw->w (psy-db->pws db)))
 )
 
-;;;	[in]	¸ÉÇòÎÂ¶ÈDB in K
-;;;	[in]	º¬ÊªÁ¿W
-;;;	[in]	ìÊh
-;;;	[out]	ÊªÇòÎÂ¶ÈWB in K
+;;;	[in]	å¹²çƒæ¸©åº¦DB in K
+;;;	[in]	å«æ¹¿é‡W
+;;;	[in]	ç„“h
+;;;	[out]	æ¹¿çƒæ¸©åº¦WB in K
 ;;; (psy-get-wb (psy-c->k 26.) (psy-get-enthalpy 26. (psy-pw->w (psy-rh->pw (psy-db->pws (psy-c->k 26.)) 0.6))) (psy-pw->w (psy-rh->pw (psy-db->pws (psy-c->k 26.)) 0.6)) )
 (defun psy-get-wb (twb2 h w / )
   (setq twb1 213.15
@@ -241,17 +241,17 @@
   )
   (reverse r)
 )
-;;;	[in]	ìÊh	kJ/kg
-;;;	[in]	º¬ÊªÁ¿W	g/kg
-;;;	[out]	¸ÉÇòÎÂ¶ÈDB in C
+;;;	[in]	ç„“h	kJ/kg
+;;;	[in]	å«æ¹¿é‡W	g/kg
+;;;	[out]	å¹²çƒæ¸©åº¦DB in C
 ;;; (hw->db 58.3587 12.6388)
 (defun hw->db (h w)
   (/ (- h (* 0.001 2501 w)) (+ 1.01 (* 0.001 1.84 w)))
 )
 
 
-;;;	[in]	ìÊh	kJ/kg
-;;;	[out]	¸É¿ÕÆøÖÐµÄ±¥ºÍË®ÕôÆø·ÖÑ¹Pws
+;;;	[in]	ç„“h	kJ/kg
+;;;	[out]	å¹²ç©ºæ°”ä¸­çš„é¥±å’Œæ°´è’¸æ°”åˆ†åŽ‹Pws
 (defun satenthalpy2pw (h / pws1 pws2 pws htry i)
   (setq pws1 1
         pws2 1555098
@@ -286,8 +286,8 @@
 
 
 
-;;;	[in]	±¥ºÍË®ÕôÆø·ÖÑ¹Pws
-;;;	[out]	±¥ºÍìÊh in kJ/kg
+;;;	[in]	é¥±å’Œæ°´è’¸æ°”åˆ†åŽ‹Pws
+;;;	[out]	é¥±å’Œç„“h in kJ/kg
 ;;;double CMoistAir::GetEnthalpyByPws(double Pws)
 ;;;{
 ;;;	psy-pws->db(Pws)
@@ -297,8 +297,8 @@
 
 
 
-;;;	[in]	Â¶µãÎÂ¶ÈDP in K
-;;;	[out]	Ë®ÕôÆø·ÖÑ¹Pw in Pa
+;;;	[in]	éœ²ç‚¹æ¸©åº¦DP in K
+;;;	[out]	æ°´è’¸æ°”åˆ†åŽ‹Pw in Pa
 (defun dp2pw (dp /)
   (setq dp (psy-k->c dp))
   (if (< dp 0)

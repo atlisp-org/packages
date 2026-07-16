@@ -1,10 +1,10 @@
-(@:add-menu "@ÊÔÑéÊÒ" "Í³¼Æ¹âÀÂ" '(@lab:stat-line))
-(@:add-menu "@ÊÔÑéÊÒ" "Í³¼ÆÎÄÊı" '(@lab:stat-line2))
-(@:define-config '@lab:stat-item "*+*" "·ÖÀàÍ³¼ÆÎÄ×ÖÊı×ÖÎÄ×ÖÊı×Ö")
+(@:add-menu "@è¯•éªŒå®¤" "ç»Ÿè®¡å…‰ç¼†" '(@lab:stat-line))
+(@:add-menu "@è¯•éªŒå®¤" "ç»Ÿè®¡æ–‡æ•°" '(@lab:stat-line2))
+(@:define-config '@lab:stat-item "*+*" "åˆ†ç±»ç»Ÿè®¡æ–‡å­—æ•°å­—æ–‡å­—æ•°å­—")
 (defun @lab:stat-line (/ res res1 to-pair get-slave)
-  (@::prompt (list "Í³¼Æ»ã×Ü `ÎÄ×ÖÊı×ÖÎÄ×ÖÊı×ÖÎÄ×ÖÊı×Ö...' ¸ñÊ½µÄµ¥ĞĞÎÄ±¾×Ö·û´®"
-		"ÎÄ×ÖĞëÊÇÈ«ºº×Ö£¬»òÈ«Ó¢ÎÄ£¬ÇÒÎÄ×ÖÖ®¼ä¼°ÎÄ×ÖÓëÊı×ÖÖ®¼ä²»ÄÜÓĞ¿Õ¸ñ."
-		"Êı×ÖĞëÊÇ°ë½ÇÊı×Ö×Ö·û£¬Ä¿Ç°²»Ö§³Ö´øÕı¸ººÅµÄÊı×Ö¡£"
+  (@::prompt (list "ç»Ÿè®¡æ±‡æ€» `æ–‡å­—æ•°å­—æ–‡å­—æ•°å­—æ–‡å­—æ•°å­—...' æ ¼å¼çš„å•è¡Œæ–‡æœ¬å­—ç¬¦ä¸²"
+		"æ–‡å­—é¡»æ˜¯å…¨æ±‰å­—ï¼Œæˆ–å…¨è‹±æ–‡ï¼Œä¸”æ–‡å­—ä¹‹é—´åŠæ–‡å­—ä¸æ•°å­—ä¹‹é—´ä¸èƒ½æœ‰ç©ºæ ¼."
+		"æ•°å­—é¡»æ˜¯åŠè§’æ•°å­—å­—ç¬¦ï¼Œç›®å‰ä¸æ”¯æŒå¸¦æ­£è´Ÿå·çš„æ•°å­—ã€‚"
 		))
   (defun to-pair(str / pair res)
     (foreach a (string:auto-split str)
@@ -30,7 +30,7 @@
 			   (* 0.5 pi)
 			   (* 1.5
 			      (entity:getdxf title% 40)))
-		    '((0 . "text")(1 . "*¹ÜµÀ*,*¼Ü¿Õ*,*ÒıÉÏ*"))))))
+		    '((0 . "text")(1 . "*ç®¡é“*,*æ¶ç©º*,*å¼•ä¸Š*"))))))
     
   (push-var nil)
   (setvar "osmode" 0)
@@ -73,17 +73,17 @@
 					     res1))))
 			   res1))))
 		res))
-  (setq pt (getpoint "±í¸ñ»æÖÆÎ»ÖÃµã£º"))
+  (setq pt (getpoint "è¡¨æ ¼ç»˜åˆ¶ä½ç½®ç‚¹ï¼š"))
   (foreach data res
 	   (table:make pt
 		       (car data)
-		       (list "Ãû³Æ" "ÊıÁ¿")
+		       (list "åç§°" "æ•°é‡")
 		       (append 
 			(setq data
 			      (mapcar '(lambda(x)
 					 (list (car x)(cdr x)))
 				      (cdr data)))
-			(list (list "ºÏ¼Æ"
+			(list (list "åˆè®¡"
 				    (apply '+ (mapcar 'cadr data))))))
 			
 	   (setq pt (polar pt 0 100))
@@ -93,9 +93,9 @@
   (princ)
   )
 (defun @lab:stat-line2 (/ res1 to-pair )
-  (@::prompt (list "Í³¼Æ»ã×Ü `ÎÄ×ÖÊı×ÖÎÄ×ÖÊı×Ö...' ¸ñÊ½µÄµ¥ĞĞÎÄ±¾×Ö·û´®"
-		"ÎÄ×ÖĞëÊÇÈ«ºº×Ö£¬»òÈ«Ó¢ÎÄ£¬ÇÒÎÄ×ÖÖ®¼ä¼°ÎÄ×ÖÓëÊı×ÖÖ®¼ä²»ÄÜÓĞ¿Õ¸ñ."
-		"Êı×ÖĞëÊÇ°ë½ÇÊı×Ö×Ö·û£¬Ä¿Ç°²»Ö§³Ö´øÕı¸ººÅµÄÊı×Ö¡£"
+  (@::prompt (list "ç»Ÿè®¡æ±‡æ€» `æ–‡å­—æ•°å­—æ–‡å­—æ•°å­—...' æ ¼å¼çš„å•è¡Œæ–‡æœ¬å­—ç¬¦ä¸²"
+		"æ–‡å­—é¡»æ˜¯å…¨æ±‰å­—ï¼Œæˆ–å…¨è‹±æ–‡ï¼Œä¸”æ–‡å­—ä¹‹é—´åŠæ–‡å­—ä¸æ•°å­—ä¹‹é—´ä¸èƒ½æœ‰ç©ºæ ¼."
+		"æ•°å­—é¡»æ˜¯åŠè§’æ•°å­—å­—ç¬¦ï¼Œç›®å‰ä¸æ”¯æŒå¸¦æ­£è´Ÿå·çš„æ•°å­—ã€‚"
 		))
   (defun to-pair(str / pair res)
     (foreach a (string:auto-split str)
@@ -166,13 +166,13 @@
 					     res1))))
 			   res1))))
 			 res))
-	   (setq pt (getpoint "±í¸ñ»æÖÆÎ»ÖÃµã£º"))
+	   (setq pt (getpoint "è¡¨æ ¼ç»˜åˆ¶ä½ç½®ç‚¹ï¼š"))
 	   (setq item-name (list:remove-duplicates (mapcar 'car (apply 'append (mapcar 'cdr res))))))
       (progn
 	(setq i 0)
 	(table:make pt
-		    "»ã×Ü±í"
-		    (cons "ĞòºÅ" (cons "ÀàĞÍ" item-name))
+		    "æ±‡æ€»è¡¨"
+		    (cons "åºå·" (cons "ç±»å‹" item-name))
 		    (mapcar
 		     '(lambda (x)
 			(cons

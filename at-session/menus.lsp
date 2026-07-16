@@ -1,10 +1,10 @@
 (@:add-menus
- '(("@lisp»á»°¹ÜÀí"
-    (("µÚ¶ş¸ö¹¦ÄÜ" "(at-session:hello)")
-     ("µÚÈı¸ö¹¦ÄÜ" "(at-session:hello)")))
-   ("@lisp»á»°¹ÜÀí1"
-    (("µÚ¶ş¸ö¹¦ÄÜ" "(at-session:hello)")
-     ("µÚÈı¸ö¹¦ÄÜ" "(at-session:hello)")))
+ '(("@lispä¼šè¯ç®¡ç†"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(at-session:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(at-session:hello)")))
+   ("@lispä¼šè¯ç®¡ç†1"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(at-session:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(at-session:hello)")))
    ))
 
   

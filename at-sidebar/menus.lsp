@@ -1,8 +1,8 @@
 (@:add-menus
- '(("@²à±ßÀ¸"
-    (("µÚ¶ş¸ö¹¦ÄÜ" "(at-sidebar:hello)")
-     ("µÚÈı¸ö¹¦ÄÜ" "(at-sidebar:hello)")))
-   ("@²à±ßÀ¸1"
-    (("µÚ¶ş¸ö¹¦ÄÜ" "(at-sidebar:hello)")
-     ("µÚÈı¸ö¹¦ÄÜ" "(at-sidebar:hello)")))
+ '(("@ä¾§è¾¹æ "
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(at-sidebar:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(at-sidebar:hello)")))
+   ("@ä¾§è¾¹æ 1"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(at-sidebar:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(at-sidebar:hello)")))
    )

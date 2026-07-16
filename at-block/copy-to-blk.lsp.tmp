@@ -1,0 +1,2 @@
+(defun @block:copy-by-blk ()
+  (@::prompt '("鍙

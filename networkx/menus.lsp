@@ -1,8 +1,8 @@
 (@:add-menus
  '(("networkx"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(networkx:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(networkx:hello)")))
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(networkx:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(networkx:hello)")))
    ("networkx1"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(networkx:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(networkx:hello)")))
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(networkx:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(networkx:hello)")))
    )

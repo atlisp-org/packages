@@ -1,2 +1,2 @@
-(@:add-menu "PDF处理工具" "2nd Function" "(pdftk:hello)" )
-(@:add-menu "PDF处理工具" "3rd Function" "(pdftk:hello)" )
+(@:add-menu "PDF婢跺嫮鎮婂銉ュ徔" "2nd Function" "(pdftk:hello)" )
+(@:add-menu "PDF婢跺嫮鎮婂銉ュ徔" "3rd Function" "(pdftk:hello)" )

@@ -1,0 +1,3 @@
+(defun @text:text2table (/ ss-txt result lst-tmp row)
+  (setq ss-txt (pickset:to-list (ssget '((0 . "text")))))
+  ;; 鑷

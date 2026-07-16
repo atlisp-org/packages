@@ -1,5 +1,5 @@
 (defun @lab:pvp-v (/ clayout)
-  (@::prompt "ÊÓ¿Ú×ø±êËæÊÓÍ¼")
+  (@::prompt "è§†å£åæ ‡éšè§†å›¾")
   (setq clayout (getvar "ctab"))
   (foreach layout (layout:list)
 	   (setvar "ctab" layout)
@@ -16,7 +16,7 @@
   )
 
 (defun @lab:pvp-w (/ clayout)
-  (@::prompt "ÊÓ¿Ú×ø±êËæÊÓÍ¼")
+  (@::prompt "è§†å£åæ ‡éšè§†å›¾")
   (setq clayout (getvar "ctab"))
   (foreach layout (layout:list)
 	   (setvar "ctab" layout)

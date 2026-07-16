@@ -1,0 +1,2 @@
+(defun @layout:purge ()
+  (@::prompt "娓呯悊绌哄竷灞€銆

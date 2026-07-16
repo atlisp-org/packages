@@ -1,6 +1,6 @@
-;;;»ñÈ¡macµØÖ·-32Î»ÏµÍ³ÓÃ
+;;;è·å–macåœ°å€-32ä½ç³»ç»Ÿç”¨
 (defun-q hdinfo:get-mac (/ i mac s str svr wmi)
-  "»ñÈ¡macµØÖ·£¬²»Ò»¶¨ÓĞÓÃ¡£"
+  "è·å–macåœ°å€ï¼Œä¸ä¸€å®šæœ‰ç”¨ã€‚"
   (vl-load-com)
   (setq wmi (vlax-create-object "WbemScripting.SWbemLocator"))
   (setq svr (vlax-invoke wmi 'ConnectServer))
@@ -14,9 +14,9 @@
   (vlax-release-object wmi)       
   (car s)               
   )
-;»ñÈ¡Ó²ÅÌĞòÁĞºÅ
+;è·å–ç¡¬ç›˜åºåˆ—å·
 (defun-q hdinfo:get-hd-serial (/ lccon lox objw ret serx sn)
-  "»ñÈ¡Ó²ÅÌĞòÁĞºÅ,²»Ò»¶¨ÓĞÓÃ¡£"
+  "è·å–ç¡¬ç›˜åºåˆ—å·,ä¸ä¸€å®šæœ‰ç”¨ã€‚"
   (setq serx '())
   (if (setq objw (vlax-create-object "wbemscripting.swbemlocator"))
       (progn
@@ -31,7 +31,7 @@
   serx
   )
 (defun-q hdinfo:get-cpuid (/ Vlist VObj lcom lExecQuery item)
-  "»ñÈ¡CPU ID,²»Ò»¶¨ÓĞÓÃ¡£"
+  "è·å–CPU ID,ä¸ä¸€å®šæœ‰ç”¨ã€‚"
   (vl-load-com)
   (setq Vlist '())
   (if (setq VObj (vlax-create-object "wbemscripting.swbemlocator"))
@@ -40,20 +40,20 @@
 		    VObj       'ConnectServer     "."
 		    "\\root\\cimv2"  ""     ""
 		    ""       ""  128     nil
-		    ) ;_ ½áÊøVLAX-INVOKE
-	      ) ;_ ½áÊøSETQ
+		    ) ;_ ç»“æŸVLAX-INVOKE
+	      ) ;_ ç»“æŸSETQ
 	(setq lExecQuery
 	      (vlax-invoke
 	       lcom
 	       'ExecQuery
 	       ;;"Select * From Win32_BIOS"
 	       "Select * from Win32_Processor"
-	       ) ;_ ½áÊøvlax-invoke
-	      ) ;_ ½áÊøsetq
+	       ) ;_ ç»“æŸvlax-invoke
+	      ) ;_ ç»“æŸsetq
 	(vlax-for item lExecQuery
-		  (setq Vlist (vlax-get item 'ProcessorId) ;_ ½áÊøcons
-			) ;_ ½áÊøsetq
-		  ) ;_ ½áÊøvlax-for
+		  (setq Vlist (vlax-get item 'ProcessorId) ;_ ç»“æŸcons
+			) ;_ ç»“æŸsetq
+		  ) ;_ ç»“æŸvlax-for
 	(vlax-release-object lExecQuery)	
 	(vlax-release-object lcom)
 	(vlax-release-object Vobj)

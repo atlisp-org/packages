@@ -1,5 +1,5 @@
-;;; 能过部件号KEY应能唯一确认一个部件，索引外部部件数据库得到该部件的尺寸信息及材料统计信息
-;;; 部件号KEY 通过模板实现自动更新 更新时使用的属性由部件从属路径提供
+;;; 鑳借繃閮ㄤ欢鍙稫EY搴旇兘鍞竴纭涓�涓儴浠讹紝绱㈠紩澶栭儴閮ㄤ欢鏁版嵁搴撳緱鍒拌閮ㄤ欢鐨勫昂瀵镐俊鎭強鏉愭枡缁熻淇℃伅
+;;; 閮ㄤ欢鍙稫EY 閫氳繃妯℃澘瀹炵幇鑷姩鏇存柊 鏇存柊鏃朵娇鐢ㄧ殑灞炴�х敱閮ㄤ欢浠庡睘璺緞鎻愪緵
 (defun psk-path-wallthick (comp / pn r w)
   (cond ((= "DUCT-RECT" (psk-comp-gettype comp))
          (setq w (p-get comp "W"))
@@ -32,7 +32,7 @@
             (setq wtk (psk-path-wallthick comp))
             (psk-comp-set comp (cons "WTK" wtk))
             (list (p-dxf (psk-comp-getename comp) 5)
-                  "矩形风管"
+                  "鐭╁舰椋庣"
                   (p-get comp "W")
                   (p-get comp "H")
                   wtk
@@ -43,7 +43,7 @@
             (setq wtk (psk-path-wallthick comp))
             (psk-comp-set comp (cons "WTK" wtk))
             (list (p-dxf (psk-comp-getename comp) 5)
-                  "圆形风管"
+                  "鍦嗗舰椋庣"
                   (p-get comp "D")
                   nil
                   wtk
@@ -52,7 +52,7 @@
            )
            ((= "PIPE" (psk-comp-gettype comp))
             (list (p-dxf (psk-comp-getename comp) 5)
-                  "管道"
+                  "绠￠亾"
                   (p-get comp "DN")
                   nil
                   (p-get comp "WTK")

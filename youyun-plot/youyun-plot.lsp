@@ -1,20 +1,20 @@
-(@:add-menu "³öÍ¼ÅÅ°æ" "ÓĞÔÆÅú´ò" "(youyun-plot:bplot)")
+(@:add-menu "å‡ºå›¾æ’ç‰ˆ" "æœ‰äº‘æ‰¹æ‰“" "(youyun-plot:bplot)")
 (defun youyun-plot:bplot (/ mainpath) 
-  ;; (setq mainpath (strcat (getenv "userprofile") "\\Documents\\ÓĞÔÆÅúÁ¿´òÓ¡"))
+  ;; (setq mainpath (strcat (getenv "userprofile") "\\Documents\\æœ‰äº‘æ‰¹é‡æ‰“å°"))
   (setq mainpath (strcat 
                   (vl-registry-read "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders" 
                                     "Personal"
 				    )
-                  "\\ÓĞÔÆÅúÁ¿´òÓ¡"
+                  "\\æœ‰äº‘æ‰¹é‡æ‰“å°"
                   )
 	)
-  ;; ²»ÊÇÁ´½Ó
+  ;; ä¸æ˜¯é“¾æ¥
   (if (and (findfile mainpath)
 	   (null(member "pkg.lsp" (vl-directory-files mainpath "*.*" 1))))
       (vl-file-rename
        mainpath
        (strcat mainpath ".b")))
-  ;; ´´½¨Ä¿Â¼Á´½Ó
+  ;; åˆ›å»ºç›®å½•é“¾æ¥
   (if (null (findfile mainpath))
       (progn
 	(@:cmd 
@@ -28,9 +28,9 @@
 	 )))
   ;; (load ".cache/Intern.fas")
   (setvar "secureload" 0)
-  (@:mkdir (@:path (strcat (@:package-path "youyun-plot") "ÓĞÔÆ×ÖÌåÌæ»»")))
+  (@:mkdir (@:path (strcat (@:package-path "youyun-plot") "æœ‰äº‘å­—ä½“æ›¿æ¢")))
 
-  ;; ¸´ÖÆ pdftk 
+  ;; å¤åˆ¶ pdftk 
   (if (null (findfile (strcat mainpath "\\pdftk.exe"))) 
       (progn 
 	(@:down-and-unzip "archives/pdftk.zip" "bin")
@@ -47,16 +47,16 @@
 	       )
     )
   
-  ;; ¼ì²éÎÄ¼ş´óĞ¡
+  ;; æ£€æŸ¥æ–‡ä»¶å¤§å°
   (if 
       (and (findfile "packages/youyun-plot/youyun-plot.zip") 
            (< (vl-file-size (findfile "packages/youyun-plot/youyun-plot.zip")) (@:get-filesize-from-web "youyun-plot/youyun-plot.zip"))
 	   )
       (progn
-	(alert "ÎÄ¼ş²»ÍêÕû£¬ÇëÖØĞÂ°²×°¡£"))
+	(alert "æ–‡ä»¶ä¸å®Œæ•´ï¼Œè¯·é‡æ–°å®‰è£…ã€‚"))
     (progn
       (if 
-          (and (null (findfile (strcat (@:package-path "youyun-plot") "Åú´òPDF-ÉèÖÃ.txt")))
+          (and (null (findfile (strcat (@:package-path "youyun-plot") "æ‰¹æ‰“PDF-è®¾ç½®.txt")))
                (findfile (strcat (@:package-path "youyun-plot") "youyun-plot.zip"))
                )
           (@:unzip 
@@ -65,18 +65,18 @@
            )
 	)
       (foreach file% 
-               (vl-directory-files (@:package-path "youyun-plot\\Ô¤ÉèÄ£°å\\³õÊ¼ÉèÖÃ") "*.*" 1)
+               (vl-directory-files (@:package-path "youyun-plot\\é¢„è®¾æ¨¡æ¿\\åˆå§‹è®¾ç½®") "*.*" 1)
                (if 
 		   (and (null (member (vl-filename-extension file%) '(".lsp" ".fas"))) 
 			(null (findfile (strcat mainpath "\\" file%)))
 			)
 		   (vl-file-copy 
-		    (findfile (strcat (@:package-path "youyun-plot\\Ô¤ÉèÄ£°å\\³õÊ¼ÉèÖÃ") file%))
+		    (findfile (strcat (@:package-path "youyun-plot\\é¢„è®¾æ¨¡æ¿\\åˆå§‹è®¾ç½®") file%))
 		    (strcat mainpath "\\" file%)
 		    )
 		 )
 	       )
-      (if (/= "failure" (load "packages/youyun-plot/ÓĞÔÆÅúÁ¿´òÓ¡.vlx" "failure"))
+      (if (/= "failure" (load "packages/youyun-plot/æœ‰äº‘æ‰¹é‡æ‰“å°.vlx" "failure"))
 	  (C:PDF1))
       )
     )

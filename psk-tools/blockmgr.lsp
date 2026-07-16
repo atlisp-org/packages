@@ -8,13 +8,13 @@
 ;;;      (setq rows
 ;;;             (p-csvfile-read
 ;;;               (psk-get-filename
-;;;                 "\\catelog\\vrf\\daikin\\¶àÁª»ú¿Õµ÷ÊÒÄÚ»ú£¨´ó½ğ£©.csv"
+;;;                 "\\catelog\\vrf\\daikin\\å¤šè”æœºç©ºè°ƒå®¤å†…æœºï¼ˆå¤§é‡‘ï¼‰.csv"
 ;;;               )
 ;;;             )
 ;;;            rows (mapcar '(lambda (e) (p-string-connect e "\t")) rows)
 ;;;      )
 ;;;
-;;;      ;; Ìî³äÊôĞÔ¿ò
+;;;      ;; å¡«å……å±æ€§æ¡†
 ;;;      (start_list "KEYLIST")
 ;;;      (mapcar 'add_list rows)
 ;;;      (end_list)
@@ -35,7 +35,7 @@
 
 (defun psk-catelogexplor-showsld (sldfile / h w)
   (if (null (findfile sldfile))
-    (princ (strcat "ÎÄ¼ş\"" sldfile "\"²»´æÔÚ\n"))
+    (princ (strcat "æ–‡ä»¶\"" sldfile "\"ä¸å­˜åœ¨\n"))
     (progn (setq w (dimx_tile "IMG")
                  h (dimy_tile "IMG")
            )
@@ -141,7 +141,7 @@
 ;;;    (if (findfile (strcat (cdr catelogfile) "ports.lsp"))
 ;;;      (if (setq ports (psk-getportdef name (p-lisp-load (strcat (cdr catelogfile) "ports.lsp"))))
 ;;;        (psk-ports-store en ports)
-;;;        (princ "\nÎ´ÕÒµ½¹Ü¿Ú¶¨Òå")
+;;;        (princ "\næœªæ‰¾åˆ°ç®¡å£å®šä¹‰")
 ;;;      )
 ;;;    )
     (p-xprop-set
@@ -153,7 +153,7 @@
     )
     (psk-ports-store en (p-get-portsforinsert en))
 ;;;    (p-osnap-disable)
-    ;; TODO: UCSÏÂ²åÈë¹Ü¿ÚÎ»ÖÃ·½Ïò³ö´í
+    ;; TODO: UCSä¸‹æ’å…¥ç®¡å£ä½ç½®æ–¹å‘å‡ºé”™
 ;;;    (command "._rotate" en "" "NON" p "NON" pause)
 ;;;    (p-osnap-disable)
   )

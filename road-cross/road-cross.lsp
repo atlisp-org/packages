@@ -7,17 +7,17 @@
 ;; (@:get-config 'road-cross:first) 
 ;; (@:set-config 'road-cross:first  "New Value")
 ;; Add menu in @lisp panel
-(@:add-menu "Ê®×ÖÂ·¿Ú" "»æÖÆµÀÂ·1" "(road-cross:rd)" )
-(@:add-menu "Ê®×ÖÂ·¿Ú" "»æÖÆµÀÂ·2" "(road-cross:srd)" )
-(@:add-menu "Ê®×ÖÂ·¿Ú" "»­Ïß²¹Â·" "(road-cross:sld)" )
-(@:add-menu "Ê®×ÖÂ·¿Ú" "Èİ²îÉè¶¨" "(road-cross:std)" )
-(@:add-menu "Ê®×ÖÂ·¿Ú" "ÁĞµÀÂ·¿í" "(road-cross:prd)" )
-(@:add-menu "Ê®×ÖÂ·¿Ú" "°ïÖú" "(road-cross:help)" )
+(@:add-menu "åå­—è·¯å£" "ç»˜åˆ¶é“è·¯1" "(road-cross:rd)" )
+(@:add-menu "åå­—è·¯å£" "ç»˜åˆ¶é“è·¯2" "(road-cross:srd)" )
+(@:add-menu "åå­—è·¯å£" "ç”»çº¿è¡¥è·¯" "(road-cross:sld)" )
+(@:add-menu "åå­—è·¯å£" "å®¹å·®è®¾å®š" "(road-cross:std)" )
+(@:add-menu "åå­—è·¯å£" "åˆ—é“è·¯å®½" "(road-cross:prd)" )
+(@:add-menu "åå­—è·¯å£" "å¸®åŠ©" "(road-cross:help)" )
 
 (defun road-cross:hello ()
   (@:help (strcat "The content can show in user interface .\n"
   	  		  ))
-  (alert (strcat "Ê®×ÖÂ·¿ÚÉú³ÉÆ÷ 's first function.\n"
+  (alert (strcat "åå­—è·¯å£ç”Ÿæˆå™¨ 's first function.\n"
 		 "Created a config item road-cross:first .\n"
 		 "THe config ietm th family is this item: " (@:get-config 'road-cross:first)
 		 ))

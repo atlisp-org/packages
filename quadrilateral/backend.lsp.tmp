@@ -1,0 +1,2 @@
+(defun quadrilateral:dim-backend ( / segments pts-ent i% )
+  "鏌ユ壘鍥涜竟褰

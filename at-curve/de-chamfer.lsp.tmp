@@ -1,0 +1,2 @@
+(defun at-curve:de-chamfer ()
+  (@::prompt "鍙嶅€掕

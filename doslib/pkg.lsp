@@ -7,6 +7,6 @@
         (:CATEGORY . "Lib")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "DosLib ю╘у╧╧╓╬ъ,╦Ы╬щCADткпп╩╥╬Ёё╛обтьоЮф╔еД╣дarx,╡╩сцобтьх╚╡©нд╪Ч║ё")
+        (:DESCRIPTION . "DosLib Ф┴╘Е╠∙Е╥╔Е┘╥,Ф═╧Ф█╝CADХ©░Х║▄Г▌╞Е╒┐О╪▄Д╦▀Х╫╫Г⌡╦Е▄╧И┘█Г └arx,Д╦█Г■╗Д╦▀Х╫╫Е┘╗И┐╗Ф√┤Д╩╤Ц─┌")
         (:URL . "http://atlisp.cn")
         (:FILES "doslib")))

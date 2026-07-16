@@ -1,5 +1,5 @@
 (defun @lab:summary-data (/ tbl-summary get-data)
-  (@::prompt (strcat "»ã×ÜÍ¼¿ò¼°Í¼¿òÄÚÎÄ±¾ĞÅÏ¢\nĞÎ³É±í¸ñ"))
+  (@::prompt (strcat "æ±‡æ€»å›¾æ¡†åŠå›¾æ¡†å†…æ–‡æœ¬ä¿¡æ¯\nå½¢æˆè¡¨æ ¼"))
   (defun get-data (ent / data box mt)
     (if ent
 	(progn
@@ -21,11 +21,11 @@
 							   mt)))))
 		(foreach
 		 txt data-mt
-		 (foreach handle '("²ÄÁÏ""ÏÂÁÏ³ß´ç""±íÃæ´¦Àí""ÊıÁ¿")
+		 (foreach handle '("ææ–™""ä¸‹æ–™å°ºå¯¸""è¡¨é¢å¤„ç†""æ•°é‡")
 			  (if (setq res (member handle
 						(mapcar '(lambda(x)
 							   (vl-string-trim " " x))
-							(string:parse-by-lst txt '("¡¢""£º""£»")))))
+							(string:parse-by-lst txt '("ã€""ï¼š""ï¼›")))))
 			      (setq data (cons (cons handle
 						     (cadr res)) 
 					       data))))))
@@ -33,11 +33,11 @@
 	  data
 	  )))
   (setq mapsheet (car (entsel)))
-  (prompt "ÇëÑ¡ÔñÒªÌáÈ¡Êı¾İµÄÍ¼¿ò")
+  (prompt "è¯·é€‰æ‹©è¦æå–æ•°æ®çš„å›¾æ¡†")
   (if (and (setq ss-tk (ssget (list '(0 . "insert")
 				    (assoc 2 (entget mapsheet)))))
 	   (setq tbl-data (mapcar 'get-data (pickset:to-list ss-tk)))
-	   (setq tbl-header '("ÎïÁÏ±àÂë" "Í¼Ö½±àºÅ" "µ¥ÔªÃû³Æ/Áã²¿¼şÃû³Æ" "²ÄÁÏ""ÏÂÁÏ³ß´ç""±íÃæ´¦Àí""ÊıÁ¿" "±¸×¢"))
+	   (setq tbl-header '("ç‰©æ–™ç¼–ç " "å›¾çº¸ç¼–å·" "å•å…ƒåç§°/é›¶éƒ¨ä»¶åç§°" "ææ–™""ä¸‹æ–™å°ºå¯¸""è¡¨é¢å¤„ç†""æ•°é‡" "å¤‡æ³¨"))
 	   (setq tbl-data (mapcar '(lambda(x / data)
 				     (foreach hd tbl-header
 					      (if (assoc hd x)
@@ -48,6 +48,6 @@
 				  tbl-data))
 	   (listp tbl-data)
 	   (> (length tbl-data) 0))
-      (table:make (getpoint "ÇëÊäÈë±í¸ñ²åÈëÎ»ÖÃ:") "±í¸ñ" tbl-header (reverse tbl-data)))
+      (table:make (getpoint "è¯·è¾“å…¥è¡¨æ ¼æ’å…¥ä½ç½®:") "è¡¨æ ¼" tbl-header (reverse tbl-data)))
   )
 

@@ -1,5 +1,5 @@
 (@:def-pkg '((:NAME . "sidebar")
-        (:FULL-NAME . "≤‡±ﬂ¿∏")
+        (:FULL-NAME . "‰æßËæπÊ†è")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
         (:VERSION . "0.0.15")
@@ -7,7 +7,7 @@
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "CAD≤‡±ﬂ¿∏")
+        (:DESCRIPTION . "CAD‰æßËæπÊ†è")
         (:URL . "http://atlisp.cn")
         (:FILES "sidebar"
             "CAD_ScreenMenu.dll")))

@@ -1,0 +1,1 @@
+(@::def-pkg '((:name . "ocr")  (:full-name . "ocr")  (:author . "VitalGG")  (:email . "vitalgg@gmail.com")  (:version . "0.0.1")  (:locale . "chs")  (:category . "Common")  (:required . "base")  (:opensource . 0)   (:description . "璇嗗埆瑙嗗彛涓

@@ -1,0 +1,2 @@
+(defun @curve:inters-number ()
+  (@::prompt "涓€鏉℃洸绾夸笂涓庡叾浠栧

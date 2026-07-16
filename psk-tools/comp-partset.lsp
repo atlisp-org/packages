@@ -16,7 +16,7 @@
 
 	  key	   (cons (cons ".TYPE" (car key)) (cdr key))
 
-	  ;; ´¦ÀíÊôĞÔÃû³ÆÓ³Éä
+	  ;; å¤„ç†å±æ€§åç§°æ˜ å°„
 	  ;; '("W" "H" "D" "L1")
 	  data	   (mapcar '(lambda (e)
 			      (if (setq mapper (p-get key e))
@@ -26,7 +26,7 @@
 			    )
 			   keyparam
 		   )
-	  ;; È¡µÃÊıÖµ
+	  ;; å–å¾—æ•°å€¼
 	  data	   (p-get (cdr kpack) data)
 	  key	   (p-set key (mapcar 'cons keyparam data))
     )
@@ -61,7 +61,7 @@
   )
 
   (foreach key (psk-keypack-getitems kpack)
-    ;; Îª·´Ïò»æÖÆµÄ¹Ü¼ş×¼±¸»·¾³
+    ;; ä¸ºåå‘ç»˜åˆ¶çš„ç®¡ä»¶å‡†å¤‡ç¯å¢ƒ
     (if	(= 1 (p-get key "FLIP"))
       (setq $psk-block-base  (polar $psk-block-base
 				    $psk-block-angle
@@ -74,9 +74,9 @@
     (psk-part-draw key)
 
     (if	(= 1 (p-get key "FLIP"))
-      ;; Èç¹ûÇ°Ò»¸ö¹Ü¼şÎª·´Ïò»æÖÆ£¬ÔÚ´Ë½«·½Ïò·­×ªµ½ÕıÈ·µÄ·½Ïò
+      ;; å¦‚æœå‰ä¸€ä¸ªç®¡ä»¶ä¸ºåå‘ç»˜åˆ¶ï¼Œåœ¨æ­¤å°†æ–¹å‘ç¿»è½¬åˆ°æ­£ç¡®çš„æ–¹å‘
       (setq $psk-block-angle (- $psk-block-angle pi))
-      ;; ½«Ô­µãÒÆ¶¯µ½ÏÂÒ»¸ö½«Òª»æÖÆµÄ¹Ü¼ş
+      ;; å°†åŸç‚¹ç§»åŠ¨åˆ°ä¸‹ä¸€ä¸ªå°†è¦ç»˜åˆ¶çš„ç®¡ä»¶
       (setq $psk-block-base
 	     (polar $psk-block-base
 		    $psk-block-angle
@@ -93,7 +93,7 @@
 
 
 ;; (psk-keypack-getlength '((".TYPE" . "AXIAL-FAN-GROUP") ("W" . 500) ("H" . 250) ("D" . 320) ("L" . 300) ("L1" . 500)))
-;;; »ñÈ¡¹Ü¼ş°ü¶ÔÂ·¾¶µÄÕ¼ÓÃ³¤¶È
+;;; è·å–ç®¡ä»¶åŒ…å¯¹è·¯å¾„çš„å ç”¨é•¿åº¦
 (defun psk-keypack-getlength (kpack / len)
   (setq len 0.)
   (foreach key (psk-keypack-getitems kpack)
@@ -133,7 +133,7 @@
 
 ;;;(defun c:iv (/ ent)
 ;;;  (while (null ent)
-;;;    (setq ent (entsel "\nÑ¡ÔñÒª²åÈë¹Ü¼şµÄÂ·¾¶:"))
+;;;    (setq ent (entsel "\né€‰æ‹©è¦æ’å…¥ç®¡ä»¶çš„è·¯å¾„:"))
 ;;;  )
 ;;;  (p-startundomark)
 ;;;
@@ -171,7 +171,7 @@
 ;;;  (p-endundomark)
 ;;;  (princ)
 ;;;)
-;; ´´½¨Ò»¸öÕ¼ÓÃÒ»¶Î¹ÜµÀµÄ¹Ü¼ş°ü
+;; åˆ›å»ºä¸€ä¸ªå ç”¨ä¸€æ®µç®¡é“çš„ç®¡ä»¶åŒ…
 ;; (psk-keypack-createinpath (psk-paths-pick 1) "AXIAL-FAN-GROUP")
 (defun psk-keypack-createinpath	(pick name / a e en keypack len	p p1 p2
 				 param path ports prop
@@ -184,12 +184,12 @@
   (setq	keypack	(p-get $psk-keypacks name)
 	desc	(p-get keypack "PARAM")
 	param	(mapcar 'car desc)
-	;; ½«Â·¾¶ÊôĞÔ´«µİ¸ø¹Ü¼ş°ü¶ÔÏó
+	;; å°†è·¯å¾„å±æ€§ä¼ é€’ç»™ç®¡ä»¶åŒ…å¯¹è±¡
 	prop	(p-get1 path param)
 	prop	(p-set prop '(("D" . 300.) ("L" . 300.) ("L1" . 300.)))
   )
 
-  ;; ÌáÊ¾ÊäÈë´´½¨ÊôĞÔ
+  ;; æç¤ºè¾“å…¥åˆ›å»ºå±æ€§
   (setq	prop	(propertybag-edit
 		  prop
 		  desc
@@ -258,7 +258,7 @@
   (setq	kpack (psk-comp-load en)
   )
 
-  ;; ÌáÊ¾ÊäÈë´´½¨ÊôĞÔ
+  ;; æç¤ºè¾“å…¥åˆ›å»ºå±æ€§
   (setq	kpack (propertybag-edit
 		kpack
 		$property-desction

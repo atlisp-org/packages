@@ -1,0 +1,9 @@
+
+;;; 鐩寸嚎鐩镐簰杩炴帴褰㈡垚涔嬫嫇鏈寸粨鏋勭殑鐩稿叧鎿嶄綔 2018-4-1
+;;; 2021-2-17
+
+;; (setq bst (psk-comps-buildbst (psk-comps-ssget) 0.1))
+;; (setq bst (psk-comps-buildbst (psk-comps-ssget) 0.1))
+;; (p-bst-find (getpoint) bst 0.1)
+;; (p-bst-find (getpoint) (psk-comps-buildbst (psk-comps-ssget) 0.1) 0.1)
+;; (<鍥惧厓鍚

@@ -1,6 +1,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Ìí¼Ó ·Ç´òÓ¡Í¼²ã
+;;; æ·»åŠ  éæ‰“å°å›¾å±‚
 (if (= (member "org" (layer:list)) nil)
     (progn
       (command "-layer" "n" "org" "")
@@ -13,7 +13,7 @@
       (command "-layer" "c" "t"  "210,120,60" "noprint" "")
       )
   )
-;;;¶¨ÖÆÖĞÎÄ×ÖÌåÑùÊ½
+;;;å®šåˆ¶ä¸­æ–‡å­—ä½“æ ·å¼
 (if (and (findfile "tssdeng.shx") (findfile "hztxt.shx"))
     (progn
       (if (= (tblsearch "style" "vitalhz") nil)

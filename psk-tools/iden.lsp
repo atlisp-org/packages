@@ -3,7 +3,7 @@
   (if (and (> a 1.65806)
 	   (< a 4.79966)
       )
-    ;; ÎÄ×ÖĞı×ª³¬¹ı95¶Èµ«Ğ¡ÓÚ275¶ÈÊ±ÒªÇó½«ÎÄ×ÖĞı×ª180¶ÈÒÔ·ÀÖ¹ÎÄ×Öµ¹ÖÃ
+    ;; æ–‡å­—æ—‹è½¬è¶…è¿‡95åº¦ä½†å°äº275åº¦æ—¶è¦æ±‚å°†æ–‡å­—æ—‹è½¬180åº¦ä»¥é˜²æ­¢æ–‡å­—å€’ç½®
     (setq a (+ pi a))
   )
   (setq h (* $psk-iden-textheight $psk-iden-scale))
@@ -53,7 +53,7 @@
 ;; (psk-comp-iden (psk-comp-load (car (entsel))))
 (defun psk-comp-iden (en / p ps str tmpl)
   (setq comp (psk-comp-load en))
-  ;; ²ÉÓÃentmake·½Ê½´´½¨Í¼²ãºóÊ×´ÎÖ´ĞĞÏÔÊ¾ÑÕÉ«²»Õı³£»ò²»ÏÔÊ¾µÄÎÊÌâ½â¾ö
+  ;; é‡‡ç”¨entmakeæ–¹å¼åˆ›å»ºå›¾å±‚åé¦–æ¬¡æ‰§è¡Œæ˜¾ç¤ºé¢œè‰²ä¸æ­£å¸¸æˆ–ä¸æ˜¾ç¤ºçš„é—®é¢˜è§£å†³
   (psk-set-customlayerbyid
     (strcat (p-get comp "SERV") "-IDEN")
   )
@@ -94,7 +94,7 @@
   )
 )
 (defun psk-cmd-iden (/ comp comps done r skip)
-  (princ "\nÑ¡ÔñĞèÒª±ê×¢µÄ¹ÜÏß:")
+  (princ "\né€‰æ‹©éœ€è¦æ ‡æ³¨çš„ç®¡çº¿:")
 
   (setq	skip 0
 	done 0
@@ -121,12 +121,12 @@
     )
   )
 
-  (princ (strcat "±ê×¢ÁË " (itoa done) " ¸ö¶ÔÏó"))
+  (princ (strcat "æ ‡æ³¨äº† " (itoa done) " ä¸ªå¯¹è±¡"))
   (if (> skip 0)
     (princ
       (strcat ", "
 	      (itoa skip)
-	      " ¸öÒò³¤¶È¹ıĞ¡ºöÂÔ±ê×¢ ($psk-iden-minlength = "
+	      " ä¸ªå› é•¿åº¦è¿‡å°å¿½ç•¥æ ‡æ³¨ ($psk-iden-minlength = "
 	      (rtos $psk-iden-minlength 2 0)
 	      ")"
       )
@@ -135,7 +135,7 @@
 )
 
 (defun psk-comp-idenequip (en / str tmpl)
-;;;  (princ "\nÑ¡ÔñĞèÒª±ê×¢µÄÉè±¸:")
+;;;  (princ "\né€‰æ‹©éœ€è¦æ ‡æ³¨çš„è®¾å¤‡:")
 ;;;
 ;;;  (foreach e (p-ss->enames
 ;;;	       (ssget '((0 . "INSERT") (-3 ("PSK-EQUIP"))))
@@ -154,8 +154,8 @@
 
 (defun psk-pipegroup-iden (/ a en h p1 p2 p3 pd paths str tlen)
   (while (and
-	   (setq p1 (getpoint "\nÖ¸¶¨Æğµã: "))
-	   (setq p2 (getpoint p1 "\nÖ¸¶¨ÖÕµã: "))
+	   (setq p1 (getpoint "\næŒ‡å®šèµ·ç‚¹: "))
+	   (setq p2 (getpoint p1 "\næŒ‡å®šç»ˆç‚¹: "))
 	   (setq paths
 		  (p-ss->enames
 		    (ssget "F" (list p1 p2) '((0 . "LINE") (-3 ("PSK-PATH"))))
@@ -190,20 +190,20 @@
 	    paths (mapcar (function cadr) paths)
       )
 
-      ;; ÒıÏßÓë±ê×¢Ö±ÏßµÄµÚÒ»¸ö½»µã
+      ;; å¼•çº¿ä¸æ ‡æ³¨ç›´çº¿çš„ç¬¬ä¸€ä¸ªäº¤ç‚¹
       (setq p1 (p-line-closestpoint (car paths) p2 nil))
       (setq a (p-angle-normal (angle p1 p2)))
-      ;; ÒıÏßÓë±ê×¢Ö±ÏßµÄ×îºóÒ»¸ö½»µã
+      ;; å¼•çº¿ä¸æ ‡æ³¨ç›´çº¿çš„æœ€åä¸€ä¸ªäº¤ç‚¹
       (setq p2 (p-line-closestpoint (last paths) p2 nil))
-      ;; ¼ÆËãÒıÏßÖÕµã
+      ;; è®¡ç®—å¼•çº¿ç»ˆç‚¹
       (setq p3 (polar p2 a $psk-iden-offset))
-      ;; Ã¿ĞĞ±ê×¢×Ü¸ß£¨º¬ÎÄ×Öµ×Ïß£©
+      ;; æ¯è¡Œæ ‡æ³¨æ€»é«˜ï¼ˆå«æ–‡å­—åº•çº¿ï¼‰
       (setq h (* (+ 1. $psk-iden-textheight) $psk-iden-scale))
 
       (setq tlen  nil
 	    elast (entlast)
       )
-      ;; Éú³ÉËùÓĞÎÄ×ÖÄÚÈİ
+      ;; ç”Ÿæˆæ‰€æœ‰æ–‡å­—å†…å®¹
       (foreach path paths
 	(setq path (psk-comp-load path))
 	(psk-set-customlayerbyid
@@ -220,7 +220,7 @@
 	)
       )
 
-      ;; ÎÄ×Öµ×Ïß³¤¶È
+      ;; æ–‡å­—åº•çº¿é•¿åº¦
       (setq tlen (apply (function max) tlen)
 	    tlen (+ 200 (p-round tlen 100))
       )
@@ -230,7 +230,7 @@
 	(setq p3 (polar p2 a (- $psk-iden-offset (* h 1.5))))
 	(setq p3 (polar p2 a (- $psk-iden-offset (* h 0.5))))
       )
-      ;; ËùÓĞÎÄ×Öµ×Ïß
+      ;; æ‰€æœ‰æ–‡å­—åº•çº¿
       (foreach path paths
 	(setq p3 (polar p3 a h))
 	(p-make-line
@@ -241,7 +241,7 @@
       (setq p1 (polar p3 (- a $pi/2) (* tlen -0.5)))
       (p-make-line p1 (p-line-closestpoint (car paths) p1 t))
 
-      ;; ÌáÊ¾ÒÆ¶¯±ê×¢
+      ;; æç¤ºç§»åŠ¨æ ‡æ³¨
 ;;;      (setq ss (p-enames-after elast nil))
 ;;;      (command "_.MOVE" ss "" pd (getdist pd))
     )
@@ -250,9 +250,9 @@
 ;;
 ;;;(defun psk-pipegroup-iden (/ a en h p1 p2 p3 paths str tlen)
 ;;;  (while (and
-;;;	   (setq p1 (getpoint "\nÖ¸¶¨Æğµã: "))
-;;;	   (setq p2 (getpoint p1 "\nÖ¸¶¨ÖÕµã: "))
-;;;	   (setq p3 (getpoint p2 "\nÖ¸¶¨ÎÄ×ÖÎ»ÖÃ: "))
+;;;	   (setq p1 (getpoint "\næŒ‡å®šèµ·ç‚¹: "))
+;;;	   (setq p2 (getpoint p1 "\næŒ‡å®šç»ˆç‚¹: "))
+;;;	   (setq p3 (getpoint p2 "\næŒ‡å®šæ–‡å­—ä½ç½®: "))
 ;;;	   (setq paths
 ;;;		  (p-ss->enames
 ;;;		    (ssget "F" (list p1 p2) '((0 . "LINE") (-3 ("PSK-PATH"))))
@@ -260,7 +260,7 @@
 ;;;	   )
 ;;;	 )
 ;;;    (progn
-;;;      ;; È·¶¨±ê×¢Ë³Ğò
+;;;      ;; ç¡®å®šæ ‡æ³¨é¡ºåº
 ;;;      (setq paths
 ;;;		  (mapcar
 ;;;		    (function
@@ -284,20 +284,20 @@
 ;;;	    paths (mapcar (function cadr) paths)
 ;;;      )
 ;;;
-;;;      ;; ÒıÏßÓë±ê×¢Ö±ÏßµÄµÚÒ»¸ö½»µã
+;;;      ;; å¼•çº¿ä¸æ ‡æ³¨ç›´çº¿çš„ç¬¬ä¸€ä¸ªäº¤ç‚¹
 ;;;      (setq p1 (p-line-closestpoint (car paths) p1 nil))
-;;;      ;; ÒıÏßÓë±ê×¢Ö±ÏßµÄ×îºóÒ»¸ö½»µã
+;;;      ;; å¼•çº¿ä¸æ ‡æ³¨ç›´çº¿çš„æœ€åä¸€ä¸ªäº¤ç‚¹
 ;;;      (setq p12 (p-line-closestpoint (last paths) p1 nil))
-;;;      ;; ¼ÆËãÒıÏßÖÕµã
+;;;      ;; è®¡ç®—å¼•çº¿ç»ˆç‚¹
 ;;;      (setq a (angle p1 p12))
 ;;;      (setq p3 (polar p12 a $psk-iden-offset)
 ;;;;;;	    p3 (polar p3 (- a $pi/2) (* tlen -0.5))
 ;;;      )
-;;;      ;; Ã¿ĞĞ±ê×¢×Ü¸ß£¨º¬ÎÄ×Öµ×Ïß£©
+;;;      ;; æ¯è¡Œæ ‡æ³¨æ€»é«˜ï¼ˆå«æ–‡å­—åº•çº¿ï¼‰
 ;;;      (setq h (* (+ 1. $psk-iden-textheight) $psk-iden-scale))
 ;;;
 ;;;      (setq tlen nil)
-;;;      ;; ËùÓĞÎÄ×ÖÄÚÈİ
+;;;      ;; æ‰€æœ‰æ–‡å­—å†…å®¹
 ;;;      (foreach path paths
 ;;;	(setq path (psk-comp-load path))
 ;;;	(psk-set-customlayerbyid
@@ -313,7 +313,7 @@
 ;;;	)
 ;;;      )
 ;;;
-;;;      ;; ÎÄ×Öµ×Ïß³¤¶È
+;;;      ;; æ–‡å­—åº•çº¿é•¿åº¦
 ;;;      (setq tlen (apply (function max) tlen)
 ;;;	    tlen (+ 200 (p-round tlen 100))
 ;;;      )
@@ -323,7 +323,7 @@
 ;;;	(setq p3 (polar p2 a (- $psk-iden-offset (* h 0.5))))
 ;;;	(setq p3 (polar p2 a (- $psk-iden-offset (* h 1.5))))
 ;;;      )
-;;;      ;; ËùÓĞÎÄ×Öµ×Ïß
+;;;      ;; æ‰€æœ‰æ–‡å­—åº•çº¿
 ;;;      (foreach path paths
 ;;;	(setq p3 (polar p3 a h))
 ;;;	(p-make-line

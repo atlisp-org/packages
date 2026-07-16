@@ -1,22 +1,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; base : @lisp »ù´¡¿â
+;;; base : @lisp åŸºç¡€åº“
 ;;; Author: VitalGG<vitalgg@gmail.com>
-;;; Description: »ùÓÚ AutoLisp/VisualLisp ¿ª·¢µÄ»æÍ¼¹¤¾ß¼¯
+;;; Description: åŸºäºŽ AutoLisp/VisualLisp å¼€å‘çš„ç»˜å›¾å·¥å…·é›†
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ÊýÑ§¿â lib-math.lsp
-;;; »ù±¾³£ÓÃº¯Êý¡£
+;;; æ•°å­¦åº“ lib-math.lsp
+;;; åŸºæœ¬å¸¸ç”¨å‡½æ•°ã€‚
 
 (defun m:coordinate-rotate (point2d angle1 / x y)
-  "×ø±êÐý×ª"
+  "åæ ‡æ—‹è½¬"
   (setq x (car point2d))
   (setq y (cadr point2d))
   (list (- (* x (cos angle1)) (* y (sin angle1)))
 	(+ (* x (sin angle1)) (* y (cos angle1)))))
 (defun m:coordinate-scale (point scale)
-  "×ø±êËõ·Å"
+  "åæ ‡ç¼©æ”¾"
   (mapcar '(lambda (a) (* scale a)) point))
 (defun m:coordinate (p-base point2d  / x y z)
-  "×ø±êÏòÁ¿±ä»»"
+  "åæ ‡å‘é‡å˜æ¢"
   (setq x (car point2d))
   (setq y (cadr point2d))
   (list (+ (car p-base) x)
@@ -39,8 +39,8 @@
   
   )
 (defun geometry:angle (segment / pt1 pt2  dist-o)
-  "Ö±Ïß(Ïß¶Î)Óë×ø±êÖáxyzµÄ¼Ð½ÇÁÐ±í"
-  "Á½µãÖ±ÏßÓëx y z ÖáµÄ¼Ð½Ç(»¡¶È)"
+  "ç›´çº¿(çº¿æ®µ)ä¸Žåæ ‡è½´xyzçš„å¤¹è§’åˆ—è¡¨"
+  "ä¸¤ç‚¹ç›´çº¿ä¸Žx y z è½´çš„å¤¹è§’(å¼§åº¦)"
   "(geometry:angel '((0 0 0)(1 1 1)))"
   (setq pt1 (car segment)
 	pt2 (cadr segment))
@@ -59,8 +59,8 @@
 (defun geometry:segment-by-line (line)
   (list (entity:getdxf line 10)(entity:getdxf line 11)))
 (defun geometry:segment-mid (segment)
-  "ÇóÏß¶ÎµÄÖÐµã×ø±ê"
-  "ÈýÎ¬×ø±êÖµ"
+  "æ±‚çº¿æ®µçš„ä¸­ç‚¹åæ ‡"
+  "ä¸‰ç»´åæ ‡å€¼"
   (list (* 0.5 (+ (car (car segment))
 		  (car (cadr segment))))
 	(* 0.5 (+ (cadr (car segment))
@@ -71,7 +71,7 @@
 	    0)))
 
 (defun geometry:dist-pt-line (pt segment / an )
-  "Çóµãµ½Ïß¶ÎµÄ¾àÀë"
+  "æ±‚ç‚¹åˆ°çº¿æ®µçš„è·ç¦»"
   "number"
   "(geometry:dist-pt-line '(0 0 0) '((1 0 0)(0 1 0)))"
   (setq an (angle (car segment)(cadr segment)))
@@ -99,30 +99,30 @@
 (defun geometry:point-3d->2d (pt)
   (cons (car pt)(cadr pt)))
 (defun geometry:on-segment (pt segment)
-  "ÅÐ¶ÏÒ»¸öÓëÏß¶Î¹²ÏßµÄµãÊÇ·ñÔÚÏß¶ÎÉÏ¡£"
+  "åˆ¤æ–­ä¸€ä¸ªä¸Žçº¿æ®µå…±çº¿çš„ç‚¹æ˜¯å¦åœ¨çº¿æ®µä¸Šã€‚"
   (and (>= (car pt) (apply 'min (mapcar 'car segment)))
        (<= (car pt) (apply 'max (mapcar 'car segment)))
        (>= (cadr pt) (apply 'min (mapcar 'cadr segment)))
        (<= (cadr pt) (apply 'max (mapcar 'cadr segment)))))
 (defun geometry:convexhull-by-jarvis (pts / pfirst p0 p1 pmax1 pmax2 pp)
-  "×îÐ¡Í¹°üËã·¨: jarvis ²½½ø·¨£¬package wrapping or gift wrapping"
+  "æœ€å°å‡¸åŒ…ç®—æ³•: jarvis æ­¥è¿›æ³•ï¼Œpackage wrapping or gift wrapping"
   (cond
     ((= (length pts) 0)
      nil
      )
     ((or nil (= (length pts) 1) (= (length pts) 2))
      (progn
-       (alert "ÄãÊäÈëµÄµãÎªÁ½µã»òÒ»µã!")
+       (alert "ä½ è¾“å…¥çš„ç‚¹ä¸ºä¸¤ç‚¹æˆ–ä¸€ç‚¹!")
        pts
        )
      )
     (t
      (progn
-       ;;¶¨ÒåÊ¸Á¿Ö®²æ»ý,¼´¶þ½×ÐÐÁÐÊ½Ö®Öµ-----
+       ;;å®šä¹‰çŸ¢é‡ä¹‹å‰ç§¯,å³äºŒé˜¶è¡Œåˆ—å¼ä¹‹å€¼-----
        (defun det2 (p1 p2)
 	 (- (* (car p1) (cadr p2)) (* (car p2) (cadr p1)))
 	 )
-       ;;¶¨ÒåÈýµãµÄÐÐÁÐÊ½,¼´ÈýµãÖ®±¶Ãæ»ý-----
+       ;;å®šä¹‰ä¸‰ç‚¹çš„è¡Œåˆ—å¼,å³ä¸‰ç‚¹ä¹‹å€é¢ç§¯-----
        (defun det (p1 p2 p3)
 	 (+ (det2 p1 p2) (det2 p2 p3) (det2 p3 p1))
 	 )
@@ -132,7 +132,7 @@
 	       (t 0)
 	       )
 	 )
-       ;;¶¨ÒåË³Ê±Õë·½ÏòµÄ¼Ð½ÇÎªÕýÖµ£¬·´Ö®Îª¸º
+       ;;å®šä¹‰é¡ºæ—¶é’ˆæ–¹å‘çš„å¤¹è§’ä¸ºæ­£å€¼ï¼Œåä¹‹ä¸ºè´Ÿ
        (defun ang (p1 p2 p3 / x)
 	 (setq x (abs (- (angle p1 p3) (angle p1 p2))))
 	 (if (equal p3 p1 1e-8)
@@ -150,7 +150,7 @@
 	     )
 	 )
        ;;************************************
-       ;;³ÌÐòÖ÷¶Î****************************
+       ;;ç¨‹åºä¸»æ®µ****************************
        (defun maxium (pts)
 	 (car (vl-sort pts
 		       '(lambda (e1 e2)
@@ -162,7 +162,7 @@
 		       )
 	      )
 	 )
-       ;;¼ÆËã--------------------------------
+       ;;è®¡ç®—--------------------------------
        (setq p0 (maxium pts))
        (setq p1 p0 pfirst p0 p0 (list (car p0) (+ 1.0 (cadr p0)) (caddr p0)))
        (setq pmax1 p1)
@@ -181,11 +181,11 @@
     )
   )
 (defun geometry:convexhull-by-graham-scan (pts / d i p0)
-  "graham-scanËã·¨¼ÆËãµã¼¯Í¹°ü
-²ÎÊý: pts:µã±í"
-  "Í¹°üµã±í"
+  "graham-scanç®—æ³•è®¡ç®—ç‚¹é›†å‡¸åŒ…
+å‚æ•°: pts:ç‚¹è¡¨"
+  "å‡¸åŒ…ç‚¹è¡¨"
   "(geometry:convexhull-by-graham-scan '(pt1 pt2 pt3 ...))"
-  ;;µã¼¯°´ yx ×ø±êÅÅÐò
+  ;;ç‚¹é›†æŒ‰ yx åæ ‡æŽ’åº
   (setq pts
 	(vl-sort
 	 pts
@@ -195,8 +195,8 @@
 	     ((equal (cadr p1) (cadr p2) 1e-8)
 	      (< (car p1) (car p2))
 	      ))))) 
-  (setq p0 (car pts)) ;¸ù¾Ý×ø±êÅÅÐò½á¹ûÑ¡È¡YÖµ×îÐ¡£¬Í¬Ê±X×îÐ¡µÄµã×÷ÎªÍ¹°üµÄµÚÒ»¸öµã
-  ;;°´¼«½ÇÅÅÐò
+  (setq p0 (car pts)) ;æ ¹æ®åæ ‡æŽ’åºç»“æžœé€‰å–Yå€¼æœ€å°ï¼ŒåŒæ—¶Xæœ€å°çš„ç‚¹ä½œä¸ºå‡¸åŒ…çš„ç¬¬ä¸€ä¸ªç‚¹
+  ;;æŒ‰æžè§’æŽ’åº
   (setq pts
 	(vl-sort
 	 (cdr pts)
@@ -207,26 +207,26 @@
 	     ((equal m n 1e-8)
 	      (< (distance p1 p0) (distance p2 p0))
 	      ))))))
-  ;;¹¹ÔìÍ¹°üËã·¨
-  (setq pt-hull (list (cadr pts) (car pts) p0)) ;¹¹½¨³õÊ¼Í¹°üµã¼¯
-  (foreach curpt (cddr pts)  ;±éÀúÊ£Óàµã
-	   (setq pt-hull (cons curpt pt-hull))  ;µ±Ç°µãÈëÕ»   
+  ;;æž„é€ å‡¸åŒ…ç®—æ³•
+  (setq pt-hull (list (cadr pts) (car pts) p0)) ;æž„å»ºåˆå§‹å‡¸åŒ…ç‚¹é›†
+  (foreach curpt (cddr pts)  ;éåŽ†å‰©ä½™ç‚¹
+	   (setq pt-hull (cons curpt pt-hull))  ;å½“å‰ç‚¹å…¥æ ˆ   
 	   (while (and (caddr pt-hull)
 		       (geometry:turn-right-p (caddr pt-hull) (cadr pt-hull) curpt))
-	     (setq pt-hull (cons curpt (cddr pt-hull))) ;ÅÐ¶ÏÕâÊ±ºòµÄÍ¹°üÇ°ÈýµãÊÇ·ñ×ó×ª£¬Èç¹û·Ç×ó×ª£¬½«µÚ¶þµãÉ¾³ý
+	     (setq pt-hull (cons curpt (cddr pt-hull))) ;åˆ¤æ–­è¿™æ—¶å€™çš„å‡¸åŒ…å‰ä¸‰ç‚¹æ˜¯å¦å·¦è½¬ï¼Œå¦‚æžœéžå·¦è½¬ï¼Œå°†ç¬¬äºŒç‚¹åˆ é™¤
 	     )
 	   )
   )
 (defun-q geometry:turn-right-p (pt1 pt2 pt3 / det2 det x)
-  "ÅÐ¶ÏÈýµãµÄ×ª½Ç·½Ïò¡£"
-  "Ë³Ê±Õë·½ÏòµÄ¼Ð½ÇÎªÕýÖµ£¬·´Ö®Îª¸º, 0ÎªÖ±Ïß¡£"
+  "åˆ¤æ–­ä¸‰ç‚¹çš„è½¬è§’æ–¹å‘ã€‚"
+  "é¡ºæ—¶é’ˆæ–¹å‘çš„å¤¹è§’ä¸ºæ­£å€¼ï¼Œåä¹‹ä¸ºè´Ÿ, 0ä¸ºç›´çº¿ã€‚"
   (defun det2 (p1 p2)
-    "Ê¸Á¿²æ»ý"
+    "çŸ¢é‡å‰ç§¯"
     (- (* (car p1) (cadr p2)) (* (car p2) (cadr p1)))
     )
   
   (defun det (p1 p2 p3)
-    "¶¨ÒåÈýµãµÄÐÐÁÐÊ½,¼´ÈýµãÖ®±¶Ãæ»ý"
+    "å®šä¹‰ä¸‰ç‚¹çš„è¡Œåˆ—å¼,å³ä¸‰ç‚¹ä¹‹å€é¢ç§¯"
     (+ (det2 p1 p2) (det2 p2 p3) (det2 p3 p1))
     )
   (setq x (abs (- (angle pt1 pt3) (angle pt1 pt2))))
@@ -245,15 +245,15 @@
     )
   )
 (defun-q geometry:turn-left-p (pt1 pt2 pt3 / det2 det x)
-  "ÅÐ¶ÏÈýµãµÄ×ª½Ç·½Ïò¡£"
-  "Ë³Ê±Õë·½ÏòµÄ¼Ð½ÇÎªÕýÖµ£¬·´Ö®Îª¸º, 0ÎªÖ±Ïß¡£"
+  "åˆ¤æ–­ä¸‰ç‚¹çš„è½¬è§’æ–¹å‘ã€‚"
+  "é¡ºæ—¶é’ˆæ–¹å‘çš„å¤¹è§’ä¸ºæ­£å€¼ï¼Œåä¹‹ä¸ºè´Ÿ, 0ä¸ºç›´çº¿ã€‚"
   (defun det2 (p1 p2)
-    "Ê¸Á¿²æ»ý"
+    "çŸ¢é‡å‰ç§¯"
     (- (* (car p1) (cadr p2)) (* (car p2) (cadr p1)))
     )
   
   (defun det (p1 p2 p3)
-    "¶¨ÒåÈýµãµÄÐÐÁÐÊ½,¼´ÈýµãÖ®±¶Ãæ»ý"
+    "å®šä¹‰ä¸‰ç‚¹çš„è¡Œåˆ—å¼,å³ä¸‰ç‚¹ä¹‹å€é¢ç§¯"
     (+ (det2 p1 p2) (det2 p2 p3) (det2 p3 p1))
     )
   (setq x (abs (- (angle pt1 pt3) (angle pt1 pt2))))

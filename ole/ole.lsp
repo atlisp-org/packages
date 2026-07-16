@@ -1,14 +1,14 @@
-(@::define-config 'ole:gap 300  "²åÈëÍ¼ÏñµÄË®Æ½¼äÏ¶")
-(@::define-config 'ole:scale 1.0  "²åÈëÍ¼ÏñÓëÔ­Í¼µÄ±ÈÀı")
-(@::define-config 'ole:width 3000.0 "Í¼Ïñ¿í¶È")
-(@::define-config 'ole:img-types "jpg,png"  "Í¼ÏñÎÄ¼şÀàĞÍ,ÒÔ¶ººÅ·Ö¸ô")
-(@::define-config 'ole:title-size 50   "Í¼ÏñÃû³Æ×Ö¸ß")
-(@::define-config 'ole:title-style "ºÚÌå" "Í¼ÏñÃû³Æ×ÖÌåÑùÊ½£¬ĞèÓÃ»§¶¨Òå")
-(@:add-menu "oleÍ¼Ïñ" "oleÉèÖÃ" "(ole:setup)" )
-(@:add-menu "oleÍ¼Ïñ" "ÅúÁ¿²åÈë" "(ole:multi-insert)")
-(@:add-menu "oleÍ¼Ïñ" "²åÈëÍ¼Ïñ" "(ole:insert-img)")
-(@:add-menu "oleÍ¼Ïñ" "ÅäÖÃ»·¾³" "(ole:install)" )
-(@:add-menu "oleÍ¼Ïñ" "ÅúÁ¿¹âÕ¤" "(ole:multi-rasteriamge)")
+(@::define-config 'ole:gap 300  "æ’å…¥å›¾åƒçš„æ°´å¹³é—´éš™")
+(@::define-config 'ole:scale 1.0  "æ’å…¥å›¾åƒä¸åŸå›¾çš„æ¯”ä¾‹")
+(@::define-config 'ole:width 3000.0 "å›¾åƒå®½åº¦")
+(@::define-config 'ole:img-types "jpg,png"  "å›¾åƒæ–‡ä»¶ç±»å‹,ä»¥é€—å·åˆ†éš”")
+(@::define-config 'ole:title-size 50   "å›¾åƒåç§°å­—é«˜")
+(@::define-config 'ole:title-style "é»‘ä½“" "å›¾åƒåç§°å­—ä½“æ ·å¼ï¼Œéœ€ç”¨æˆ·å®šä¹‰")
+(@:add-menu "oleå›¾åƒ" "oleè®¾ç½®" "(ole:setup)" )
+(@:add-menu "oleå›¾åƒ" "æ‰¹é‡æ’å…¥" "(ole:multi-insert)")
+(@:add-menu "oleå›¾åƒ" "æ’å…¥å›¾åƒ" "(ole:insert-img)")
+(@:add-menu "oleå›¾åƒ" "é…ç½®ç¯å¢ƒ" "(ole:install)" )
+(@:add-menu "oleå›¾åƒ" "æ‰¹é‡å…‰æ …" "(ole:multi-rasteriamge)")
 
 (defun ole:setup (/ res)
    (setq @::tmp-search-str "ole:")
@@ -18,12 +18,12 @@
 	  (strcat "powershell "
 		  (@::package-path "ole")"install.ps1")))
 (defun ole:multi-insert ()
-  (@::prompt '("½«ÎÄ¼ş¼ĞÖĞµÄÍ¼ÏñÎÄ¼şjpg/png,²åÈëµ½µ±Ç°dwgÖĞ"
+  (@::prompt '("å°†æ–‡ä»¶å¤¹ä¸­çš„å›¾åƒæ–‡ä»¶jpg/png,æ’å…¥åˆ°å½“å‰dwgä¸­"
 	       ))
   (setq i 0)
-  (if (setq folder (system:get-folder "ÇëÑ¡ÔñÒª²åÈëµÄÍ¼Æ¬ÎÄ¼şËùÓĞÔÚÎÄ¼ş¼Ğ"))
+  (if (setq folder (system:get-folder "è¯·é€‰æ‹©è¦æ’å…¥çš„å›¾ç‰‡æ–‡ä»¶æ‰€æœ‰åœ¨æ–‡ä»¶å¤¹"))
       (progn
-	(setq pt-ins (getpoint "²åÈëµã:"))
+	(setq pt-ins (getpoint "æ’å…¥ç‚¹:"))
 	(if (setq imglst
 		  (vl-sort
 		   (vl-remove ""
@@ -59,15 +59,15 @@
 			      (strcat @::*tmp-path*
 				     "oleimg.lst")))
 	      )
-	    (@::prompt"Ã»ÓĞ·¢ÏÖÍ¼ÏñÎÄ¼ş")
+	    (@::prompt"æ²¡æœ‰å‘ç°å›¾åƒæ–‡ä»¶")
 	    ))
       ))
 (defun ole:insert-img (/ imgfile )
-  (@::prompt '("½«Í¼ÏñÎÄ¼şjpg/png,ÒÔOLE·½Ê½²åÈëµ½µ±Ç°dwgÖĞ"
+  (@::prompt '("å°†å›¾åƒæ–‡ä»¶jpg/png,ä»¥OLEæ–¹å¼æ’å…¥åˆ°å½“å‰dwgä¸­"
 	       ))
-  (if (setq imgfile (getfiled "ÇëÑ¡ÔñÒª²åÈëµÄÍ¼Æ¬" "" "png" 8))
+  (if (setq imgfile (getfiled "è¯·é€‰æ‹©è¦æ’å…¥çš„å›¾ç‰‡" "" "png" 8))
       (progn
-	(setq pt-ins (getpoint "²åÈëµã:"))
+	(setq pt-ins (getpoint "æ’å…¥ç‚¹:"))
 	(or @::enable-start
 	    (@::check-pgp)
 	    (@::patch-pgp) 
@@ -121,12 +121,12 @@
       (setvar "osmode" (- (getvar "osmode") 16384))))
 
 (defun ole:multi-rasteriamge ()
-  (@::prompt '("½«ÎÄ¼ş¼ĞÖĞµÄ¹âÕ¤Í¼ÏñÎÄ¼şjpg/png,²åÈëµ½µ±Ç°dwgÖĞ"
+  (@::prompt '("å°†æ–‡ä»¶å¤¹ä¸­çš„å…‰æ …å›¾åƒæ–‡ä»¶jpg/png,æ’å…¥åˆ°å½“å‰dwgä¸­"
 	       ))
   (setq i 0)
-  (if (setq folder (system:get-folder "ÇëÑ¡ÔñÒª²åÈëµÄÍ¼Æ¬ÎÄ¼şËùÓĞÔÚÎÄ¼ş¼Ğ"))
+  (if (setq folder (system:get-folder "è¯·é€‰æ‹©è¦æ’å…¥çš„å›¾ç‰‡æ–‡ä»¶æ‰€æœ‰åœ¨æ–‡ä»¶å¤¹"))
       (progn
-	(setq pt-ins (getpoint "²åÈëµã:"))
+	(setq pt-ins (getpoint "æ’å…¥ç‚¹:"))
 	(if (setq imglst
 		  (vl-sort
 		   (vl-remove ""
@@ -157,6 +157,6 @@
 			   (@::get-config 'ole:width))
 			   )))
 		    imglst)
-	    (@::prompt"Ã»ÓĞ·¢ÏÖÍ¼ÏñÎÄ¼ş")
+	    (@::prompt"æ²¡æœ‰å‘ç°å›¾åƒæ–‡ä»¶")
 	    ))
       ))

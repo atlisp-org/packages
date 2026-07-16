@@ -1,12 +1,12 @@
 
-;;; Ö±ÏßÏà»¥Á¬½ÓĞÎ³ÉÖ®ÍØÆÓ½á¹¹µÄÏà¹Ø²Ù×÷ 2018-4-1
+;;; ç›´çº¿ç›¸äº’è¿æ¥å½¢æˆä¹‹æ‹“æœ´ç»“æ„çš„ç›¸å…³æ“ä½œ 2018-4-1
 ;;; 2021-2-17
 
 ;; (setq bst (psk-comps-buildbst (psk-comps-ssget) 0.1))
 ;; (setq bst (psk-comps-buildbst (psk-comps-ssget) 0.1))
 ;; (p-bst-find (getpoint) bst 0.1)
 ;; (p-bst-find (getpoint) (psk-comps-buildbst (psk-comps-ssget) 0.1) 0.1)
-;; (<Í¼ÔªÃû: 7ff415f1e150> <Í¼ÔªÃû: 7ff415f1af10>)
+;; (<å›¾å…ƒå: 7ff415f1e150> <å›¾å…ƒå: 7ff415f1af10>)
 (defun psk-comps-buildbst (comps tolerance / pcs ports)
   (foreach comp	comps
     (if	(setq ports (psk-comp-getports comp))
@@ -61,13 +61,13 @@
 	       )
   )
   (cond
-    ;; Ö»ÓĞÒ»¸öºóĞø¹Ü¼ş
+    ;; åªæœ‰ä¸€ä¸ªåç»­ç®¡ä»¶
     ((= 1 (length enames))
      (setq res (psk-comp-nextp res bst (car enames) p))
     )
-    ;; ¶à¸öºóĞø¹Ü¼ş
+    ;; å¤šä¸ªåç»­ç®¡ä»¶
     ((< 1 (length enames))
-     ;; ÓÅÏÈ±éÀú¹ÜµÀ
+     ;; ä¼˜å…ˆéå†ç®¡é“
 ;;;     (setq enames (vl-sort enames
 ;;;			   '(lambda (e1 e2)
 ;;;			      (if (p-xdata-get e1 "PSK-PATH")
@@ -84,7 +84,7 @@
   )
   res
 )
-;; ½¨Á¢Â·¾¶Í¼
+;; å»ºç«‹è·¯å¾„å›¾
 ;; (psk-comp-buildmap (psk-comps-fromviewport) (getpoint))
 ;; ((("92D" "92F") ("922" "921" "923" "91B" "91C" "91A")) "919")
 (defun psk-comp-buildmap (comps p / bst)
@@ -134,7 +134,7 @@
   )
   root
 )
-;; Éú³É¸÷·ÖÖ§(´ÓÖ¸¶¨Æğµãµ½¸÷Ä©¶Ëµã)µÄËùÓĞÂ·¾¶
+;; ç”Ÿæˆå„åˆ†æ”¯(ä»æŒ‡å®šèµ·ç‚¹åˆ°å„æœ«ç«¯ç‚¹)çš„æ‰€æœ‰è·¯å¾„
 ;; (psk-map-enum '((("92D" "92F") ("922" "921" "923" "91B" "91C" "91A")) "919"))
 ;; (("919" "922" "921" "923" "91B" "91C" "91A") ("919" "92D" "92F"))
 ;; (psk-map-enum '((((((("83B") ("83A")) "83C" "800") ((("814") ("811")) "82A" "801")) "802" "7FF") nil) "891" "888"))
@@ -144,15 +144,15 @@
   psk-map-routers
 )
 (defun psk-branch-enum (p / pname routers)
-  (getstring "\nÈ·±£Ö§¹ÜÊÓÍ¼·¶Î§ÄÚ¿É¼û, °´ÈÎÒâ¼ü¼ÌĞø:")
-  (princ "\nÕıÔÚ¼ÆËã...")
+  (getstring "\nç¡®ä¿æ”¯ç®¡è§†å›¾èŒƒå›´å†…å¯è§, æŒ‰ä»»æ„é”®ç»§ç»­:")
+  (princ "\næ­£åœ¨è®¡ç®—...")
   (p-timer-start)
   (setq	routers
 ;;;         (psk-map-enum (psk-comp-buildmap (psk-comps-ssget) p))
         (psk-map-enum (psk-comp-buildmap (psk-comps-fromviewport) p))
 ;;;	pname	(p-getkword1
-;;;		  "Ñ¡ÔñÒªÀÛ¼ÆµÄÊôĞÔ"
-;;;		  '((".PRL" "¹ÜµÀ×èÁ¦")
+;;;		  "é€‰æ‹©è¦ç´¯è®¡çš„å±æ€§"
+;;;		  '((".PRL" "ç®¡é“é˜»åŠ›")
 ;;;		   )
 ;;;		  ".PRL"
 ;;;		)
@@ -173,14 +173,14 @@
 		)
   )
   (princ (strcat
-	   "\r¼ÆËãÍê³É "
+	   "\rè®¡ç®—å®Œæˆ "
 	   (rtos (/ (p-timer-stop) 1000.) 2 1)
 	   " s"
 	 )
   )
   routers
 )
-;;; ±éÀúËùÓĞÖ§¹Ü
+;;; éå†æ‰€æœ‰æ”¯ç®¡
 (defun psk-show-branchs	(p / c pname routers ss)
 
   (setq	routers	(psk-branch-enum p)
@@ -200,12 +200,12 @@
 	      (itoa (setq c (1+ c)))
 	      " / "
 	      (itoa (length routers))
-	      ") ÑØ³Ì×èÁ¦ = "
+	      ") æ²¿ç¨‹é˜»åŠ› = "
 	      ;;(rtos (/ (car router) 1e4) 2 2)
 	      (rtos (car router) 2 2)
-	      "Pa ×Ü³¤ = "
+	      "Pa æ€»é•¿ = "
 	      (rtos (/ (psk-path-totallength (cdr router)) 1e3) 2 2)
-	      "m ÏÂÒ»¸ö:"
+	      "m ä¸‹ä¸€ä¸ª:"
       )
     )
     (setq ss nil)
@@ -229,9 +229,9 @@
       (sssetfirst ss ss)
 
       (princ
-	(strcat	"\nÑØ³Ì×èÁ¦ = "
+	(strcat	"\næ²¿ç¨‹é˜»åŠ› = "
 		(rtos (car router) 2 2)
-		"Pa ×Ü³¤ = "
+		"Pa æ€»é•¿ = "
 		(rtos (/ (psk-path-totallength (cdr router)) 1e3) 2 2)
 		"m"
 	)
@@ -240,7 +240,7 @@
   )
 )
 ;; (psk-path-sum '((("9F6" "9F3") ("9F9")) "9F0" "9FC") 100.)
-;; (psk-path-sum (psk-comp-buildmap (getpoint)) (getreal "ÊäÈëÄ©¶ËÁ÷Á¿"))
+;; (psk-path-sum (psk-comp-buildmap (getpoint)) (getreal "è¾“å…¥æœ«ç«¯æµé‡"))
 ;;;(defun psk-path-sum (map fs / v)
 ;;;  (foreach node	map
 ;;;    (cond ((null node)
@@ -295,7 +295,7 @@
 ;;;)
 
 (defun psk-path-pickend	(/ line p)
-  (if (and (setq line (entsel "Ñ¡Ôñ·ÖÖ§Æğµã:"))
+  (if (and (setq line (entsel "é€‰æ‹©åˆ†æ”¯èµ·ç‚¹:"))
       )
     (progn
       (setq p	 (trans (cadr line) 1 0)
@@ -312,14 +312,14 @@
 (defun psk-path-total (/ p)
   (if (and ;;(setq comps (psk-comps-ssget))
            (setq p (psk-path-pickend))
-	   (getstring "\nÈ·±£Ö§¹ÜÊÓÍ¼·¶Î§ÄÚ¿É¼û, °´ÈÎÒâ¼ü¼ÌĞø:")
+	   (getstring "\nç¡®ä¿æ”¯ç®¡è§†å›¾èŒƒå›´å†…å¯è§, æŒ‰ä»»æ„é”®ç»§ç»­:")
 	   (setq comps (psk-comps-fromviewport2 (p-dxf (car p) 8)))
 	   (setq $psk-total-key
 		  (p-getkword1
-		    "Ñ¡ÔñÒªÀÛ¼ÆµÄÊôĞÔ"
-		    '(("FLR" "Á÷Á¿")
-		      ("CLD" "Àä¸ººÉ")
-		      ("HLD" "ÈÈ¸ººÉ")
+		    "é€‰æ‹©è¦ç´¯è®¡çš„å±æ€§"
+		    '(("FLR" "æµé‡")
+		      ("CLD" "å†·è´Ÿè·")
+		      ("HLD" "çƒ­è´Ÿè·")
 		     )
 		    $psk-total-key
 		  )
@@ -332,7 +332,7 @@
       )
 
       (princ
-	(strcat	"\nÀÛ¼Æ½á¹û: "
+	(strcat	"\nç´¯è®¡ç»“æœ: "
 		(rtos (psk-comp-get (car p) $psk-total-key) 2 2)
 	)
       )
@@ -378,7 +378,7 @@
   v
 )
 
-;; ¸ù¾İÀä¸ººÉkW¼ÆËãÁ÷Á¿m3/s
+;; æ ¹æ®å†·è´Ÿè·kWè®¡ç®—æµé‡m3/s
 ;; density - kg/m3
 ;; dt - C
 
@@ -440,7 +440,7 @@
   )
   r
 )
-;; ¸ù¾İ¸ººÉÑ¡ÀäÄıË®¹Ü¾¶
+;; æ ¹æ®è´Ÿè·é€‰å†·å‡æ°´ç®¡å¾„
 (defun psk-cld->cddn (/ cld dn ss)
   (if (and (setq ss (psk-ss-getpipe)))
     (progn
@@ -458,7 +458,7 @@
     )
   )
 )
-;; ¸ù¾İ¸ººÉ¼ÆËã¶àÁª»úÀäÃ½¹Ü¾¶
+;; æ ¹æ®è´Ÿè·è®¡ç®—å¤šè”æœºå†·åª’ç®¡å¾„
 (defun psk-cld->coppersize (/ cld dn ss)
   (if (and (setq ss (psk-ss-getpipe)))
     (progn
@@ -476,7 +476,7 @@
     )
   )
 )
-;; ¸ù¾İÁ÷Á¿Ô²¹ÜÄÚ¾¶¼ÆËãÁ÷ËÙm/s
+;; æ ¹æ®æµé‡åœ†ç®¡å†…å¾„è®¡ç®—æµé€Ÿm/s
 ;; m3/h mm
 ;;;_$ (psk-flr->flv 50 50.)
 ;;;7.07355
@@ -484,7 +484,7 @@
   (/ flr 3600. (* di di pi 0.25 1e-6))
 )
 
-;; ¸ù¾İÁ÷Á¿Ô²¹ÜÄÚ¾¶±í¼ÆËãDNÄÚ¾¶¼°Á÷ËÙ
+;; æ ¹æ®æµé‡åœ†ç®¡å†…å¾„è¡¨è®¡ç®—DNå†…å¾„åŠæµé€Ÿ
 ;; (psk-flr->dndjflv 50 $psk-pipe-calctable)
 ;; (100 100 1.76839)
 ;; (DN - mm DJ - mm  FLV - m/s)
@@ -502,7 +502,7 @@
   )
   r
 )
-;; ¸ù¾İÁ÷Á¿DN¼ÆËãDNÄÚ¾¶¼°Á÷ËÙ
+;; æ ¹æ®æµé‡DNè®¡ç®—DNå†…å¾„åŠæµé€Ÿ
 (defun psk-flrdn->djflv	(flr dn dns / flv row r)
   (while dns
     (setq row (car dns))
@@ -524,7 +524,7 @@
 
 (defun psk-batch-cld->flr1 (ss / cld den dt flr ss)
   (if (and ss
-           (setq dt (p-edit-value "\nÊäÈëÎÂ²î" 5.))
+           (setq dt (p-edit-value "\nè¾“å…¥æ¸©å·®" 5.))
       )
     (progn
       (setq den 990.)
@@ -540,7 +540,7 @@
               (cons "FLR" flr)
             )
           )
-          (princ "\nÎ´Ö¸¶¨Àä¸ººÉCLDÊôĞÔ")
+          (princ "\næœªæŒ‡å®šå†·è´Ÿè·CLDå±æ€§")
         )
       )
     )
@@ -555,7 +555,7 @@
 )
 
 
-;; Ë®¹Ü×èÁ¦¼ÆËã
+;; æ°´ç®¡é˜»åŠ›è®¡ç®—
 ;;;(psk-batch-flr->dn t)
 (defun psk-batch-flr->dn1 (ss setdn / den dn flr k mu prl ss)
   (if ss
@@ -615,11 +615,11 @@
 (defun psk-flr->ductrectflv (flr w h /)
   (/ flr 3600. w h 1e-6)
 )
-;; ¼ÆËã·ç¹Ü¸ß¶È
+;; è®¡ç®—é£ç®¡é«˜åº¦
 (defun psk-batch-flr->w	(/ flr flv hmax prl ss v w)
   (if (and (setq ss (psk-ss-getductpath))
-	   (setq hmax (p-edit-value "·ç¹ÜÏŞ¸ß" 320.))
-	   (setq v (p-edit-value "×î´ó·çËÙ" 8.))
+	   (setq hmax (p-edit-value "é£ç®¡é™é«˜" 320.))
+	   (setq v (p-edit-value "æœ€å¤§é£é€Ÿ" 8.))
       )
     (progn
       (foreach en (p-ss->enames ss)
@@ -657,7 +657,7 @@
 (defun psk-cmh->prl (flv a b den k mu /)
   (psk-pm flv (/ (* 2. a b) (+ a b) 1e3) mu k den)
 )
-;; ·ç¹Ü×èÁ¦¼ÆËã (psk-batch-cmh->prl)
+;; é£ç®¡é˜»åŠ›è®¡ç®— (psk-batch-cmh->prl)
 (defun psk-batch-cmh->prl (/ a b den flr flv k mu prl ss)
   (if (and (setq ss (psk-ss-getduct)))
     (progn
@@ -690,7 +690,7 @@
 		  )
 		)
 	      )
-	      (princ "\nÊôĞÔW H FLRÖĞÒ»¸ö»ò¶à¸öÎ´¶¨Òå")
+	      (princ "\nå±æ€§W H FLRä¸­ä¸€ä¸ªæˆ–å¤šä¸ªæœªå®šä¹‰")
 	    )
 	  )
 
@@ -753,7 +753,7 @@
   )
   r
 )
-;; ¼ÆËãÑØ³Ì×èÁ¦ÏµÊı
+;; è®¡ç®—æ²¿ç¨‹é˜»åŠ›ç³»æ•°
 ;;;v - m/s
 ;;;d - m
 ;;;mu - m2/s
@@ -789,7 +789,7 @@
 )
 ;; (psk-pm 1.0 0.05 6.03E-06 0.0005 990.)
 ;; (0.0679421 499.1 2825.82)
-;; (×èÁ¦ÏµÊım ¶¯Ñ¹kg/m*s2  ±ÈÄ¦×èPa/m)
+;; (é˜»åŠ›ç³»æ•°m åŠ¨å‹kg/m*s2  æ¯”æ‘©é˜»Pa/m)
 (defun psk-pm (v d mu k den / lmd pd pm)
   (setq	pd  (* v v den 0.5)
 	lmd (psk-lmd-colebrook v d mu k)

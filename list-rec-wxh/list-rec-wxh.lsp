@@ -1,29 +1,29 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'list-rec-wxh:first ÓÃÓÚ Ó¦ÓÃ°ü list-rec-wxh µÄ µÚÒ»¸öÅäÖÃÏî first 
-;; (@:get-config 'list-rec-wxh:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'list-rec-wxh:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "Í³¼Æ" "¾ØĞÎÍ³¼Æ±í" "(list-rec-wxh:draw)" )
-(@:add-menu "Í³¼Æ" "¾ØĞÎ·ÖÉ«" "(list-rec-wxh:stat)" )
+;; å®šä¹‰é…ç½®é¡¹ 'list-rec-wxh:first ç”¨äº åº”ç”¨åŒ… list-rec-wxh çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+;; (@:get-config 'list-rec-wxh:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'list-rec-wxh:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "ç»Ÿè®¡" "çŸ©å½¢ç»Ÿè®¡è¡¨" "(list-rec-wxh:draw)" )
+(@:add-menu "ç»Ÿè®¡" "çŸ©å½¢åˆ†è‰²" "(list-rec-wxh:stat)" )
 
 (defun @:get-lwpoints (en0 / ddlist dd1 tmplist )
-  "Éú³É¶à¶ÎÏßµÄµãĞò"
+  "ç”Ÿæˆå¤šæ®µçº¿çš„ç‚¹åº"
   (setq ddlist nil) 
   (setq tmplist (entget en0))
   (repeat 
-   (cdr (assoc 90 (entget en0))) ;;¼ÆËã½ÚµãÊı
-   (setq dd1 (cdr (assoc 10 tmplist))) ;;È¡¶¥µãÊı¾İ
+   (cdr (assoc 90 (entget en0))) ;;è®¡ç®—èŠ‚ç‚¹æ•°
+   (setq dd1 (cdr (assoc 10 tmplist))) ;;å–é¡¶ç‚¹æ•°æ®
    (setq tmplist (member (assoc 10 tmplist) tmplist))
    (setq tmplist (cdr tmplist))
-   (setq ddlist (append ddlist (list dd1) )) ;;ÏÂÒ»¸ö¶¥µã
+   (setq ddlist (append ddlist (list dd1) )) ;;ä¸‹ä¸€ä¸ªé¡¶ç‚¹
    )
   )
 (defun list-rec-wxh:get-wxh (ent / pts result-pts tmp-pts angle% area% i%)
-  "»ñÈ¡¿íºÍ¸ßµÄÁĞ±í"
+  "è·å–å®½å’Œé«˜çš„åˆ—è¡¨"
   (setq pts (@:get-lwpoints ent))
-  ;; ×ø±ê±ä»»Ö±µ½Ãæ»ı×îĞ¡
+  ;; åæ ‡å˜æ¢ç›´åˆ°é¢ç§¯æœ€å°
   (setq i% 0)
   (setq tmp-pts pts)
   (setq result-pts pts)
@@ -70,7 +70,7 @@
   )
 
 (defun list-rec-wxh:stat (/ ents recs result-stat res% )
-  (@:help (strcat "Í³¼ÆÓĞÔ²½Ç»òµ¹½ÇµÄ¾ØĞÎµÄ³¤¿í£¬²¢ÒÔÑÕÉ«Çø·Ö"))
+  (@:help (strcat "ç»Ÿè®¡æœ‰åœ†è§’æˆ–å€’è§’çš„çŸ©å½¢çš„é•¿å®½ï¼Œå¹¶ä»¥é¢œè‰²åŒºåˆ†"))
   (setq ents (pickset:to-list
 	      (ssget '((0 . "LWPOLYLINE")
 			(-4  . "<AND")
@@ -89,21 +89,21 @@
   result-stat
   )
 (defun list-rec-wxh:draw ( / recs en% en0 pts pt1 i% tmp-pts result-pts area% angle%)
-  (@:help (strcat "Í³¼ÆÓĞÔ²½Ç»òµ¹½ÇµÄ¾ØĞÎµÄ³¤¿í,²¢»æÖÆÁĞ±í"))
+  (@:help (strcat "ç»Ÿè®¡æœ‰åœ†è§’æˆ–å€’è§’çš„çŸ©å½¢çš„é•¿å®½,å¹¶ç»˜åˆ¶åˆ—è¡¨"))
   (setq recs (ssget '((0 . "LWPOLYLINE")
 		      (-4  . "<AND")
 		      (-4 . ">=")(90 . 4)
 		      (-4 . "<=")(90 . 8)
 		      (-4 . "AND>"))))
   (setq en% 0)
-  (setq pt1 (getpoint "ÇëµãÈ¡ÁĞ±íÎ»ÖÃ: "))
+  (setq pt1 (getpoint "è¯·ç‚¹å–åˆ—è¡¨ä½ç½®: "))
   (entity:make-text 
    (format nil "rectang   width               height  ~%" nil)
    pt1 3.5 0 0.8 0 13)
   (while (< en% (sslength recs))
     (setq en0 (ssname recs en%))
     (setq pts (@:get-lwpoints en0))
-    ;; ×ø±ê±ä»»Ö±µ½Ãæ»ı×îĞ¡
+    ;; åæ ‡å˜æ¢ç›´åˆ°é¢ç§¯æœ€å°
     (setq i% 0)
     (setq tmp-pts pts)
     (setq result-pts pts)

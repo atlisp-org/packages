@@ -1,0 +1,6 @@
+(@::def-pkg '((:NAME . "at-text")
+        (:FULL-NAME . "@lisp鏂囨湰")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "1.1.6")
+        (:DESCRIPTION . "@lisp甯哥敤鏂囨湰鎿嶄綔宸ュ叿銆傚姛鑳芥湁鏂囧瓧瀵归綈銆佸姞鍓嶅悗缂€銆佸

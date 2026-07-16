@@ -1,55 +1,55 @@
-;°¢¸Ê¼ÆËãÆ÷(ÃüÁî:ag»òagg£¬ag¿ÉĞŞ¸Ä)-2021.2.24
-(setq GL-precision 3)  ;Ğ¡Êı±£ÁôÎ»Êı£¬Ä¬ÈÏ3Î»£¬×Ô¼º¿É¸ù¾İĞèÒªĞŞ¸Ä
-(setq GL-texthight 400)  ;²åÈëÎÄ×Ö¸ß¶È400£¬×Ô¼º¿É¸ù¾İĞèÒªĞŞ¸Ä
+;é˜¿ç”˜è®¡ç®—å™¨(å‘½ä»¤:agæˆ–aggï¼Œagå¯ä¿®æ”¹)-2021.2.24
+(setq GL-precision 3)  ;å°æ•°ä¿ç•™ä½æ•°ï¼Œé»˜è®¤3ä½ï¼Œè‡ªå·±å¯æ ¹æ®éœ€è¦ä¿®æ”¹
+(setq GL-texthight 400)  ;æ’å…¥æ–‡å­—é«˜åº¦400ï¼Œè‡ªå·±å¯æ ¹æ®éœ€è¦ä¿®æ”¹
 
-;ÒÔÏÂÎª¿ì½İ¼ü£¨c:ºóÎª¿ì½İ¼ü£¬;ºÅºóÎª×¢ÊÍ£©£¬×Ô¼º¿É¸ù¾İĞèÒªĞŞ¸Ä
-(defun c:ag() (vl-cmdf "agg")(princ));Æô¶¯ÃüÁîag,¿ÉĞŞ¸Ä
-(defun c:ad() (GL:jiafa)) ;¼Ó
-(defun c:a2() (GL:jianfa)) ;¼õ
-(defun c:a3() (GL:chengfa)) ;³Ë
-(defun c:a4() (GL:chufa)) ;³ı
-(defun c:sq() (c:shiqutxt)) ;Ê°È¡
-(defun c:css() (command "GC:agcalcss")) ;²åËãÊ½
+;ä»¥ä¸‹ä¸ºå¿«æ·é”®ï¼ˆc:åä¸ºå¿«æ·é”®ï¼Œ;å·åä¸ºæ³¨é‡Šï¼‰ï¼Œè‡ªå·±å¯æ ¹æ®éœ€è¦ä¿®æ”¹
+(defun c:ag() (vl-cmdf "agg")(princ));å¯åŠ¨å‘½ä»¤ag,å¯ä¿®æ”¹
+(defun c:ad() (GL:jiafa)) ;åŠ 
+(defun c:a2() (GL:jianfa)) ;å‡
+(defun c:a3() (GL:chengfa)) ;ä¹˜
+(defun c:a4() (GL:chufa)) ;é™¤
+(defun c:sq() (c:shiqutxt)) ;æ‹¾å–
+(defun c:css() (command "GC:agcalcss")) ;æ’ç®—å¼
 
-;ÒÔÏÂÎª¿ì½İ¼ü£¨¼ÆËã²¢²åÈë½á¹û£©£¬×Ô¼º¿É¸ù¾İĞèÒªĞŞ¸Ä
-(defun c:ys() (if (GL:jiafa)(GL:crjswz GL-result))(princ)) ;¼Ó
-(defun c:y2() (if (GL:jianfa)(GL:crjswz GL-result))(princ)) ;¼õ
-(defun c:y3() (if (GL:chengfa)(GL:crjswz GL-result))(princ)) ;³Ë
-(defun c:y4() (if (GL:chufa)(GL:crjswz GL-result))(princ)) ;³ı
+;ä»¥ä¸‹ä¸ºå¿«æ·é”®ï¼ˆè®¡ç®—å¹¶æ’å…¥ç»“æœï¼‰ï¼Œè‡ªå·±å¯æ ¹æ®éœ€è¦ä¿®æ”¹
+(defun c:ys() (if (GL:jiafa)(GL:crjswz GL-result))(princ)) ;åŠ 
+(defun c:y2() (if (GL:jianfa)(GL:crjswz GL-result))(princ)) ;å‡
+(defun c:y3() (if (GL:chengfa)(GL:crjswz GL-result))(princ)) ;ä¹˜
+(defun c:y4() (if (GL:chufa)(GL:crjswz GL-result))(princ)) ;é™¤
 
-;ÒÔÏÂÎª¿ì½İ¼ü£¨¼ÆËã²¢²åÈëËãÊ½£©£¬×Ô¼º¿É¸ù¾İĞèÒªĞŞ¸Ä
-(defun c:dd() (if (GL:jiafa)(GL:crjswz GL-formula))(princ)) ;¼Ó
-(defun c:d2() (if (GL:jianfa)(GL:crjswz GL-formula))(princ)) ;¼õ
-(defun c:d3() (if (GL:chengfa)(GL:crjswz GL-formula))(princ)) ;³Ë
-(defun c:d4() (if (GL:chufa)(GL:crjswz GL-formula))(princ)) ;³ı
+;ä»¥ä¸‹ä¸ºå¿«æ·é”®ï¼ˆè®¡ç®—å¹¶æ’å…¥ç®—å¼ï¼‰ï¼Œè‡ªå·±å¯æ ¹æ®éœ€è¦ä¿®æ”¹
+(defun c:dd() (if (GL:jiafa)(GL:crjswz GL-formula))(princ)) ;åŠ 
+(defun c:d2() (if (GL:jianfa)(GL:crjswz GL-formula))(princ)) ;å‡
+(defun c:d3() (if (GL:chengfa)(GL:crjswz GL-formula))(princ)) ;ä¹˜
+(defun c:d4() (if (GL:chufa)(GL:crjswz GL-formula))(princ)) ;é™¤
 
-;¡ı¡ı¡ıÒÔÏÂÄÚÈİ¾¡Á¿²»ÒªĞŞ¸Ä(ÓĞÒ»¶¨lisp±à³Ì»ù´¡³ıÍâ)¡ı¡ı¡ı
+;â†“â†“â†“ä»¥ä¸‹å†…å®¹å°½é‡ä¸è¦ä¿®æ”¹(æœ‰ä¸€å®šlispç¼–ç¨‹åŸºç¡€é™¤å¤–)â†“â†“â†“
 (vl-load-com)
-;; (setq cadpath (vla-get-Path (vlax-get-acad-object))) ;»ñÈ¡CAD°²×°Â·¾¶
+;; (setq cadpath (vla-get-Path (vlax-get-acad-object))) ;è·å–CADå®‰è£…è·¯å¾„
 (setq vers (substr (getvar "acadver") 1 2))
 (if (< (atoi vers) 19)
-    (command "netload" (strcat (@:package-path "agan-cal") "AganCal18.dll")) ;DLLÎÄ¼şÎ»ÖÃ£¬¿ÉĞŞ¸Ä
-    (command "netload" (strcat (@:package-path "agan-cal") "AganCal.dll"))) ;DLLÎÄ¼şÎ»ÖÃ£¬¿ÉĞŞ¸Ä
-(GC:agrecord (strcat (@:package-path "agan-cal") "ÀúÊ·¼ÇÂ¼.txt")) ;ÀúÊ·¼ÇÂ¼txtÎÄ¼şÎ»ÖÃ£¬¿ÉĞŞ¸Ä
+    (command "netload" (strcat (@:package-path "agan-cal") "AganCal18.dll")) ;DLLæ–‡ä»¶ä½ç½®ï¼Œå¯ä¿®æ”¹
+    (command "netload" (strcat (@:package-path "agan-cal") "AganCal.dll"))) ;DLLæ–‡ä»¶ä½ç½®ï¼Œå¯ä¿®æ”¹
+(GC:agrecord (strcat (@:package-path "agan-cal") "å†å²è®°å½•.txt")) ;å†å²è®°å½•txtæ–‡ä»¶ä½ç½®ï¼Œå¯ä¿®æ”¹
 
-(command "cal")(command)     ;ÏÈµ÷ÓÃcal£¬·ñÔòºóÃæcalº¯ÊıÎŞ·¨Ê¹ÓÃ
-(setq GL-result "")          ;¼ÆËã½á¹û£¬È«¾Ö±äÁ¿
-(setq GL-formula "")         ;ËãÊ½
+(command "cal")(command)     ;å…ˆè°ƒç”¨calï¼Œå¦åˆ™åé¢calå‡½æ•°æ— æ³•ä½¿ç”¨
+(setq GL-result "")          ;è®¡ç®—ç»“æœï¼Œå…¨å±€å˜é‡
+(setq GL-formula "")         ;ç®—å¼
 
-;c#µ÷ÓÃlispÃüÁî
-(defun c:GL-ad() (GL:jiafa)) ;¼Ó
-(defun c:GL-a2() (GL:jianfa)) ;¼õ
-(defun c:GL-a3() (GL:chengfa)) ;³Ë
-(defun c:GL-a4() (GL:chufa)) ;³ı
+;c#è°ƒç”¨lispå‘½ä»¤
+(defun c:GL-ad() (GL:jiafa)) ;åŠ 
+(defun c:GL-a2() (GL:jianfa)) ;å‡
+(defun c:GL-a3() (GL:chengfa)) ;ä¹˜
+(defun c:GL-a4() (GL:chufa)) ;é™¤
 
 (defun GL:jiafa ()(GL:Galculate (GL:GetNumber "+")))
 (defun GL:jianfa ()(GL:Galculate (GL:GetNumber "-")))
 (defun GL:chengfa ()(GL:Galculate (GL:GetNumber "*")))
 (defun GL:chufa ()(GL:Galculate (GL:GetNumber "/")))
 
-;Ñ¡ÔñÎÄ×Ö
+;é€‰æ‹©æ–‡å­—
 (defun GL:GetNumber (ope / *error* en en-lst lst n num pt ss ss_data)
-  (defun *error* (x) ;³ö´íº¯Êı
+  (defun *error* (x) ;å‡ºé”™å‡½æ•°
     (UnHighLight en-lst)
     (setvar "ErrNo" 0)
     (princ x)
@@ -57,22 +57,22 @@
   (setvar "ErrNo" 0)
   (setq en-lst (list))
   (while (/= (getvar "ErrNo") 52)
-    (if (setq ss (ssget ":S" '((0 . "*TEXT,DIMENSION,INSERT,ATTDEF,ACAD_TABLE,TCH_ELEVATION,TCH_SPACE,TCH_DRAWINGNAME")))) ; Ê°È¡ÎÄ×Ö¡¢³ß´ç±ê×¢¡¢ÊôĞÔ×Ö¡¢CAD±í¸ñ¡¢ÌìÕı£º±ê¸ß¡¢Ãæ»ı¡¢Í¼Ãû
+    (if (setq ss (ssget ":S" '((0 . "*TEXT,DIMENSION,INSERT,ATTDEF,ACAD_TABLE,TCH_ELEVATION,TCH_SPACE,TCH_DRAWINGNAME")))) ; æ‹¾å–æ–‡å­—ã€å°ºå¯¸æ ‡æ³¨ã€å±æ€§å­—ã€CADè¡¨æ ¼ã€å¤©æ­£ï¼šæ ‡é«˜ã€é¢ç§¯ã€å›¾å
     (progn
 	(if (= (caar (setq ss_data (ssnamex ss 0))) 1)
-	  (progn ;µãÑ¡Ê±
+	  (progn ;ç‚¹é€‰æ—¶
 	    (setq pt (trans (cadr (last (car ss_data))) 0 1)
 		      en (car (nentselp pt))
-		      en-lst (reverse en-lst);±íµ¹Ğò
+		      en-lst (reverse en-lst);è¡¨å€’åº
 		      en-lst (cons en en-lst)
 		      en-lst (MJ:delsame en-lst)
-		      en-lst (reverse en-lst);±íµ¹Ğò
+		      en-lst (reverse en-lst);è¡¨å€’åº
 		      n (itoa (length en-lst))
 	    )
 	    (redraw en 3)
-	    (princ (strcat "\nÒÑÊ°È¡ " n " ¸ö¶ÔÏó£º" (GL:Formula en-lst ope)))
+	    (princ (strcat "\nå·²æ‹¾å– " n " ä¸ªå¯¹è±¡ï¼š" (GL:Formula en-lst ope)))
 	  )
-	  (progn ;¿òÑ¡Ê±
+	  (progn ;æ¡†é€‰æ—¶
 	    (setq lst (ss->lst ss)
 		      lst (reverse lst)
 		      en-lst (append en-lst lst)
@@ -80,7 +80,7 @@
 		      n (itoa (length en-lst))
 	    )
 	    (HighLight lst)
-	    (princ (strcat "\nÒÑÊ°È¡" n "¸ö¶ÔÏó£º" (GL:Formula en-lst ope)))
+	    (princ (strcat "\nå·²æ‹¾å–" n "ä¸ªå¯¹è±¡ï¼š" (GL:Formula en-lst ope)))
 	  )
 	)
 	))
@@ -95,11 +95,11 @@
   Num
 )
 
-;ÌáÈ¡ËãÊ½
+;æå–ç®—å¼
 (defun GL:Formula (lst ope / ed en ent i num regex text tn)
-  (setq regex (vlax-create-object "Vbscript.RegExp")) ;ÒıÓÃÕıÔò±í´ïÊ½¿Ø¼ş
-  (vlax-put-property regex "IgnoreCase" 0)            ;²»ºöÂÔ´óĞ¡Ğ´
-  (vlax-put-property regex "Global" 1)                ;È«ÎÄÆ¥Åä£¬¶ø²»ÊÇÖ»Æ¥ÅäµÚÒ»´¦
+  (setq regex (vlax-create-object "Vbscript.RegExp")) ;å¼•ç”¨æ­£åˆ™è¡¨è¾¾å¼æ§ä»¶
+  (vlax-put-property regex "IgnoreCase" 0)            ;ä¸å¿½ç•¥å¤§å°å†™
+  (vlax-put-property regex "Global" 1)                ;å…¨æ–‡åŒ¹é…ï¼Œè€Œä¸æ˜¯åªåŒ¹é…ç¬¬ä¸€å¤„
   (setq i 0 Num "")
   (repeat (length lst)
     (setq en (nth i lst)
@@ -107,18 +107,18 @@
           ent (cdr (assoc 0 ed))
     )
     (cond
-      ((wcmatch ent "MTEXT") (setq text (cdr (assoc 1 ed))) (setq text (mtext2text text)));¶àĞĞÎÄ×Ö
-      ((wcmatch ent "*TEXT,TCH_ELEVATION,TCH_DRAWINGNAME") (setq text (cdr (assoc 1 ed))));ÎÄ×Ö¡¢ÌìÕı£º±ê¸ß¡¢Í¼Ãû
-      ((wcmatch ent "TCH_SPACE") (setq text (cdr (assoc 41 ed))));ÌìÕıÃæ»ı
-      ((wcmatch ent "DIMENSION") (setq text (cdr (assoc 42 ed))));³ß´ç±ê×¢(²âÁ¿Öµ)
-      ((wcmatch ent "ATTDEF") (setq text (cdr (assoc 2 ed))));ÊôĞÔ×Ö(ÌáÈ¡¡°±ê¼Ç¡± ×éÂë2)
+      ((wcmatch ent "MTEXT") (setq text (cdr (assoc 1 ed))) (setq text (mtext2text text)));å¤šè¡Œæ–‡å­—
+      ((wcmatch ent "*TEXT,TCH_ELEVATION,TCH_DRAWINGNAME") (setq text (cdr (assoc 1 ed))));æ–‡å­—ã€å¤©æ­£ï¼šæ ‡é«˜ã€å›¾å
+      ((wcmatch ent "TCH_SPACE") (setq text (cdr (assoc 41 ed))));å¤©æ­£é¢ç§¯
+      ((wcmatch ent "DIMENSION") (setq text (cdr (assoc 42 ed))));å°ºå¯¸æ ‡æ³¨(æµ‹é‡å€¼)
+      ((wcmatch ent "ATTDEF") (setq text (cdr (assoc 2 ed))));å±æ€§å­—(æå–â€œæ ‡è®°â€ ç»„ç 2)
     )
     (if text
      (progn
-      (vlax-put-property regex "Pattern" "[^0-9\\+\\-\\*\\/\\.\\(\\)\\=]") ;Æ¥ÅäÊı×ÖºÍÔËËã·û
+      (vlax-put-property regex "Pattern" "[^0-9\\+\\-\\*\\/\\.\\(\\)\\=]") ;åŒ¹é…æ•°å­—å’Œè¿ç®—ç¬¦
       (setq text (vlax-invoke-method regex "Replace" text ""))
       (if (/= text "")
-       (if (= Num "");±í´ïÊ½¼ÓÀ¨ºÅ 
+       (if (= Num "");è¡¨è¾¾å¼åŠ æ‹¬å· 
         (if (wcmatch text "*`+*,*`-*,*`**,*`/*")
          (setq Num (strcat"(" text ")") TN nil)
          (setq Num text TN nil)
@@ -137,36 +137,36 @@
   Num
 )
 
-;¼ÆËã
+;è®¡ç®—
 (defun GL:Galculate (Num / regex)
-  (setq regex (vlax-create-object "Vbscript.RegExp")) ;ÒıÓÃÕıÔò±í´ïÊ½¿Ø¼ş
-  (vlax-put-property regex "IgnoreCase" 0)            ;²»ºöÂÔ´óĞ¡Ğ´
-  (vlax-put-property regex "Global" 1)                ;È«ÎÄÆ¥Åä£¬¶ø²»ÊÇÖ»Æ¥ÅäµÚÒ»´¦
+  (setq regex (vlax-create-object "Vbscript.RegExp")) ;å¼•ç”¨æ­£åˆ™è¡¨è¾¾å¼æ§ä»¶
+  (vlax-put-property regex "IgnoreCase" 0)            ;ä¸å¿½ç•¥å¤§å°å†™
+  (vlax-put-property regex "Global" 1)                ;å…¨æ–‡åŒ¹é…ï¼Œè€Œä¸æ˜¯åªåŒ¹é…ç¬¬ä¸€å¤„
   (if (and num (/= num ""))
    (progn
-    (if (setq GL-result (cal (strcat Num "*" "1.0"))) ;*1.0½«ÕûÊı×ª»»ÎªĞ¡Êı£¬ÕûÊıÖ»ÄÜ½éÓÚ-32768ºÍ32767Ö®¼ä
+    (if (setq GL-result (cal (strcat Num "*" "1.0"))) ;*1.0å°†æ•´æ•°è½¬æ¢ä¸ºå°æ•°ï¼Œæ•´æ•°åªèƒ½ä»‹äº-32768å’Œ32767ä¹‹é—´
       (progn
 	    (setq GL-result (rtos GL-result 2 GL-precision))
-	    (if (wcmatch GL-result "*.*") ;È¥µôĞ¡Êıµãºó¶àÓà0
+	    (if (wcmatch GL-result "*.*") ;å»æ‰å°æ•°ç‚¹åå¤šä½™0
 	      (progn
-	        (vlax-put-property regex "Pattern" ".0+?$") ;È¥µô.ºó¶àÓàµÄ0
+	        (vlax-put-property regex "Pattern" ".0+?$") ;å»æ‰.åå¤šä½™çš„0
 	        (setq GL-result (vlax-invoke-method regex "Replace" GL-result ""))
-	        (vlax-put-property regex "Pattern" "[.]$") ;Èç×îºóÒ»Î»ÊÇ.ÔòÈ¥µô
+	        (vlax-put-property regex "Pattern" "[.]$") ;å¦‚æœ€åä¸€ä½æ˜¯.åˆ™å»æ‰
 	        (setq GL-result (vlax-invoke-method regex "Replace" GL-result ""))
 	    ))
 	    (setq GL-formula (strcat Num "=" GL-result))
 	    (if (= (car (GC:agform T)) "True")
 	      (progn
-            (GC:agjsjg GL-result Num) ;c#¼ÆËãÆ÷´°¿ÚÏÔÊ¾½á¹û
-            (princ (strcat "\n±í´ïÊ½£º" Num "=" GL-result "  >>>>¼ÆËã½á¹û£º" GL-result))
+            (GC:agjsjg GL-result Num) ;c#è®¡ç®—å™¨çª—å£æ˜¾ç¤ºç»“æœ
+            (princ (strcat "\nè¡¨è¾¾å¼ï¼š" Num "=" GL-result "  >>>>è®¡ç®—ç»“æœï¼š" GL-result))
           )
-          (princ (strcat "\n±í´ïÊ½£º" Num "=" GL-result "  >>>>¼ÆËã½á¹û£º" GL-result  "       !!!!!¼ÆËãÆ÷´°¿ÚÎ´Æô¶¯£¬ÎŞ·¨±£´æÀúÊ·¼ÇÂ¼!!!!!"))
+          (princ (strcat "\nè¡¨è¾¾å¼ï¼š" Num "=" GL-result "  >>>>è®¡ç®—ç»“æœï¼š" GL-result  "       !!!!!è®¡ç®—å™¨çª—å£æœªå¯åŠ¨ï¼Œæ— æ³•ä¿å­˜å†å²è®°å½•!!!!!"))
         )
       )
       (progn
         (setq GL-result "")
         (setq GL-formula "")
-        (alert (strcat Num " ±í´ïÊ½´íÎó" "\n\n»òÊı¾İÌ«´ó³¬³ö¼ÆËã·¶Î§" "\n(Êı¾İĞë½éÓÚ2147483647ºÍ-2147483648 Ö®¼ä>"))
+        (alert (strcat Num " è¡¨è¾¾å¼é”™è¯¯" "\n\næˆ–æ•°æ®å¤ªå¤§è¶…å‡ºè®¡ç®—èŒƒå›´" "\n(æ•°æ®é¡»ä»‹äº2147483647å’Œ-2147483648 ä¹‹é—´>"))
     )))
     (progn
       (setq GL-result "")
@@ -175,41 +175,41 @@
   (princ)
 )
 
-;c#¼ÆËã
+;c#è®¡ç®—
 (defun GCGalculate (str / jg num regex)
-  (setq regex (vlax-create-object "Vbscript.RegExp")) ;ÒıÓÃÕıÔò±í´ïÊ½¿Ø¼ş
-  (vlax-put-property regex "IgnoreCase" 0)            ;²»ºöÂÔ´óĞ¡Ğ´
-  (vlax-put-property regex "Global" 1)                ;È«ÎÄÆ¥Åä£¬¶ø²»ÊÇÖ»Æ¥ÅäµÚÒ»´¦
+  (setq regex (vlax-create-object "Vbscript.RegExp")) ;å¼•ç”¨æ­£åˆ™è¡¨è¾¾å¼æ§ä»¶
+  (vlax-put-property regex "IgnoreCase" 0)            ;ä¸å¿½ç•¥å¤§å°å†™
+  (vlax-put-property regex "Global" 1)                ;å…¨æ–‡åŒ¹é…ï¼Œè€Œä¸æ˜¯åªåŒ¹é…ç¬¬ä¸€å¤„
   (vlax-put-property regex "Pattern" "[^0-9\\+\\-\\*\\/\\.\\(\\)\\=]")
   (setq str (vlax-invoke-method regex "Replace" str ""))
   (if str
    (progn
-     (setq jg (cal (strcat "(" str ")*1.0"))) ;±í´ïÊ½*1.0½«ÕûÊı×ª»»ÎªĞ¡Êı£¬ÕûÊıÖ»ÄÜ½éÓÚ-32768ºÍ32767Ö®¼ä,·ñÔò´óÕûÊı¼ÆËã»Ø³ö´í
+     (setq jg (cal (strcat "(" str ")*1.0"))) ;è¡¨è¾¾å¼*1.0å°†æ•´æ•°è½¬æ¢ä¸ºå°æ•°ï¼Œæ•´æ•°åªèƒ½ä»‹äº-32768å’Œ32767ä¹‹é—´,å¦åˆ™å¤§æ•´æ•°è®¡ç®—å›å‡ºé”™
      (setq GL-result (rtos jg 2 GL-precision))
-	    (if (wcmatch GL-result "*.*") ;È¥µôĞ¡Êıµãºó¶àÓà0
+	    (if (wcmatch GL-result "*.*") ;å»æ‰å°æ•°ç‚¹åå¤šä½™0
 	      (progn
-	        (vlax-put-property regex "Pattern" ".0+?$") ;È¥µô.ºó¶àÓàµÄ0
+	        (vlax-put-property regex "Pattern" ".0+?$") ;å»æ‰.åå¤šä½™çš„0
 	        (setq GL-result (vlax-invoke-method regex "Replace" GL-result ""))
-	        (vlax-put-property regex "Pattern" "[.]$") ;Èç×îºóÒ»Î»ÊÇ.ÔòÈ¥µô
+	        (vlax-put-property regex "Pattern" "[.]$") ;å¦‚æœ€åä¸€ä½æ˜¯.åˆ™å»æ‰
 	        (setq GL-result (vlax-invoke-method regex "Replace" GL-result ""))
 	    ))
-     (GC:agjsjg GL-result str) ;c#¼ÆËãÆ÷´°¿ÚÏÔÊ¾½á¹û
-     (princ (strcat "\n±í´ïÊ½£º" str "=" GL-result "  >>>>¼ÆËã½á¹û£º" GL-result))
+     (GC:agjsjg GL-result str) ;c#è®¡ç®—å™¨çª—å£æ˜¾ç¤ºç»“æœ
+     (princ (strcat "\nè¡¨è¾¾å¼ï¼š" str "=" GL-result "  >>>>è®¡ç®—ç»“æœï¼š" GL-result))
    )
-   (alert (strcat Num " ±í´ïÊ½´íÎó" "\n\n»òÊı¾İÌ«´ó³¬³ö¼ÆËã·¶Î§" "\n(Êı¾İĞë½éÓÚ2147483647ºÍ-2147483648 Ö®¼ä>"))
+   (alert (strcat Num " è¡¨è¾¾å¼é”™è¯¯" "\n\næˆ–æ•°æ®å¤ªå¤§è¶…å‡ºè®¡ç®—èŒƒå›´" "\n(æ•°æ®é¡»ä»‹äº2147483647å’Œ-2147483648 ä¹‹é—´>"))
   )
   (princ)
 )
 
-;Ê°È¡Êı×ÖºÍÔËËã·ûµ½C#´°¿Ú
+;æ‹¾å–æ•°å­—å’Œè¿ç®—ç¬¦åˆ°C#çª—å£
 (defun c:shiqutxt (/ num)
   (setq num (GL:GetNumber "+"))
-  (GC:agjsxs num) ;c#¼ÆËãÆ÷´°¿ÚÏÔÊ¾
-  (princ (princ (strcat "\n±í´ïÊ½£º" num)))
+  (GC:agjsxs num) ;c#è®¡ç®—å™¨çª—å£æ˜¾ç¤º
+  (princ (princ (strcat "\nè¡¨è¾¾å¼ï¼š" num)))
   (princ)
 )
 
-;ÁÁÏÔ¶ÔÏó
+;äº®æ˜¾å¯¹è±¡
 (defun HighLight (en-lst / en i)
   (setq i 0)
   (repeat (length en-lst)
@@ -219,7 +219,7 @@
   )
 )
 
-;È¡ÏûÁÁÏÔ¶ÔÏó
+;å–æ¶ˆäº®æ˜¾å¯¹è±¡
 (defun UnHighLight (en-lst / en i)
   (setq i 0)
   (repeat (length en-lst)
@@ -229,63 +229,63 @@
   )
 )
 
-;Ñ¡Ôñ¼¯->Í¼ÔªÁĞ±í By caiqs --¸ĞĞ»bbs.mjtd.com»Æ×Ü
+;é€‰æ‹©é›†->å›¾å…ƒåˆ—è¡¨ By caiqs --æ„Ÿè°¢bbs.mjtd.comé»„æ€»
 (defun ss->lst (ss / retu)
   (setq retu (apply 'append (ssnamex ss)))
   (setq retu (vl-remove-if-not '(lambda (x) (= (type x) 'ENAME)) retu))
 )
 
-;É¾³ı±íÖĞÏàÍ¬Í¼Ôª--¸ĞĞ»bbs.mjtd.com»Æ×Ü
+;åˆ é™¤è¡¨ä¸­ç›¸åŒå›¾å…ƒ--æ„Ÿè°¢bbs.mjtd.comé»„æ€»
 (defun MJ:delsame (L)
   (if L
     (cons (car L) (MJ:delsame (vl-remove (car L) (cdr L))))
   )
 )
 
-;ÌáÈ¡¶àĞĞÎÄ×Ö,È¥³ıÎŞÓÃ¸ñÊ½·ûºÅ--À´×Ôbbs.mjtd.com
+;æå–å¤šè¡Œæ–‡å­—,å»é™¤æ— ç”¨æ ¼å¼ç¬¦å·--æ¥è‡ªbbs.mjtd.com
 (defun mtext2text (MTextString / regex s)
-  (setq regex(vlax-create-object "Vbscript.RegExp")) ;ÒıÓÃÕıÔò±í´ïÊ½¿Ø¼ş
-  (vlax-put-property regex "IgnoreCase" 0) ;²»ºöÂÔ´óĞ¡Ğ´
-  (vlax-put-property regex "Global" 1) ;Æ¥Åä·½Ê½£¬È«ÎÄ×ÖÆ¥Åä
+  (setq regex(vlax-create-object "Vbscript.RegExp")) ;å¼•ç”¨æ­£åˆ™è¡¨è¾¾å¼æ§ä»¶
+  (vlax-put-property regex "IgnoreCase" 0) ;ä¸å¿½ç•¥å¤§å°å†™
+  (vlax-put-property regex "Global" 1) ;åŒ¹é…æ–¹å¼ï¼Œå…¨æ–‡å­—åŒ¹é…
   (setq s MTextString)
-     ;Ìæ»»\\×Ö·û
+     ;æ›¿æ¢\\å­—ç¬¦
   (vlax-put-property regex "Pattern" "\\\\\\\\")
   (setq s(vlax-invoke-method  regex "Replace" s (chr 1)))
-     ;Ìæ»»\{×Ö·û
+     ;æ›¿æ¢\{å­—ç¬¦
   (vlax-put-property regex "Pattern" "\\\\{")
   (setq s(vlax-invoke-method  regex "Replace" s (chr 2)))
-     ;Ìæ»»\}×Ö·û
+     ;æ›¿æ¢\}å­—ç¬¦
   (vlax-put-property regex "Pattern" "\\\\}")
   (setq s(vlax-invoke-method  regex "Replace" s (chr 3)))
-     ;É¾³ı¶ÎÂäËõ½ø¸ñÊ½
+     ;åˆ é™¤æ®µè½ç¼©è¿›æ ¼å¼
   (vlax-put-property regex "Pattern" "\\\\pi(.[^;]*);")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
-     ;É¾³ıÖÆ±í·û¸ñÊ½
+     ;åˆ é™¤åˆ¶è¡¨ç¬¦æ ¼å¼
   (vlax-put-property regex "Pattern" "\\\\pt(.[^;]*);")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
-     ;É¾³ı¶Ñµü¸ñÊ½
+     ;åˆ é™¤å †è¿­æ ¼å¼
   (vlax-put-property regex "Pattern" "\\\\S(.[^;]*)(\\^|#|\\\\)(.[^;]*);")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
-     ;É¾³ı×ÖÌå¡¢ÑÕÉ«¡¢×Ö¸ß¡¢×Ö¾à¡¢ÇãĞ±¡¢×Ö¿í¡¢¶ÔÆë¸ñÊ½
+     ;åˆ é™¤å­—ä½“ã€é¢œè‰²ã€å­—é«˜ã€å­—è·ã€å€¾æ–œã€å­—å®½ã€å¯¹é½æ ¼å¼
   (vlax-put-property regex "Pattern" "(\\\\F|\\\\f|\\\\C|\\\\H|\\\\\T|\\\\Q|\\\\W|\\\\A)(.[^;]*);")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
-     ;É¾³ıÏÂ»®Ïß¡¢É¾³ıÏß¸ñÊ½
+     ;åˆ é™¤ä¸‹åˆ’çº¿ã€åˆ é™¤çº¿æ ¼å¼
   (vlax-put-property regex "Pattern" "(\\\\L|\\\\O|\\\\l|\\\\o)")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
-     ;É¾³ı²»¼ä¶Ï¿Õ¸ñ¸ñÊ½
+     ;åˆ é™¤ä¸é—´æ–­ç©ºæ ¼æ ¼å¼
   (vlax-put-property regex "Pattern" "\\\\~")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
-     ;É¾³ı»»ĞĞ·û¸ñÊ½
+     ;åˆ é™¤æ¢è¡Œç¬¦æ ¼å¼
   (vlax-put-property regex "Pattern" "\\\\P")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
-     ;É¾³ı»»ĞĞ·û¸ñÊ½(Õë¶ÔShift+Enter¸ñÊ½)
+     ;åˆ é™¤æ¢è¡Œç¬¦æ ¼å¼(é’ˆå¯¹Shift+Enteræ ¼å¼)
   (vlax-put-property regex "Pattern" "\n")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
-     ;É¾³ı{}
+     ;åˆ é™¤{}
   (vlax-put-property regex "Pattern" "({|})")
   (setq s(vlax-invoke-method  regex "Replace" s ""))
      
-     ;Ìæ»»»Ø\\,\{,\}×Ö·û
+     ;æ›¿æ¢å›\\,\{,\}å­—ç¬¦
   (vlax-put-property regex "Pattern" "\\x01")
   (setq s(vlax-invoke-method  regex "Replace" s "\\"))
   (vlax-put-property regex "Pattern" "\\x02")
@@ -297,35 +297,35 @@
   s
 )
 
-;²åÈëÎÄ×Ö-¶¯Ì¬²åÈë
+;æ’å…¥æ–‡å­—-åŠ¨æ€æ’å…¥
 (defun GL:crjswz (GL-result / boolean code en endate motion pt pt2 text-jiaodu TorN)
   (if (/= GL-result "")
     (progn
-      (setq pt (cadr (grread 1)));È¡µÃµ±Ç°¹â±ê×ø±ê
+      (setq pt (cadr (grread 1)));å–å¾—å½“å‰å…‰æ ‡åæ ‡
       (entmake (list
           '(0 . "TEXT")
            (cons 1 GL-result)
            (cons 10 pt)
-           (cons 40 GL-texthight) ;ÎÄ×Ö¸ß¶È
+           (cons 40 GL-texthight) ;æ–‡å­—é«˜åº¦
            )
       )
       (setq en (entlast))
-      (if en ;¶¯Ì¬ÎÄ×Ö
+      (if en ;åŠ¨æ€æ–‡å­—
         (progn
                 (setq TorN t)
                 (setq endate (entget en))
-				(princ "\nµãÈ¡Î»ÖÃ»ò[×ª90¶È(A)/ÓÒ¼üÍË³ö]")
+				(princ "\nç‚¹å–ä½ç½®æˆ–[è½¬90åº¦(A)/å³é”®é€€å‡º]")
 				(setq boolean t)
 				(setq text-jiaodu 0)
 				(while boolean
-					 (setq motion (grread T 8));grread º¯Êı·µ»ØÒ»¸ö±í£¬ÆäÖĞµÚÒ»¸öÔªËØËµÃ÷ÊäÈëÀàĞÍµÄ´úÂë£¬µÚ¶ş¸öÔªËØ¼È¿ÉÄÜÊÇÕûÊı£¬ÓÖ¿ÉÄÜÊÇµã
-					 (setq code (car motion)) ;grread±íµÚÒ»¸öÔªËØÊäÈëÀàĞÍµÄ´úÂë
-					 (setq pt2 (cadr motion)) ;grread±íµÚ¶ş¸öÔªËØ ÍÏ¶¯Ä£Ê½×ø±ê
+					 (setq motion (grread T 8));grread å‡½æ•°è¿”å›ä¸€ä¸ªè¡¨ï¼Œå…¶ä¸­ç¬¬ä¸€ä¸ªå…ƒç´ è¯´æ˜è¾“å…¥ç±»å‹çš„ä»£ç ï¼Œç¬¬äºŒä¸ªå…ƒç´ æ—¢å¯èƒ½æ˜¯æ•´æ•°ï¼Œåˆå¯èƒ½æ˜¯ç‚¹
+					 (setq code (car motion)) ;grreadè¡¨ç¬¬ä¸€ä¸ªå…ƒç´ è¾“å…¥ç±»å‹çš„ä»£ç 
+					 (setq pt2 (cadr motion)) ;grreadè¡¨ç¬¬äºŒä¸ªå…ƒç´  æ‹–åŠ¨æ¨¡å¼åæ ‡
 					 (cond
-					  ((= code 5)   ;Êó±êÍÏ¶¯Ä£Ê½
-						 (entmod (setq endate (subst (cons 10 (trans pt2 1 0)) (assoc 10 endate) endate)));¶¯Ì¬¸ÄÎÄ×Ö×ø±ê
+					  ((= code 5)   ;é¼ æ ‡æ‹–åŠ¨æ¨¡å¼
+						 (entmod (setq endate (subst (cons 10 (trans pt2 1 0)) (assoc 10 endate) endate)));åŠ¨æ€æ”¹æ–‡å­—åæ ‡
 					  )
-					  ((= code 3)   ;Êó±ê×óæI°´ÏÂ
+					  ((= code 3)   ;é¼ æ ‡å·¦éµæŒ‰ä¸‹
 					  (setq boolean nil)
 					  )
 					  ((= code 11)
@@ -351,11 +351,11 @@
 					  )
 					  ((equal motion '(2 65))
 						 (setq text-jiaodu (+ text-jiaodu (/ pi 2)))
-						 (entmod (setq endate (subst (cons 50 text-jiaodu) (assoc 50 endate) endate)));¶¯Ì¬¸ÄÎÄ×Ö½Ç¶È
+						 (entmod (setq endate (subst (cons 50 text-jiaodu) (assoc 50 endate) endate)));åŠ¨æ€æ”¹æ–‡å­—è§’åº¦
 					  )
 					  ((equal motion '(2 97))
 						 (setq text-jiaodu (+ text-jiaodu (/ pi 2)))
-						 (entmod (setq endate (subst (cons 50 text-jiaodu) (assoc 50 endate) endate)));¶¯Ì¬¸ÄÎÄ×Ö½Ç¶È
+						 (entmod (setq endate (subst (cons 50 text-jiaodu) (assoc 50 endate) endate)));åŠ¨æ€æ”¹æ–‡å­—è§’åº¦
 					  )
 					 )
                 );end while

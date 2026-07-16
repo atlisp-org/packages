@@ -1,23 +1,23 @@
-(@:define-config 'route-of-hole2shape:offset 3.0 "µ¶Â·Ïà¶ÔÔ­¶à¶ÎÏßµÄÆ«ÒÆÁ¿£¬ÕıÎªÍâÆ«£¬¸ºÊıÎªÄÚÆ«¡£")
-(@:define-config 'ROUTE-OF-HOLE2SHAPE:layer  "BBB" "µ¶Â·ÏßËùÔÚÍ¼²ã")
-(@:define-config 'ROUTE-OF-HOLE2SHAPE:color  200 "ĞÂ½¨µÄµ¶Â·ÏßÑÕÉ«")
-(@:define-config 'route-of-hole2shape:c2pl-vertex  4 "Ô²×ª¶à¶ÎÏßµÄ¶¥µãÊı¡£¸ÃÖµ²»µÃĞ¡ÓÚ2")
+(@:define-config 'route-of-hole2shape:offset 3.0 "åˆ€è·¯ç›¸å¯¹åŸå¤šæ®µçº¿çš„åç§»é‡ï¼Œæ­£ä¸ºå¤–åï¼Œè´Ÿæ•°ä¸ºå†…åã€‚")
+(@:define-config 'ROUTE-OF-HOLE2SHAPE:layer  "BBB" "åˆ€è·¯çº¿æ‰€åœ¨å›¾å±‚")
+(@:define-config 'ROUTE-OF-HOLE2SHAPE:color  200 "æ–°å»ºçš„åˆ€è·¯çº¿é¢œè‰²")
+(@:define-config 'route-of-hole2shape:c2pl-vertex  4 "åœ†è½¬å¤šæ®µçº¿çš„é¡¶ç‚¹æ•°ã€‚è¯¥å€¼ä¸å¾—å°äº2")
 (setq route-of-hole2shape:*show-clockwise* nil)
 (@:add-menus
- '(("¿×µ½±ßµ¶Â·"
-    ("ÉèÖÃ" "(route-of-hole2shape:config)")
-    ("ÊÖ¶¯µ¶Â·" "(route-of-hole2shape:menu-route)")
-    ("×Ô¶¯µ¶Â·" "(route-of-hole2shape:auto)")
-    ("Ô²±äPLÏß" "(route-of-hole2shape:c2pl)")
-    ;;("ÏÔÒş·½Ïò" "(route-of-hole2shape:show-clockwise)")
-    ("É¾³ıµ¶Â·" "(route-of-hole2shape:remove-route)")
-    ("PLÔ²·ÖÉ«" "(route-of-hole2shape:bianbie)")
+ '(("å­”åˆ°è¾¹åˆ€è·¯"
+    ("è®¾ç½®" "(route-of-hole2shape:config)")
+    ("æ‰‹åŠ¨åˆ€è·¯" "(route-of-hole2shape:menu-route)")
+    ("è‡ªåŠ¨åˆ€è·¯" "(route-of-hole2shape:auto)")
+    ("åœ†å˜PLçº¿" "(route-of-hole2shape:c2pl)")
+    ;;("æ˜¾éšæ–¹å‘" "(route-of-hole2shape:show-clockwise)")
+    ("åˆ é™¤åˆ€è·¯" "(route-of-hole2shape:remove-route)")
+    ("PLåœ†åˆ†è‰²" "(route-of-hole2shape:bianbie)")
     )))
 
 (defun route-of-hole2shape:config (/ res)
-  "¹¤³Ì¹ÜÀí»ù±¾ĞÅÏ¢"
+  "å·¥ç¨‹ç®¡ç†åŸºæœ¬ä¿¡æ¯"
   (setq res 
-	(ui:input "ÅäÖÃĞÅÏ¢"
+	(ui:input "é…ç½®ä¿¡æ¯"
 		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
 			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "ROUTE-OF-HOLE2SHAPE:*")))
 					(if @:*config.db*
@@ -26,9 +26,9 @@
    	   (@:set-config (read (car res%)) (cdr res%)))
   )
 (defun route-of-hole2shape:input-offset (/ res)
-  "¹¤³Ì¹ÜÀí»ù±¾ĞÅÏ¢"
+  "å·¥ç¨‹ç®¡ç†åŸºæœ¬ä¿¡æ¯"
   (setq res 
-	(ui:input "ÅäÖÃĞÅÏ¢"
+	(ui:input "é…ç½®ä¿¡æ¯"
 		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
 			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "ROUTE-OF-HOLE2SHAPE:OFFSET")))
 					(if @:*config.db*
@@ -39,12 +39,12 @@
 
 (defun route-of-hole2shape:menu-route (/ pt-c pt-pl clockwise offset i new-pts ent-shape)
   (push-var nil)
-  (setq pt-c (entity:getdxf (car (entsel "Ñ¡ÔñÔ²£º")) 10))
+  (setq pt-c (entity:getdxf (car (entsel "é€‰æ‹©åœ†ï¼š")) 10))
   (setvar "osmode" 16383)
-  (setq pt-pl (getpoint pt-c "Ñ¡Ôñ¶à¶ÎÏß:"))
+  (setq pt-pl (getpoint pt-c "é€‰æ‹©å¤šæ®µçº¿:"))
   (pop-var)
   (setq ent-shape (car(pickset:to-list(ssget pt-pl '((0 . "lwpolyline"))))))
-  (setq clockwise (ui:confirm "Ë³Ê±Õë·½ÏòµãÈ·¶¨£¬ÄæÊ±ÕëµãÈ¡Ïû."))
+  (setq clockwise (ui:confirm "é¡ºæ—¶é’ˆæ–¹å‘ç‚¹ç¡®å®šï¼Œé€†æ—¶é’ˆç‚¹å–æ¶ˆ."))
   (route-of-hole2shape:input-offset)
   (setq offset (@:get-config 'route-of-hole2shape:offset))
   (route-of-hole2shape:route pt-c ent-shape clockwise offset nil))
@@ -52,16 +52,16 @@
 (defun route-of-hole2shape:route (pt-c ent-pl clockwise offset closeto?
 				       / ent-shape ent-pts pt-closeto
 				       convexity closed?)
-  ;; closeto? T ÎªÇúÏßÉÏµÄÈÎÒâµã£¬ nil ÎªÇúÏßÉÏµÄ¶¥µã
-  ;;Ñ¡Ôñ¶à¶ÎÏß
-  ;; ·½Ïò²»Í¬ Õı¸º²»Í¬
+  ;; closeto? T ä¸ºæ›²çº¿ä¸Šçš„ä»»æ„ç‚¹ï¼Œ nil ä¸ºæ›²çº¿ä¸Šçš„é¡¶ç‚¹
+  ;;é€‰æ‹©å¤šæ®µçº¿
+  ;; æ–¹å‘ä¸åŒ æ­£è´Ÿä¸åŒ
   (if (null layer:make) (require 'layer:*))
   (layer:make (@:get-config  'ROUTE-OF-HOLE2SHAPE:layer)
 	    (@:get-config  'ROUTE-OF-HOLE2SHAPE:color)
 	    nil nil)
   (setq ent-shape (route-of-hole2shape:offset-shape ent-pl))
   (setq closed? (entity:getdxf ent-shape 70))
-  ;; ÄæÊ±ÕëµãĞò²»¶Ô
+  ;; é€†æ—¶é’ˆç‚¹åºä¸å¯¹
   (if (and (/= (curve:clockwisep ent-shape)
 	       clockwise)
 	   (= 1 closed?))
@@ -93,7 +93,7 @@
 	    (setq ent-pts (reverse ent-pts)))
 	  )))
 			  
-   ;; ×î½üµãÊÇ·ñÓë¶¥µãÖØºÏ
+   ;; æœ€è¿‘ç‚¹æ˜¯å¦ä¸é¡¶ç‚¹é‡åˆ
   (setq i -3)
   (while (and
 	  (> (distance (car ent-pts) pt-closeto) 0.00001)
@@ -109,16 +109,16 @@
     )
   (setq ent-pts (append (cdr ent-pts) (list (car ent-pts))))
   (setq convexity (append (cdr convexity) (list (car convexity))))
-  ;; ĞŞÕı×îºóÁ½µãÏàÍ¬
+  ;; ä¿®æ­£æœ€åä¸¤ç‚¹ç›¸åŒ
   ;; (if (= (car (reverse ent-pts))
   ;; 	 (cadr (reverse ent-pts)))
   ;;     (setq ent-pts (reverse (cdr (reverse ent-pts)))))
   
-  ;; ĞŞÕı Í¹¶È
+  ;; ä¿®æ­£ å‡¸åº¦
   (if (equal (apply 'min (mapcar '(lambda(x)(distance x pt-closeto)) ent-pts))
 	     0.0 0.0000001)
       (progn
-	(princ "×î½üµãÎª¶¥µã\n")
+	(princ "æœ€è¿‘ç‚¹ä¸ºé¡¶ç‚¹\n")
 	(if (= 1 closed?)
 	    (progn
 	      (if (equal 0.0 (distance pt-closeto (car ent-pts)) 0.0000001)
@@ -159,7 +159,7 @@
   ;; (princ "\n")
   ;; (princ new-convexity)(princ "\n")
   ;; (princ new-pts)(princ "\n")
-  ;;(curve:ptoncurve pt ;; Ë³Ê±ÕëÎª ºì£¬ÄæÊ±ÕëÎª
+  ;;(curve:ptoncurve pt ;; é¡ºæ—¶é’ˆä¸º çº¢ï¼Œé€†æ—¶é’ˆä¸º
   (push-var nil)
   (setvar "osmode" 0)
   (entity:putdxf
@@ -173,7 +173,7 @@
   (princ)
   )
 
-;; ÇúÏßÆ«ÒÆ
+;; æ›²çº¿åç§»
 (defun route-of-hole2shape:offset-shape (ent / offset )
   (if (= 1 (entity:getdxf ent 70))
       (progn
@@ -184,22 +184,22 @@
     (o2e(vla-copy (e2o ent)))))
   
 
-;; µãµ½ÇúÏßµÄ×îĞ¡¾àÀëµã
+;; ç‚¹åˆ°æ›²çº¿çš„æœ€å°è·ç¦»ç‚¹
 (defun route-of-hole2shape:pt-closeto-curve (pt ent)
   (vlax-curve-getclosestpointto (e2o ent) pt))
-;; µãµ½ÇúÏßµÄ×îĞ¡¾àÀëµã
+;; ç‚¹åˆ°æ›²çº¿çš„æœ€å°è·ç¦»ç‚¹
 (defun route-of-hole2shape:pt-closeto-vertex (pt ent / pts )
   (setq pts (curve:pline-3dpoints ent))
   (car (vl-sort pts '(lambda (x y)
 		       (< (distance pt x)(distance pt y))))))
-;; ¹ı³Ì
-;; 1. ¸ù¾İ :offset Éú³Éshape; 2. shape ÄÚÓĞ hole µÄ£¬Á¬½Ó hole (×î½üµã)
+;; è¿‡ç¨‹
+;; 1. æ ¹æ® :offset ç”Ÿæˆshape; 2. shape å†…æœ‰ hole çš„ï¼Œè¿æ¥ hole (æœ€è¿‘ç‚¹)
 (defun route-of-hole2shape:auto (/ clockwise shapes hole-ent offset vertexs)
-  (@:help (strcat "×Ô¶¯µ¶Â·:\n"
-		  " 1. Ñ¡Ôñµ¶Â··½Ïò£¬Ë³Ê±Õë or ÄæÊ±Õë\n"
-		  " 2. ÉèÖÃÆ«ÒÆÁ¿\n"
-		  " 3. Ñ¡Ôñ shape "))
-  (setq clockwise (ui:confirm "Ë³Ê±Õë·½ÏòµãÈ·¶¨£¬ÄæÊ±ÕëµãÈ¡Ïû."))
+  (@:help (strcat "è‡ªåŠ¨åˆ€è·¯:\n"
+		  " 1. é€‰æ‹©åˆ€è·¯æ–¹å‘ï¼Œé¡ºæ—¶é’ˆ or é€†æ—¶é’ˆ\n"
+		  " 2. è®¾ç½®åç§»é‡\n"
+		  " 3. é€‰æ‹© shape "))
+  (setq clockwise (ui:confirm "é¡ºæ—¶é’ˆæ–¹å‘ç‚¹ç¡®å®šï¼Œé€†æ—¶é’ˆç‚¹å–æ¶ˆ."))
   (route-of-hole2shape:input-offset)
   (setq offset (@:get-config 'route-of-hole2shape:offset))
   (setq shapes (pickset:to-list (ssget '((0 . "LWPOLYLINE")(70 . 1)))))
@@ -210,7 +210,7 @@
 		 (setq hole-ent (car (pickset:to-list (ssget "WP" (curve:pline-3dpoints shape%) '((0 . "circle"))))))
 		 (if hole-ent
 		     (progn
-		       (print "·¢ÏÖÄÚ²¿¿×,×¼±¸Éú³Éµ¶Â·")
+		       (print "å‘ç°å†…éƒ¨å­”,å‡†å¤‡ç”Ÿæˆåˆ€è·¯")
 		       (route-of-hole2shape:route (entity:getdxf hole-ent 10) shape% clockwise offset T))
 		   (progn
 		     (if (curve:lwpl-is-circle-p shape%)
@@ -218,12 +218,12 @@
 			   (setq vertexs (curve:pline-3dpoints shape%))
 			   (route-of-hole2shape:route (curve:bulge2O (car vertexs)(cadr vertexs)(car (curve:pline-convexity shape%)))
 						      shape% clockwise offset T))
-		       (princ "Ã»ÓĞ·¢ÏÖÄÚ²¿¿×£¬Ìø¹ı¡£")))
+		       (princ "æ²¡æœ‰å‘ç°å†…éƒ¨å­”ï¼Œè·³è¿‡ã€‚")))
 		   )))))
 
 
 (defun route-of-hole2shape:remove-route ()
-  (@:help (strcat "¿òÑ¡ÒªÉ¾³ıµÄµ¶Â·Ïß¡£"))
+  (@:help (strcat "æ¡†é€‰è¦åˆ é™¤çš„åˆ€è·¯çº¿ã€‚"))
   (mapcar 'entdel
 	  (pickset:to-list
 	   (ssget (list '(0 . "lwpolyline")
@@ -231,8 +231,8 @@
   (princ))
 	   
 (defun route-of-hole2shape:c2pl (/ circles)
-  (@:help (strcat "°ÑÔ²×ª»»Îª¶à¶ÎÏß¡£\n"))
-  (prompt "ÇëÑ¡ÔñÒª½øĞĞ×ª»»µÄÔ²:")
+  (@:help (strcat "æŠŠåœ†è½¬æ¢ä¸ºå¤šæ®µçº¿ã€‚\n"))
+  (prompt "è¯·é€‰æ‹©è¦è¿›è¡Œè½¬æ¢çš„åœ†:")
   (setq circles (pickset:to-list(ssget '((0 . "circle")))))
   (if (< (@:get-config 'route-of-hole2shape:c2pl-vertex) 2)
       (@:set-config 'route-of-hole2shape:c2pl-vertex 4))

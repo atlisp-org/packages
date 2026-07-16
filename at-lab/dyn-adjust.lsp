@@ -1,31 +1,31 @@
-;;;duotu007 ver1.0 2012/9/6(Ô­Öø)
-;;;1028695446   ver2.0 2019/4/4(ĞŞ¸Ä)
+;;;duotu007 ver1.0 2012/9/6(åŸè‘—)
+;;;1028695446   ver2.0 2019/4/4(ä¿®æ”¹)
 (defun @lab:dyn-adjust (/ bl_update bl_update_time_batch boolean_typeofss ent error_do main_process main_process_batch ss_first text_update color text textent)
-  ;;ÖÇÄÜ¼ÓÔØ×Óº¯Êı¿â
-  ;; (if (/= (TYPE test_load ) 'SUBR) 	;ÅĞ¶Ïtestloadº¯ÊıÊÇ·ñÒÑ±»¼ÓÔØ£¬Èç¹ûÊÇ£¬±íÊ¾ÒÑ¾­¼ÓÔØÁË×Óº¯ÊıÎÄ¼ş¼Ğ
+  ;;æ™ºèƒ½åŠ è½½å­å‡½æ•°åº“
+  ;; (if (/= (TYPE test_load ) 'SUBR) 	;åˆ¤æ–­testloadå‡½æ•°æ˜¯å¦å·²è¢«åŠ è½½ï¼Œå¦‚æœæ˜¯ï¼Œè¡¨ç¤ºå·²ç»åŠ è½½äº†å­å‡½æ•°æ–‡ä»¶å¤¹
   ;;     (PROGN
-  ;;      (c:add) 	;¼ÓÔØ×Óº¯ÊıÎÄ¼ş¼Ğ
+  ;;      (c:add) 	;åŠ è½½å­å‡½æ•°æ–‡ä»¶å¤¹
   ;;      )
   ;;   )
-  ;;ÆôÓÃ´íÎó´¦ÀíÖ®ºó£¬µ¼ÖÂÎŞ·¨ÏÈÑ¡ÔñºóÖ´ĞĞ£¬¾ßÌåÔ­Òò»¹²»µÃ¶øÖª¡£
+  ;;å¯ç”¨é”™è¯¯å¤„ç†ä¹‹åï¼Œå¯¼è‡´æ— æ³•å…ˆé€‰æ‹©åæ‰§è¡Œï¼Œå…·ä½“åŸå› è¿˜ä¸å¾—è€ŒçŸ¥ã€‚
   ;;(error_init 'error_do 1)
   (defun error_do()
     (redraw)
-    (if text (entdel text));É¾³ıÁÙÊ±ÎÄ×Ö
+    (if text (entdel text));åˆ é™¤ä¸´æ—¶æ–‡å­—
     (princ)
     )
-  (defun bl_update(oba bl);;×Óº¯Êı,¸üĞÂ±ÈÀıÎª¾ø¶ÔÖµbl
+  (defun bl_update(oba bl);;å­å‡½æ•°,æ›´æ–°æ¯”ä¾‹ä¸ºç»å¯¹å€¼bl
     (cond
      ((or (= oba "REGION") (= oba "LWPOLYLINE") (= oba "LINE") (= oba "CIRCLE") (= oba "ARC"))
-      (vla-put-LinetypeScale obj bl);;Éè¶¨ÏßĞÍ±ÈÀı
+      (vla-put-LinetypeScale obj bl);;è®¾å®šçº¿å‹æ¯”ä¾‹
       )
      ((= oba "HATCH")
-      (vla-put-PatternScale obj bl);;Éè¶¨Ìî³ä±ÈÀı
+      (vla-put-PatternScale obj bl);;è®¾å®šå¡«å……æ¯”ä¾‹
       )
      ((= oba "INSERT")
-      (vla-put-xscalefactor obj bl);;Éè¶¨Í¼¿é±ÈÀıx
-      (vla-put-yscalefactor obj bl);;Éè¶¨Í¼¿é±ÈÀıy
-      (vla-put-zscalefactor obj bl);;Éè¶¨Í¼¿é±ÈÀız
+      (vla-put-xscalefactor obj bl);;è®¾å®šå›¾å—æ¯”ä¾‹x
+      (vla-put-yscalefactor obj bl);;è®¾å®šå›¾å—æ¯”ä¾‹y
+      (vla-put-zscalefactor obj bl);;è®¾å®šå›¾å—æ¯”ä¾‹z
       )
      ((or (= oba "TEXT")(= oba "MTEXT"))
       (vla-put-Height obj bl)
@@ -35,7 +35,7 @@
       )
      )
     )
-  (defun bl_update_time_batch(list_ent list_bl bl / oba);;×Óº¯Êı,¶ÔÑ¡Ôñ¼¯ÄÚµÄÍ¼Ôª£¬ÅúÁ¿¸üĞÂ±ÈÀıÎªÔ­Ê¼±ÈÀıµÄbl±¶
+  (defun bl_update_time_batch(list_ent list_bl bl / oba);;å­å‡½æ•°,å¯¹é€‰æ‹©é›†å†…çš„å›¾å…ƒï¼Œæ‰¹é‡æ›´æ–°æ¯”ä¾‹ä¸ºåŸå§‹æ¯”ä¾‹çš„blå€
     (setq oba (cdr (assoc 0 (entget (nth 0 list_ent)))))
     (cond
      ((or (= oba "REGION") (= oba "LWPOLYLINE") (= oba "LINE") (= oba "CIRCLE") (= oba "ARC"))
@@ -62,37 +62,37 @@
       )
      )
     )
-  (defun text_update(str / );;×Óº¯Êı,¸üĞÂÁÙÊ±ÎÄ×Ö
+  (defun text_update(str / );;å­å‡½æ•°,æ›´æ–°ä¸´æ—¶æ–‡å­—
     (if color(princ)(setq color 1))
     
 					;(setq str (rtos bl))
-    (if text;ÎÄ×ÖÏÔÊ¾
+    (if text;æ–‡å­—æ˜¾ç¤º
 	(progn
 	  (setq textent (subst (cons 1 str)   (assoc 1  textent) textent))
 	  (setq textent (subst (cons 62 color)(assoc 62 textent) textent))
 	  (setq textent (subst (cons 40 (/ (getvar "viewsize") 30))(assoc 40 textent) textent))
-					;Êó±êÒÆ¶¯µÄÊ±ºò£¬¸üĞÂ×ø±ê£¬Ê¹Æä¸úËæÊó±êÒÆ¶¯£»ÇÃ»÷¼üÅÌµÄÊ±ºò£¬²»¸üĞÂ×ø±ê
+					;é¼ æ ‡ç§»åŠ¨çš„æ—¶å€™ï¼Œæ›´æ–°åæ ‡ï¼Œä½¿å…¶è·Ÿéšé¼ æ ‡ç§»åŠ¨ï¼›æ•²å‡»é”®ç›˜çš„æ—¶å€™ï¼Œä¸æ›´æ–°åæ ‡
 	  (if (= a 5) (setq textent (subst (cons 10 aa)(assoc 10 textent) textent)))
-					;(if flag_dynamic (setq textent (subst (cons 10 aa)(assoc 10 textent) textent)));ÆôÓÃ¶¯Ì¬±ÈÀı
+					;(if flag_dynamic (setq textent (subst (cons 10 aa)(assoc 10 textent) textent)));å¯ç”¨åŠ¨æ€æ¯”ä¾‹
 	  (entmod textent)
-	  );µÚ¶ş±éÒÑÓĞ,ĞŞ¸ÄÄÚÈİ
+	  );ç¬¬äºŒéå·²æœ‰,ä¿®æ”¹å†…å®¹
       (progn
 	(entmake (list '(0 . "TEXT")
 		       (cons 1 str)
-					;Êó±êÒÆ¶¯µÄÊ±ºò£¬¸üĞÂ×ø±ê£¬Ê¹Æä¸úËæÊó±êÒÆ¶¯£»ÆäËûÇé¿ö£¬×ø±êÎªÍ¼ÔªµÄ×ø±ê
+					;é¼ æ ‡ç§»åŠ¨çš„æ—¶å€™ï¼Œæ›´æ–°åæ ‡ï¼Œä½¿å…¶è·Ÿéšé¼ æ ‡ç§»åŠ¨ï¼›å…¶ä»–æƒ…å†µï¼Œåæ ‡ä¸ºå›¾å…ƒçš„åæ ‡
 		       (if (= a 5) (cons 10 aa)(cons 10 pt0))
 					;(if flag_dynamic (cons 10 aa)(cons 10 pt0))
-		       (cons 40 (/ (getvar "viewsize") 30));;×ÖÌå´óĞ¡,Í¬ÊÓÍ¼±ÈÀıÏà¹Ø
-		       (cons 41 0.7) ;;×Ö¸ß
-		       (cons 50 0);;×ÖĞı×ª½Ç¶È
+		       (cons 40 (/ (getvar "viewsize") 30));;å­—ä½“å¤§å°,åŒè§†å›¾æ¯”ä¾‹ç›¸å…³
+		       (cons 41 0.7) ;;å­—é«˜
+		       (cons 50 0);;å­—æ—‹è½¬è§’åº¦
 		       (cons 62 color)
 		       )
 		 )
 	(setq text (entlast) textent (entget text))
-	);µÚÒ»±éÎÄ×Ö²»´æÔÚÏÈÉú³É
+	);ç¬¬ä¸€éæ–‡å­—ä¸å­˜åœ¨å…ˆç”Ÿæˆ
       )
     )
-					;ÅĞ¶ÏÑ¡Ôñ¼¯ÊÇ·ñ¾ùÎªÍ¬Ò»Í¼ÔªÀàĞÍ
+					;åˆ¤æ–­é€‰æ‹©é›†æ˜¯å¦å‡ä¸ºåŒä¸€å›¾å…ƒç±»å‹
   (defun boolean_typeOfSs(ss str_type / ent flag index oba)
     (setq flag T)
     (setq index 0)
@@ -110,28 +110,28 @@
       )
     flag
     )
-					;Õë¶Ôµ¥Ò»Í¼ÔªµÄ´¦ÀíÁ÷³Ì
+					;é’ˆå¯¹å•ä¸€å›¾å…ƒçš„å¤„ç†æµç¨‹
   (defun main_process(ent pt0 / a aa bl color elist flag_circulate flag_dynamic flag_secondclick mouse oba obj point_base)
     (setq elist (entget ent))
     (setq oba (cdr (assoc 0 elist)))
     (setq obj (vlax-ename->vla-object ent))
-    (setq flag_dynamic nil);;Ä¬ÈÏÆôÓÃ¶¯Ì¬±ÈÀı
-    (setq flag_secondClick nil) ;µÚ¶ş´ÎÊó±ê×ó¼ü£¬½áÊø³ÌĞò
+    (setq flag_dynamic nil);;é»˜è®¤å¯ç”¨åŠ¨æ€æ¯”ä¾‹
+    (setq flag_secondClick nil) ;ç¬¬äºŒæ¬¡é¼ æ ‡å·¦é”®ï¼Œç»“æŸç¨‹åº
     (cond
-					;»ñµÃ±ê×¢µÄÈ«¾Ö±ÈÀı
+					;è·å¾—æ ‡æ³¨çš„å…¨å±€æ¯”ä¾‹
      ((wcmatch oba "*DIMENSION")
       (if (= (setq bl (vla-get-ScaleFactor (vlax-ename->vla-object ent))) nil) (setq bl 1))
       )
-     ((= oba "TEXT") 			 (if (= (setq bl (cdr (assoc 40 elist))) nil) (setq bl 1)))	;È¡ÎÄ×Ö¸ß¶ÈÖµ×÷ÎªÊµ¼Ê±ÈÀı
+     ((= oba "TEXT") 			 (if (= (setq bl (cdr (assoc 40 elist))) nil) (setq bl 1)))	;å–æ–‡å­—é«˜åº¦å€¼ä½œä¸ºå®é™…æ¯”ä¾‹
      ((= oba "MTEXT") 			 (if (= (setq bl (cdr (assoc 40 elist))) nil) (setq bl 1)))
      ((= oba "REGION")      (if (= (setq bl (cdr (assoc 48 elist))) nil) (setq bl 1)))
      ((= oba "LWPOLYLINE")  (if (= (setq bl (cdr (assoc 48 elist))) nil) (setq bl 1)))
      ((= oba "LINE")        (if (= (setq bl (cdr (assoc 48 elist))) nil) (setq bl 1)))
      ((= oba "CIRCLE")      (if (= (setq bl (cdr (assoc 48 elist))) nil) (setq bl 1)))
      ((= oba "ARC")         (if (= (setq bl (cdr (assoc 48 elist))) nil) (setq bl 1)))
-     ((= oba "HATCH")       (setq bl (cdr (assoc 41 elist)))(setq flag_dynamic nil));;×¢Òâ,ÕâÒª¹Ø±Õ,ÒòÎª³õÊ¼²»ÄÜÎª0
-     ((= oba "INSERT")      (setq bl (cdr (assoc 41 elist)))(setq flag_dynamic nil));;×¢Òâ,ÕâÒª¹Ø±Õ,ÒòÎª³õÊ¼²»ÄÜÎª0
-     (t (alert "\nÑ¡Ôñ´íÎó..."))
+     ((= oba "HATCH")       (setq bl (cdr (assoc 41 elist)))(setq flag_dynamic nil));;æ³¨æ„,è¿™è¦å…³é—­,å› ä¸ºåˆå§‹ä¸èƒ½ä¸º0
+     ((= oba "INSERT")      (setq bl (cdr (assoc 41 elist)))(setq flag_dynamic nil));;æ³¨æ„,è¿™è¦å…³é—­,å› ä¸ºåˆå§‹ä¸èƒ½ä¸º0
+     (t (alert "\né€‰æ‹©é”™è¯¯..."))
      )
     (if bl
 	(progn
@@ -140,94 +140,94 @@
 	    (setq mouse (grread T 12 0))
 	    (setq a (car mouse) aa (cadr mouse))
 	    (cond
-					;°´¼üd»òÕßD×Ö¸ßÔö¼ÓÒ»±¶
-	     ((and (= 2 a) (or (= 100 aa) (= 68 aa)))	;2±íÊ¾¼üÅÌÊäÈë,'(2 100)±íÊ¾d¼ü,'(2 68)±íÊ¾D¼ü
-	      (setq flag_dynamic nil);;¹Ø±Õ¶¯Ì¬±ÈÀı
+					;æŒ‰é”®dæˆ–è€…Då­—é«˜å¢åŠ ä¸€å€
+	     ((and (= 2 a) (or (= 100 aa) (= 68 aa)))	;2è¡¨ç¤ºé”®ç›˜è¾“å…¥,'(2 100)è¡¨ç¤ºdé”®,'(2 68)è¡¨ç¤ºDé”®
+	      (setq flag_dynamic nil);;å…³é—­åŠ¨æ€æ¯”ä¾‹
 	      (setq bl (* bl 2))
 	      
 	      (bl_update oba bl)
 	      
-	      (text_update (rtos bl));;¸üĞÂÎÄ×Ö
+	      (text_update (rtos bl));;æ›´æ–°æ–‡å­—
 	      
 	      )
-					;°´¼üw»òÕßW×Ö¸ßËõĞ¡Ò»±¶
-	     ((and (= 2 a) (or (= 120 aa) (= 88 aa)))	;2±íÊ¾¼üÅÌÊäÈë,'(2 120)±íÊ¾x¼ü,'(2 88)±íÊ¾X¼ü
-	      (setq flag_dynamic nil);;¹Ø±Õ¶¯Ì¬±ÈÀı
+					;æŒ‰é”®wæˆ–è€…Wå­—é«˜ç¼©å°ä¸€å€
+	     ((and (= 2 a) (or (= 120 aa) (= 88 aa)))	;2è¡¨ç¤ºé”®ç›˜è¾“å…¥,'(2 120)è¡¨ç¤ºxé”®,'(2 88)è¡¨ç¤ºXé”®
+	      (setq flag_dynamic nil);;å…³é—­åŠ¨æ€æ¯”ä¾‹
 	      (setq bl (/ bl 2))
-					;(if(= oba "INSERT")(if (< 0 (1- bl))(setq bl (1- bl)))(setq bl (/ bl 2)));;¿éµ¥¶ÀÇø·Ö,¼Ó¼õ¸üÊÊÓÃ
-					;(if (< bL 0.01)(setq bL 0.01));;·ÀÖ¹±ÈÀıÎªÌ«ÔÓ****************************************
+					;(if(= oba "INSERT")(if (< 0 (1- bl))(setq bl (1- bl)))(setq bl (/ bl 2)));;å—å•ç‹¬åŒºåˆ†,åŠ å‡æ›´é€‚ç”¨
+					;(if (< bL 0.01)(setq bL 0.01));;é˜²æ­¢æ¯”ä¾‹ä¸ºå¤ªæ‚****************************************
 	      (bl_update oba bl)
-	      (text_update (rtos bl));;¸üĞÂÎÄ×Ö
+	      (text_update (rtos bl));;æ›´æ–°æ–‡å­—
 	      )
-					;°´¼üe»òÕßEÖ¸¶¨±ÈÀı
+					;æŒ‰é”®eæˆ–è€…EæŒ‡å®šæ¯”ä¾‹
 	     ((and (= 2 a) (or (= 101 aa) (= 69 aa)))
-	      (setq flag_dynamic nil);;¹Ø±Õ¶¯Ì¬±ÈÀı
-	      (setq bl (getreal "\nÖ¸¶¨Ëõ·Å±ÈÀı:"))
+	      (setq flag_dynamic nil);;å…³é—­åŠ¨æ€æ¯”ä¾‹
+	      (setq bl (getreal "\næŒ‡å®šç¼©æ”¾æ¯”ä¾‹:"))
 	      (bl_update oba bl)
-	      (text_update (rtos bl));;¸üĞÂÎÄ×Ö
+	      (text_update (rtos bl));;æ›´æ–°æ–‡å­—
 	      )
-	     ((and(= a 5) flag_dynamic);Êó±êÒÆ¶¯ºÍÆôÓÃ¶¯Ì¬±ÈÀı
+	     ((and(= a 5) flag_dynamic);é¼ æ ‡ç§»åŠ¨å’Œå¯ç”¨åŠ¨æ€æ¯”ä¾‹
 	      (redraw)
-	      (grdraw point_base aa 1);»­ÏòÁ¿
+	      (grdraw point_base aa 1);ç”»å‘é‡
 	      (setq bl(distance point_base aa))
 	      (cond
 	       ((and(< 0 bl)(< bl 0.1))
-		(setq bl(* (fix (/ bl 0.01)) 0.01) color 1);¹æ·¶0~1Ö®¼äÈ¡Öµ,Ä£Êı=0.1
+		(setq bl(* (fix (/ bl 0.01)) 0.01) color 1);è§„èŒƒ0~1ä¹‹é—´å–å€¼,æ¨¡æ•°=0.1
 		)
 	       ((and(<= 0.1 bl)(< bl 1))
-		(setq bl(* (fix (/ bl 0.1)) 0.1) color 2);¹æ·¶0~1Ö®¼äÈ¡Öµ,Ä£Êı=0.1
+		(setq bl(* (fix (/ bl 0.1)) 0.1) color 2);è§„èŒƒ0~1ä¹‹é—´å–å€¼,æ¨¡æ•°=0.1
 		)
 	       ((and(<= 1 bl)(< bl 10))
-		(setq bl(* (fix (/ bl 0.5)) 0.5) color 3);¹æ·¶1~10Ö®¼äÈ¡Öµ,Ä£Êı=0.5
+		(setq bl(* (fix (/ bl 0.5)) 0.5) color 3);è§„èŒƒ1~10ä¹‹é—´å–å€¼,æ¨¡æ•°=0.5
 		)
 	       ((and(<= 10 bl)(< bl 20))
-		(setq bl(fix bl) color 4);¹æ·¶10~20Ö®¼äÈ¡Öµ,Ä£Êı=1
+		(setq bl(fix bl) color 4);è§„èŒƒ10~20ä¹‹é—´å–å€¼,æ¨¡æ•°=1
 		)
 	       ((and(<= 20 bl)(< bl 100))
-		(setq bl(* (fix (/ bl 5)) 5) color 4);¹æ·¶20~100Ö®¼äÈ¡Öµ,Ä£Êı=5
+		(setq bl(* (fix (/ bl 5)) 5) color 4);è§„èŒƒ20~100ä¹‹é—´å–å€¼,æ¨¡æ•°=5
 		)
 	       ((<= 100 bl)
-		(setq bl(* (fix (/ bl 10)) 10) color 6);¹æ·¶20~100Ö®¼äÈ¡Öµ,Ä£Êı=10
+		(setq bl(* (fix (/ bl 10)) 10) color 6);è§„èŒƒ20~100ä¹‹é—´å–å€¼,æ¨¡æ•°=10
 		)
 	       ((= 0 bl) (setq bl 1 color 6))
 	       )
-					;(if (/= bl_last bl);;µ±±ÈÀıÓĞ±ä»¯
+					;(if (/= bl_last bl);;å½“æ¯”ä¾‹æœ‰å˜åŒ–
 					;	(progn
 					;		(setq bl_last bl)
-					;		(bl_update oba bl);;¸üĞÂ±ÈÀı
+					;		(bl_update oba bl);;æ›´æ–°æ¯”ä¾‹
 					;	)
 					;)
-	      (bl_update oba bl);;¸üĞÂ±ÈÀı
-	      (text_update (rtos bl));;¸üĞÂÎÄ×Ö
+	      (bl_update oba bl);;æ›´æ–°æ¯”ä¾‹
+	      (text_update (rtos bl));;æ›´æ–°æ–‡å­—
 	      )
-	     ((and(= a 5) (not flag_dynamic));Êó±êÒÆ¶¯,²»ÆôÓÃ¶¯Ì¬±ÈÀı
-	      (text_update (strcat "µ±Ç°±ÈÀı£º" (rtos bl 2 2) "\n¡¾·Å´ó(D)/ËõĞ¡(X)/Ö¸¶¨(E)/¶¯Ì¬(×ó¼ü)/ÍË³ö(¿Õ¸ñ)¡¿"));;¸üĞÂÎÄ×Ö
+	     ((and(= a 5) (not flag_dynamic));é¼ æ ‡ç§»åŠ¨,ä¸å¯ç”¨åŠ¨æ€æ¯”ä¾‹
+	      (text_update (strcat "å½“å‰æ¯”ä¾‹ï¼š" (rtos bl 2 2) "\nã€æ”¾å¤§(D)/ç¼©å°(X)/æŒ‡å®š(E)/åŠ¨æ€(å·¦é”®)/é€€å‡º(ç©ºæ ¼)ã€‘"));;æ›´æ–°æ–‡å­—
 	      )
-	     ((= a 3)	;Êó±ê×ó¼ü,ÆôÓÃ¶¯Ì¬±ÈÀı
+	     ((= a 3)	;é¼ æ ‡å·¦é”®,å¯ç”¨åŠ¨æ€æ¯”ä¾‹
 	      (setq flag_dynamic T)
 	      (setq point_base aa)
-	      (if (= flag_secondClick nil)	;Ê¶±ğµÚ¶ş´Îµã»÷Êó±ê×ó¼ü
+	      (if (= flag_secondClick nil)	;è¯†åˆ«ç¬¬äºŒæ¬¡ç‚¹å‡»é¼ æ ‡å·¦é”®
 		  (setq flag_secondClick T)
 		(setq flag_circulate nil)
 		)
 	      )
 	     ((or
-	       (= 25 a) (= 11 a) ;ÓÒ¼ü
-	       (and (= a 2) (= aa 13));»Ø³µ
-	       (and (= a 2) (= aa 32));»ò¿Õ¸ñ
+	       (= 25 a) (= 11 a) ;å³é”®
+	       (and (= a 2) (= aa 13));å›è½¦
+	       (and (= a 2) (= aa 32));æˆ–ç©ºæ ¼
 	       )
 	      (setq flag_circulate nil)
 	      )
 	     )
 	    )
 	  )
-      (alert "\n±ÈÀı²»ÄÜÎª0")
+      (alert "\næ¯”ä¾‹ä¸èƒ½ä¸º0")
       )
     (redraw)
-    (if text (entdel text));É¾³ıÁÙÊ±ÎÄ×Ö
+    (if text (entdel text));åˆ é™¤ä¸´æ—¶æ–‡å­—
     (princ)
     )
-					;¶ÔÑ¡Ôñ¼¯µÄÅúÁ¿´¦Àí£¬ÒÔÏà¶ÔµÄËõ·Å±¶ÊıÎª»ù×¼
+					;å¯¹é€‰æ‹©é›†çš„æ‰¹é‡å¤„ç†ï¼Œä»¥ç›¸å¯¹çš„ç¼©æ”¾å€æ•°ä¸ºåŸºå‡†
   (defun main_process_batch(ss pt0 / a aa bl color flag_circulate flag_dynamic flag_secondclick list_bl list_ent mouse oba point_base)
     (setq list_ent (pickset_2list ss))
     
@@ -262,96 +262,96 @@
      )
     
     
-    (setq flag_dynamic nil);;Ä¬ÈÏÆôÓÃ¶¯Ì¬±ÈÀı
-    (setq flag_secondClick nil) ;µÚ¶ş´ÎÊó±ê×ó¼ü£¬½áÊø³ÌĞò
+    (setq flag_dynamic nil);;é»˜è®¤å¯ç”¨åŠ¨æ€æ¯”ä¾‹
+    (setq flag_secondClick nil) ;ç¬¬äºŒæ¬¡é¼ æ ‡å·¦é”®ï¼Œç»“æŸç¨‹åº
     (setq bl 1)
     (setq flag_circulate T)
     (while flag_circulate
       (setq mouse (grread T 12 0))
       (setq a (car mouse) aa (cadr mouse))
       (cond
-					;°´¼üq»òÕßQ×Ö¸ßÔö¼ÓÒ»±¶
-       ((and (= 2 a) (or (= 100 aa) (= 68 aa)))	;2±íÊ¾¼üÅÌÊäÈë,'(2 100)±íÊ¾d¼ü,'(2 68)±íÊ¾D¼ü
-	(setq flag_dynamic nil);;¹Ø±Õ¶¯Ì¬±ÈÀı
+					;æŒ‰é”®qæˆ–è€…Qå­—é«˜å¢åŠ ä¸€å€
+       ((and (= 2 a) (or (= 100 aa) (= 68 aa)))	;2è¡¨ç¤ºé”®ç›˜è¾“å…¥,'(2 100)è¡¨ç¤ºdé”®,'(2 68)è¡¨ç¤ºDé”®
+	(setq flag_dynamic nil);;å…³é—­åŠ¨æ€æ¯”ä¾‹
 	(setq bl (* bl 2))
 	
 	(bl_update_time_batch list_ent list_bl bl)
-	(text_update (rtos bl));;¸üĞÂÎÄ×Ö
+	(text_update (rtos bl));;æ›´æ–°æ–‡å­—
 	)
-					;°´¼üw»òÕßW×Ö¸ßËõĞ¡Ò»±¶
-       ((and (= 2 a) (or (= 120 aa) (= 88 aa)))	;2±íÊ¾¼üÅÌÊäÈë,'(2 120)±íÊ¾x¼ü,'(2 88)±íÊ¾X¼ü
-	(setq flag_dynamic nil);;¹Ø±Õ¶¯Ì¬±ÈÀı
+					;æŒ‰é”®wæˆ–è€…Wå­—é«˜ç¼©å°ä¸€å€
+       ((and (= 2 a) (or (= 120 aa) (= 88 aa)))	;2è¡¨ç¤ºé”®ç›˜è¾“å…¥,'(2 120)è¡¨ç¤ºxé”®,'(2 88)è¡¨ç¤ºXé”®
+	(setq flag_dynamic nil);;å…³é—­åŠ¨æ€æ¯”ä¾‹
 	(setq bl (/ bl 2))
-					;(if(= oba "INSERT")(if (< 0 (1- bl))(setq bl (1- bl)))(setq bl (/ bl 2)));;¿éµ¥¶ÀÇø·Ö,¼Ó¼õ¸üÊÊÓÃ
-					;(if (< bL 0.01)(setq bL 0.01));;·ÀÖ¹±ÈÀıÎªÌ«ÔÓ****************************************
+					;(if(= oba "INSERT")(if (< 0 (1- bl))(setq bl (1- bl)))(setq bl (/ bl 2)));;å—å•ç‹¬åŒºåˆ†,åŠ å‡æ›´é€‚ç”¨
+					;(if (< bL 0.01)(setq bL 0.01));;é˜²æ­¢æ¯”ä¾‹ä¸ºå¤ªæ‚****************************************
 	(bl_update_time_batch list_ent list_bl bl)
-	(text_update (rtos bl));;¸üĞÂÎÄ×Ö
+	(text_update (rtos bl));;æ›´æ–°æ–‡å­—
 	)
-					;°´¼üe»òÕßEÖ¸¶¨±ÈÀı
+					;æŒ‰é”®eæˆ–è€…EæŒ‡å®šæ¯”ä¾‹
        ((and (= 2 a) (or (= 101 aa) (= 69 aa)))
-	(setq flag_dynamic nil);;¹Ø±Õ¶¯Ì¬±ÈÀı
-	(setq bl (getreal "\nÖ¸¶¨Ëõ·Å±ÈÀı:"))
+	(setq flag_dynamic nil);;å…³é—­åŠ¨æ€æ¯”ä¾‹
+	(setq bl (getreal "\næŒ‡å®šç¼©æ”¾æ¯”ä¾‹:"))
 	(bl_update_time_batch list_ent list_bl bl)
-	(text_update (rtos bl));;¸üĞÂÎÄ×Ö
+	(text_update (rtos bl));;æ›´æ–°æ–‡å­—
 	)
-       ((and(= a 5) flag_dynamic);Êó±êÒÆ¶¯ºÍÆôÓÃ¶¯Ì¬±ÈÀı
+       ((and(= a 5) flag_dynamic);é¼ æ ‡ç§»åŠ¨å’Œå¯ç”¨åŠ¨æ€æ¯”ä¾‹
 	(redraw)
-	(grdraw point_base aa 1);»­ÏòÁ¿
+	(grdraw point_base aa 1);ç”»å‘é‡
 	(setq bl(distance point_base aa))
 	(cond
 	 ((and(< 0 bl)(< bl 0.1))
-	  (setq bl(* (fix (/ bl 0.01)) 0.01) color 1);¹æ·¶0~1Ö®¼äÈ¡Öµ,Ä£Êı=0.1
+	  (setq bl(* (fix (/ bl 0.01)) 0.01) color 1);è§„èŒƒ0~1ä¹‹é—´å–å€¼,æ¨¡æ•°=0.1
 	  )
 	 ((and(<= 0.1 bl)(< bl 1))
-	  (setq bl(* (fix (/ bl 0.1)) 0.1) color 2);¹æ·¶0~1Ö®¼äÈ¡Öµ,Ä£Êı=0.1
+	  (setq bl(* (fix (/ bl 0.1)) 0.1) color 2);è§„èŒƒ0~1ä¹‹é—´å–å€¼,æ¨¡æ•°=0.1
 	  )
 	 ((and(<= 1 bl)(< bl 10))
-	  (setq bl(* (fix (/ bl 0.5)) 0.5) color 3);¹æ·¶1~10Ö®¼äÈ¡Öµ,Ä£Êı=0.5
+	  (setq bl(* (fix (/ bl 0.5)) 0.5) color 3);è§„èŒƒ1~10ä¹‹é—´å–å€¼,æ¨¡æ•°=0.5
 	  )
 	 ((and(<= 10 bl)(< bl 20))
-	  (setq bl(fix bl) color 4);¹æ·¶10~20Ö®¼äÈ¡Öµ,Ä£Êı=1
+	  (setq bl(fix bl) color 4);è§„èŒƒ10~20ä¹‹é—´å–å€¼,æ¨¡æ•°=1
 	  )
 	 ((and(<= 20 bl)(< bl 100))
-	  (setq bl(* (fix (/ bl 5)) 5) color 4);¹æ·¶20~100Ö®¼äÈ¡Öµ,Ä£Êı=5
+	  (setq bl(* (fix (/ bl 5)) 5) color 4);è§„èŒƒ20~100ä¹‹é—´å–å€¼,æ¨¡æ•°=5
 	  )
 	 ((<= 100 bl)
-	  (setq bl(* (fix (/ bl 10)) 10) color 6);¹æ·¶20~100Ö®¼äÈ¡Öµ,Ä£Êı=10
+	  (setq bl(* (fix (/ bl 10)) 10) color 6);è§„èŒƒ20~100ä¹‹é—´å–å€¼,æ¨¡æ•°=10
 	  )
 	 ((= 0 bl) (setq bl 1 color 6))
 	 )
-	(bl_update_time_batch list_ent list_bl bl);;¸üĞÂ±ÈÀı
-	(text_update (rtos bl));;¸üĞÂÎÄ×Ö
+	(bl_update_time_batch list_ent list_bl bl);;æ›´æ–°æ¯”ä¾‹
+	(text_update (rtos bl));;æ›´æ–°æ–‡å­—
 	)
-       ((and(= a 5) (not flag_dynamic));Êó±êÒÆ¶¯,²»ÆôÓÃ¶¯Ì¬±ÈÀı
-	(text_update (strcat "µ±Ç°±ä»¯±¶Êı£º" (rtos bl 2 2) "\n¡¾·Å´ó(D)/ËõĞ¡(X)/Ö¸¶¨(E)/¶¯Ì¬(×ó¼ü)/ÍË³ö(¿Õ¸ñ)¡¿"));;¸üĞÂÎÄ×Ö
+       ((and(= a 5) (not flag_dynamic));é¼ æ ‡ç§»åŠ¨,ä¸å¯ç”¨åŠ¨æ€æ¯”ä¾‹
+	(text_update (strcat "å½“å‰å˜åŒ–å€æ•°ï¼š" (rtos bl 2 2) "\nã€æ”¾å¤§(D)/ç¼©å°(X)/æŒ‡å®š(E)/åŠ¨æ€(å·¦é”®)/é€€å‡º(ç©ºæ ¼)ã€‘"));;æ›´æ–°æ–‡å­—
 	)
-       ((= a 3)	;Êó±ê×ó¼ü,ÆôÓÃ¶¯Ì¬±ÈÀı
+       ((= a 3)	;é¼ æ ‡å·¦é”®,å¯ç”¨åŠ¨æ€æ¯”ä¾‹
 	(setq flag_dynamic T)
 	(setq point_base aa)
-	(if (= flag_secondClick nil)	;Ê¶±ğµÚ¶ş´Îµã»÷Êó±ê×ó¼ü
+	(if (= flag_secondClick nil)	;è¯†åˆ«ç¬¬äºŒæ¬¡ç‚¹å‡»é¼ æ ‡å·¦é”®
 	    (setq flag_secondClick T)
 	  (setq flag_circulate nil)
 	  )
 	)
        ((or
-	 (= 25 a) (= 11 a) ;ÓÒ¼ü
-	 (and (= a 2) (= aa 13));»Ø³µ
-	 (and (= a 2) (= aa 32));»ò¿Õ¸ñ
+	 (= 25 a) (= 11 a) ;å³é”®
+	 (and (= a 2) (= aa 13));å›è½¦
+	 (and (= a 2) (= aa 32));æˆ–ç©ºæ ¼
 	 )
 	(setq flag_circulate nil)
 	)
        )
       )
     (redraw)
-    (if text (entdel text));É¾³ıÁÙÊ±ÎÄ×Ö
+    (if text (entdel text));åˆ é™¤ä¸´æ—¶æ–‡å­—
     (princ)
     )
   
   
   (if (setq ss_first (ssget "I"))
-					;Ô¤ÏÈÑ¡ÔñµÄÇé¿ö
+					;é¢„å…ˆé€‰æ‹©çš„æƒ…å†µ
       (progn
-					;ÓĞÕâÒ»¾ä£¬²Å²»Ó°ÏìºóĞøÊ¹ÓÃssgetº¯Êı
+					;æœ‰è¿™ä¸€å¥ï¼Œæ‰ä¸å½±å“åç»­ä½¿ç”¨ssgetå‡½æ•°
 	(sssetfirst nil)
 	(if (= 1 (sslength ss_first))
 	    (progn
@@ -376,11 +376,11 @@
 	    )
 	  )
 	)
-					;·ÇÔ¤ÏÈÑ¡ÔñµÄÇé¿ö
+					;éé¢„å…ˆé€‰æ‹©çš„æƒ…å†µ
     (progn
-      (if (setq ent (entsel "\nÑ¡ÔñÒªĞŞ¸Ä±ÈÀıµÄÍ¼Ôª[ÏßĞÍ±ÈÀı][¿é²åÈë±ÈÀı][Ìî³ä±ÈÀı]/<ÍË³ö>..."))
+      (if (setq ent (entsel "\né€‰æ‹©è¦ä¿®æ”¹æ¯”ä¾‹çš„å›¾å…ƒ[çº¿å‹æ¯”ä¾‹][å—æ’å…¥æ¯”ä¾‹][å¡«å……æ¯”ä¾‹]/<é€€å‡º>..."))
 	  (progn
-					;µÚÒ»¸ö²ÎÊıÎªÍ¼ÔªÃû£¬µÚ¶ş¸ö²ÎÊıÎªÊó±êµÄÑ¡Ôñ×ø±êÎ»ÖÃ
+					;ç¬¬ä¸€ä¸ªå‚æ•°ä¸ºå›¾å…ƒåï¼Œç¬¬äºŒä¸ªå‚æ•°ä¸ºé¼ æ ‡çš„é€‰æ‹©åæ ‡ä½ç½®
 	    (main_process (car ent) (cadr ent))
 	    )
 	)

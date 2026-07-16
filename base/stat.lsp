@@ -1,8 +1,8 @@
-;;; Í³¼Æ½á¹û¾ùÎªµã¶Ô±í¡£car Îª ÏµÊı£¬cdr ÎªÖµ
+;;; ç»Ÿè®¡ç»“æœå‡ä¸ºç‚¹å¯¹è¡¨ã€‚car ä¸º ç³»æ•°ï¼Œcdr ä¸ºå€¼
 
 (defun-q stat:stat (lst / atom% res)
-  "Í³¼ÆÁĞ±í lst ÖĞµÄÔªËØ¸öÊı¡£"
-  "ÔªËØºÍ¸öÊı×é³ÉµÄµã¶Ô±í"
+  "ç»Ÿè®¡åˆ—è¡¨ lst ä¸­çš„å…ƒç´ ä¸ªæ•°ã€‚"
+  "å…ƒç´ å’Œä¸ªæ•°ç»„æˆçš„ç‚¹å¯¹è¡¨"
   "(stat:stat '(3 a a 2 2)) => ((3 . 1) (A . 2) (2 . 2))"
   (setq res '())
   (foreach atom% lst
@@ -16,23 +16,23 @@
   res)
 
 (defun stat:mode (stat-res)
-  "ÖÚÊı"
+  "ä¼—æ•°"
   (car (vl-sort stat-res (function (lambda (e1 e2)
 			   (> (cdr e1)(cdr e2))))))
   )
 
 (defun stat:print ()
-  "´òÓ¡×îºóÒ»´ÎÍ³¼ÆµÄ½á¹û"
+  "æ‰“å°æœ€åä¸€æ¬¡ç»Ÿè®¡çš„ç»“æœ"
   (foreach n  @:tmp-stat-result
 	   (princ  (car n ))(princ (cdr n)) (princ "\n")))
 (defun stat:draw ( / n pt )
-  "»æÖÆ×îºóÒ»´ÎÍ³¼ÆµÄ½á¹û"
-  (setq pt (getpoint "ÇëÊäÈëÒª»æÖÆµÄÎ»ÖÃ:"))
+  "ç»˜åˆ¶æœ€åä¸€æ¬¡ç»Ÿè®¡çš„ç»“æœ"
+  (setq pt (getpoint "è¯·è¾“å…¥è¦ç»˜åˆ¶çš„ä½ç½®:"))
   (setq n 0)
-  (table:make pt "Í³¼Æ½á¹û" '("ÏîÄ¿" "¸öÊı")
+  (table:make pt "ç»Ÿè®¡ç»“æœ" '("é¡¹ç›®" "ä¸ªæ•°")
 	      (mapcar '(lambda (x) (list (car x)(cdr x)))  @:tmp-stat-result))
-  ;; (entity:make-text " Ïî" (m:coordinate pt (list 0 (* n -350))) 250 0 0.8 0 13)
-  ;; (entity:make-text (format nil "¸öÊı | ") (m:coordinate pt (list 0 (* n -350))) 250 0 0.8 0 33)
+  ;; (entity:make-text " é¡¹" (m:coordinate pt (list 0 (* n -350))) 250 0 0.8 0 13)
+  ;; (entity:make-text (format nil "ä¸ªæ•° | ") (m:coordinate pt (list 0 (* n -350))) 250 0 0.8 0 33)
   ;; (setq n 1)
   ;; (foreach x  @:tmp-stat-result
   ;; 	   (entity:make-text (format nil "~a" (car x)) (m:coordinate pt (list 0 (* n -350))) 250 0 0.8 0 13)

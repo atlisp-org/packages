@@ -1,8 +1,8 @@
 (defun @block:insert-all (/ pt0 pt1 ang dist blk)
-  (@::prompt (strcat "¿é²Ù×÷ -> ²åËùÓĞ¿é\n"
-		  " ½«µ±Ç° dwg ÖĞµÄËùÓĞ¿é²åÈëµ½´ÓÖ¸¶¨µãºÍÖ¸¶¨¾àÀëÅÅÁĞ¡£"))
-  (if (and (setq pt0 (getpoint "ÇëÊäÈë²åÈëµã:"))
-	   (setq pt1 (getpoint pt0 "ÇëÊäÈëÏà¶Ô²åÈëµãµÄ¾àÀëºÍ·½Ïòµã:"))
+  (@::prompt (strcat "å—æ“ä½œ -> æ’æ‰€æœ‰å—\n"
+		  " å°†å½“å‰ dwg ä¸­çš„æ‰€æœ‰å—æ’å…¥åˆ°ä»æŒ‡å®šç‚¹å’ŒæŒ‡å®šè·ç¦»æ’åˆ—ã€‚"))
+  (if (and (setq pt0 (getpoint "è¯·è¾“å…¥æ’å…¥ç‚¹:"))
+	   (setq pt1 (getpoint pt0 "è¯·è¾“å…¥ç›¸å¯¹æ’å…¥ç‚¹çš„è·ç¦»å’Œæ–¹å‘ç‚¹:"))
 	   (setq ang (angle pt0 pt1)
 		 dist (distance pt0 pt1)))
       (progn 

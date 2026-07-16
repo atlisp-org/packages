@@ -1,5 +1,5 @@
 (@:def-pkg '((:NAME . "at-nlp")
-        (:FULL-NAME . "×ÔÈ»ÓïÑÔ½»»¥")
+        (:FULL-NAME . "è‡ªç„¶è¯­è¨€äº¤äº’")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
         (:VERSION . "0.0.19")
@@ -7,7 +7,7 @@
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "ÓëCAD½øÐÐÖÐÎÄ×ÔÈ»ÓïÑÔ½»»¥¡£")
+        (:DESCRIPTION . "ä¸ŽCADè¿›è¡Œä¸­æ–‡è‡ªç„¶è¯­è¨€äº¤äº’ã€‚")
         (:URL . "http://atlisp.cn")
         (:FILES "at-nlp"
             "corpus"

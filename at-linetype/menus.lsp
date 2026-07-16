@@ -1,8 +1,8 @@
 (@:add-menus
- '(("@ÏßÐÍ"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(at-linetype:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(at-linetype:hello)")))
-   ("@ÏßÐÍ1"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(at-linetype:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(at-linetype:hello)")))
+ '(("@çº¿åž‹"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(at-linetype:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(at-linetype:hello)")))
+   ("@çº¿åž‹1"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(at-linetype:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(at-linetype:hello)")))
    ))

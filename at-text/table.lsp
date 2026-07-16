@@ -50,7 +50,7 @@
 
 (defun @text:text2table (/ ss-txt result lst-tmp row)
   (setq ss-txt (pickset:to-list (ssget '((0 . "text")))))
-  ;; ×ÔÉÏ¶øÏÂ °´ĞĞ·Ö×é
+  ;; è‡ªä¸Šè€Œä¸‹ æŒ‰è¡Œåˆ†ç»„
   (setq ss-txt
 	(vl-sort ss-txt
 		 '(lambda (x y)
@@ -60,18 +60,18 @@
 			(>  (cadr (entity:getdxf x 10))(+ (cadr (entity:getdxf y 10))(* 0.5 (entity:getdxf y 40))))))))
   ;;(print ss-txt)
   (setq result '())
-  (setq lst-tmp (list (car ss-txt))) ;; Í¬Ò»ĞĞµÄÎÄ±¾ÁĞ±í
+  (setq lst-tmp (list (car ss-txt))) ;; åŒä¸€è¡Œçš„æ–‡æœ¬åˆ—è¡¨
   (while (setq ss-txt (cdr ss-txt))
     (if (equal (cadr (entity:getdxf (last lst-tmp) 10))(cadr (entity:getdxf (car ss-txt) 10))
 	       (* 0.3 (entity:getdxf (last lst-tmp) 40)))
-	;; Í¬Ò»ĞĞ£¬
+	;; åŒä¸€è¡Œï¼Œ
 	(setq lst-tmp (append lst-tmp (list (car ss-txt))))
-	(progn ;;ĞÂĞĞ
+	(progn ;;æ–°è¡Œ
 	  (setq result (append result (list lst-tmp)))
 	  (setq lst-tmp (list (car ss-txt))))
 	))
   (setq result (append result (list lst-tmp)))
-  ;; ÁĞ¶ÔÆë
+  ;; åˆ—å¯¹é½
   (setq lst-tmp (cdr result))
   (setq result (list (car result)))
   (foreach row lst-tmp
@@ -92,7 +92,7 @@
 			   (setq row-tmp (append row-tmp (list "NOP")))
 			   (setq i (1+ i)))))
 	       (setq result (append result (list row-tmp))))))
-  (table:make (getpoint "ÇëÊäÈë±í¸ñ²åÈëµã:")
+  (table:make (getpoint "è¯·è¾“å…¥è¡¨æ ¼æ’å…¥ç‚¹:")
    	      "TITLE" nil
 	      (mapcar '(lambda (x) (mapcar '(lambda (y) (if (= 'ename (type y)) (entity:getdxf y 1) y)) x)) result))
   ;; (princ (mapcar '(lambda (x) (mapcar '(lambda (y) (if (= 'ename (type y)) (entity:getdxf y 1) y)) x)) result))

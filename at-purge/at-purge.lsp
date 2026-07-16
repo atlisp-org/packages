@@ -1,29 +1,29 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-purge:first ÓÃÓÚ Ó¦ÓÃ°ü at-purge µÄ µÚÒ»¸öÅäÖÃÏî first 
-;; (@:get-config 'at-purge:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-purge:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "ÊµÌå"  "ÇåÀíDGN" "(at-purge:remove-dgn)")
+;; å®šä¹‰é…ç½®é¡¹ 'at-purge:first ç”¨äº åº”ç”¨åŒ… at-purge çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+;; (@:get-config 'at-purge:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-purge:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "å®ä½“"  "æ¸…ç†DGN" "(at-purge:remove-dgn)")
 (defun at-purge:remove-dgn (/)
   (vl-load-com)
   (if (dictremove (namedobjdict) "ACAD_DGNLINESTYLECOMP")
       (progn
 	(command "purge" "a" "*" "N")
-	(princ "ÒÑĞŞÕı DGNÏßĞÍ ÎÊÌâ£¬²¢ÔËĞĞ purge ÇåÀíÁËÎÄ¼ş¡£")
+	(princ "å·²ä¿®æ­£ DGNçº¿å‹ é—®é¢˜ï¼Œå¹¶è¿è¡Œ purge æ¸…ç†äº†æ–‡ä»¶ã€‚")
 	)
-      (princ "±¾Í¼Ã»ÓĞ DGN ÎÊÌâ"))
+      (princ "æœ¬å›¾æ²¡æœ‰ DGN é—®é¢˜"))
   ;;;
   (princ)
   )
 
-(@:add-menu "ÊµÌå" "·Ö½âÖØ¿é" "(@:explode-minsert)")
+(@:add-menu "å®ä½“" "åˆ†è§£é‡å—" "(@:explode-minsert)")
 (defun @:explode-minsert (/ en ent)
-  "·Ö½â¶àÖØ²åÈë¿é "
+  "åˆ†è§£å¤šé‡æ’å…¥å— "
   (vlax-for blk *blks* (if(=""(vla-get-name blk)) (vla-put-name blk "ttt")))
   
-  (setq en (entsel "nÇëÑ¡Ôñ¶àÖØ²åÈë¿é:"))
+  (setq en (entsel "nè¯·é€‰æ‹©å¤šé‡æ’å…¥å—:"))
   (if en
       (if (= (cdr (assoc 0 (setq ent (cdr (entget (setq en (car en)))))))
 	     "INSERT"
@@ -42,6 +42,6 @@
 	    )
 	  )
     )
-  (princ "\nOK£¬·Ö½â³É¹¦¡£")
+  (princ "\nOKï¼Œåˆ†è§£æˆåŠŸã€‚")
   (princ)
   )

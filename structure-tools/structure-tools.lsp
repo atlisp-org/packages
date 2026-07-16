@@ -1,14 +1,14 @@
-(@:add-menu "½á¹¹¼ÆËã¹¤¾ß" "Ğ¡»¢¹¤¾ßÏä" "(stru:jiegou-tools \"XiaoHu\")")
-(@:add-menu "½á¹¹¼ÆËã¹¤¾ß" "½á¹¹¼ÆËãSTR" "(stru:jiegou-tools \"STR\")")
-(@:add-menu "½á¹¹¼ÆËã¹¤¾ß" "ÀÏ¶­½á¹¹" "(stru:jiegou-tools \"LaoDong\")")
-(@:add-menu "½á¹¹¼ÆËã¹¤¾ß" "½á¹¹¼ÆËã" "(stru:jiegou-tools \"JieGou\")")
-(@:add-menu "½á¹¹¼ÆËã¹¤¾ß" "¸Ö½á¹¹Ï¸²¿" "(stru:jiegou-tools \"steel\")")
+(@:add-menu "ç»“æ„è®¡ç®—å·¥å…·" "å°è™å·¥å…·ç®±" "(stru:jiegou-tools \"XiaoHu\")")
+(@:add-menu "ç»“æ„è®¡ç®—å·¥å…·" "ç»“æ„è®¡ç®—STR" "(stru:jiegou-tools \"STR\")")
+(@:add-menu "ç»“æ„è®¡ç®—å·¥å…·" "è€è‘£ç»“æ„" "(stru:jiegou-tools \"LaoDong\")")
+(@:add-menu "ç»“æ„è®¡ç®—å·¥å…·" "ç»“æ„è®¡ç®—" "(stru:jiegou-tools \"JieGou\")")
+(@:add-menu "ç»“æ„è®¡ç®—å·¥å…·" "é’¢ç»“æ„ç»†éƒ¨" "(stru:jiegou-tools \"steel\")")
 
 (defun stru:jiegou-tools ( file-capital / app-name)
   (setq app-name (strcat "structure-tools/" file-capital "-tools.exe"))
   (if (null (findfile (strcat "packages/" app-name)))
       (progn
-	(@:log "INFO" "Ã»ÓĞ·¢ÏÖ ÎÄ¼ş£¬ÕıÔÚÏÂÔØ...\n")
+	(@:log "INFO" "æ²¡æœ‰å‘ç° æ–‡ä»¶ï¼Œæ­£åœ¨ä¸‹è½½...\n")
 	(@:down-pkg-file (@:uri) app-name edition))
       (command "start" (findfile (strcat "packages/" app-name)))))
 

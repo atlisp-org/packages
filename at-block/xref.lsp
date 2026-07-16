@@ -1,19 +1,19 @@
 (@:add-menus 
-  '("¿é²ÎÕÕ²Ù×÷"
-    ("²ÎÕÕ¹é²ã" (@block:xref-layer))
-    ("ÖØÔØÑ¡¶¨" (@block:xfr))
-    ("ÖØÔØËùÓĞ" (@block:czcz))
-    ("Ğ¶ÔØÑ¡¶¨" (@block:xfx))
-    ("Ğ¶ÔØËùÓĞ" (@block:xfxa))
-    ("²ğÀëÑ¡¶¨" (@block:xfd))
-    ("²ğÀëËùÓĞ" (@block:xfda))
-    ("°ó¶¨Ñ¡¶¨" (@block:xfb))
-    ("°ó¶¨ËùÓĞ" (@block:bdcz))
-    ("ÃüÁîÌáÊ¾" (@block:help-xref-hk))))
+  '("å—å‚ç…§æ“ä½œ"
+    ("å‚ç…§å½’å±‚" (@block:xref-layer))
+    ("é‡è½½é€‰å®š" (@block:xfr))
+    ("é‡è½½æ‰€æœ‰" (@block:czcz))
+    ("å¸è½½é€‰å®š" (@block:xfx))
+    ("å¸è½½æ‰€æœ‰" (@block:xfxa))
+    ("æ‹†ç¦»é€‰å®š" (@block:xfd))
+    ("æ‹†ç¦»æ‰€æœ‰" (@block:xfda))
+    ("ç»‘å®šé€‰å®š" (@block:xfb))
+    ("ç»‘å®šæ‰€æœ‰" (@block:bdcz))
+    ("å‘½ä»¤æç¤º" (@block:help-xref-hk))))
 (defun @block:xref-layer (/ xrefs) 
-  (@::prompt "½«Íâ²¿²ÎÕÕÒÆÖÁÍ¬Ò»¸öÍ¼²ã£¬ÒÔ±ãÓÚËø¶¨¡£Í¼²ãÃûÔÚÉèÖÃÖĞ½øĞĞÉèÖÃ¡£")
+  (@::prompt "å°†å¤–éƒ¨å‚ç…§ç§»è‡³åŒä¸€ä¸ªå›¾å±‚ï¼Œä»¥ä¾¿äºé”å®šã€‚å›¾å±‚ååœ¨è®¾ç½®ä¸­è¿›è¡Œè®¾ç½®ã€‚")
   (setq xrefs (pickset:to-list (ssget "x" '((0 . "insert")))))
-  ;; È¥³ı·ÇÍâ²ÎÕÕ¿é
+  ;; å»é™¤éå¤–å‚ç…§å—
   (setq xrefs (vl-remove-if-not 
                 '(lambda (x) 
                    (and 
@@ -21,36 +21,36 @@
                      (findfile 
                        (cdr (assoc 1 (tblsearch "block" (entity:getdxf x 2)))))))
                 xrefs))
-  ;;µ½´Ë xrefs ¾ÍÊÇËùÓĞµÄÍâ²¿²ÎÕÕÍ¼ÔªÁË¡£
+  ;;åˆ°æ­¤ xrefs å°±æ˜¯æ‰€æœ‰çš„å¤–éƒ¨å‚ç…§å›¾å…ƒäº†ã€‚
   (layer:lock (@:get-config '@block:xref-layer) nil)
   (mapcar 
     '(lambda (xref%) 
-       ;; Èç¹û²»´æÔÚ²ÎÕÕÃûµÄÍ¼²ãÔò½¨Á¢
+       ;; å¦‚æœä¸å­˜åœ¨å‚ç…§åçš„å›¾å±‚åˆ™å»ºç«‹
        (if (null (tblsearch "layer" (@:get-config '@block:xref-layer))) 
          (layer:make (@:get-config '@block:xref-layer) nil nil nil))
-       ;;Èç¹û²ÎÕÕÃûÓë²ÎÕÕµÄÍ¼²ãÃû²»Í¬ÔòĞŞ¸Ä
+       ;;å¦‚æœå‚ç…§åä¸å‚ç…§çš„å›¾å±‚åä¸åŒåˆ™ä¿®æ”¹
        (if (/= (@:get-config '@block:xref-layer) (entity:getdxf xref% 8)) 
          (entity:putdxf xref% 8 (@:get-config '@block:xref-layer))))
     xrefs)
   (layer:lock (@:get-config '@block:xref-layer) t))
-;;XFR        ÖØÔØÑ¡¶¨
-;;CZCZ        ÖØÔØËùÓĞ
-;;XFX        Ğ¶ÔØÑ¡¶¨
-;;XFXA        Ğ¶ÔØËùÓĞ
-;;XFD        ²ğÀëÑ¡¶¨
-;;XFDA        ²ğÀëËùÓĞ
-;;XFB        °ó¶¨Ñ¡¶¨
-;;BDCZ        °ó¶¨ËùÓĞ
+;;XFR        é‡è½½é€‰å®š
+;;CZCZ        é‡è½½æ‰€æœ‰
+;;XFX        å¸è½½é€‰å®š
+;;XFXA        å¸è½½æ‰€æœ‰
+;;XFD        æ‹†ç¦»é€‰å®š
+;;XFDA        æ‹†ç¦»æ‰€æœ‰
+;;XFB        ç»‘å®šé€‰å®š
+;;BDCZ        ç»‘å®šæ‰€æœ‰
 (defun @block:help-xref-hk () 
   (alert 
-    (strcat "\nÖØÔØÑ¡¶¨²ÎÕÕÎÄ¼ş ÃüÁî£ºXFR" "\nÖØĞÂ¼ÓÔØËùÓĞÍâ²¿²ÎÕÕ ÃüÁî£ºCZCZ" "\nĞ¶ÔØÑ¡¶¨²ÎÕÕÎÄ¼ş ÃüÁî£ºXFX" 
-            "\nĞ¶ÔØËùÓĞÍâ²¿²ÎÕÕ ÃüÁî£ºXFXA" "\n²ğÀëÑ¡¶¨²ÎÕÕÎÄ¼ş ÃüÁî£ºXFD" "\n²ğÀëËùÓĞÍâ²¿²ÎÕÕ ÃüÁî£ºXFDA" "\n°ó¶¨Ñ¡¶¨²ÎÕÕÎÄ¼ş ÃüÁî£ºXFB" 
-            "\n°ó¶¨ËùÓĞÍâ²¿²ÎÕÕ ÃüÁî£ºBDCZ")))
+    (strcat "\né‡è½½é€‰å®šå‚ç…§æ–‡ä»¶ å‘½ä»¤ï¼šXFR" "\né‡æ–°åŠ è½½æ‰€æœ‰å¤–éƒ¨å‚ç…§ å‘½ä»¤ï¼šCZCZ" "\nå¸è½½é€‰å®šå‚ç…§æ–‡ä»¶ å‘½ä»¤ï¼šXFX" 
+            "\nå¸è½½æ‰€æœ‰å¤–éƒ¨å‚ç…§ å‘½ä»¤ï¼šXFXA" "\næ‹†ç¦»é€‰å®šå‚ç…§æ–‡ä»¶ å‘½ä»¤ï¼šXFD" "\næ‹†ç¦»æ‰€æœ‰å¤–éƒ¨å‚ç…§ å‘½ä»¤ï¼šXFDA" "\nç»‘å®šé€‰å®šå‚ç…§æ–‡ä»¶ å‘½ä»¤ï¼šXFB" 
+            "\nç»‘å®šæ‰€æœ‰å¤–éƒ¨å‚ç…§ å‘½ä»¤ï¼šBDCZ")))
 
-(Defun @block:XFR ()  ;¶¨Òå¡°ÖØÔØÑ¡¶¨²ÎÕÕÎÄ¼ş¡±ÃüÁî
-  (setvar "cmdecho" 0) ;ÃüÁîÖ´ĞĞ¹ı³Ì²»»ØÏÔÌáÊ¾ºÍÊäÈë
+(Defun @block:XFR ()  ;å®šä¹‰â€œé‡è½½é€‰å®šå‚ç…§æ–‡ä»¶â€å‘½ä»¤
+  (setvar "cmdecho" 0) ;å‘½ä»¤æ‰§è¡Œè¿‡ç¨‹ä¸å›æ˜¾æç¤ºå’Œè¾“å…¥
 
-  (princ "\nÑ¡¶¨ÒªÖØĞÂÔØÈëµÄ²ÎÕÕÎÄ¼ş:")
+  (princ "\né€‰å®šè¦é‡æ–°è½½å…¥çš„å‚ç…§æ–‡ä»¶:")
 
   (if (setq SS (ssget)) 
     (progn 
@@ -58,23 +58,23 @@
       (repeat (setq I (sslength SS)) 
         (setq E (ssname SS (setq I (1- I))))
         (setq ELIST (entget E))
-        (setq Rname (cdr (assoc 2 ELIST))) ;_²ÎÕÕÃû
+        (setq Rname (cdr (assoc 2 ELIST))) ;_å‚ç…§å
         (command "-xref" "R" Rname)
-        (setq Rnames (strcat Rname ", " Rnames)) ;_strcat Á¬½Ó³É×Ö·û´®
+        (setq Rnames (strcat Rname ", " Rnames)) ;_strcat è¿æ¥æˆå­—ç¬¦ä¸²
       ) ;end repeat
-      (prompt "\nÒÑ¾­ÖØÔØµÄÎÄ¼şÎª:")
+      (prompt "\nå·²ç»é‡è½½çš„æ–‡ä»¶ä¸º:")
       (princ Rnames)) ;end progn
   ) ;end if
   (princ))
-(Defun @block:CZCZ ()  ;¶¨Òå¡°ÖØĞÂ¼ÓÔØËùÓĞÍâ²¿²ÎÕÕ¡±ÃüÁî
-  (setvar "cmdecho" 0) ;ÃüÁîÖ´ĞĞ¹ı³Ì²»»ØÏÔÌáÊ¾ºÍÊäÈë
+(Defun @block:CZCZ ()  ;å®šä¹‰â€œé‡æ–°åŠ è½½æ‰€æœ‰å¤–éƒ¨å‚ç…§â€å‘½ä»¤
+  (setvar "cmdecho" 0) ;å‘½ä»¤æ‰§è¡Œè¿‡ç¨‹ä¸å›æ˜¾æç¤ºå’Œè¾“å…¥
   (command "-xref" "R" "*")
   (princ))
-(Defun @block:XFX ()  ;¶¨Òå¡°Ğ¶ÔØÑ¡¶¨²ÎÕÕÎÄ¼ş¡±ÃüÁî
+(Defun @block:XFX ()  ;å®šä¹‰â€œå¸è½½é€‰å®šå‚ç…§æ–‡ä»¶â€å‘½ä»¤
 
-  (setvar "cmdecho" 0) ;ÃüÁîÖ´ĞĞ¹ı³Ì²»»ØÏÔÌáÊ¾ºÍÊäÈë
+  (setvar "cmdecho" 0) ;å‘½ä»¤æ‰§è¡Œè¿‡ç¨‹ä¸å›æ˜¾æç¤ºå’Œè¾“å…¥
 
-  (princ "\nÑ¡ÔñÒªĞ¶ÔØµÄÍâ²¿²ÎÕÕ¶ÔÏó:")
+  (princ "\né€‰æ‹©è¦å¸è½½çš„å¤–éƒ¨å‚ç…§å¯¹è±¡:")
 
   (if (setq SS (ssget)) 
     (progn 
@@ -82,23 +82,23 @@
       (repeat (setq I (sslength SS)) 
         (setq E (ssname SS (setq I (1- I))))
         (setq ELIST (entget E))
-        (setq Rname (cdr (assoc 2 ELIST))) ;_²ÎÕÕÃû
+        (setq Rname (cdr (assoc 2 ELIST))) ;_å‚ç…§å
         (command "-xref" "U" Rname)
-        (setq Rnames (strcat Rname ", " Rnames)) ;_strcat Á¬½Ó³É×Ö·û´®
+        (setq Rnames (strcat Rname ", " Rnames)) ;_strcat è¿æ¥æˆå­—ç¬¦ä¸²
       ) ;end repeat
-      (prompt "\nÒÑĞ¶ÔØµÄÍâ²¿²ÎÕÕÎÄ¼şÊÇ:")
+      (prompt "\nå·²å¸è½½çš„å¤–éƒ¨å‚ç…§æ–‡ä»¶æ˜¯:")
       (princ Rnames)) ;end progn
   ) ;end if
   (princ))
-(Defun @block:XFXA ()  ;¶¨Òå¡°Ğ¶ÔØËùÓĞÍâ²¿²ÎÕÕ¡±ÃüÁî
-  (setvar "cmdecho" 0) ;ÃüÁîÖ´ĞĞ¹ı³Ì²»»ØÏÔÌáÊ¾ºÍÊäÈë
+(Defun @block:XFXA ()  ;å®šä¹‰â€œå¸è½½æ‰€æœ‰å¤–éƒ¨å‚ç…§â€å‘½ä»¤
+  (setvar "cmdecho" 0) ;å‘½ä»¤æ‰§è¡Œè¿‡ç¨‹ä¸å›æ˜¾æç¤ºå’Œè¾“å…¥
   (command "-xref" "U" "*")
   (princ))
-(Defun @block:XFD ()  ;¶¨Òå¡°²ğÀëÑ¡¶¨²ÎÕÕÎÄ¼ş¡±ÃüÁî
+(Defun @block:XFD ()  ;å®šä¹‰â€œæ‹†ç¦»é€‰å®šå‚ç…§æ–‡ä»¶â€å‘½ä»¤
 
-  (setvar "cmdecho" 0) ;ÃüÁîÖ´ĞĞ¹ı³Ì²»»ØÏÔÌáÊ¾ºÍÊäÈë
+  (setvar "cmdecho" 0) ;å‘½ä»¤æ‰§è¡Œè¿‡ç¨‹ä¸å›æ˜¾æç¤ºå’Œè¾“å…¥
 
-  (princ "\nÑ¡ÔñÒª²ğÀëµÄÍâ²¿²ÎÕÕ¶ÔÏó:")
+  (princ "\né€‰æ‹©è¦æ‹†ç¦»çš„å¤–éƒ¨å‚ç…§å¯¹è±¡:")
 
   (if (setq SS (ssget)) 
     (progn 
@@ -106,23 +106,23 @@
       (repeat (setq I (sslength SS)) 
         (setq E (ssname SS (setq I (1- I))))
         (setq ELIST (entget E))
-        (setq Rname (cdr (assoc 2 ELIST))) ;_²ÎÕÕÃû
+        (setq Rname (cdr (assoc 2 ELIST))) ;_å‚ç…§å
         (command "-xref" "Detach" Rname)
-        (setq Rnames (strcat Rname ", " Rnames)) ;_strcat Á¬½Ó³É×Ö·û´®
+        (setq Rnames (strcat Rname ", " Rnames)) ;_strcat è¿æ¥æˆå­—ç¬¦ä¸²
       ) ;end repeat
-      (prompt "\nÒÑ²ğÀëµÄÍâ²¿²ÎÕÕÎÄ¼şÎª:")
+      (prompt "\nå·²æ‹†ç¦»çš„å¤–éƒ¨å‚ç…§æ–‡ä»¶ä¸º:")
       (princ Rnames)) ;end progn
   ) ;end if
   (princ))
-(Defun @block:XFDA ()  ;¶¨Òå¡°²ğÀëËùÓĞÍâ²¿²ÎÕÕ¡±ÃüÁî
-  (setvar "cmdecho" 0) ;ÃüÁîÖ´ĞĞ¹ı³Ì²»»ØÏÔÌáÊ¾ºÍÊäÈë
+(Defun @block:XFDA ()  ;å®šä¹‰â€œæ‹†ç¦»æ‰€æœ‰å¤–éƒ¨å‚ç…§â€å‘½ä»¤
+  (setvar "cmdecho" 0) ;å‘½ä»¤æ‰§è¡Œè¿‡ç¨‹ä¸å›æ˜¾æç¤ºå’Œè¾“å…¥
   (command "-xref" "Detach" "*")
   (princ))
-(Defun @block:XFB ()  ;¶¨Òå¡°°ó¶¨Ñ¡¶¨²ÎÕÕÎÄ¼ş¡±ÃüÁî
+(Defun @block:XFB ()  ;å®šä¹‰â€œç»‘å®šé€‰å®šå‚ç…§æ–‡ä»¶â€å‘½ä»¤
 
-  (setvar "cmdecho" 0) ;ÃüÁîÖ´ĞĞ¹ı³Ì²»»ØÏÔÌáÊ¾ºÍÊäÈë
+  (setvar "cmdecho" 0) ;å‘½ä»¤æ‰§è¡Œè¿‡ç¨‹ä¸å›æ˜¾æç¤ºå’Œè¾“å…¥
 
-  (princ "\nÑ¡ÔñÒª°ó¶¨µÄÍâ²¿²ÎÕÕ¶ÔÏó:")
+  (princ "\né€‰æ‹©è¦ç»‘å®šçš„å¤–éƒ¨å‚ç…§å¯¹è±¡:")
 
   (if (setq SS (ssget)) 
     (progn 
@@ -130,28 +130,28 @@
       (setq oldBT (getvar "BINDTYPE"))
       (setq BT (if (null BT) oldBT BT))
       (setq BT_tmp (getstring 
-                     (strcat "ÊäÈë°ó¶¨ÀàĞÍ[°ó¶¨(N)/²åÈë(Y)]<" (itoa BT) ">: ")))
+                     (strcat "è¾“å…¥ç»‘å®šç±»å‹[ç»‘å®š(N)/æ’å…¥(Y)]<" (itoa BT) ">: ")))
       (if (null BT_tmp) (setq BT_tmp BT))
       (setq BT (atoi BT_tmp))
       (setvar "BINDTYPE" BT)
       (repeat (setq I (sslength SS)) 
         (setq E (ssname SS (setq I (1- I))))
         (setq ELIST (entget E))
-        (setq Rname (cdr (assoc 2 ELIST))) ;_²ÎÕÕÃû
+        (setq Rname (cdr (assoc 2 ELIST))) ;_å‚ç…§å
         (command "-xref" "Bind" Rname)
-        (setq Rnames (strcat Rname ", " Rnames)) ;_strcat Á¬½Ó³É×Ö·û´®
+        (setq Rnames (strcat Rname ", " Rnames)) ;_strcat è¿æ¥æˆå­—ç¬¦ä¸²
       ) ;end repeat
       (setvar "BINDTYPE" oldBT)
-      (prompt "\nÒÑ°ó¶¨µÄÍâ²¿²ÎÕÕÎÄ¼şÎª:")
+      (prompt "\nå·²ç»‘å®šçš„å¤–éƒ¨å‚ç…§æ–‡ä»¶ä¸º:")
       (princ Rnames)) ;end progn
   ) ;end if
   (princ))
-(Defun @block:BDCZ ()  ;¶¨Òå¡°°ó¶¨ËùÓĞÍâ²¿²ÎÕÕ¡±ÃüÁî
-  (setvar "cmdecho" 0) ;ÃüÁîÖ´ĞĞ¹ı³Ì²»»ØÏÔÌáÊ¾ºÍÊäÈë
+(Defun @block:BDCZ ()  ;å®šä¹‰â€œç»‘å®šæ‰€æœ‰å¤–éƒ¨å‚ç…§â€å‘½ä»¤
+  (setvar "cmdecho" 0) ;å‘½ä»¤æ‰§è¡Œè¿‡ç¨‹ä¸å›æ˜¾æç¤ºå’Œè¾“å…¥
   (setq oldBT (getvar "BINDTYPE"))
   (setq BT (if (null BT) oldBT BT))
   (setq BT_tmp (getstring 
-                 (strcat "ÊäÈë°ó¶¨ÀàĞÍ[°ó¶¨(0)/²åÈë(1)]<" (itoa BT) ">: ")))
+                 (strcat "è¾“å…¥ç»‘å®šç±»å‹[ç»‘å®š(0)/æ’å…¥(1)]<" (itoa BT) ">: ")))
   (if (null BT_tmp) (setq BT_tmp BT))
   (setq BT (atoi BT_tmp))
   (setvar "BINDTYPE" BT)

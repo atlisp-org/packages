@@ -1,30 +1,30 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-3d:first ÓÃÓÚ Ó¦ÓÃ°ü at-3d µÄ µÚÒ»¸öÅäÖÃÏî first 
-;; (@:define-config 'at-3d:first "ÎÒÊÇÅäÖÃÏî at-3d:first µÄÖµ" "Õâ¸öÅäÖÃÏîµÄÓÃÍ¾ËµÃ÷¡£")
-;; (@:get-config 'at-3d:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-3d:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
+;; å®šä¹‰é…ç½®é¡¹ 'at-3d:first ç”¨äº åº”ç”¨åŒ… at-3d çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+;; (@:define-config 'at-3d:first "æˆ‘æ˜¯é…ç½®é¡¹ at-3d:first çš„å€¼" "è¿™ä¸ªé…ç½®é¡¹çš„ç”¨é€”è¯´æ˜ã€‚")
+;; (@:get-config 'at-3d:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-3d:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
 (in-package :cl)
 (defun foreach (&rest a) a)
-(@:add-menu "3DÏà¹Ø" "Ñ¡µãÆÊÇĞ" "(at-3d:slice-by-pts)")
-(@:add-menu "3DÏà¹Ø" "Â·¾¶ÆÊÇĞ" "(at-3d:slice-by-route)")
+(@:add-menu "3Dç›¸å…³" "é€‰ç‚¹å‰–åˆ‡" "(at-3d:slice-by-pts)")
+(@:add-menu "3Dç›¸å…³" "è·¯å¾„å‰–åˆ‡" "(at-3d:slice-by-route)")
 (defpackage :at-3d
   (:use :cl)
   (:export :slice-by-pts
            ::slice-by-route) 
   )
 (defun at-3d:slice-by-pts ()
-  (@:help '("½«Ò»¸öÇúÃæÓÃ¹ı¶à¸öµãµÄÆ½ÃæÆÊÇĞ"))
-  (@:prompt "ÇëÑ¡ÔñĞèÒªÆÊÇĞµÄÇúÃæ:")
+  (@:help '("å°†ä¸€ä¸ªæ›²é¢ç”¨è¿‡å¤šä¸ªç‚¹çš„å¹³é¢å‰–åˆ‡"))
+  (@:prompt "è¯·é€‰æ‹©éœ€è¦å‰–åˆ‡çš„æ›²é¢:")
   (setq surfaces (ssget '((0 . "surface"))))
   
-  (@:prompt "ÇëÑ¡ÔñÓÃÓÚÆÊÇĞµÄ¿ØÖÆµÄµã:")
+  (@:prompt "è¯·é€‰æ‹©ç”¨äºå‰–åˆ‡çš„æ§åˆ¶çš„ç‚¹:")
   (setq pts (pickset:to-list(ssget '((0 . "point")))))
-  (setq slicesurfaces (mapcar 'read (ui:select-multi "ÇëÑ¡ÔñÇĞÃæ·½Ê½"
-				      '("1 Æ½ĞĞÓÚxyÃæ " "2 Æ½ĞĞÓÚyzÃæ" "3 Æ½ĞĞÓÚzxÃæ" "4 ´¹Ö±ÓÚµ¼ÏòÏß"))))
-  ;;È¡µãËùÔÚµÄÇúÏß£¬Çóµãµ½ÇúÏßÆğµãµÄ¾àÀë£¬Çóµã´¦µÄÇĞÏß£¬Çóµã´¦µÄ´¹Ãæ¡£(vlax-curve-getDistAtPoint curve-obj point)
+  (setq slicesurfaces (mapcar 'read (ui:select-multi "è¯·é€‰æ‹©åˆ‡é¢æ–¹å¼"
+				      '("1 å¹³è¡Œäºxyé¢ " "2 å¹³è¡Œäºyzé¢" "3 å¹³è¡Œäºzxé¢" "4 å‚ç›´äºå¯¼å‘çº¿"))))
+  ;;å–ç‚¹æ‰€åœ¨çš„æ›²çº¿ï¼Œæ±‚ç‚¹åˆ°æ›²çº¿èµ·ç‚¹çš„è·ç¦»ï¼Œæ±‚ç‚¹å¤„çš„åˆ‡çº¿ï¼Œæ±‚ç‚¹å¤„çš„å‚é¢ã€‚(vlax-curve-getDistAtPoint curve-obj point)
   ;; (if (and (setq route (ssget pt1))
   ;; 	   (setq firstdiv (vlax-curve-getfirstderiv (e2o route) (vlax-curve-getDistAtPoint (e2o route) pt1))))
   ;;     (setq surface-vr (list pt1
@@ -45,7 +45,7 @@
    (setq surface-zx (list pt1
 			  (mapcar '+ pt1 '(0 0 100))
 			  (mapcar '+ pt1 '(100 0 0))))
-   ;;È¡µãËùÔÚµÄÇúÏß£¬Çóµãµ½ÇúÏßÆğµãµÄ¾àÀë£¬Çóµã´¦µÄÇĞÏß£¬Çóµã´¦µÄ´¹Ãæ¡£(vlax-curve-getDistAtPoint curve-obj point)
+   ;;å–ç‚¹æ‰€åœ¨çš„æ›²çº¿ï¼Œæ±‚ç‚¹åˆ°æ›²çº¿èµ·ç‚¹çš„è·ç¦»ï¼Œæ±‚ç‚¹å¤„çš„åˆ‡çº¿ï¼Œæ±‚ç‚¹å¤„çš„å‚é¢ã€‚(vlax-curve-getDistAtPoint curve-obj point)
    (if (and (setq route (car (pickset:to-list (ssget "c"(polar pt1 0 10) (polar pt1 pi 10) '((0 . "*line"))))))
     	    (setq firstdiv (vlax-curve-getfirstderiv (e2o route) (vlax-curve-getDistAtPoint (e2o route) pt1))))
        (setq surface-vr (list pt1
@@ -113,16 +113,16 @@
   )
 
 (defun at-3d:slice-by-route ()
-  (@:help '("½«Ò»¸öÇúÃæÓÃÇúÏßÂ·¾¶ÆÊÇĞ"))
-  (@:prompt "ÇëÑ¡ÔñĞèÒªÆÊÇĞµÄÇúÃæ:")
+  (@:help '("å°†ä¸€ä¸ªæ›²é¢ç”¨æ›²çº¿è·¯å¾„å‰–åˆ‡"))
+  (@:prompt "è¯·é€‰æ‹©éœ€è¦å‰–åˆ‡çš„æ›²é¢:")
   (setq surfaces (ssget '((0 . "surface"))))
   
-  (@:prompt "ÇëÑ¡ÔñÓÃÓÚÆÊÇĞµÄÂ·¾¶ÇúÏß:")
+  (@:prompt "è¯·é€‰æ‹©ç”¨äºå‰–åˆ‡çš„è·¯å¾„æ›²çº¿:")
   (setq route  (car (pickset:to-list (ssget ":S" '((0 . "*line"))))))
-  (setq n (getint (@:prompt "ÇëÊäÈë·Ö¶ÎÊı:")))
+  (setq n (getint (@:prompt "è¯·è¾“å…¥åˆ†æ®µæ•°:")))
   (setq len-pre (/ (curve:length route) n))
-  (setq slicesurfaces (mapcar 'read (ui:select-multi "ÇëÑ¡ÔñÇĞÃæ·½Ê½"
-   				      '("1 Æ½ĞĞÓÚxyÃæ " "2 Æ½ĞĞÓÚyzÃæ" "3 Æ½ĞĞÓÚzxÃæ" "4 ´¹Ö±ÓÚµ¼ÏòÏß"))))
+  (setq slicesurfaces (mapcar 'read (ui:select-multi "è¯·é€‰æ‹©åˆ‡é¢æ–¹å¼"
+   				      '("1 å¹³è¡Œäºxyé¢ " "2 å¹³è¡Œäºyzé¢" "3 å¹³è¡Œäºzxé¢" "4 å‚ç›´äºå¯¼å‘çº¿"))))
   (push-var nil)
   (setq i 0)
   (repeat
@@ -137,7 +137,7 @@
    (setq surface-zx (list pt1
 			  (mapcar '+ pt1 '(0 0 100))
 			  (mapcar '+ pt1 '(100 0 0))))
-   ;;È¡µãËùÔÚµÄÇúÏß£¬Çóµãµ½ÇúÏßÆğµãµÄ¾àÀë£¬Çóµã´¦µÄÇĞÏß£¬Çóµã´¦µÄ´¹Ãæ¡£(vlax-curve-getDistAtPoint curve-obj point)
+   ;;å–ç‚¹æ‰€åœ¨çš„æ›²çº¿ï¼Œæ±‚ç‚¹åˆ°æ›²çº¿èµ·ç‚¹çš„è·ç¦»ï¼Œæ±‚ç‚¹å¤„çš„åˆ‡çº¿ï¼Œæ±‚ç‚¹å¤„çš„å‚é¢ã€‚(vlax-curve-getDistAtPoint curve-obj point)
    (if (and (setq firstdiv (vlax-curve-getfirstderiv (e2o route) (vlax-curve-getDistAtPoint (e2o route) pt1))))
        (setq surface-vr (list pt1
 			      (polar pt1 (+ (* 0.5 pi)(atan (cadr firstdiv)(car firstdiv)))  100)

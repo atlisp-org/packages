@@ -1,13 +1,13 @@
 
 (@:def-pkg
     '((:name . "helloworld")
-      (:full-name . "¿ª·¢Ê¾Àı")
+      (:full-name . "å¼€å‘ç¤ºä¾‹")
       (:author . "VitalGG")
       (:email . "vitalgg@gmail.com")
       (:version . "1.0.3")
       (:category . "DevelopTools")
       (:opensource . 1)
-      (:description . "ÓÃÓÚ@lispÆ½Ì¨µÄÓ¦ÓÃ°ü¿ª·¢Ê¾Àı¡£¿ÉÒÔÏÂÔØ lisp Ô´´úÂë¡£Ö»Ìá¹©¼òµ¥µÄÓ¦ÓÃ°ü½á¹¹×é³É¼°×¢ÊÍ¡£")
+      (:description . "ç”¨äº@lispå¹³å°çš„åº”ç”¨åŒ…å¼€å‘ç¤ºä¾‹ã€‚å¯ä»¥ä¸‹è½½ lisp æºä»£ç ã€‚åªæä¾›ç®€å•çš„åº”ç”¨åŒ…ç»“æ„ç»„æˆåŠæ³¨é‡Šã€‚")
       (:url . "http://atlisp.cn")
       (:files . ("helloworld"
 		 "helloworld.lsp"

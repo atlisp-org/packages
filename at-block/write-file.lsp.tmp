@@ -1,0 +1,2 @@
+(defun @block:write-file ()
+  (@::prompt "灏嗗綋鍓峝wg涓

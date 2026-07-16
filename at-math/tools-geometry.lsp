@@ -1,7 +1,7 @@
 ;; write area value of a close polygon to drawing
-;;(@:add-menu "¼¸ºÎ" "±ÕºÏĞÎÃæ»ı" "(@:?area)")
+;;(@:add-menu "å‡ ä½•" "é—­åˆå½¢é¢ç§¯" "(@:?area)")
 (defun @:?area(/ OLDOS PT STA QAREA)
-  "Çó±ÕºÏĞÎ×´µÄÃæ»ı£¬²¢²åÈëµÄÍ¼ĞÎÖĞ¡£·µ»ØÖµÎªÃæ»ıÖµ¡£"
+  "æ±‚é—­åˆå½¢çŠ¶çš„é¢ç§¯ï¼Œå¹¶æ’å…¥çš„å›¾å½¢ä¸­ã€‚è¿”å›å€¼ä¸ºé¢ç§¯å€¼ã€‚"
 ;;
   (setq olderr *error*)
   (setq *error* myerr)
@@ -20,7 +20,7 @@
   (setq *error* olderr)
   pt
   )
-;;; Á½µãÓëÖ±Ïß¶ÎÊµÌåµÄ½»µã
+;;; ä¸¤ç‚¹ä¸ç›´çº¿æ®µå®ä½“çš„äº¤ç‚¹
 (defun @:?inters2P&L (p1 p2 line / )
   (inters p1 p2 
           (reverse (cdr (reverse (cdr (assoc 10 line)))))
@@ -28,7 +28,7 @@
           )
   )
 
-;; Á½Ö±Ïß¶ÎÊµÌåµÄ½»µã
+;; ä¸¤ç›´çº¿æ®µå®ä½“çš„äº¤ç‚¹
 (defun @:?inters2L (l1 l2 / )
   (inters (reverse (cdr (reverse (cdr (assoc 10 l1)))))
           (reverse (cdr (reverse (cdr (assoc 11 l1)))))

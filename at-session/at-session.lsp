@@ -1,30 +1,30 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-session:first ÓÃÓÚ Ó¦ÓÃ°ü at-session µÄ µÚÒ»¸öÅäÖÃÏî first 
-;; (@:get-config 'at-session:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-session:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥
+;; å®šä¹‰é…ç½®é¡¹ 'at-session:first ç”¨äº åº”ç”¨åŒ… at-session çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+;; (@:get-config 'at-session:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-session:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå•
 
 (@:add-menus 
-  '("»á»°¹ÜÀí"
-    ("ÉÏ°à" (at-session:goto-work))
-    ("»Ö¸´»á»°" (at-session:open))
-    ("ÀúÊ·»á»°" (at-session:history))
-    ("±£´æ»á»°" (at-session:save-current))
-    ("¹Ø±Õ»á»°" (at-session:close))
-    ("ÏÂ°à" (at-session:knock-off))
+  '("ä¼šè¯ç®¡ç†"
+    ("ä¸Šç­" (at-session:goto-work))
+    ("æ¢å¤ä¼šè¯" (at-session:open))
+    ("å†å²ä¼šè¯" (at-session:history))
+    ("ä¿å­˜ä¼šè¯" (at-session:save-current))
+    ("å…³é—­ä¼šè¯" (at-session:close))
+    ("ä¸‹ç­" (at-session:knock-off))
     ("--" "--")
-    ("¹ØËùÓĞdwg" (at-session:save-and-close-all))
-    ("´ò¿ªÄ¿Â¼" (at-session:open-directory-dwgs))))
-;; Èç¹ûÃ»ÓĞ£¬Ôò´´½¨¿ÕÎÄ¼ş
+    ("å…³æ‰€æœ‰dwg" (at-session:save-and-close-all))
+    ("æ‰“å¼€ç›®å½•" (at-session:open-directory-dwgs))))
+;; å¦‚æœæ²¡æœ‰ï¼Œåˆ™åˆ›å»ºç©ºæ–‡ä»¶
 (if (null (findfile (strcat @:*prefix-config* "session"))) 
   (progn 
     (setq fp (open (strcat @:*prefix-config* "session") "w"))
     (write-line "" fp)
     (close fp)))
 (defun align-str (n str / flag) 
-  "¶ÔÆë×Ö·û´®"
+  "å¯¹é½å­—ç¬¦ä¸²"
   (if (null str) (setq str ""))
   (setq flag nil)
   (while (< (string:bytelength str) n) 
@@ -47,8 +47,8 @@
   t)
 
 (defun at-session:goto-work (/ fp session docs) 
-  (@:help '("´ò¿ª×î½ü±£´æµÄÃû³ÆÎª ¡®ÏÂ°à¡¯ µÄ»á»°¡£"))
-  ;; ÒÔÏÂ²¿·ÖÎªÄãÎªÊµÏÖÄ³Ò»¹¦ÄÜËù±àĞ´µÄ´úÂë¡£
+  (@:help '("æ‰“å¼€æœ€è¿‘ä¿å­˜çš„åç§°ä¸º â€˜ä¸‹ç­â€™ çš„ä¼šè¯ã€‚"))
+  ;; ä»¥ä¸‹éƒ¨åˆ†ä¸ºä½ ä¸ºå®ç°æŸä¸€åŠŸèƒ½æ‰€ç¼–å†™çš„ä»£ç ã€‚
   (setq docs nil)
   (vlax-for doc *DOCS* 
     (if (/= "" (vla-get-fullname doc)) 
@@ -57,7 +57,7 @@
   (while 
     (and 
       sessions
-      (/= "ÏÂ°à" (cadr sessions)))
+      (/= "ä¸‹ç­" (cadr sessions)))
     (setq sessions (cdr sessions)))
   (setq session (car (at-session:read)))
   (if (cddr session) 
@@ -71,8 +71,8 @@
       (@:log "INFO" "Resume session.")))
   (princ))
 (defun at-session:open (/ fp session docs) 
-  (@:help '("´ò¿ª×î½ü±£´æµÄ»á»°¡£"))
-  ;; ÒÔÏÂ²¿·ÖÎªÄãÎªÊµÏÖÄ³Ò»¹¦ÄÜËù±àĞ´µÄ´úÂë¡£
+  (@:help '("æ‰“å¼€æœ€è¿‘ä¿å­˜çš„ä¼šè¯ã€‚"))
+  ;; ä»¥ä¸‹éƒ¨åˆ†ä¸ºä½ ä¸ºå®ç°æŸä¸€åŠŸèƒ½æ‰€ç¼–å†™çš„ä»£ç ã€‚
   (setq docs nil)
   (vlax-for doc *DOCS* 
     (if (/= "" (vla-get-fullname doc)) 
@@ -89,7 +89,7 @@
       (@:log "INFO" "Resume session.")))
   (princ))
 (defun at-session:history (/ sessions res) 
-  (@:help "ÏÔÊ¾ÀúÊ·»á»°")
+  (@:help "æ˜¾ç¤ºå†å²ä¼šè¯")
   (vlax-for doc *DOCS* 
     (if (/= "" (vla-get-fullname doc)) 
       (setq docs (cons (vla-get-fullname doc) docs))))
@@ -97,7 +97,7 @@
   (setq sessions (at-session:read))
   (setq n (apply 'max (mapcar '(lambda (x) (string:bytelength (if (cadr x) (cadr x) 0))) sessions)))
   (setq res (ui:select 
-              "ÇëÑ¡ÔñÀúÊ·»á»°£¬²¢´ò¿ª»á»°"
+              "è¯·é€‰æ‹©å†å²ä¼šè¯ï¼Œå¹¶æ‰“å¼€ä¼šè¯"
               (mapcar 
                 '(lambda (x) 
                    (strcat 
@@ -130,21 +130,21 @@
   (defun *error* (msg) 
     (if (= 'file (type fp)) (close fp))
     (@:*error* msg))
-  (@:help '("±£´æµ±Ç°»á»°"))
+  (@:help '("ä¿å­˜å½“å‰ä¼šè¯"))
   (setq docs nil)
   (vlax-for doc *DOCS* 
     (if (/= "" (vla-get-fullname doc)) 
       (setq docs (cons (vla-get-fullname doc) docs))))
   (if docs 
     (progn 
-      (setq res (ui:input "ÇëÊäÈë»á»°Ãû" '(("»á»°Ãû"))))
+      (setq res (ui:input "è¯·è¾“å…¥ä¼šè¯å" '(("ä¼šè¯å"))))
       (setq sessions (at-session:read))
       (if (atom (car sessions)) (setq sessions nil))
       (setq session (cons 
                       (rtos (getvar "cdate") 2 6)
                       (cons 
-                        (if (cdr (assoc "»á»°Ãû" res)) 
-                          (cdr (assoc "»á»°Ãû" res))
+                        (if (cdr (assoc "ä¼šè¯å" res)) 
+                          (cdr (assoc "ä¼šè¯å" res))
                           "")
                         (reverse docs))))
       (at-session:write (cons session sessions))
@@ -152,8 +152,8 @@
     (@:log "INFO" "No DWG file were opened."))
   (princ))
 (defun at-session:close (/ fp session docs) 
-  (@:help '("¹Ø±Õ×î½üÒ»´Î»á»°¼ÇÂ¼µÄ DWG ÎÄµµ¡£"))
-  ;; ÒÔÏÂ²¿·ÖÎªÄãÎªÊµÏÖÄ³Ò»¹¦ÄÜËù±àĞ´µÄ´úÂë¡£
+  (@:help '("å…³é—­æœ€è¿‘ä¸€æ¬¡ä¼šè¯è®°å½•çš„ DWG æ–‡æ¡£ã€‚"))
+  ;; ä»¥ä¸‹éƒ¨åˆ†ä¸ºä½ ä¸ºå®ç°æŸä¸€åŠŸèƒ½æ‰€ç¼–å†™çš„ä»£ç ã€‚
   (setq docs nil)
   (vlax-for doc *DOCS* 
     (if (/= "" (vla-get-fullname doc)) 
@@ -180,8 +180,8 @@
   (princ))
 
 (defun at-session:save-and-close-all (/ docs) 
-  (@:help '("±£´æ²¢¹Ø±ÕËùÓĞÒÑ´ò¿ªµÄ DWG ÎÄµµ¡£"))
-  ;; ÒÔÏÂ²¿·ÖÎªÄãÎªÊµÏÖÄ³Ò»¹¦ÄÜËù±àĞ´µÄ´úÂë¡£
+  (@:help '("ä¿å­˜å¹¶å…³é—­æ‰€æœ‰å·²æ‰“å¼€çš„ DWG æ–‡æ¡£ã€‚"))
+  ;; ä»¥ä¸‹éƒ¨åˆ†ä¸ºä½ ä¸ºå®ç°æŸä¸€åŠŸèƒ½æ‰€ç¼–å†™çš„ä»£ç ã€‚
   (setq docs nil)
   (vlax-for doc *DOCS* 
     (if (/= "" (vla-get-fullname doc)) 
@@ -199,11 +199,11 @@
   (princ))
 
 (defun at-session:knock-off (/ sessions docs fp *error*) 
-  (@:help "ÏÂ°àÇ°¼ÇÂ¼µ±Ç°´ò¿ªµÄËùÓĞ dwgÍ¼µµ£¬²¢¹Ø±ÕËùÓĞdwgÍ¼µµ¡£")
+  (@:help "ä¸‹ç­å‰è®°å½•å½“å‰æ‰“å¼€çš„æ‰€æœ‰ dwgå›¾æ¡£ï¼Œå¹¶å…³é—­æ‰€æœ‰dwgå›¾æ¡£ã€‚")
   (defun *error* (msg) 
     (if (= 'file (type fp)) (close fp))
     (@:*error* msg))
-  (@:help '("±£´æµ±Ç°»á»°"))
+  (@:help '("ä¿å­˜å½“å‰ä¼šè¯"))
   (setq docs nil)
   (vlax-for doc *DOCS* 
     (if (/= "" (vla-get-fullname doc)) 
@@ -211,14 +211,14 @@
   (if docs 
     (progn 
       (setq sessions (vl-remove-if 
-                       '(lambda (x) (equal "ÏÂ°à" (cadr x)))
+                       '(lambda (x) (equal "ä¸‹ç­" (cadr x)))
                        (at-session:read)))
 
       (if (atom (car sessions)) (setq sessions nil))
       (setq session (cons 
                       (rtos (getvar "cdate") 2 6)
                       (cons 
-                        "ÏÂ°à"
+                        "ä¸‹ç­"
                         (reverse docs))))
       (at-session:write (cons session sessions))
       (@:log "INFO" "Save session."))
@@ -227,8 +227,8 @@
   (vla-quit *ACAD*)
   (princ))
 (defun at-session:open-directory-dwgs (/ folder docs) 
-  (@:help "´ò¿ªÑ¡¶¨ÎÄ¼ş¼ĞÏÂµÄËùÓĞdwgÎÄ¼ş")
-  (setq folder (system:get-folder "ÇëÑ¡ÔñÒª´ò¿ªµÄÎÄ¼ş¼Ğ"))
+  (@:help "æ‰“å¼€é€‰å®šæ–‡ä»¶å¤¹ä¸‹çš„æ‰€æœ‰dwgæ–‡ä»¶")
+  (setq folder (system:get-folder "è¯·é€‰æ‹©è¦æ‰“å¼€çš„æ–‡ä»¶å¤¹"))
   (setq dwgs (mapcar '(lambda (x) (strcat folder "\\" x)) (vl-directory-files folder "*.dwg" 1)))
 
   (if dwgs 

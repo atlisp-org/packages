@@ -1,29 +1,29 @@
-(@:add-menu "×°ÅäÊ½" "PC°åÍ³¼Æ" "(list-rec-wxh:pc-slab)" )
+(@:add-menu "è£…é…å¼" "PCæ¿ç»Ÿè®¡" "(list-rec-wxh:pc-slab)" )
 (defun @:get-lwpoints (en0 / ddlist dd1 tmplist )
-  "Éú³É¶à¶ÎÏßµÄµãĞò"
+  "ç”Ÿæˆå¤šæ®µçº¿çš„ç‚¹åº"
   (setq ddlist nil) 
   (setq tmplist (entget en0))
   (repeat 
-   (cdr (assoc 90 (entget en0))) ;;¼ÆËã½ÚµãÊı
-   (setq dd1 (cdr (assoc 10 tmplist))) ;;È¡¶¥µãÊı¾İ
+   (cdr (assoc 90 (entget en0))) ;;è®¡ç®—èŠ‚ç‚¹æ•°
+   (setq dd1 (cdr (assoc 10 tmplist))) ;;å–é¡¶ç‚¹æ•°æ®
    (setq tmplist (member (assoc 10 tmplist) tmplist))
    (setq tmplist (cdr tmplist))
-   (setq ddlist (append ddlist (list dd1) )) ;;ÏÂÒ»¸ö¶¥µã
+   (setq ddlist (append ddlist (list dd1) )) ;;ä¸‹ä¸€ä¸ªé¡¶ç‚¹
    )
   )
 (defun list-rec-wxh:pc-slab ( / recs en% en0 pts pt1 i% tmp-pts result-pts area% angle%)
-  (@:help (strcat "Í³¼ÆÓĞÔ²½Ç»òµ¹½ÇµÄ¾ØĞÎµÄ³¤¿í²¢ĞÎ³ÉÁĞ±í"))
+  (@:help (strcat "ç»Ÿè®¡æœ‰åœ†è§’æˆ–å€’è§’çš„çŸ©å½¢çš„é•¿å®½å¹¶å½¢æˆåˆ—è¡¨"))
   (setq recs (ssget '((0 . "LWPOLYLINE")(8 . "PC-SLAB")
 		      (-4  . "<AND")
 		      (-4 . ">=")(90 . 4)
 		      (-4 . "<=")(90 . 8)
 		      (-4 . "AND>"))))
   (setq en% 0)
-  (setq pt1 (getpoint "ÇëµãÈ¡ÁĞ±íÎ»ÖÃ: "))
+  (setq pt1 (getpoint "è¯·ç‚¹å–åˆ—è¡¨ä½ç½®: "))
     (while (< en% (sslength recs))
     (setq en0 (ssname recs en%))
     (setq pts (@:get-lwpoints en0))
-    ;; ×ø±ê±ä»»Ö±µ½Ãæ»ı×îĞ¡
+    ;; åæ ‡å˜æ¢ç›´åˆ°é¢ç§¯æœ€å°
     (setq i% 0)
     (setq tmp-pts pts)
     (setq result-pts pts)
@@ -72,20 +72,20 @@
     (setq en% (1+ en%))
     ))
 
-(@:add-menu "×°ÅäÊ½" "PC°å±ê×¢" "(@structure:dim-slab)" )
+(@:add-menu "è£…é…å¼" "PCæ¿æ ‡æ³¨" "(@structure:dim-slab)" )
 (defun @structure:dim-slab ( / recs en% en0 pts pt1 i% tmp-pts result-pts area% angle%)
-  (@:help (strcat "Í³¼ÆÓĞÔ²½Ç»òµ¹½ÇµÄ¾ØĞÎµÄ³¤¿í²¢ĞÎ³ÉÁĞ±í"))
+  (@:help (strcat "ç»Ÿè®¡æœ‰åœ†è§’æˆ–å€’è§’çš„çŸ©å½¢çš„é•¿å®½å¹¶å½¢æˆåˆ—è¡¨"))
   (setq recs (ssget '((0 . "LWPOLYLINE")(8 . "PC-SLAB")
 		      (-4  . "<AND")
 		      (-4 . ">=")(90 . 4)
 		      (-4 . "<=")(90 . 8)
 		      (-4 . "AND>"))))
   (setq en% 0)
-  ;; (setq pt1 (getpoint "ÇëµãÈ¡ÁĞ±íÎ»ÖÃ: "))
+  ;; (setq pt1 (getpoint "è¯·ç‚¹å–åˆ—è¡¨ä½ç½®: "))
   (while (< en% (sslength recs))
     (setq en0 (ssname recs en%))
     (setq pts (@:get-lwpoints en0))
-    ;; ×ø±ê±ä»»Ö±µ½Ãæ»ı×îĞ¡
+    ;; åæ ‡å˜æ¢ç›´åˆ°é¢ç§¯æœ€å°
     (setq i% 0)
     (setq tmp-pts pts)
     (setq result-pts pts)

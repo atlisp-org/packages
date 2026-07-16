@@ -1,0 +1,2 @@
+(defun at-structure:draw-stirrup (pt-base b h)
+  "缁樺埗绠嶇瓔锛宐 h涓虹煩褰㈢畭鍐呯浉瀵圭旱绛嬬殑瀹藉拰楂橈紝濡傛灉涓€涓

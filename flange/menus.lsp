@@ -1,1 +1,1 @@
-(@:add-menu "法兰工具" "绘制法兰" "(flange:draw)" )
+(@:add-menu "濞夋洖鍙炲銉ュ徔" "缂佹ê鍩楀▔鏇炲彏" "(flange:draw)" )

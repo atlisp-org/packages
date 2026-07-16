@@ -1,17 +1,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'qrencode:first ÓÃÓÚ Ó¦ÓÃ°ü qrencode µÄ µÚÒ»¸öÅäÖÃÏî first 
-(@::define-config 'qrencode:scale 100 "¶şÎ¬Âë»æÖÆ±ÈÀı¡£")
-;; (@:get-config 'qrencode:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'qrencode:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@::add-menu "ÎÄ±¾2" "Éú³É¶şÎ¬Âë" "(qrencode:draw)" )
+;; å®šä¹‰é…ç½®é¡¹ 'qrencode:first ç”¨äº åº”ç”¨åŒ… qrencode çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+(@::define-config 'qrencode:scale 100 "äºŒç»´ç ç»˜åˆ¶æ¯”ä¾‹ã€‚")
+;; (@:get-config 'qrencode:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'qrencode:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@::add-menu "æ–‡æœ¬2" "ç”ŸæˆäºŒç»´ç " "(qrencode:draw)" )
 (if (null (findfile (strcat @::*prefix* "bin\\QRencodeForLisp.exe")))
     (@::down-file "bin/QRencodeForLisp.exe"))
 (defun qrencode:draw ()
-  (@::help "Ñ¡ÔñÎÄ×ÖÉú³ÉQR¶şÎ¬Âë")
-  (if (setq str (text:get-mtext (car (entsel "ÇëÑ¡ÔñÒ»¸öÎÄ±¾:"))))
+  (@::help "é€‰æ‹©æ–‡å­—ç”ŸæˆQRäºŒç»´ç ")
+  (if (setq str (text:get-mtext (car (entsel "è¯·é€‰æ‹©ä¸€ä¸ªæ–‡æœ¬:"))))
       (progn
 	(setq str (text:remove-fmt str))
 	(qrencode:make str)
@@ -34,7 +34,7 @@
   (if (null (findfile (strcat @::*prefix* "bin\\QRencodeForLisp.exe")))
       (progn
 	(@::down-file "bin/QRencodeForLisp.exe")
-	(alert "ÕıÔÚÏÂÔØ QRencode ,ÇëÉÔºò...")
+	(alert "æ­£åœ¨ä¸‹è½½ QRencode ,è¯·ç¨å€™...")
 	(sleep 10)
 	))
   (setq WScript (vlax-get-or-create-object "WScript.Shell"))
@@ -45,7 +45,7 @@
   (if lst
       (progn
 	(setq ents nil)
-	(setq ptbase (getpoint "ÇëÊäÈë¶şÎ¬Âë»æÖÆÎ»ÖÃ:"))
+	(setq ptbase (getpoint "è¯·è¾“å…¥äºŒç»´ç ç»˜åˆ¶ä½ç½®:"))
 	(setq ents (cons 
 		    (entity:make-rectangle (setq pt-ins (polar ptbase (* 0.5 pi) (* (@::get-config 'qrencode:scale) 0.5)))
 					   (polar (polar ptbase (* 1.75 pi) (* (@::get-config 'qrencode:scale) (length (car lst)) (sqrt 2.0)))

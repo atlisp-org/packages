@@ -1,3 +1,4 @@
+(in-package :autolisp)
 (defun @:load-opendcl ()
   (if (null dcl_getversionex)
       (progn

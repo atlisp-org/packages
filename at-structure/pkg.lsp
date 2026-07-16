@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp结构工具")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.18")
+        (:VERSION . "0.0.20")
         (:LOCALE . "CHS")
         (:CATEGORY . "结构")
         (:REQUIRED . "base")
@@ -14,4 +14,5 @@
             "seismic"
             "stat"
             "beam"
+            "column"
             "hotkey")))

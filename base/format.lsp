@@ -1,11 +1,11 @@
 (defun format (stream ctrl-string variables
 	       / flag-instruct  flag-comma number1 number2 result  to-string tmp-str init-flag)
-  ;;" D Ê®½øÖÆÕûÊı "
-  ;;" $ Ğ¡Êıµãºó2Î»£¬F ¸¡µãÊı E Ö¸ÊıĞÎÊ½"
-  ;;" @ ´øÕıºÅ v ´Ó²ÎÊıÖĞÈ¡µÃĞ¡ÊıµÄÎ»Êı # Ê£ÓàµÄ²ÎÊıµÄ¸öÊı¡£"
-  ;;" A ×Ö·û´® S ¿É read ¶Á»Ø¡£"
-  ;;"TODO: X 16½øÖÆ, O 8½øÖÆ, B ¶ş½øÖÆ, R ÈÎÒâ½øÖÆ¡£"
-  ;;"TODO: µü´ú ~{ ~} £¬Ìõ¼ş¸ñÊ½»¯ ~[ ~] " 
+  ;;" D åè¿›åˆ¶æ•´æ•° "
+  ;;" $ å°æ•°ç‚¹å2ä½ï¼ŒF æµ®ç‚¹æ•° E æŒ‡æ•°å½¢å¼"
+  ;;" @ å¸¦æ­£å· v ä»å‚æ•°ä¸­å–å¾—å°æ•°çš„ä½æ•° # å‰©ä½™çš„å‚æ•°çš„ä¸ªæ•°ã€‚"
+  ;;" A å­—ç¬¦ä¸² S å¯ read è¯»å›ã€‚"
+  ;;"TODO: X 16è¿›åˆ¶, O 8è¿›åˆ¶, B äºŒè¿›åˆ¶, R ä»»æ„è¿›åˆ¶ã€‚"
+  ;;"TODO: è¿­ä»£ ~{ ~} ï¼Œæ¡ä»¶æ ¼å¼åŒ– ~[ ~] " 
   
   (defun to-string (para)
     (cond
@@ -26,7 +26,7 @@
   (while (/= "" ctrl-string)
     (if flag-instruct
 	(cond
-	  ;; ĞŞÊÎ·û
+	  ;; ä¿®é¥°ç¬¦
 	  ((= (ascii ",")(ascii ctrl-string))
 	   ;; comma
 	   (setq flag-comma T)
@@ -44,30 +44,30 @@
 	  
 	  ((and (> (ascii ctrl-string) 47)
 		(> 58 (ascii ctrl-string)))
-	   ;; Êı×Ö
+	   ;; æ•°å­—
 	   (if flag-comma
 	       (setq number2 (strcat number2 (substr ctrl-string 1 1)))
 	       (setq number1 (strcat number1 (substr ctrl-string 1 1)))
 	       ))
 
-	  ((=  (ascii "~") (ascii ctrl-string)) ;; ´¦ÀíÖ¸Áî£¬µ±Á¬ĞøÊ±£¬Êä³ö~
+	  ((=  (ascii "~") (ascii ctrl-string)) ;; å¤„ç†æŒ‡ä»¤ï¼Œå½“è¿ç»­æ—¶ï¼Œè¾“å‡º~
 	   (setq result (strcat result "~"))
 	   (init-flag))
 	  ((= (ascii "%")(ascii ctrl-string))
-	   ;; »»ĞĞ
+	   ;; æ¢è¡Œ
 	   (setq result (strcat result "\n"))
 	   (init-flag))
 	  ((= (ascii "&")(ascii ctrl-string))
 	   (setq result (strcat result "\n"))
 	   (init-flag))
 	  ((= (ascii "A")(ascii (strcase (substr ctrl-string 1 1))))
-	   ;; ×Ö·û´®
+	   ;; å­—ç¬¦ä¸²
 	   (setq result (strcat result (to-string (car variables))))
 	   (setq variables (cdr variables))
 	   (init-flag))
 	  ((= (ascii "D")(ascii (strcase (substr ctrl-string 1 1))))
-	   ;; ÕûÊı¼°Ğ¡Êı
-	   (if (/= "" number1) ; ´¦ÀíÕ¼Î»·û
+	   ;; æ•´æ•°åŠå°æ•°
+	   (if (/= "" number1) ; å¤„ç†å ä½ç¬¦
 	       (progn 
 		 (setq tmp-str  (to-string (car variables)))
 		 (if (> (atoi number1)(strlen tmp-str))
@@ -78,11 +78,11 @@
 	   (setq variables (cdr variables))
 	   (init-flag))
 	  ((= (ascii "F")(ascii (strcase (substr ctrl-string 1 1))))
-	   ;; ¸¡µãÊı
+	   ;; æµ®ç‚¹æ•°
 	   (if (= "" number2)
 	       (setq tmp-str (rtos (car variables) 2 3))
 	       (setq tmp-str (rtos (car variables) 2 (atoi number2))))
-	   (if (/= "" number1) ; ´¦ÀíÕ¼Î»·û
+	   (if (/= "" number1) ; å¤„ç†å ä½ç¬¦
 	       (progn 
 		 (if (> (atoi number1)(strlen tmp-str))
 		     (repeat (- (atoi number1) (strlen tmp-str))
@@ -92,11 +92,11 @@
 	   (setq variables (cdr variables))
 	   (init-flag))
 	  ((= (ascii "E")(ascii (strcase (substr ctrl-string 1 1))))
-	   ;; Ö¸ÊıĞÎÊ½
+	   ;; æŒ‡æ•°å½¢å¼
 	   (if (= "" number2)
 	       (setq tmp-str (rtos (car variables) 1 3))
 	       (setq tmp-str (rtos (car variables) 1 (atoi number2))))
-	   (if (/= "" number1) ; ´¦ÀíÕ¼Î»·û
+	   (if (/= "" number1) ; å¤„ç†å ä½ç¬¦
 	       (progn 
 		 (if (>  (atoi number1)(strlen tmp-str))
 		     (repeat (- (atoi number1) (strlen tmp-str))
@@ -106,7 +106,7 @@
 	   (setq variables (cdr variables))
 	   (init-flag))	  
 	  ((= (ascii "$")(ascii (strcase (substr ctrl-string 1 1))))
-	   ;; »õ±Ò
+	   ;; è´§å¸
 	   (if (= "" number1)
 	       (setq result (strcat result (rtos (car variables) 2 2)))
 	       (setq result (strcat result (rtos (car variables) 2 (atoi number1)))))
@@ -115,7 +115,7 @@
 	  
 	  )
 	(cond
-	  ((=  (ascii "~") (ascii ctrl-string)) ;; ´¦ÀíÖ¸Áî£¬µ±Á¬ĞøÊ±£¬Êä³ö~
+	  ((=  (ascii "~") (ascii ctrl-string)) ;; å¤„ç†æŒ‡ä»¤ï¼Œå½“è¿ç»­æ—¶ï¼Œè¾“å‡º~
 	   (setq flag-instruct T))	
 	  (t
 	   (setq result (strcat result (substr ctrl-string 1 1)))

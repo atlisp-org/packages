@@ -1,7 +1,7 @@
-(@:add-menu "°¢¸Ê¹¤¾ß" "°¢¸Ê¼ÆËãÆ÷" '(c:ag))
+(@:add-menu "é˜¿ç”˜å·¥å…·" "é˜¿ç”˜è®¡ç®—å™¨" '(c:ag))
 (defun agan-cal:init(/ fp)
-  (if (not (findfile (strcat @::*prefix* "packages/agan-cal/ÀúÊ·¼ÇÂ¼.txt")))
+  (if (not (findfile (strcat @::*prefix* "packages/agan-cal/å†å²è®°å½•.txt")))
       (progn
-	(setq fp (open (strcat @::*prefix* "packages/agan-cal/ÀúÊ·¼ÇÂ¼.txt")"w"))
+	(setq fp (open (strcat @::*prefix* "packages/agan-cal/å†å²è®°å½•.txt")"w"))
 	(close fp))))
 (agan-cal:init)

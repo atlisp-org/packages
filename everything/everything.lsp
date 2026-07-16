@@ -1,15 +1,15 @@
-(@:add-menu "Íâ²¿³ÌĞò" "Everything" "(everything:start)" )
+(@:add-menu "å¤–éƒ¨ç¨‹åº" "Everything" "(everything:start)" )
 (defpackage :everything 
   (:use :cl)
   (:export :open)
   )
 (defun everything:start ( / app )
-  ;; ¿ÉÖ´ĞĞÎÄ¼şÂ·¾¶
+  ;; å¯æ‰§è¡Œæ–‡ä»¶è·¯å¾„
   (setq app "bin\\everything.exe")
   (if (null (findfile app))
-      ;; ÏÂÔØÑ¹Ëõ°ü
+      ;; ä¸‹è½½å‹ç¼©åŒ…
       (@:down-and-unzip "archives/everything.zip" "bin"))
-  ;;ÔËĞĞÍâ²¿¿ÉÖ´ĞĞ³ÌĞò
+  ;;è¿è¡Œå¤–éƒ¨å¯æ‰§è¡Œç¨‹åº
   (if (findfile app)
       (progn
 	(setvar "cmdecho" 0)

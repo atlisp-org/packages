@@ -1,3 +1,3 @@
 ;; (@:add-menus
-;;  '("ͳ��"
-;;    (("Բ�İ뾶" "(at-stat:stat-circle)"))))
+;;  '("统计"
+;;    (("圆心半径" "(at-stat:stat-circle)"))))

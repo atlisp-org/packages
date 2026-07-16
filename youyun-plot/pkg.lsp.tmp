@@ -1,0 +1,10 @@
+(@:def-pkg '((:NAME . "youyun-plot")
+        (:FULL-NAME . "鏈変簯鎵归噺鎵撳嵃")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "3.4.6")
+        (:LOCALE . "chs")
+        (:CATEGORY . "鎵撳嵃")
+        (:REQUIRED . "base")
+        (:OPENSOURCE . 0)
+        (:DESCRIPTION . "鏈変簯鎵归噺鎵撳嵃,PDF1 v3.4.9 鐗堟湰銆備綔鑰

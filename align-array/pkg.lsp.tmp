@@ -1,0 +1,11 @@
+(@:def-pkg 
+'((:name . "align-array")
+  (:full-name . "瀵归綈鎺掑垪")
+  (:author . "start4444")
+  (:email . "vitalgg@gmail.com")
+  (:version . "0.0.3")
+  (:locale . "CHS")
+  (:category . "鎺掔増")
+  (:required . "base")
+  (:opensource . 0) 
+  (:description . "瀵归綈鎺掑垪銆佸浘妗嗘帓鐗

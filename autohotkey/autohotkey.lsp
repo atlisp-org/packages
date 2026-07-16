@@ -2,15 +2,15 @@
 ;; This file was created by @lisp DEV-tools
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; define a first config item  'autohotkey:first for package autohotkey 's configitem first 
-(@:add-menu "Íâ²¿³ÌĞò" "AutoHotKey" "(autohotkey:open)" )
+(@:add-menu "å¤–éƒ¨ç¨‹åº" "AutoHotKey" "(autohotkey:open)" )
 
 (defun autohotkey:open (/ app )
-  ;; ¿ÉÖ´ĞĞÎÄ¼şÂ·¾¶
+  ;; å¯æ‰§è¡Œæ–‡ä»¶è·¯å¾„
   (setq app "bin\\AutoHotKey\\AutoHotkey.exe")
   (if (null (findfile app))
-      ;; ÏÂÔØÑ¹Ëõ°ü
+      ;; ä¸‹è½½å‹ç¼©åŒ…
       (@:down-and-unzip "archives/AutoHotKey.zip" "bin"))
-  ;;ÔËĞĞÍâ²¿¿ÉÖ´ĞĞ³ÌĞò
+  ;;è¿è¡Œå¤–éƒ¨å¯æ‰§è¡Œç¨‹åº
   (if (findfile app)
       (progn
 	(setvar "cmdecho" 0)

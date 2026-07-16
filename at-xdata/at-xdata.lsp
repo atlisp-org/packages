@@ -1,21 +1,21 @@
-;; ÅäÖÃÑ¡Ïî
-(@:define-config '@xdata:filter "*" "À©Õ¹Êı¾İ¹ıÂËÆ÷£¬µ±¿òÑ¡ÓĞÀ©Õ¹Êı¾İµÄÍ¼ÔªÊ±£¬¿ÉÒÔ¹ıÂËµô²»ĞèÒªµÄ¡£")
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
+;; é…ç½®é€‰é¡¹
+(@:define-config '@xdata:filter "*" "æ‰©å±•æ•°æ®è¿‡æ»¤å™¨ï¼Œå½“æ¡†é€‰æœ‰æ‰©å±•æ•°æ®çš„å›¾å…ƒæ—¶ï¼Œå¯ä»¥è¿‡æ»¤æ‰ä¸éœ€è¦çš„ã€‚")
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
 (@:add-menus 
-  '("À©Õ¹Êı¾İ¹ÜÀí"
-    ("²éÑ¯À©Õ¹Êı¾İ" (at-xdata:browser))
-    ("ÅäÖÃ¹ıÂËÆ÷" (at-xdata:set-filter))))
+  '("æ‰©å±•æ•°æ®ç®¡ç†"
+    ("æŸ¥è¯¢æ‰©å±•æ•°æ®" (at-xdata:browser))
+    ("é…ç½®è¿‡æ»¤å™¨" (at-xdata:set-filter))))
 
 (defun at-xdata:browser (/ gen-mtext order-ent current ss-x cb-next cb-prev 
                          cb-zoomext) 
-  (@:help '("ÒÀ´ÎÏÔÊ¾Í¼ÔªµÄÀ©Õ¹Êı¾İ"))
+  (@:help '("ä¾æ¬¡æ˜¾ç¤ºå›¾å…ƒçš„æ‰©å±•æ•°æ®"))
   (setq ss-x (ssget (list (list -3 (list (@:get-config '@xdata:filter))))))
   (if (null ss-x) 
     (setq ss-x (ssget "x" (list (list -3 (list (@:get-config '@xdata:filter)))))))
 
   (if ss-x 
     (progn 
-      (@:log "INFO" (strcat "·¢ÏÖÁË" (itoa (sslength ss-x)) "¸öÓĞÀ©Õ¹Êı¾İµÄÍ¼Ôª"))
+      (@:log "INFO" (strcat "å‘ç°äº†" (itoa (sslength ss-x)) "ä¸ªæœ‰æ‰©å±•æ•°æ®çš„å›¾å…ƒ"))
       (setq order-ent 0)
       (if (setq current (ssname ss-x order-ent)) 
         (progn 
@@ -23,7 +23,7 @@
           (sssetfirst nil (ssadd current))
           (dcl:dialog "xdata")
           (dcl:mtext "xdata" 8 50)
-          (dcl:begin-cluster "row" "²Ù×÷")
+          (dcl:begin-cluster "row" "æ“ä½œ")
           (progn 
             (dcl:button "prev" "Prev" "")
             (dcl:button "Zoomext" "zoomExt" "")
@@ -32,18 +32,18 @@
           (dcl:dialog-end-ok-cancel)
           (defun gen-mtext () 
             (strcat 
-              "µÚ "
+              "ç¬¬ "
               (itoa (1+ order-ent))
-              " ¸ö£¬¹² "
+              " ä¸ªï¼Œå…± "
               (itoa (sslength ss-x))
-              " ¸ö\n"
-              "Í¼ÔªÀàĞÍ:"
+              " ä¸ª\n"
+              "å›¾å…ƒç±»å‹:"
               (entity:getdxf current 0)
               "\n"
               (if (wcmatch (entity:getdxf current 0) "INSERT") 
-                (strcat "Ãû³Æ:" (block:get-effectivename current) "\n")
+                (strcat "åç§°:" (block:get-effectivename current) "\n")
                 "")
-              "À©Õ¹Êı¾İ\n"
+              "æ‰©å±•æ•°æ®\n"
               (string:from-list 
                 (mapcar 
                   '(lambda (x) 
@@ -78,16 +78,16 @@
               (setq order 0)))
           (dcl:new "xdata")
           (dcl:set-mtext "xdata" (gen-mtext))
-          (set_tile "title" "À©Õ¹Êı¾İ²é¿´")
+          (set_tile "title" "æ‰©å±•æ•°æ®æŸ¥çœ‹")
           (dcl:show))))
-    (@:log "INFO" (@:speak "Ã»ÓĞ·¢Æ¥ÅäµÄÍ¼Ôª¼ÇÂ¼¡£ÈçÈ·¶¨´æÔÚ£¬ÇëÅäÖÃ¹ı¹ıÂËÆ÷")))
+    (@:log "INFO" (@:speak "æ²¡æœ‰å‘åŒ¹é…çš„å›¾å…ƒè®°å½•ã€‚å¦‚ç¡®å®šå­˜åœ¨ï¼Œè¯·é…ç½®è¿‡è¿‡æ»¤å™¨")))
   (princ))
 
 
 (defun at-xdata:set-filter (/ ss-x) 
-  "º¯Êı¹¦ÄÜËµÃ÷"
-  "º¯Êı·µ»ØÖµ"
-  (@:help '("ÉèÖÃÀ©Õ¹Êı¾İ¹ıÂËÑ¡Ïî£¬ÒÔ·½±ãºóĞø²Ù×÷"))
+  "å‡½æ•°åŠŸèƒ½è¯´æ˜"
+  "å‡½æ•°è¿”å›å€¼"
+  (@:help '("è®¾ç½®æ‰©å±•æ•°æ®è¿‡æ»¤é€‰é¡¹ï¼Œä»¥æ–¹ä¾¿åç»­æ“ä½œ"))
   (setq ss-x (ssget "x" '((-3 ("*")))))
   (setq xdata-appids (mapcar 
                        '(lambda (x) 
@@ -99,12 +99,12 @@
                        (list:flatten xdata-appids)))
   (if xdata-appids 
     (progn 
-      (setq res (ui:select-multi "ÇëÑ¡ÔñÒªÆ¥ÅäµÄÀ©Õ¹Êı¾İ×éappid" xdata-appids))
+      (setq res (ui:select-multi "è¯·é€‰æ‹©è¦åŒ¹é…çš„æ‰©å±•æ•°æ®ç»„appid" xdata-appids))
 
       (if res 
         (@:set-config '@xdata:filter (string:from-list res ","))
         (@:set-config '@xdata:filter "*"))
-      (@:log "INFO" "ÒÑÍê³É @xdata:filter µÄÉèÖÃ"))
-      (@:log "INFO" (@:speak"Í¼ÖĞÃ»ÓĞ·¢ÏÖº¬ÓĞÀ©Õ¹Êı¾İµÄÍ¼Ôª£¬ÅäÖÃÑ¡ÏîÖµÃ»ÓĞĞŞ¸Ä¡£"))
+      (@:log "INFO" "å·²å®Œæˆ @xdata:filter çš„è®¾ç½®"))
+      (@:log "INFO" (@:speak"å›¾ä¸­æ²¡æœ‰å‘ç°å«æœ‰æ‰©å±•æ•°æ®çš„å›¾å…ƒï¼Œé…ç½®é€‰é¡¹å€¼æ²¡æœ‰ä¿®æ”¹ã€‚"))
   
   ))

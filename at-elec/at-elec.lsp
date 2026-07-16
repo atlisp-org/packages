@@ -1,17 +1,17 @@
 (@:add-menus
- '("@µçÆø"
-   ("µçÆøËµÃ÷" (@elec:draw-readme))
-   ("µçÆøÑùÀı" (@elec:draw-plan-example))
+ '("@ç”µæ°”"
+   ("ç”µæ°”è¯´æ˜" (@elec:draw-readme))
+   ("ç”µæ°”æ ·ä¾‹" (@elec:draw-plan-example))
    ))
 (defun @elec:draw-readme ()
-  (@:help '("²åÈëÅ¯Í¨ËµÃ÷¡£" ))
+  (@:help '("æ’å…¥æš–é€šè¯´æ˜ã€‚" ))
   (if (findfile (strcat @::*prefix* "packages/at-elec/readme-elec.dwg"))
       (progn
 	(setq readme-elec
 	      (block:insert
 	       "readme-elec"
 	       (strcat @::*prefix* "packages/at-elec/")
-	       (getpoint "Çëµã»÷²åÈëÎ»ÖÃ:")
+	       (getpoint "è¯·ç‚¹å‡»æ’å…¥ä½ç½®:")
 	       0 1))
 	(if (string-equal "insert" (entity:getdxf readme-elec 0))
 	    (progn
@@ -20,7 +20,7 @@
 	
   )
 (defun @elec:draw-plan-example ()
-  (@:help '("²åÈëÅ¯Í¨Æ½ÃæÍ¼ÑùÀı¡£"
+  (@:help '("æ’å…¥æš–é€šå¹³é¢å›¾æ ·ä¾‹ã€‚"
 	    ))
   (if (findfile (strcat @::*prefix* "packages/at-elec/example-elec.dwg"))
       (progn
@@ -28,6 +28,6 @@
 	      (block:insert
 	       "example-plan-elec"
 	       (strcat @::*prefix* "packages/at-elec/")
-	       (getpoint "Çëµã»÷²åÈëÎ»ÖÃ:")
+	       (getpoint "è¯·ç‚¹å‡»æ’å…¥ä½ç½®:")
 	       0 1))
 	)))

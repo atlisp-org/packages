@@ -2,7 +2,7 @@
 ;; This file was created by @lisp DEV-tools
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; define a first config item  'kml2dxf:first for package kml2dxf 's configitem first 
-(@:add-menu "Íâ²¿³ÌÐò" "acmecad2021" "(acmecad2021:open)" )
+(@:add-menu "æ¾¶æ ­å„´ç»‹å¬ªç°­" "acmecad2021" "(acmecad2021:open)" )
 
 (defun acmecad2021:open (/ vm )
   (setq vm "bin\\AcmeCAD2021.exe")

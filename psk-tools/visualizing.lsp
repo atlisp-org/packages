@@ -1,10 +1,10 @@
-;;; »æÍ¼ÓëÍ³¼Æ²ÄÁÏÄ£¿é·Ö¿ª Çó½âÆ÷Éú³É²»Í¬Êı¾İÊÊÓ¦¸÷×Ô¹¤×÷ 18-4-18
-;;; 2021-2-8 ¸üĞÂÒÔÊÊÓ¦ÓĞÊµÌå¹Ü¼şµÄ°æ±¾
+;;; ç»˜å›¾ä¸ç»Ÿè®¡ææ–™æ¨¡å—åˆ†å¼€ æ±‚è§£å™¨ç”Ÿæˆä¸åŒæ•°æ®é€‚åº”å„è‡ªå·¥ä½œ 18-4-18
+;;; 2021-2-8 æ›´æ–°ä»¥é€‚åº”æœ‰å®ä½“ç®¡ä»¶çš„ç‰ˆæœ¬
 (defun psk-get-customlayername (id / name)
   (setq name (cadr (assoc id $psk-layer-config)))
 
   (if (null name)
-    (setq name id) ;_ ×Ô¶¨ÒåÍ¼²ãÎ´ÔÚlayer-configrationÖĞ¶¨ÒåÊ±£¬²ÉÓÃÍ¼²ãË÷ÒıºÅ×öÎªÃû³Æ
+    (setq name id) ;_ è‡ªå®šä¹‰å›¾å±‚æœªåœ¨layer-configrationä¸­å®šä¹‰æ—¶ï¼Œé‡‡ç”¨å›¾å±‚ç´¢å¼•å·åšä¸ºåç§°
   )
   name
 )
@@ -15,19 +15,19 @@
 	conf (assoc id $psk-layer-config)
   )
 
-  ;; Í¼²ã²»´æÔÚÊ±¸ù¾İÅäÖÃ´´½¨
+  ;; å›¾å±‚ä¸å­˜åœ¨æ—¶æ ¹æ®é…ç½®åˆ›å»º
   (p-layer-get name (cddr conf))
 
   (setq $addnew-layer name)
 )
 
 
-;;;;;; TODO: µ±Ç°²ãËø¶¨Ê± Ìí¼ÓÊ§°Ü
+;;;;;; TODO: å½“å‰å±‚é”å®šæ—¶ æ·»åŠ å¤±è´¥
 
 
-;;; BOOKMARK - ¹Ü¼ş»æÖÆ
+;;; BOOKMARK - ç®¡ä»¶ç»˜åˆ¶
 
-;;; »æÖÆË«Ïß·ç¹Ü
+;;; ç»˜åˆ¶åŒçº¿é£ç®¡
 (defun psk-draw-duct (p1 p2 d / a)
   (setq $addnew-layer $psk-layer-duct)
   
@@ -41,19 +41,19 @@
     (polar p2 (+ a $pi/2) (* 0.5 d))
   )
 )
-;;;  »æÖÆË«ÏßÍäÍ· pÍäÍ·Á½¶Ë¹ÜµÀÖĞĞÄÏß½»µã, a1,2 Á½¶Ë¹ÜµÀ·½Ïò, d ¹Ü¾¶, r ÍäÍ·°ë¾¶, fl ·¨À¼Éì³ö³¤¶È
+;;;  ç»˜åˆ¶åŒçº¿å¼¯å¤´ på¼¯å¤´ä¸¤ç«¯ç®¡é“ä¸­å¿ƒçº¿äº¤ç‚¹, a1,2 ä¸¤ç«¯ç®¡é“æ–¹å‘, d ç®¡å¾„, r å¼¯å¤´åŠå¾„, fl æ³•å…°ä¼¸å‡ºé•¿åº¦
 ;;;  (psk-draw-elbow (getpoint) 0 $pi/2 500. 400.)
 (defun psk-draw-elbow (p a1 a2 d r fl / a3 a4 a5 d1 p1 p2 p3 l)
   (setq a3 (p-angle-regular (/ (- a2 a1) 2.0))
         d1 (abs (/ r (p-tan a3)))
-        p1 (polar p a1 d1) ;_ p1 p2 ÍäÍ·Á½¹Ü¶Ë
+        p1 (polar p a1 d1) ;_ p1 p2 å¼¯å¤´ä¸¤ç®¡ç«¯
         p2 (polar p a2 d1)
-        p3 (polar p (+ a1 a3) (abs (/ r (sin a3)))) ;_ Á½¹Ü¶Ë´¹Ïß½»µã
+        p3 (polar p (+ a1 a3) (abs (/ r (sin a3)))) ;_ ä¸¤ç®¡ç«¯å‚çº¿äº¤ç‚¹
         a4 (angle p3 p1)
         a5 (angle p3 p2)
         l  (* 0.5 d)
   )
-  ;; Á½¶ËÖ±Ïß
+  ;; ä¸¤ç«¯ç›´çº¿
   (setq $addnew-layer $psk-layer-cpnt)
   (p-make-line
     (polar p1 (- a1 $pi/2) (+ fl l))
@@ -63,15 +63,15 @@
     (polar p2 (- a2 $pi/2) (+ fl l))
     (polar p2 (+ a2 $pi/2) (+ fl l))
   )
-  ;; ÄÚÍâ»¡Ïß
+  ;; å†…å¤–å¼§çº¿
   (setq $addnew-layer $psk-layer-duct)
   (p-make-sharparc p3 (- r (* 0.5 d)) a4 a5)
   (p-make-sharparc p3 (+ r (* 0.5 d)) a4 a5)
 )
-;;; TODO: Í¼²ãËø¶¨´¦Àí
+;;; TODO: å›¾å±‚é”å®šå¤„ç†
 ;;;
 ;;;
-;;;  »æÖÆÒì¾¶¹Ü, p1 p2Á½¶Ëµã, a Á½¶Ë¹ÜµÀ·½Ïò, w1 w2 ¹Ü¾¶
+;;;  ç»˜åˆ¶å¼‚å¾„ç®¡, p1 p2ä¸¤ç«¯ç‚¹, a ä¸¤ç«¯ç®¡é“æ–¹å‘, w1 w2 ç®¡å¾„
 ;;;  (psk-draw-reducer  (getpoint) (getpoint) 0. 500. 250.)
 (defun psk-draw-reducer	(p1 p2 a w1 w2 / p11 p12 p21 p22)
   (setq	p11 (polar p1 (- a $pi/2) (* 0.5 w1))
@@ -87,7 +87,7 @@
   (p-make-line p11 p21)
   (p-make-line p12 p22)
 )
-;;; ´¹Ö±ÑàÎ²ÈıÍ¨ £¨Á½·ÖÖ§¾ùÓëÖ÷¹Ü´¹Ö±£©
+;;; å‚ç›´ç‡•å°¾ä¸‰é€š ï¼ˆä¸¤åˆ†æ”¯å‡ä¸ä¸»ç®¡å‚ç›´ï¼‰
 ;;; (psk-draw-tee (getpoint)(getpoint)(getpoint) $pi/2 0 pi 1000 500 500 400 400)
 (defun psk-draw-tee (p1 p2 p3 a1 a2 a3 d1 d2 d3 erf / a4 a8 c l1 l2 l3 p4 p5 p6 x y)
   (setq	l1 (* erf d2)
@@ -120,7 +120,7 @@
     (setq p6 p1)
   )
 
-  ;; Á½¶ËÖ±Ïß
+  ;; ä¸¤ç«¯ç›´çº¿
   (setq $addnew-layer $psk-layer-cpnt)
   (p-make-line
     (polar p1 a2 (+ (* 0.5 d1) $PSK-duct-flextend))
@@ -150,7 +150,7 @@
 )
 ;;;
 ;;;
-;;; ÈıÍ¨ 1 2ÔÚÒ»Ö±ÏßÉÏ 3ÓëÆä´¹Ö±
+;;; ä¸‰é€š 1 2åœ¨ä¸€ç›´çº¿ä¸Š 3ä¸å…¶å‚ç›´
 ;; (psk-draw-tee-s '(0 0) '(0 360) '(310 160) (- $pi/2) $pi/2 0 500 400 200 0.8 "C")
 (defun psk-draw-tee-s (p1 p2 p3 a1 a2 a3 d1 d2 d3 erf al / a3r l p11 p12 p21 p22 p4 p5 x)
   (setq	a3r (p-angle-reverse a3)
@@ -201,7 +201,7 @@
 	)
   )
 (setq $addnew-layer $psk-layer-cpnt)
-  ;; ½Ó¹Ü¿Ú
+  ;; æ¥ç®¡å£
   (p-make-line
     (polar p1 (- a1 $pi/2) (+ (* 0.5 d1) $PSK-duct-flextend))
     (polar p1 (+ a1 $pi/2) (+ (* 0.5 d1) $PSK-duct-flextend))
@@ -216,7 +216,7 @@
   )
 
   (setq $addnew-layer $psk-layer-duct)
-  ;; Ö±Í¨¶Î±ßÏß
+  ;; ç›´é€šæ®µè¾¹çº¿
 ;;;  (if (equal 0. (p-angle-include (- a1 $pi/2) a3) 1e-3)
 ;;;    (progn (p-make-line p21 p5)
 ;;;	   (p-make-line p22 p12)
@@ -228,12 +228,12 @@
   (p-make-line p11 p21)
   (p-make-line p22 p5)
 
-  ;; ´¹Ö±¶Î»¡Ïß
+  ;; å‚ç›´æ®µå¼§çº¿
   (p-make-sharparc p4 (* (- erf 0.5) d3) a2 (p-angle-reverse a3))
   (p-make-sharparc p4 (* (+ erf 0.5) d3) a2 (angle p4 p5))
 )
 
-;; Ë®¹Ü·ÖÖ§
+;; æ°´ç®¡åˆ†æ”¯
 (defun psk-draw-tee-p (p1 p2 p3 a1 a2 a3 d1 d2 d3 /)
   (setq p11 (polar p1 a3 (* -0.5 d1))
         p21 (polar p2 a3 (* -0.5 d1))
@@ -252,7 +252,7 @@
   (p-make-line p12 p31)
   (p-make-line p22 p31)
 )
-;;; »æÖÆÖ±¹ÜÉÏ´¹Ö±·ÖÖ§´¦µÄÍâ¹Û
+;;; ç»˜åˆ¶ç›´ç®¡ä¸Šå‚ç›´åˆ†æ”¯å¤„çš„å¤–è§‚
 (defun psk-draw-branch (p3 a1 a3 d1 d3 erf / a2 p4 p5 x)
   (setq	p4 (polar p3 a1 (* erf d3))
 	x  (* (- erf 0.5) d3)
@@ -262,19 +262,19 @@
 	p5 (polar (polar p3 (p-angle-reverse a3) (* (- erf 0.5) d3)) a2 x)
   )
 
-  ;; ½Ó¹Ü¿Ú
+  ;; æ¥ç®¡å£
   (setq $addnew-layer $psk-layer-cpnt)
   (p-make-line
     (polar p3 (- a3 $pi/2) (+ (* 0.5 d3) $PSK-duct-flextend))
     (polar p3 (+ a3 $pi/2) (+ (* 0.5 d3) $PSK-duct-flextend))
   )
 
-  ;; ´¹Ö±¶Î»¡Ïß
+  ;; å‚ç›´æ®µå¼§çº¿
   (setq $addnew-layer $psk-layer-duct)
   (p-make-sharparc p4 (* (- erf 0.5) d3) a2 (p-angle-reverse a3))
   (p-make-sharparc p4 (* (+ erf 0.5) d3) a2 (angle p4 p5))
 )
-;;; ÈÎÒâ½Ç¶ÈÈıÍ¨
+;;; ä»»æ„è§’åº¦ä¸‰é€š
 ;;;(defun psk-draw-tee-s3 (a1 a2 a3 d1 d2 d3 erf)
 ;;;  (setq
 ;;;    a4	(abs (- pi (abs (- a1 a2))))
@@ -350,7 +350,7 @@
 	p8 (polar p22 a1 x)
   )
 
-  ;; ½Ó¹Ü¿Ú
+  ;; æ¥ç®¡å£
   (setq $addnew-layer $psk-layer-cpnt)
   (p-make-line
     (polar p1 (- a1 $pi/2) (+ (* 0.5 d1) $PSK-duct-flextend))
@@ -370,7 +370,7 @@
   )
 
   (setq $addnew-layer $psk-layer-duct)
-  ;; Ö±Í¨¶Î±ßÏß
+  ;; ç›´é€šæ®µè¾¹çº¿
 ;;;  (if (equal 0. (p-angle-include (- a1 $pi/2) a3) 1e-3)
 ;;;    (progn
 ;;;      (p-make-line p21 p6)
@@ -398,7 +398,7 @@
 ;;;    )
 ;;;  )
 
-  ;; ´¹Ö±¶Î»¡Ïß
+  ;; å‚ç›´æ®µå¼§çº¿
   (p-make-sharparc p5 (* (- erf 0.5) d3) a2 (p-angle-reverse a3))
   (p-make-sharparc p5 (* (+ erf 0.5) d3) a2 (angle p5 p6))
 
@@ -408,7 +408,7 @@
 ;;;;;;(defun c:tt (/ en p ss view)
 ;;;;;;  (d-solve-selection (ssget '((-3 ("MYPROPS_ROUTER,MYPROPS_PARTSRC")))))
 ;;;;;;  (setq view (p-get-viewdir))
-;;;;;;  (setq p (trans (getpoint "Ö¸¶¨»ùµã:")  1 0) 
+;;;;;;  (setq p (trans (getpoint "æŒ‡å®šåŸºç‚¹:")  1 0) 
 ;;;;;;	p (p-wcs->view p view))
 ;;;;;;
 ;;;;;;  (setq	en (entlast)
@@ -467,12 +467,12 @@
                  (if (or (null r)
                          (and (listp r) (null (car r)))
                      )
-                   (princ "\nÎ´Ö¸¶¨¹ÜµÀ¹æ¸ñ")
+                   (princ "\næœªæŒ‡å®šç®¡é“è§„æ ¼")
                    (psk-draw-duct
                      (car pts)
                      (cadr pts)
                      (if (vl-consp r)
-                       ;; ·ç¹Ü¿í
+                       ;; é£ç®¡å®½
                        (car r)
                        r
                      )
@@ -653,7 +653,7 @@
 ;;;		(trans (getvar "EXTMAX") 0 1)
 ;;;		'((-3 ("PSK-DRAFT")))
 ;;;	 )
-	 ;; ÔÚUCSÏÂ PLANĞŞ¸Ä¹ıµÄÇé¿öÏÂÉÏÃæµÄ´úÂëÎŞ·¨Ñ¡µ½ÕıÈ·µÄÄÚÈİ2022-3-18
+	 ;; åœ¨UCSä¸‹ PLANä¿®æ”¹è¿‡çš„æƒ…å†µä¸‹ä¸Šé¢çš„ä»£ç æ— æ³•é€‰åˆ°æ­£ç¡®çš„å†…å®¹2022-3-18
 	 (ssget	"_W"
 		(getvar "VSMIN")
 		(getvar "VSMAX")
@@ -710,14 +710,14 @@
   (psk-comps-draw comps)
   (p-endundomark)
 ;;;    (princ
-;;;      (strcat "\rÉú³É½ø¶È " (itoa (1+ n)) " / " (itoa count))
+;;;      (strcat "\rç”Ÿæˆè¿›åº¦ " (itoa (1+ n)) " / " (itoa count))
 ;;;    )
 ;;;  )
 
   (princ (strcat
-	   "\n»æÖÆ "
+	   "\nç»˜åˆ¶ "
 	   (itoa (length comps))
-	   " ¸ö¹Ü¼ş, ºÄÊ± "
+	   " ä¸ªç®¡ä»¶, è€—æ—¶ "
 	   (itoa (p-timer-stop))
 	   ;;(rtos (/ (p-timer-stop) 1000.) 2 0)
 	   " ms"

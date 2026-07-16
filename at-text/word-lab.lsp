@@ -1,20 +1,20 @@
-;;°¢¸Ê´Ê¿âck
-					;µÚÒ»´ÎÔËĞĞÇë¸ù¾İ×Ô¼ºĞèÒªĞŞ¸ÄÒÔÏÂÄÚÈİ£º
-(setq ckml (strcat @:*prefix*  "packages/at-text/" )) ;ÒıºÅÄÚÎª´Ê¿âÄ¿Â¼ ×¢ÒâÂ·¾¶Îª·´Ğ±¸Ü¡°/¡±
-(setq texth 300) ;300ÎªÎÄ×Ö¸ß¶È
-(setq textst "-ËÎÌå") ;×ÖÌå
-(setq textlay "WIRE-ÕÕÃ÷") ;WIRE-ÕÕÃ÷ ÎªÎÄ×ÖÍ¼²ã
-(setq textwh 0.7);0.7ÎªÎÄ×Ö¿í¸ß±È
-(setq textsty "0");Ä¬ÈÏ²åÈëÎÄ×ÖÀàĞÍ 0Îªµ¥ĞĞÎÄ×Ö 1Îª¶àĞĞÎÄ×Ö
+;;é˜¿ç”˜è¯åº“ck
+					;ç¬¬ä¸€æ¬¡è¿è¡Œè¯·æ ¹æ®è‡ªå·±éœ€è¦ä¿®æ”¹ä»¥ä¸‹å†…å®¹ï¼š
+(setq ckml (strcat @:*prefix*  "packages/at-text/" )) ;å¼•å·å†…ä¸ºè¯åº“ç›®å½• æ³¨æ„è·¯å¾„ä¸ºåæ–œæ â€œ/â€
+(setq texth 300) ;300ä¸ºæ–‡å­—é«˜åº¦
+(setq textst "-å®‹ä½“") ;å­—ä½“
+(setq textlay "WIRE-ç…§æ˜") ;WIRE-ç…§æ˜ ä¸ºæ–‡å­—å›¾å±‚
+(setq textwh 0.7);0.7ä¸ºæ–‡å­—å®½é«˜æ¯”
+(setq textsty "0");é»˜è®¤æ’å…¥æ–‡å­—ç±»å‹ 0ä¸ºå•è¡Œæ–‡å­— 1ä¸ºå¤šè¡Œæ–‡å­—
 
 
-;;ÒÔÏÂ²»ÓÃĞŞ¸Ä
+;;ä»¥ä¸‹ä¸ç”¨ä¿®æ”¹
 (setq suoyin "0")
 (setq suoyin2 "0")
 (defun c:ck ()
   (setvar "cmdecho" 0)
-  (defun xsckdhk();ÏÔÊ¾´Ê¿â¶Ô»°¿ò
-					;(setq tzbl (getvar "HPSCALE" ));ÌìÕı±ÈÀı
+  (defun xsckdhk();æ˜¾ç¤ºè¯åº“å¯¹è¯æ¡†
+					;(setq tzbl (getvar "HPSCALE" ));å¤©æ­£æ¯”ä¾‹
     (setq en nill)
     (setq mulu (list "" ))
     (setq mulu (vl-directory-files ckml "*.txt" ))
@@ -25,12 +25,12 @@
     (foreach x '(
                  "  dcl_settinsx : default_dcl_settings { audit_level = 3; }" 
                  "  ck : dialog{" 
-                 "   label=\"@ÔÆ´Ê¿â V2.0\";" 
+                 "   label=\"@äº‘è¯åº“ V2.0\";" 
                  " :row {" 
                  "  :column {" 
                  "   :list_box {" 
                  "    key = \"2\" ;" 
-                 "    label = \"´Ê×éÄ¿Â¼:\" ;" 
+                 "    label = \"è¯ç»„ç›®å½•:\" ;" 
                  "				width = 20 ;" 
                  "   }" 
                  "  }" 
@@ -38,7 +38,7 @@
                  "   :list_box {" 
                  "    height = 25 ;" 
                  "    key = \"1\" ;" 
-                 "    label = \"´Ê×éÄÚÈİ:\" ;" 
+                 "    label = \"è¯ç»„å†…å®¹:\" ;" 
                  "    width = 45 ;" 
                  "   }" 
                  "  }" 
@@ -46,23 +46,23 @@
                  "  :row {"
                  "  :edit_box"
                  "  {"
-                 "    label=\"Ìí¼Óµ½´Ê¿â\";"
+                 "    label=\"æ·»åŠ åˆ°è¯åº“\";"
                  "    key=\"bjk\";"
                  "    width = 45 ;"
                  "    height = 1 ;"
                  "    allow_accept=true;"
                  "  }"
-                 "  :button{key=\"sq\";label=\"Ê°È¡\";}"
-                 "  :button{key=\"tj\";label=\"Ìí¼Ó\";}"
+                 "  :button{key=\"sq\";label=\"æ‹¾å–\";}"
+                 "  :button{key=\"tj\";label=\"æ·»åŠ \";}"
                  "  }" 
                  "	 spacer;"
 		 " :row {"
 		 " :toggle {"
-		 "    label = \"¶àĞĞÎÄ×Ö\" ;" 
+		 "    label = \"å¤šè¡Œæ–‡å­—\" ;" 
 		 "    key = \"3\" ;"
 		 "}"
-		 "  :button{key=\"gz\";label=\"¸ÄÍ¼ÖĞ×Ö\";}"
-		 "  :button{key=\"op\";label=\"´ò¿ªÎÄ¼ş\";}"
+		 "  :button{key=\"gz\";label=\"æ”¹å›¾ä¸­å­—\";}"
+		 "  :button{key=\"op\";label=\"æ‰“å¼€æ–‡ä»¶\";}"
                  "   cancel_button;" 
 		 "  }" 
                  "  }" 
@@ -76,7 +76,7 @@
     (while (or (eq (substr (setq lin (vl-string-right-trim "\" filen)" (vl-string-left-trim "(write-line \"" (read-line filen)))) 1 2) "//" ) (eq (substr lin 1 (vl-string-search " " lin)) "" ) (not (eq (substr lin (+ (vl-string-search " " lin) 1) 9) " : dialog" ))))
     (new_dialog (substr lin 1 (vl-string-search " " lin)) dclid)
     (start_list "1" )
-    (if (= lst nil);µÚÒ»´Î¶ÁÈ¡ µÚÒ»¸ötxtÎÄ¼şÄÚÈİ
+    (if (= lst nil);ç¬¬ä¸€æ¬¡è¯»å– ç¬¬ä¸€ä¸ªtxtæ–‡ä»¶å†…å®¹
         (progn
           (setq text_2 (nth 0 ml))
           (setq file (open (strcat ckml text_2) "r" ))
@@ -107,7 +107,7 @@
     (action_tile "gz" "(done_dialog 3)")
     (action_tile "bjk" "(setq bjk-txt $value)")
     (action_tile "tj" "(tjwz)")
-    (set_tile "2" suoyin);»ñÈ¡½¹µã
+    (set_tile "2" suoyin);è·å–ç„¦ç‚¹
     (set_tile "1" suoyin2)
     (action_tile "cancel" "(done_dialog 0)" )
     (setq re (start_dialog))
@@ -120,20 +120,20 @@
     (unload_dialog dclid)
     (close filen)
     (vl-file-delete fname)
-    (if (/= en nill) ;¶¯Ì¬ÎÄ×Ö
+    (if (/= en nill) ;åŠ¨æ€æ–‡å­—
         (progn
-	  (princ "\nµãÈ¡Î»ÖÃ»ò[×ª90¶È(A)/ÓÒ¼üÍË³ö]")
+	  (princ "\nç‚¹å–ä½ç½®æˆ–[è½¬90åº¦(A)/å³é”®é€€å‡º]")
 	  (setq boolean t)
 	  (setq text-jiaodu 0)
 	  (while boolean
-	    (setq motion (grread T 8));grread º¯Êı·µ»ØÒ»¸ö±í£¬ÆäÖĞµÚÒ»¸öÔªËØËµÃ÷ÊäÈëÀàĞÍµÄ´úÂë£¬µÚ¶ş¸öÔªËØ¼È¿ÉÄÜÊÇÕûÊı£¬ÓÖ¿ÉÄÜÊÇµã
-	    (setq code (car motion)) ;grread±íµÚÒ»¸öÔªËØÊäÈëÀàĞÍµÄ´úÂë
-	    (setq pt2 (cadr motion)) ;grread±íµÚ¶ş¸öÔªËØ ÍÏ¶¯Ä£Ê½×ø±ê
+	    (setq motion (grread T 8));grread å‡½æ•°è¿”å›ä¸€ä¸ªè¡¨ï¼Œå…¶ä¸­ç¬¬ä¸€ä¸ªå…ƒç´ è¯´æ˜è¾“å…¥ç±»å‹çš„ä»£ç ï¼Œç¬¬äºŒä¸ªå…ƒç´ æ—¢å¯èƒ½æ˜¯æ•´æ•°ï¼Œåˆå¯èƒ½æ˜¯ç‚¹
+	    (setq code (car motion)) ;grreadè¡¨ç¬¬ä¸€ä¸ªå…ƒç´ è¾“å…¥ç±»å‹çš„ä»£ç 
+	    (setq pt2 (cadr motion)) ;grreadè¡¨ç¬¬äºŒä¸ªå…ƒç´  æ‹–åŠ¨æ¨¡å¼åæ ‡
 	    (cond
-	      ((= code 5)   ;Êó±êÍÏ¶¯Ä£Ê½
-	       (entmod (setq endate (subst (cons 10 pt2) (assoc 10 endate) endate)));¶¯Ì¬¸ÄÎÄ×Ö×ø±ê
+	      ((= code 5)   ;é¼ æ ‡æ‹–åŠ¨æ¨¡å¼
+	       (entmod (setq endate (subst (cons 10 pt2) (assoc 10 endate) endate)));åŠ¨æ€æ”¹æ–‡å­—åæ ‡
 	       )
-	      ((= code 3)   ;Êó±ê×óæI°´ÏÂ
+	      ((= code 3)   ;é¼ æ ‡å·¦éµæŒ‰ä¸‹
 	       (setq boolean nil)
 	       )
 	      ((= code 11)
@@ -156,11 +156,11 @@
 	       )
 	      ((equal motion '(2 65))
 	       (setq text-jiaodu (+ text-jiaodu (/ pi 2)))
-	       (entmod (setq endate (subst (cons 50 text-jiaodu) (assoc 50 endate) endate)));¶¯Ì¬¸ÄÎÄ×Ö½Ç¶È
+	       (entmod (setq endate (subst (cons 50 text-jiaodu) (assoc 50 endate) endate)));åŠ¨æ€æ”¹æ–‡å­—è§’åº¦
 	       )
 	      ((equal motion '(2 97))
 	       (setq text-jiaodu (+ text-jiaodu (/ pi 2)))
-	       (entmod (setq endate (subst (cons 50 text-jiaodu) (assoc 50 endate) endate)));¶¯Ì¬¸ÄÎÄ×Ö½Ç¶È
+	       (entmod (setq endate (subst (cons 50 text-jiaodu) (assoc 50 endate) endate)));åŠ¨æ€æ”¹æ–‡å­—è§’åº¦
 	       )
 	      )
             );end while
@@ -168,7 +168,7 @@
     (princ)
     ) ;end xsckdhk
 
-  (defun load_text (value reason);×Óº¯Êı ÌáÈ¡txtÄÚÈİ
+  (defun load_text (value reason);å­å‡½æ•° æå–txtå†…å®¹
     (if (= reason 1)
         (progn
           (setq suoyin value)
@@ -194,13 +194,13 @@
     (setq text (nth (1+ (atoi value)) lsti))
     (if (= reason 4)
         (progn
-          (done_dialog 0);¹Ø±Õ¶Ô»°¿ò
-          (setq pt (cadr (grread 1)));È¡µÃ¹â±ê×ø±ê
+          (done_dialog 0);å…³é—­å¯¹è¯æ¡†
+          (setq pt (cadr (grread 1)));å–å¾—å…‰æ ‡åæ ‡
           (if pt
 	      (if (= textsty "0")
                   (progn
                     (entmake (list
-                              '(0 . "TEXT" );µ¥ĞĞÎÄ×Ö
+                              '(0 . "TEXT" );å•è¡Œæ–‡å­—
                               (cons 1 text)
                               (cons 7 textst)
                               (cons 8 textlay)
@@ -214,10 +214,10 @@
                     (setq endate (entget (entlast)))
 		    )
                   (progn
-		    (setq ttlen (strlen text))   ;È¡µÃÎÄ±¾³¤¶È
-                    (setq twid (* (* (* texth 0.7) ttlen) (/ tzbl 100)))  ;¼ÆËãÎÄ±¾¿í¶È
+		    (setq ttlen (strlen text))   ;å–å¾—æ–‡æœ¬é•¿åº¦
+                    (setq twid (* (* (* texth 0.7) ttlen) (/ tzbl 100)))  ;è®¡ç®—æ–‡æœ¬å®½åº¦
                     (entmake (list
-                              '(0 . "MTEXT" );¶àĞĞÎÄ×Ö
+                              '(0 . "MTEXT" );å¤šè¡Œæ–‡å­—
                               (cons 100 "AcDbEntity")	
                               (cons 100 "AcDbMText")	
                               (cons 1 text)
@@ -241,43 +241,43 @@
 	)
     );end new_text
 
-					;Ê°È¡ÎÄ×Ö
+					;æ‹¾å–æ–‡å­—
   (defun shiqu (/ ent1)
     (if (setq ent1 (entsel ))
 	(progn
-	  (setq bjk-txt (cdr (assoc 1 (entget (car ent1)))));ÎÄ×ÖÄÚÈİ
+	  (setq bjk-txt (cdr (assoc 1 (entget (car ent1)))));æ–‡å­—å†…å®¹
 	  (xsckdhk)
 	  ))
     );end shiqu
 
-					;´ò¿ªÎÄ¼ş
+					;æ‰“å¼€æ–‡ä»¶
   (defun dkwj()
     (startapp "notepad" filename)
     ) 
   
-					;¸ÄÍ¼ÖĞÎÄ×Ö
+					;æ”¹å›¾ä¸­æ–‡å­—
   (defun gtzwz (/ sel i ent ob)
     (if (setq sel (ssget '((0 . "TEXT,MTEXT"))))
 	(progn
 	  (setq i 0)
 	  (repeat (sslength sel)
 		  (setq ent (ssname sel i))
-		  (setq ob (vlax-ename->vla-object ent)) ;×ª»»
-		  (vlax-put-property ob 'TextString text) ;¸Ä±ätextÌØĞÔ
+		  (setq ob (vlax-ename->vla-object ent)) ;è½¬æ¢
+		  (vlax-put-property ob 'TextString text) ;æ”¹å˜textç‰¹æ€§
 		  (setq i (1+ i))
 		  )
 	  ))
     (princ) 
     )
   
-					;Ìí¼ÓÎÄ×Öµ½´Ê¿â
+					;æ·»åŠ æ–‡å­—åˆ°è¯åº“
   (defun tjwz(/ file)
     (if (/= bjk-txt "")
 	(progn
 	  (setq file (open filename "a"))
 	  (write-line bjk-txt file)
 	  (close file)
-	  (load_text suoyin 1) ;Ë¢ĞÂÎÄ×ÖÄÚÈİ
+	  (load_text suoyin 1) ;åˆ·æ–°æ–‡å­—å†…å®¹
 	  ))
     ) 
 

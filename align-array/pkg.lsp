@@ -1,14 +1,14 @@
 (@:def-pkg 
 '((:name . "align-array")
-  (:full-name . "¶ÔÆëÅÅÁĞ")
+  (:full-name . "å¯¹é½æ’åˆ—")
   (:author . "start4444")
   (:email . "vitalgg@gmail.com")
   (:version . "0.0.3")
   (:locale . "CHS")
-  (:category . "ÅÅ°æ")
+  (:category . "æ’ç‰ˆ")
   (:required . "base")
   (:opensource . 0) 
-  (:description . "¶ÔÆëÅÅÁĞ¡¢Í¼¿òÅÅ°æ")
+  (:description . "å¯¹é½æ’åˆ—ã€å›¾æ¡†æ’ç‰ˆ")
   (:url . "http://atlisp.cn")
   (:files . ("align-array"
               ;; you can add file name that you will included in the package.

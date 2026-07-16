@@ -1,15 +1,15 @@
 (defun system:explorer (dir-path)
-  "ÔÚ×ÊÔ´¹ÜÀíÆ÷ÖĞ´ò¿ªÖ¸¶¨µÄÎÄ¼ş¼Ğ"
+  "åœ¨èµ„æºç®¡ç†å™¨ä¸­æ‰“å¼€æŒ‡å®šçš„æ–‡ä»¶å¤¹"
   (startapp (strcat "explorer /e,\""dir-path"\""))
   (princ))
 (defun system:dir (str)
-  "×Ö·û´®Â·¾¶Ä¿Â¼»¯£¬¼´½áÎ²ÊÇ \\ "
+  "å­—ç¬¦ä¸²è·¯å¾„ç›®å½•åŒ–ï¼Œå³ç»“å°¾æ˜¯ \\ "
   (if (= 92 (last (vl-string->list str)))
       str
     (strcat str "\\")))
 (defun system:get-folder (msg / WinShell shFolder path catchit)
-  "µ÷ÓÃWindowsÍ¨ÓÃÄ¿Â¼Ñ¡È¡¶Ô»°¿ò,·µ»ØÑ¡ÖĞÂ·¾¶
-²ÎÊı: msg-¶Ô»°¿òÌáÊ¾×Ö·û´®"
+  "è°ƒç”¨Windowsé€šç”¨ç›®å½•é€‰å–å¯¹è¯æ¡†,è¿”å›é€‰ä¸­è·¯å¾„
+å‚æ•°: msg-å¯¹è¯æ¡†æç¤ºå­—ç¬¦ä¸²"
   
   (vl-load-com)
   (setq winshell (vlax-create-object "Shell.Application"))

@@ -1,5 +1,5 @@
 (defun @lab:named-first-layout-from-filename(/ *error* dir% dwgs)
-  (@::prompt "ÅúÁ¿ĞŞ¸ÄÄ³Ò»ÎÄ¼ş¼ĞÏÂµÄ dwg ÎÄ¼şµÄµÚÒ»¸ö²¼¾ÖÃû³ÆÎªÎÄ¼şÃû¡£")
+  (@::prompt "æ‰¹é‡ä¿®æ”¹æŸä¸€æ–‡ä»¶å¤¹ä¸‹çš„ dwg æ–‡ä»¶çš„ç¬¬ä¸€ä¸ªå¸ƒå±€åç§°ä¸ºæ–‡ä»¶åã€‚")
   (defun *error* (msg)
     (if (and
 	 (and (= 'vla-object (type doc%)))
@@ -15,20 +15,20 @@
 		   (vlax-release-object obj)))
 	    (list dwgdocs% acadapp))
     (@:*error* msg))
-  (setq dir% (system:get-folder "ÇëÑ¡ÔñÒª´¦ÀíµÄÎÄ¼ş¼Ğ£º"))
+  (setq dir% (system:get-folder "è¯·é€‰æ‹©è¦å¤„ç†çš„æ–‡ä»¶å¤¹ï¼š"))
   (if (and dir%
 	   (setq dwgs (vl-directory-files dir% "*.dwg" 1))
 	   (setq acadapp (vlax-get-or-create-object "AutoCAD.Application"))
 	   (setq dwgdocs% (vla-get-documents acadapp)))
       (progn
 	(foreach file% dwgs
-		 (princ(strcat "´¦ÀídwgÎÄ¼ş " file% "... "))
+		 (princ(strcat "å¤„ç†dwgæ–‡ä»¶ " file% "... "))
 		 
 		 (vla-open dwgdocs% (strcat dir% "\\" file%))
 		 (setq doc% (vla-item dwgdocs% file%))
 		 (if doc%
 		     (progn
-		       ;;Êµ²Ù
+		       ;;å®æ“
 		       (if (/= (vla-get-name (vla-item (vla-get-layouts doc%) 0))
 			       "Model")
 			   (vla-put-name 
@@ -40,7 +40,7 @@
 			      (vla-item (vla-get-layouts doc%) 1)
 			      (vl-filename-base file%))
 			   ))
-		       ;;±£´æ
+		       ;;ä¿å­˜
 		       (vla-save doc% )
 		       (vla-close doc%)
 		       (princ "OK!\n"))
@@ -48,5 +48,5 @@
 		 ))
 	(vla-quit acadapp)
 	(mapcar 'vlax-release-object (list doc% dwgdocs% acadapp)))
-    (alert "Error: Î´Ñ¡ÖĞÈÎºÎÎÄ¼ş¼Ğ¡£»ò²»ÄÜ´ò¿ª autocad ¸±±¾¡£")
+    (alert "Error: æœªé€‰ä¸­ä»»ä½•æ–‡ä»¶å¤¹ã€‚æˆ–ä¸èƒ½æ‰“å¼€ autocad å‰¯æœ¬ã€‚")
     ))

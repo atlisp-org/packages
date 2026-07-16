@@ -1,4 +1,4 @@
-;;;ÏÂÃæ³ÌĞòÓÃÒÔ»ñµÃÍÖÔ²µÄ±ä»»¾ØÕó¡£
+;;;ä¸‹é¢ç¨‹åºç”¨ä»¥è·å¾—æ¤­åœ†çš„å˜æ¢çŸ©é˜µã€‚
 (defun Mat:GetEllipseTransMatrix (e / dxf Nrm Cen Maj Mnr ptb DX DY DZ mat)        
   (defun AppendToMatrix (mat org)
     (append
@@ -18,11 +18,11 @@
   (setq DZ  (Mat:unit Nrm))
   (setq mat (list DX DY DZ))
   (list
-    (AppendToMatrix mat (mapcar '- (Mat:mxv mat cen)))        ;WCS->OCS ÓÉÊÀ½ç×ø±êÏµ±ä»»µ½ÎïÌå×ø±êÏµ
-    (AppendToMatrix (Mat:trp mat) cen)                        ;OCS->WCS ÓÉÎïÌå×ø±êÏµ±ä»»µ½ÊÀ½ç×ø±êÏµ
+    (AppendToMatrix mat (mapcar '- (Mat:mxv mat cen)))        ;WCS->OCS ç”±ä¸–ç•Œåæ ‡ç³»å˜æ¢åˆ°ç‰©ä½“åæ ‡ç³»
+    (AppendToMatrix (Mat:trp mat) cen)                        ;OCS->WCS ç”±ç‰©ä½“åæ ‡ç³»å˜æ¢åˆ°ä¸–ç•Œåæ ‡ç³»
   )
 )
-;;;ÒÔÏÂÎª²âÊÔ³ÌĞò
+;;;ä»¥ä¸‹ä¸ºæµ‹è¯•ç¨‹åº
 (defun c:test1 (/ sel ent mat obj doc)
   (if (setq sel (ssget ":S" '((0 . "ELLIPSE"))))
     (progn
@@ -41,9 +41,9 @@
 )
 
 ;;;=====================================================
-;;;¹¦ÄÜ: »­Ò»¸öÍÖÔ²»òÕßÍÖÔ²»¡                             
-;;;²ÎÊı: ÖĞĞÄ£¬³¤Öá£¬¶ÌÖáºÍĞı×ª½Ç¶È£¬ÆğÊ¼½Ç¶È£¬ÖÕµã½Ç¶È 
-;;;·µ»Ø: Ò»¸öÍÖÔ²ÊµÌå                                   
+;;;åŠŸèƒ½: ç”»ä¸€ä¸ªæ¤­åœ†æˆ–è€…æ¤­åœ†å¼§                             
+;;;å‚æ•°: ä¸­å¿ƒï¼Œé•¿è½´ï¼ŒçŸ­è½´å’Œæ—‹è½¬è§’åº¦ï¼Œèµ·å§‹è§’åº¦ï¼Œç»ˆç‚¹è§’åº¦ 
+;;;è¿”å›: ä¸€ä¸ªæ¤­åœ†å®ä½“                                   
 ;;;=====================================================
 (defun Make-Ellipse (cen a b ang an1 an2 / m n an)
   (if (> b a)
@@ -84,15 +84,15 @@
 )
 (defun c:test5 (/ p1 p2 p3 p4 p5 ret)
   (initget 1)
-  (setq p1 (getpoint "\nÊäÈëµÚÒ»µã:"))
+  (setq p1 (getpoint "\nè¾“å…¥ç¬¬ä¸€ç‚¹:"))
   (initget 1)
-  (setq p2 (getpoint "\nÊäÈëµÚ¶şµã:"))
+  (setq p2 (getpoint "\nè¾“å…¥ç¬¬äºŒç‚¹:"))
   (initget 1)
-  (setq p3 (getpoint "\nÊäÈëµÚÈıµã:"))
+  (setq p3 (getpoint "\nè¾“å…¥ç¬¬ä¸‰ç‚¹:"))
   (initget 1)
-  (setq p4 (getpoint "\nÊäÈëµÚËÄµã:"))
+  (setq p4 (getpoint "\nè¾“å…¥ç¬¬å››ç‚¹:"))
   (initget 1)
-  (setq p5 (getpoint "\nÊäÈëµÚÎåµã:"))
+  (setq p5 (getpoint "\nè¾“å…¥ç¬¬äº”ç‚¹:"))
   (setq ret (ELL:5PEllipse p1 p2 p3 p4 p5))
   (apply 'Ell:Make-Ellipse ret)
   (princ)

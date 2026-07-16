@@ -6,18 +6,18 @@
 ;; (@:set-config 'alt-run:first  "New Value")
 ;; Add menu in @lisp panel
 
-(@:add-menu "Íâ²¿³ÌĞò" "ALTRun" "(alt-run:open)" )
+(@:add-menu "å¤–éƒ¨ç¨‹åº" "ALTRun" "(alt-run:open)" )
 (defpackage :alt-run 
   (:use :cl)
   (:export :open)
   )
 (defun alt-run:open ( / app )
-  ;; ¿ÉÖ´ĞĞÎÄ¼şÂ·¾¶
+  ;; å¯æ‰§è¡Œæ–‡ä»¶è·¯å¾„
   (setq app "bin\\ALTRun\\ALTRun.exe")
   (if (null (findfile app))
-      ;; ÏÂÔØÑ¹Ëõ°ü
+      ;; ä¸‹è½½å‹ç¼©åŒ…
       (@:down-and-unzip "archives/ALTRun.zip" "bin"))
-  ;;ÔËĞĞÍâ²¿¿ÉÖ´ĞĞ³ÌĞò
+  ;;è¿è¡Œå¤–éƒ¨å¯æ‰§è¡Œç¨‹åº
   (if (findfile app)
       (progn
 	(setvar "cmdecho" 0)

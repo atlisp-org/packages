@@ -1,10 +1,10 @@
-;;���������ƫ�� - caoyin
-;; ����Ҫ�������趨ȱʡֵ
-;; $OFFSETTO-DIST$  - ƫ�ƾ���   (100)
-;; $OFFSETTO-ERASE$ - ɾ��Դ     (nil=��   |  T=��    )
-;; $OFFSETTO-DIR$   - ƫ�Ʒ���   (nil=��   |  T=��    )
-;; $OFFSETTO-LAYER$ - ͼ��       (nil=Դ   |  T=��ǰ��)
-;; $OFFSETTO-PLMOD$ - �����ģʽ (nil=���� |  T=����  )
+;;多段线批量偏移 - caoyin
+;; 根据要求自行设定缺省值
+;; $OFFSETTO-DIST$  - 偏移距离   (100)
+;; $OFFSETTO-ERASE$ - 删除源     (nil=否   |  T=是    )
+;; $OFFSETTO-DIR$   - 偏移方向   (nil=内   |  T=外    )
+;; $OFFSETTO-LAYER$ - 图层       (nil=源   |  T=当前层)
+;; $OFFSETTO-PLMOD$ - 多段线模式 (nil=连续 |  T=独立  )
 
 
 (defun at-structure:detail-steelbar (/ *ERROR* GET-PLINE-VERTEXS:BULGES ADD-2P-PLINE OFFSET-PLINES SS DOC ZIN DST)
@@ -77,19 +77,19 @@
 	(while
             (progn
               (setvar 'DIMZIN 0)
-              (princ (strcat "\n��ǰ����: ɾ��Դ="
-                             (if $OFFSETTO-ERASE$ "��" "��")
-                             " ƫ�Ʒ���="
-                             (if $OFFSETTO-DIR$ "��" "��")
-                             " ͼ��="
-                             (if $OFFSETTO-LAYER$ "��ǰ��" "Դ")
-                             " �¶����="
-                             (if $OFFSETTO-PLMOD$ "����" "����")
+              (princ (strcat "\n当前设置: 删除源="
+                             (if $OFFSETTO-ERASE$ "是" "否")
+                             " 偏移方向="
+                             (if $OFFSETTO-DIR$ "外" "内")
+                             " 图层="
+                             (if $OFFSETTO-LAYER$ "当前层" "源")
+                             " 新对象段="
+                             (if $OFFSETTO-PLMOD$ "独立" "连续")
 			     )
 		     )
               (initget 6 "Erase Dir Layer Mode")
               (setq DST (getdist (strcat
-				  "\nָ��ƫ�ƾ���� [ɾ��Դ(E)/ƫ�Ʒ���(D)/ͼ��(L)/�¶����(M)] <"
+				  "\n指定偏移距离或 [删除源(E)/偏移方向(D)/图层(L)/新对象段(M)] <"
 				  (rtos $OFFSETTO-DIST$) ">: "
 				  )
 				 )

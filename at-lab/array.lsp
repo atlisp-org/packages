@@ -1,10 +1,10 @@
-(@:define-config '@lab:disx 300 "XÏò¼ä¾à£¬Ã·»¨²¼ÖÃÊ±Ó¦ÎªÁĞ¾àµÄ2±¶")
-(@:define-config '@lab:disy 300 "YÏò¼ä¾à£¬Ã·»¨²¼ÖÃÊ±Ó¦ÎªÁĞ¾àµÄ2±¶")
-(@:define-config '@lab:r  "10,50" "°ë¾¶¡£ÒÔ¶ººÅ·ÖÎª²»Í¬µÄÔ²")
+(@:define-config '@lab:disx 300 "Xå‘é—´è·ï¼Œæ¢…èŠ±å¸ƒç½®æ—¶åº”ä¸ºåˆ—è·çš„2å€")
+(@:define-config '@lab:disy 300 "Yå‘é—´è·ï¼Œæ¢…èŠ±å¸ƒç½®æ—¶åº”ä¸ºåˆ—è·çš„2å€")
+(@:define-config '@lab:r  "10,50" "åŠå¾„ã€‚ä»¥é€—å·åˆ†ä¸ºä¸åŒçš„åœ†")
 (defun array-circle (pt-begin pt-end disx disy r)
-  "pt-begin ×óÏÂÆğµã; pt-end ÓÒÉÏÖÕµã;disx,disy X YÏòµÄ¼ä¾à,r°ë¾¶(¿ÉÒÔÊÇÁĞ±í)"
+  "pt-begin å·¦ä¸‹èµ·ç‚¹; pt-end å³ä¸Šç»ˆç‚¹;disx,disy X Yå‘çš„é—´è·,råŠå¾„(å¯ä»¥æ˜¯åˆ—è¡¨)"
 (entity:make-circle 
- (append  ;; Ã·»¨
+ (append  ;; æ¢…èŠ±
   (apply
    'append
    (mapcar
@@ -12,8 +12,8 @@
        (mapcar
 	'(lambda(y)
 	   (list x y))
-	(list:range (cadr pt-begin)(cadr pt-end) disy)));;YÏòµÄÆğµã£¬ÖÕµã£¬¾àÀë
-    (list:range (car pt-begin)(car pt-end) disx)));;XÏòµÄÆğµã£¬ÖÕµã£¬¾àÀë
+	(list:range (cadr pt-begin)(cadr pt-end) disy)));;Yå‘çš„èµ·ç‚¹ï¼Œç»ˆç‚¹ï¼Œè·ç¦»
+    (list:range (car pt-begin)(car pt-end) disx)));;Xå‘çš„èµ·ç‚¹ï¼Œç»ˆç‚¹ï¼Œè·ç¦»
   (apply
    'append
    (mapcar
@@ -21,23 +21,23 @@
        (mapcar
 	'(lambda(y)
 	   (list x y))
-	(list:range (+ (* 0.5 disy)(cadr pt-begin))(cadr pt-end) disy)));;YÏòµÄÆğµã£¬ÖÕµã£¬¾àÀë
-    (list:range  (+ (* 0.5 disx)(car pt-begin))(car pt-end) disx))));;XÏòµÄÆğµã£¬ÖÕµã£¬¾àÀë
- r) ;; °ë¾¶±í
+	(list:range (+ (* 0.5 disy)(cadr pt-begin))(cadr pt-end) disy)));;Yå‘çš„èµ·ç‚¹ï¼Œç»ˆç‚¹ï¼Œè·ç¦»
+    (list:range  (+ (* 0.5 disx)(car pt-begin))(car pt-end) disx))));;Xå‘çš„èµ·ç‚¹ï¼Œç»ˆç‚¹ï¼Œè·ç¦»
+ r) ;; åŠå¾„è¡¨
 )
 (defun @lab:array-circle (/ pt-start pt-end disx disy r res)
   (setq res
 	(ui:input
-	 "ÇëÊäÈëÔ²Õó²ÎÊı"
+	 "è¯·è¾“å…¥åœ†é˜µå‚æ•°"
 	 (list
-	  (list "disx" (@:get-config '@lab:disx) "XÏò¼ä¾à£¬Ã·»¨²¼ÖÃÊ±Ó¦ÎªÁĞ¾àµÄ2±¶")
-	  (list "disy"  (@:get-config '@lab:disy) "YÏò¼ä¾à£¬Ã·»¨²¼ÖÃÊ±Ó¦ÎªĞĞ¾àµÄ2±¶")
-	  (list "r"  (@:get-config '@lab:r)  "°ë¾¶¡£ÒÔ¶ººÅ·ÖÎª²»Í¬µÄÔ²"))))
+	  (list "disx" (@:get-config '@lab:disx) "Xå‘é—´è·ï¼Œæ¢…èŠ±å¸ƒç½®æ—¶åº”ä¸ºåˆ—è·çš„2å€")
+	  (list "disy"  (@:get-config '@lab:disy) "Yå‘é—´è·ï¼Œæ¢…èŠ±å¸ƒç½®æ—¶åº”ä¸ºè¡Œè·çš„2å€")
+	  (list "r"  (@:get-config '@lab:r)  "åŠå¾„ã€‚ä»¥é€—å·åˆ†ä¸ºä¸åŒçš„åœ†"))))
   (@:set-config  '@lab:disx (cdr (assoc "disx" res)))
   (@:set-config  '@lab:disy (cdr (assoc "disy" res)))
   (@:set-config  '@lab:r (cdr (assoc "r" res)))
-  (setq pt-start (getpoint (@:speak "ÇëÊäÈë×óÏÂ½Ç:")))
-  (setq pt-end (getcorner pt-start (@:speak "ÇëÊäÈëÓÒÉÏ½Ç:")))
+  (setq pt-start (getpoint (@:speak "è¯·è¾“å…¥å·¦ä¸‹è§’:")))
+  (setq pt-end (getcorner pt-start (@:speak "è¯·è¾“å…¥å³ä¸Šè§’:")))
   (array-circle pt-start pt-end
 		(cdr (assoc "disx" res))
 		(cdr (assoc "disy" res))

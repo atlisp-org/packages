@@ -1,76 +1,76 @@
-;; Í¼¿ò¼°¼Ó³¤1 1/4,1/2,3/4,1 1.25 1.5 µÄ¿í¸ß±È
+;; å›¾æ¡†åŠåŠ é•¿1 1/4,1/2,3/4,1 1.25 1.5 çš„å®½é«˜æ¯”
 (setq @plot:ratio-of-w/h
       '(1.41429 1.76786 2.12143 2.4750 2.82857 3.18214 3.53571))
 (setq @plot:frame-type2
       '("" "+1/4" "+1/2" "+3/4" "+1" "+5/4" "+3/2"))
-;; ºá·ùÍ¼¿ò¸ß¶È A4~A0
+;; æ¨ªå¹…å›¾æ¡†é«˜åº¦ A4~A0
 (setq @plot:height-of-frame
       '(210 297 420 594 841))
 (setq @plot:frame-type '("A4" "A3" "A2" "A1" "A0"))
 
-(setq @plot:*frames* '()) ; Í¼¿òÊ¶±ğ½á¹ûÊı¾İ
-(@:add-menu "Í¨ÓÃ´òÓ¡" "ÅäÖÃ" "(@plot:setup)")
+(setq @plot:*frames* '()) ; å›¾æ¡†è¯†åˆ«ç»“æœæ•°æ®
+(@:add-menu "é€šç”¨æ‰“å°" "é…ç½®" "(@plot:setup)")
 (defun @plot:setup (/ res)
-  "Í¨ÓÃ´òÓ¡»ù±¾ĞÅÏ¢"
+  "é€šç”¨æ‰“å°åŸºæœ¬ä¿¡æ¯"
   (setq res 
-	(ui:input "ÅäÖÃĞÅÏ¢"
+	(ui:input "é…ç½®ä¿¡æ¯"
 		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
-			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "`@PLOT:*")));;´óĞ´
+			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "`@PLOT:*")));;å¤§å†™
 					(if @:*config.db*
 					    @:*config.db* (@:load-config))))))
   (foreach res% res
    	   (@:set-config (read (car res%)) (cdr res%)))
   )
 
-(@:add-menu "Í¨ÓÃ´òÓ¡" "AIÊ¶±ğÍ¼¿ò" "(@plot:frame-recognition)")
+(@:add-menu "é€šç”¨æ‰“å°" "AIè¯†åˆ«å›¾æ¡†" "(@plot:frame-recognition)")
 (defun @plot:frame-recognition ()
   (@plot:delete-mark)
   (@plot:frame-recognition-by-polyline)
   ;; (@plot:frame-recognition-by-line)
   (@plot:mark-frames)
-  (@:prompt (strcat "AI ¹²Ê¶±ğÁË "
+  (@:prompt (strcat "AI å…±è¯†åˆ«äº† "
 		 (itoa (length @plot:*frames*))
-		 " ¸öÍ¼¿ò¡£\n"))
+		 " ä¸ªå›¾æ¡†ã€‚\n"))
   (princ)
   )
 (defun @plot:get-frame-type (w h)
-  "Ê¶±ğÍ¼¿ò´óĞ¡"
+  "è¯†åˆ«å›¾æ¡†å¤§å°"
   )
-(@:add-menu "Í¨ÓÃ´òÓ¡" "Ê¶±ğPLÍ¼¿ò" "(@plot:frame-recognition-by-polyline)")
+(@:add-menu "é€šç”¨æ‰“å°" "è¯†åˆ«PLå›¾æ¡†" "(@plot:frame-recognition-by-polyline)")
 ;; 
 (defun @:get-rec-points (en0 / ddlist dd1 tmplist )
-  "Éú³É¶à¶ÎÏßµÄµãĞò"
+  "ç”Ÿæˆå¤šæ®µçº¿çš„ç‚¹åº"
   (setq ddlist nil) 
   (setq tmplist (entget en0))
   (repeat 
-   (cdr (assoc 90 (entget en0))) ;;¼ÆËã½ÚµãÊı
-   (setq dd1 (cdr (assoc 10 tmplist))) ;;È¡¶¥µãÊı¾İ
+   (cdr (assoc 90 (entget en0))) ;;è®¡ç®—èŠ‚ç‚¹æ•°
+   (setq dd1 (cdr (assoc 10 tmplist))) ;;å–é¡¶ç‚¹æ•°æ®
    (setq tmplist (member (assoc 10 tmplist) tmplist))
    (setq tmplist (cdr tmplist))
-   (setq ddlist (append ddlist (list dd1) )) ;;ÏÂÒ»¸ö¶¥µã
+   (setq ddlist (append ddlist (list dd1) )) ;;ä¸‹ä¸€ä¸ªé¡¶ç‚¹
    )
   )
 (defun @plot:init ()
-  "Í¼¿òÊ¶±ğ³õÊ¼»¯"
+  "å›¾æ¡†è¯†åˆ«åˆå§‹åŒ–"
   (if (tblsearch "layer" "temp-frames")
       T
     (entity:make-layer "temp-frames" 3 "DASHED" nil))
   (layer:plotable '("temp-frames") nil)
   )
 (defun @plot:get-height (frame-pts)
-  "»ñÈ¡Í¼¿ò¸ß¶È"
+  "è·å–å›¾æ¡†é«˜åº¦"
   (- (cadr (cadr frame-pts))(cadr (car frame-pts))))
 (defun @plot:get-width (frame-pts)
-  "»ñÈ¡Í¼¿ò¿í¶È"
+  "è·å–å›¾æ¡†å®½åº¦"
   (- (car (caddr frame-pts))(car (car frame-pts))))
 (defun @plot:get-ratio (w h)
-  "»ñÈ¡Í¼¿ò¿í¸ß±È"
+  "è·å–å›¾æ¡†å®½é«˜æ¯”"
   (setq w (float w))
   (setq h (float h))
   (if (/= 0 (min w h))
       (/ (max w h)(min w h))))
 (defun @plot:load-config ()
-    ;; ¼ÓÔØ±¾µØÅäÖÃ
+    ;; åŠ è½½æœ¬åœ°é…ç½®
   (if (findfile (strcat @:*prefix-config* "frames-scale.db"))
       (setq @plot:scale-of-frame
 	    (append @plot:scale-of-frame
@@ -87,15 +87,15 @@
 				       (string:to-lst (@:get-file-contents (strcat @:*prefix-config* "frames-ratio.db")) "\n")))))
     ))
 (defun @plot:frame-length? (len / i j k scale ratio flag-hit)
-  "²âÊÔ³¤¶ÈÊÇ·ñ·ûºÏÍ¼¿òÒªÇó"
+  "æµ‹è¯•é•¿åº¦æ˜¯å¦ç¬¦åˆå›¾æ¡†è¦æ±‚"
   (setq @plot:scale-of-frame
 	(mapcar 'atof
 		(string:parse-by-lst (@:get-config '@plot:scale-of-frame) '("," " "))))
-  ;; ¼ÓÔØ±¾µØÅäÖÃ
+  ;; åŠ è½½æœ¬åœ°é…ç½®
   (@plot:load-config)
   (setq flag-hit nil)
   (setq i 0)
-  ;;×îĞ¡×î´óÅĞ¶Ï
+  ;;æœ€å°æœ€å¤§åˆ¤æ–­
   (if (< (* (apply 'min @plot:height-of-frame)
 	    (apply 'min @plot:scale-of-frame))
 	 len 
@@ -130,7 +130,7 @@
   flag-hit)
 ;;(princ "test\n")
 (defun @plot:framep (frame-pts / test-ratio height flag-hit i j)
-  "²âÊÔÊÇ·ñ¶à¶ÎÏßÍ¼¿ò£¬ÒÀ¾İ¾ØĞÎ¸ß¶ÈºÍ¿í¸ß±È£¬"
+  "æµ‹è¯•æ˜¯å¦å¤šæ®µçº¿å›¾æ¡†ï¼Œä¾æ®çŸ©å½¢é«˜åº¦å’Œå®½é«˜æ¯”ï¼Œ"
   (if (>= (length frame-pts) 4)
       (progn
 	(setq @plot:scale-of-frame
@@ -146,14 +146,14 @@
 		   (< (cadr pt1)(cadr pt2)))))))
 	(setq flag-hit nil)
 	(setq test-ratio nil)
-	;;Á½µÍµã 1 3 µÄ y ÖµÊÇ·ñÒ»ÖÂ
+	;;ä¸¤ä½ç‚¹ 1 3 çš„ y å€¼æ˜¯å¦ä¸€è‡´
 	(if (equal (car (car frame-pts))
 	     (car (cadr frame-pts))
 	     0.001)
 	    (progn
 	      (setq height (min (@plot:get-height frame-pts)
 				(@plot:get-width frame-pts)))
-	      ;; ²âÊÔ³¤¿í±È
+	      ;; æµ‹è¯•é•¿å®½æ¯”
 	      (setq i 0)
 	      (while (and (null test-ratio)
 			  (< i (length @plot:ratio-of-w/h)))
@@ -163,7 +163,7 @@
 			   0.002)
 		    (setq test-ratio T))
 		(setq i (1+ i)))))
-	;; ²âÊÔ¸ß¶È
+	;; æµ‹è¯•é«˜åº¦
 	(if test-ratio
       (progn
 	(setq flag-hit nil)
@@ -179,9 +179,9 @@
 	  ))))
 	flag-hit)))
 (defun @plot:frame-recognition-by-polyline (/ frames total)
-  "Ê¶±ğ¶à¶ÎÏß¾ØĞÎÍ¼¿ò"
-  ;; Ê¶±ğ¶à¶ÎÏß
-  ;; (@:help (strcat "Ê¶±ğ¶à¶ÎÏß¾ØĞÎÍ¼¿ò"))
+  "è¯†åˆ«å¤šæ®µçº¿çŸ©å½¢å›¾æ¡†"
+  ;; è¯†åˆ«å¤šæ®µçº¿
+  ;; (@:help (strcat "è¯†åˆ«å¤šæ®µçº¿çŸ©å½¢å›¾æ¡†"))
   (setq total (length @plot:*frames*))
   (if (setq frames (ssget "x" (list '(0 . "*POLYLINE")
 				    '(90 . 4)
@@ -194,7 +194,7 @@
 			  ))
       (progn
 	(setq frames (pickset:to-list frames))
-	;; È¥³ı·Ç¾ØĞÎ
+	;; å»é™¤éçŸ©å½¢
 	(setq frames (mapcar
 		      '(lambda (x) (cons (@:get-rec-points x)(entity:getdxf x 410)))
 		      frames))
@@ -218,7 +218,7 @@
 		  (setq x (car y))
 		  (@plot:framep x))
 	       (mapcar '(lambda (y / x)
-			  ;; ±ÈÀıÌõ¼ş
+			  ;; æ¯”ä¾‹æ¡ä»¶
 			  (setq x (car y))
 			  (cons 
 			   (vl-sort 
@@ -235,16 +235,16 @@
 			   ))
 		       frames)))
 	(setq @plot:*frames* frames)
-	(@:prompt (strcat "Ê¶±ğÁË "
+	(@:prompt (strcat "è¯†åˆ«äº† "
 			  (itoa (-(length @plot:*frames*)
 				  total))
-			  " ¸ö¶à¶ÎÏß¾ØĞÎÍ¼¿ò¡£\n"))))
+			  " ä¸ªå¤šæ®µçº¿çŸ©å½¢å›¾æ¡†ã€‚\n"))))
   (princ)
   )
 
-(@:add-menu "Í¨ÓÃ´òÓ¡" "Ê¶±ğÖ±Ïß¿ò" "(@plot:frame-recognition-by-line)")
+(@:add-menu "é€šç”¨æ‰“å°" "è¯†åˆ«ç›´çº¿æ¡†" "(@plot:frame-recognition-by-line)")
 (defun @plot:frame-lines? (bm tp lt rt / fuzz)
-  "²âÊÔ4ÌõÏß¶ÎÊÇ·ñÎª¾ØĞÎ¿ò"
+  "æµ‹è¯•4æ¡çº¿æ®µæ˜¯å¦ä¸ºçŸ©å½¢æ¡†"
   (setq fuzz 0.01)
   (and
    (equal (car (line:mid bm)) (car (line:mid tp)) fuzz)
@@ -264,7 +264,7 @@
    (equal (distance (line:mid bm) (line:mid tp))
     	  (line:length lt)
 	  fuzz)
-   ;; ;; ¿í¸ß±È
+   ;; ;; å®½é«˜æ¯”
    (@plot:framep (vl-sort 
     		  (append (entity:getdxf bm '(10 11))
 			  (entity:getdxf tp '(10 11)))
@@ -278,9 +278,9 @@
        seg-v seg-h ent-first frame got-tk
        total frame-pts
        )
-  "Ê¶±ğÓÉ4¸öÏß¶Î×é³ÉµÄ¾ØĞÎÍ¼¿ò"
-  ;; Ê¶±ğ¶à¶ÎÏß
-  (@:log "INFO" "Ñ¡Ôñ²¢ÅÅ³ıÔÓÏß...")
+  "è¯†åˆ«ç”±4ä¸ªçº¿æ®µç»„æˆçš„çŸ©å½¢å›¾æ¡†"
+  ;; è¯†åˆ«å¤šæ®µçº¿
+  (@:log "INFO" "é€‰æ‹©å¹¶æ’é™¤æ‚çº¿...")
   (std:timer-start)
   (setq total (length @plot:*frames*))
   (setq segments (pickset:to-list
@@ -289,13 +289,13 @@
 				   '(-4 . "<NOT")
 				   '(8 . "temp-frames")
 				   '(-4 . "NOT>")))))
-  (@:log "INFO" (strcat "·¢ÏÖ " (itoa(length segments)) "ÌõÏß¡£"))
+  (@:log "INFO" (strcat "å‘ç° " (itoa(length segments)) "æ¡çº¿ã€‚"))
  
   (setq segments (vl-remove-if-not
 		  '(lambda (x)(@plot:frame-length? (line:length x)))
 		  segments))
-  (@:log "INFO" (strcat (itoa (length segments)) "ÌõÏß·ûºÏÍ¼¿ò³ß´ç¡£"))
-  (@:log "INFO" "ÕıÔÚ·ÖÀà±ß¿òÏß...\n")
+  (@:log "INFO" (strcat (itoa (length segments)) "æ¡çº¿ç¬¦åˆå›¾æ¡†å°ºå¯¸ã€‚"))
+  (@:log "INFO" "æ­£åœ¨åˆ†ç±»è¾¹æ¡†çº¿...\n")
   (setq seg-h (vl-remove-if-not
 	       '(lambda (x / ang)
 		  (setq ang (apply 'angle (entity:getdxf x '(10 11))))
@@ -307,7 +307,7 @@
 	       segments))
   
   (@:log "INFO" (strcat "seg-h: "(itoa (length seg-h)) ))
-  (@:log "INFO" "ÕıÔÚ½øĞĞ±ß¿òÏßÅÅĞò...")
+  (@:log "INFO" "æ­£åœ¨è¿›è¡Œè¾¹æ¡†çº¿æ’åº...")
   (setq seg-h
 	(vl-sort seg-h
 		 '(lambda (ent1 ent2) (< (cadr (entity:getdxf ent1 10))
@@ -316,13 +316,13 @@
   ;; 	(vl-sort seg-v
   ;; 		 '(lambda (ent1 ent2) (< (car (entity:getdxf ent1 10))
   ;; 				       (car (entity:getdxf ent2 10))))))
-  (@:log "INFO" "´ÓÖ±ÏßÍ¼ÔªÖĞÊ¶±ğ¾ØĞÎ¿ò¡£\n")
+  (@:log "INFO" "ä»ç›´çº¿å›¾å…ƒä¸­è¯†åˆ«çŸ©å½¢æ¡†ã€‚\n")
   (setq bm% 0)(setq got-tk nil)
   (while  (< bm% (- (length seg-h) 1))
     (setq tp% (1+ bm%))
     (while  (< tp% (length seg-h))
-      ;; ´Ó seg-v ÖĞÈ¡ÏàÓ¦Í¼Ôª²¢´Ó±íÖĞÒÆ³ı
-      ;; ¼ì²â bm% tp% Á½¸öÏßÊÇ·ñ·ûºÏÍ¼¿òÒªÇó
+      ;; ä» seg-v ä¸­å–ç›¸åº”å›¾å…ƒå¹¶ä»è¡¨ä¸­ç§»é™¤
+      ;; æ£€æµ‹ bm% tp% ä¸¤ä¸ªçº¿æ˜¯å¦ç¬¦åˆå›¾æ¡†è¦æ±‚
       (if (@plot:framep
 	   (append
 	    (entity:getdxf (nth bm% seg-h) '(10 11))
@@ -340,7 +340,7 @@
 		      (or (< (car pt1)(car pt2))
 			  (and (equal (car pt1)(car pt2) 0.001)
 			       (< (cadr pt1)(cadr pt2)))))))
-	    ;; ÑéÖ¤ÓĞË®Æ½Ïß¡£
+	    ;; éªŒè¯æœ‰æ°´å¹³çº¿ã€‚
 	    (setq seg-v1 
 		  (ssget "F" (entity:getdxf (car frame) '(10 11))
 			 ;;frame-pts
@@ -370,15 +370,15 @@
     (setq bm% (1+ bm%))
     )
   (princ "\n")
-  (@:prompt (strcat "Ê¶±ğÁË "
+  (@:prompt (strcat "è¯†åˆ«äº† "
 		    (itoa (-(length @plot:*frames*)
 			    total))
-		    " ¸öÖ±ÏßÍ¼¿ò¡£"))
+		    " ä¸ªç›´çº¿å›¾æ¡†ã€‚"))
   (std:timer-end)
   (princ)
   )
 
-(@:add-menu "Í¨ÓÃ´òÓ¡" "Ê¶±ğ¿éÍ¼¿ò" "(@plot:frame-recognition-by-block)")
+(@:add-menu "é€šç”¨æ‰“å°" "è¯†åˆ«å—å›¾æ¡†" "(@plot:frame-recognition-by-block)")
 
 (defun @plot:frame-recognition-by-block ()
   (setq blknames (block:list))
@@ -391,11 +391,11 @@
 	    (cons x
 	     (@pm:frame-p x)))
 	  blknames)))
-  ;; ¿é¼°Í¼·ù¶ÔÕÕ±í
+  ;; å—åŠå›¾å¹…å¯¹ç…§è¡¨
   (setq frameblkrefs
 	(ssget "x" (list '(0 . "insert")
 			 (cons 2 (string:subst-all "`*" "*" (string:from-list (mapcar 'car frameblkdata) ","))))))
-  ;;È¥³ı°üº¬µÄ
+  ;;å»é™¤åŒ…å«çš„
   ;; (setq boxs
   ;; 	(mapcar '(lambda(x)
   ;; 		  (setq tkdata (member (entity:getdxf x 2) frameblkdata))
@@ -411,7 +411,7 @@
   ;; 				      (entity:getdxf x 41)))
   ;; 		   box))
   ;; 		frameblkrefs))
-  ;;È¥³ıĞ¡¿ò
+  ;;å»é™¤å°æ¡†
   (sssetfirst nil frameblkrefs)
   )
 

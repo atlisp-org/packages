@@ -1,13 +1,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-arch:first ÓÃÓÚ Ó¦ÓÃ°ü at-arch µÄ µÚÒ»¸öÅäÖÃÏî first 
-(@:define-config '@block:block-name "¿éÃû" "ÓÃÓÚÅÅºÅµÄ¿éÃû³Æ¡£")
-(@:define-config '@block:attribute-name "ÊôĞÔÃû" "ÓÃÓÚÅÅºÅµÄ¿éÄÚÊôĞÔµÄÃû³Æ¡£")
-;; (@:get-config 'at-arch:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-arch:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "¿é" "×Ô¶¯±àºÅ" "(@block:set-number)")
+;; å®šä¹‰é…ç½®é¡¹ 'at-arch:first ç”¨äº åº”ç”¨åŒ… at-arch çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+(@:define-config '@block:block-name "å—å" "ç”¨äºæ’å·çš„å—åç§°ã€‚")
+(@:define-config '@block:attribute-name "å±æ€§å" "ç”¨äºæ’å·çš„å—å†…å±æ€§çš„åç§°ã€‚")
+;; (@:get-config 'at-arch:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-arch:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "å—" "è‡ªåŠ¨ç¼–å·" "(@block:set-number)")
 (defun @block:set-number (/ num1 start ss-list)
   (setq ss-list (pickset:to-entlist (ssget (list (cons 0 "insert")
 					    (cons 1 (@:get-config 'at-arch:block-name))))))
@@ -25,7 +25,7 @@
 		     T
 		     nil)
 			       ))))
-  (setq start (getint "ÇëÊäÈë¿éÆğÊ¼±àºÅ<1>:"))
+  (setq start (getint "è¯·è¾“å…¥å—èµ·å§‹ç¼–å·<1>:"))
   (if (null start) (setq start 1))
   (setq num1 0)
   ;;(print (length ss-list))

@@ -1,0 +1,19 @@
+
+
+;;;(psk-keypack-getitems '((".TYPE" . "AXIAL-FAN-GROUP") ("W" . 500) ("H" . 250) ("D" . 320) ("L" . 300) ("L1" . 500)))
+;;;(("DUCT-STOR" ("W" . 500) ("H" . 250) ("D" . 320) ("L" . 300))
+;;;  ("AXIAL-FAN" ("L" . 500) ("D" . 320))
+;;;  ("DUCT-STOR" ("FLIP" . 1) ("W" . 500) ("H" . 250) ("D" . 320) ("L" . 300))
+;;;)
+(defun psk-keypack-getitems
+       (kpack / data e key keydef keyparam mapper param r)
+  ;; '(("W" . 500) ("H" . 250) ("D" . 320) ("L" . 300) ("L1" . 500))
+  (setq def (psk-keypack-getdef kpack))
+
+  (foreach key (p-get def "PACK")
+    (setq ;; '("W" "H" "D" "L")
+	  keyparam (mapcar 'car (psk-part-getparam (car key)))
+
+	  key	   (cons (cons ".TYPE" (car key)) (cdr key))
+
+	  ;; 澶勭悊灞炴€у悕绉版槧灏

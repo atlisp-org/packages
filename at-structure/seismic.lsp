@@ -1,38 +1,38 @@
-(@:add-menu "½á¹¹¿¹Õğ" "Ó°ÏìÏµÊıamax" "(seismic:menu-amax)")
-(@:add-menu "½á¹¹¿¹Õğ" "ÌØÕ÷ÖÜÆÚÖµ" "(seismic:menu-period-of-ground-motion)")
-(@:add-menu "½á¹¹¿¹Õğ" "·ÀÕğ·ì¿í¶È" "(seismic:menu-gap-of-seismic)")
+(@:add-menu "ç»“æ„æŠ—éœ‡" "å½±å“ç³»æ•°amax" "(seismic:menu-amax)")
+(@:add-menu "ç»“æ„æŠ—éœ‡" "ç‰¹å¾å‘¨æœŸå€¼" "(seismic:menu-period-of-ground-motion)")
+(@:add-menu "ç»“æ„æŠ—éœ‡" "é˜²éœ‡ç¼å®½åº¦" "(seismic:menu-gap-of-seismic)")
 (defun seismic:menu-period-of-ground-motion(/ res)
-  (setq res (ui:input "ÌØÕ÷ÖÜÆÚÖµ" '(("µØÕğ·Ö×é" (1 2 3) "Éè¼ÆµØÕğ·Ö×é")("³¡µØÀà±ğ" ("I0" "I1" "II" "III" "IV") "³¡µØÀà±ğ"))))
-  (alert (strcat "µØÕğ·Ö×é£ºµÚ " (itoa (cdr (assoc "µØÕğ·Ö×é" res))) " ×é    ³¡µØÀà±ğ: " (cdr (assoc "³¡µØÀà±ğ" res))"\n"
-		 "µØÕğÌØÕ÷ÖÜÆÚÖµÎª: " 
+  (setq res (ui:input "ç‰¹å¾å‘¨æœŸå€¼" '(("åœ°éœ‡åˆ†ç»„" (1 2 3) "è®¾è®¡åœ°éœ‡åˆ†ç»„")("åœºåœ°ç±»åˆ«" ("I0" "I1" "II" "III" "IV") "åœºåœ°ç±»åˆ«"))))
+  (alert (strcat "åœ°éœ‡åˆ†ç»„ï¼šç¬¬ " (itoa (cdr (assoc "åœ°éœ‡åˆ†ç»„" res))) " ç»„    åœºåœ°ç±»åˆ«: " (cdr (assoc "åœºåœ°ç±»åˆ«" res))"\n"
+		 "åœ°éœ‡ç‰¹å¾å‘¨æœŸå€¼ä¸º: " 
 		 (rtos (seismic:period-of-ground-motion
-			(cdr (assoc "µØÕğ·Ö×é" res))
-			(vl-position (cdr (assoc "³¡µØÀà±ğ" res))'("I0" "I1" "II" "III" "IV")))
+			(cdr (assoc "åœ°éœ‡åˆ†ç»„" res))
+			(vl-position (cdr (assoc "åœºåœ°ç±»åˆ«" res))'("I0" "I1" "II" "III" "IV")))
 		       2 2)))
    )
 (defun seismic:menu-amax(/ res)
-  (setq res (ui:input "µØÕğÓ°ÏìÏµÊı×î´óÖµ" '(("Éè·ÀÁÒ¶È" (6 7 7.5 8 8.5 9) "¿¹ÕğÉè·ÀÁÒ¶È")("ÊÇ·ñ¶àÓö" T ))))
-  (alert (strcat "¿¹ÕğÉè·ÀÁÒ¶È£º" (rtos (cdr (assoc "Éè·ÀÁÒ¶È" res)) 2 1) " ¶È  " (if (cdr (assoc "ÊÇ·ñ¶àÓö" res)) "¶àÓö" "º±Óö")"\n"
-		 "µØÕğÓ°ÏìÏµÊı×î´óÖµ: "
+  (setq res (ui:input "åœ°éœ‡å½±å“ç³»æ•°æœ€å¤§å€¼" '(("è®¾é˜²çƒˆåº¦" (6 7 7.5 8 8.5 9) "æŠ—éœ‡è®¾é˜²çƒˆåº¦")("æ˜¯å¦å¤šé‡" T ))))
+  (alert (strcat "æŠ—éœ‡è®¾é˜²çƒˆåº¦ï¼š" (rtos (cdr (assoc "è®¾é˜²çƒˆåº¦" res)) 2 1) " åº¦  " (if (cdr (assoc "æ˜¯å¦å¤šé‡" res)) "å¤šé‡" "ç½•é‡")"\n"
+		 "åœ°éœ‡å½±å“ç³»æ•°æœ€å¤§å€¼: "
 		 (rtos (seismic:amax
-			(cdr (assoc "Éè·ÀÁÒ¶È" res))
-			(cdr (assoc "ÊÇ·ñ¶àÓö" res)))
+			(cdr (assoc "è®¾é˜²çƒˆåº¦" res))
+			(cdr (assoc "æ˜¯å¦å¤šé‡" res)))
 		       2 2)))
   )
 (defun seismic:menu-gap-of-seismic(/ res)
   
-  (setq res (ui:input "·ÀÕğ·ì¿í¶È¼ÆËã" '(("½á¹¹ÀàĞÍ" ("¿ò¼Ü½á¹¹""¿ò¼Ü-¼ôÁ¦Ç½½á¹¹""¼ôÁ¦Ç½½á¹¹"))
-					 ("Éè·ÀÁÒ¶È" (6 7 8 9) "¿¹ÕğÉè·ÀÁÒ¶È")
-					 ("½¨ÖşÎï¸ß¶È" 33.0 ))))
+  (setq res (ui:input "é˜²éœ‡ç¼å®½åº¦è®¡ç®—" '(("ç»“æ„ç±»å‹" ("æ¡†æ¶ç»“æ„""æ¡†æ¶-å‰ªåŠ›å¢™ç»“æ„""å‰ªåŠ›å¢™ç»“æ„"))
+					 ("è®¾é˜²çƒˆåº¦" (6 7 8 9) "æŠ—éœ‡è®¾é˜²çƒˆåº¦")
+					 ("å»ºç­‘ç‰©é«˜åº¦" 33.0 ))))
   (alert (strcat
-	  (cdr (assoc "½á¹¹ÀàĞÍ" res)) "  "
-	  (rtos (cdr (assoc "Éè·ÀÁÒ¶È" res)) 2 1) " ¶È  ¸ß¶È: "
-	  (rtos (cdr (assoc "½¨ÖşÎï¸ß¶È" res)) 2 3)
-	  "\n·ÀÕğ·ì¿í¶È£º"
+	  (cdr (assoc "ç»“æ„ç±»å‹" res)) "  "
+	  (rtos (cdr (assoc "è®¾é˜²çƒˆåº¦" res)) 2 1) " åº¦  é«˜åº¦: "
+	  (rtos (cdr (assoc "å»ºç­‘ç‰©é«˜åº¦" res)) 2 3)
+	  "\né˜²éœ‡ç¼å®½åº¦ï¼š"
 	  (rtos (seismic:gap-of-seismic
-		 (cdr (assoc "Éè·ÀÁÒ¶È" res))
-		 (cdr (assoc "½á¹¹ÀàĞÍ" res))
-		 (cdr (assoc "½¨ÖşÎï¸ß¶È" res))
+		 (cdr (assoc "è®¾é˜²çƒˆåº¦" res))
+		 (cdr (assoc "ç»“æ„ç±»å‹" res))
+		 (cdr (assoc "å»ºç­‘ç‰©é«˜åº¦" res))
 		 )
 		2 2)))
   )
@@ -40,7 +40,7 @@
 
 
 (defun seismic:period-of-ground-motion (group-of-seismic category-of-site / table)
-  "ÌØÕ÷ÖÜÆÚÖµ, group-of-seismic: 1 2 3 , ³¡µØÀà±ğÈ¡Öµ I0 I1 II III IV»ò 0 1 2 3 4"
+  "ç‰¹å¾å‘¨æœŸå€¼, group-of-seismic: 1 2 3 , åœºåœ°ç±»åˆ«å–å€¼ I0 I1 II III IVæˆ– 0 1 2 3 4"
   (setq table '((0.20 0.25 0.35 0.45 0.65)
 		(0.25 0.30 0.40 0.55 0.75)
 		(0.30 0.35 0.45 0.65 0.90)))
@@ -50,7 +50,7 @@
     nil))
 
 (defun seismic:amax (liedu duoyu-or-hanyu / table)
-  "Ë®Æ½µØÕğÓ°ÏìÏµÊı×î´óÖµ,²ÎÊı£ºÁÒ¶È 6 7 7.5 8 8.5 9,¶àÓöº±Óö T or nil."
+  "æ°´å¹³åœ°éœ‡å½±å“ç³»æ•°æœ€å¤§å€¼,å‚æ•°ï¼šçƒˆåº¦ 6 7 7.5 8 8.5 9,å¤šé‡ç½•é‡ T or nil."
   
   (setq table '((0.04 0.08 0.12 0.16 0.24 0.32)
 		(0.28 0.50 0.72 0.90 1.20 1.40)))
@@ -60,9 +60,9 @@
 	 (cadr table))))
   
 (defun seismic:gap-of-seismic(liedu type-of-stru height / table)
-  "·ÀÕğ·ì¿í¶È£¬²ÎÊı£ºÁÒ¶È£¬½á¹¹ÀàĞÍ£¬½¨ÖşÎï¸ß¶È"
+  "é˜²éœ‡ç¼å®½åº¦ï¼Œå‚æ•°ï¼šçƒˆåº¦ï¼Œç»“æ„ç±»å‹ï¼Œå»ºç­‘ç‰©é«˜åº¦"
   ""
-  (setq table '(("¿ò¼Ü½á¹¹" . 1)("¿ò¼Ü-¼ôÁ¦Ç½½á¹¹" . 0.7)("¼ôÁ¦Ç½½á¹¹" . 0.5)))
+  (setq table '(("æ¡†æ¶ç»“æ„" . 1)("æ¡†æ¶-å‰ªåŠ›å¢™ç»“æ„" . 0.7)("å‰ªåŠ›å¢™ç»“æ„" . 0.5)))
   (if (cdr (assoc type-of-stru table))
       (max 100
 	   (* (cdr (assoc type-of-stru table))

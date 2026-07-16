@@ -1,31 +1,31 @@
 (("FL-PL"
    ("TYPE" . "INLINE")
    ("KEY" . "FL-PL-{PN}-{DN:0}")
-   ("DESC" . "板式平焊法兰")
+   ("DESC" . "鏉垮紡骞崇剨娉曞叞")
    ("SIZEFILE" . "sizes\\Flange PN.csv")
    ("PARAM"
      ("PN" 1000
-           "法兰压力等级"
+           "娉曞叞鍘嬪姏绛夌骇"
            ""
            ("2.5" "6" "10" "16" "25" "40")
      )
-     ("DN" 1070 "法兰公称直径" "" ())
-     ("OD" "法兰外径")
-     ("L" "法兰厚度")
+     ("DN" 1070 "娉曞叞鍏О鐩村緞" "" ())
+     ("OD" "娉曞叞澶栧緞")
+     ("L" "娉曞叞鍘氬害")
    )
    ("DRAWER" (psk-draw-rectangle "L" "OD"))
  )
   ("GV41T-16"
     ("TYPE" . "INLINE")
     ("KEY" . "GV41T-16-{DN:0}")
-    ("DESC" . "法兰截止阀 J41T-16")
+    ("DESC" . "娉曞叞鎴闃� J41T-16")
     ("SIZEFILE" . "sizes\\J41T-16.csv")
     ("DRAWER" (psk-draw-global-valve-top "L" "D" "D0"))
   )
   ("BV71X-16"
     ("TYPE" . "INLINE")
     ("KEY" . "BV71X-16-{DN:0}")
-    ("DESC" . "法兰对夹蝶阀 D71X-16")
+    ("DESC" . "娉曞叞瀵瑰す铦堕榾 D71X-16")
     ("SIZEFILE" . "sizes\\D71X-16.csv")
     ("DRAWER" (psk-draw-global-valve-top "L" "D" "L0"))
   )

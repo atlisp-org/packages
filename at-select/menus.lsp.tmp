@@ -1,0 +1,4 @@
+(@:add-menus 
+  '("@lisp閫夋嫨"
+    ("閫夋嫨璁剧疆" "(@select:setup)")
+    ("濉

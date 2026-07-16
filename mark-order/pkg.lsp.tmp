@@ -1,0 +1,7 @@
+(@:def-pkg '((:NAME . "mark-order")
+        (:FULL-NAME . "瀛椾覆缂栧彿")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "0.0.5")
+        (:LOCALE . "chs")
+        (:CATEGORY . "瀹氬悜寮€鍙

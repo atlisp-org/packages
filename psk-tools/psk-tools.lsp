@@ -1,4 +1,4 @@
-;; ��ѹ
+;; 瑙ｅ帇
 (if (and (null (findfile "packages/psk-tools/config/profiles/default/layer-configration.csv"))
 	 (findfile (strcat (@:package-path "psk-tools") "psk-tools.zip")))
     (@:unzip (strcat (@:package-path "psk-tools") "psk-tools.zip") "packages/psk-tools"))

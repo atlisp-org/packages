@@ -1,10 +1,10 @@
 (defun at-math:sumtxt (/ res1 ents txts data textnumpair)
-  (@::help '("Í³¼ÆÎÄ±¾ÖĞµÄÏîÓëÊı¾İ£¬¶Ô²»Í¬µÄÏî»ã×ÜÇóºÍ¡£"))
+  (@::help '("ç»Ÿè®¡æ–‡æœ¬ä¸­çš„é¡¹ä¸æ•°æ®ï¼Œå¯¹ä¸åŒçš„é¡¹æ±‡æ€»æ±‚å’Œã€‚"))
   
   (defun to-pair(str / pair res)
     (if (p:stringp  str)
 	(foreach a
-		 (vl-remove "" (mapcar '(lambda(x)(vl-string-trim ";£» ,£¬:£º" x))
+		 (vl-remove "" (mapcar '(lambda(x)(vl-string-trim ";ï¼› ,ï¼Œ:ï¼š" x))
 				       (string:auto-split str)))
 		 (if (string:numberp a)
 		     (setq res
@@ -23,7 +23,7 @@
 	   (setq textnumpair (vl-remove nil (mapcar 'to-pair txts)))
            (setq data (apply 'append textnumpair)))
       (progn
-	;; ÏîÄ¿
+	;; é¡¹ç›®
         (setq res1 nil)
 	
         (foreach subj data

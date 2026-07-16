@@ -1,9 +1,9 @@
 (@:add-menus
  '("AIGC"
-   ("*Éú³ÉÄÚÈİ" "(aigc:gen-content)")
-   ("*Í¼Ö½Éó²é" "(aigc:check-drawing)")
-   ("±¾µØ²¿Êğ" "(aigc:Local-deployment)")
-   ("ÏÂÔØÄ£ĞÍ" "(aigc:pull-models)")
+   ("*ç”Ÿæˆå†…å®¹" "(aigc:gen-content)")
+   ("*å›¾çº¸å®¡æŸ¥" "(aigc:check-drawing)")
+   ("æœ¬åœ°éƒ¨ç½²" "(aigc:Local-deployment)")
+   ("ä¸‹è½½æ¨¡å‹" "(aigc:pull-models)")
    ))
 (if (null aigc:*models*)
     (setq aigc:*models*
@@ -26,8 +26,8 @@
 		"codegemma:7b"
 		)))
 (defun aigc:gen-content () 
-  (@:help "Ñ¡ÔñÒ»¸öÎÄ±¾£¬¸ù¾İÎÄ±¾µÄÌõ¼şºÍÒªÇóÉú³ÉÄÚÈİ£¨²âÊÔ°æ£©")
-  (@:prompt "ÇëÑ¡ÔñÒ»¸öÎÄ±¾:")
+  (@:help "é€‰æ‹©ä¸€ä¸ªæ–‡æœ¬ï¼Œæ ¹æ®æ–‡æœ¬çš„æ¡ä»¶å’Œè¦æ±‚ç”Ÿæˆå†…å®¹ï¼ˆæµ‹è¯•ç‰ˆï¼‰")
+  (@:prompt "è¯·é€‰æ‹©ä¸€ä¸ªæ–‡æœ¬:")
   (if 
     (and 
       (setq req (car (pickset:to-list (ssget ":S" '((0 . "*text"))))))
@@ -39,7 +39,7 @@
       (setq fontsize (entity:getdxf req 40))
 
       (setq ent-mtext (entity:make-mtext 
-                        "{\\C2;ÕıÔÚÉú³ÉÄÚÈİ .... }"
+                        "{\\C2;æ­£åœ¨ç”Ÿæˆå†…å®¹ .... }"
                         (polar 
                           (car req-box)
                           (* 1.5 pi)
@@ -54,23 +54,23 @@
           (setq response (text:from-markdown response))
           (vla-put-textstring (e2o ent-mtext) response))
         (progn 
-     (@:prompt "Éú³ÉÄÚÈİ±» ÖĞ¶Ï¡£")
+     (@:prompt "ç”Ÿæˆå†…å®¹è¢« ä¸­æ–­ã€‚")
     (entdel ent-mtext))))))
 (defun aigc:Local-deployment ()
-  (@::help '("½«LLM´óÓïÑÔÄ£ĞÍ²¿Êğµ½±¾µØµçÄÔÉÏ"
-	     "ÒòĞèÒªÏÂÔØ1G×óÓÒµÄ°²×°°ü£¬Ê×´ÎÔËĞĞĞèÄÍĞÄµÈ´ı."))
+  (@::help '("å°†LLMå¤§è¯­è¨€æ¨¡å‹éƒ¨ç½²åˆ°æœ¬åœ°ç”µè„‘ä¸Š"
+	     "å› éœ€è¦ä¸‹è½½1Gå·¦å³çš„å®‰è£…åŒ…ï¼Œé¦–æ¬¡è¿è¡Œéœ€è€å¿ƒç­‰å¾…."))
   (if (member "ollama.exe"(sys:list-process-name))
-      (@::prompt"±¾µØOllamaÒÑÔÚÔËĞĞÖĞ¡£")
+      (@::prompt"æœ¬åœ°Ollamaå·²åœ¨è¿è¡Œä¸­ã€‚")
       (if (findfile (strcat (getenv "userprofile")"\\OllamaSetup.exe"))
 	  (if (> (vl-file-size (strcat (getenv "userprofile")"\\OllamaSetup.exe"))
 		 1e9)
 	      (progn
-		(@::prompt "°²×°Ollama")
+		(@::prompt "å®‰è£…Ollama")
 		(startapp (strcat (getenv "userprofile")"\\OllamaSetup.exe"))
 		)
-	      (@::prompt "ÕıÔÚÏÂÔØ£¬ÇëµÈÏÂÔØÍê³ÉºóÔÙÊÔ"))
+	      (@::prompt "æ­£åœ¨ä¸‹è½½ï¼Œè¯·ç­‰ä¸‹è½½å®Œæˆåå†è¯•"))
 	  (progn
-	    (@::prompt "±¾µØÃ»ÓĞÔËĞĞOllama¡£¿ªÊ¼ÏÂÔØ£¬Äú¿ÉÒÔ½øĞĞÆäËü¹¤×÷£¬µÈÏÂÔØÍê³Éºó°²×°Ê¹ÓÃ¡£")
+	    (@::prompt "æœ¬åœ°æ²¡æœ‰è¿è¡ŒOllamaã€‚å¼€å§‹ä¸‹è½½ï¼Œæ‚¨å¯ä»¥è¿›è¡Œå…¶å®ƒå·¥ä½œï¼Œç­‰ä¸‹è½½å®Œæˆåå®‰è£…ä½¿ç”¨ã€‚")
 	    ;;(@::cmd "shell" "winget install ollama.ollama"))
 	    (@::down-by-powershell
 	     "https://ollama.com/download/OllamaSetup.exe"
@@ -80,7 +80,7 @@
   (princ)
   )
 (defun aigc:pull-models ()
-  (@::help '("ÏÂÔØLLM ´óÓïÑÔÄ£ĞÍ"))
+  (@::help '("ä¸‹è½½LLM å¤§è¯­è¨€æ¨¡å‹"))
   (setq models (list "gemma3:1b"
 		     "gemma3:4b"
 		     "deepseek-r1:1.5b"
@@ -90,19 +90,19 @@
   (if (member "ollama.exe"(sys:list-process-name))
       (progn
 	(foreach model
-		 (ui:select-multi "ÇëÑ¡ÔñÒªÏÂÔØµÄÄ£ĞÍ"
+		 (ui:select-multi "è¯·é€‰æ‹©è¦ä¸‹è½½çš„æ¨¡å‹"
 				  aigc:*models*)
 		 (@::cmd "shell" (strcat "ollama pull " model))))
-      (if (ui:confirm "±¾µØÃ»ÓĞÔËĞĞOllama,ÊÇ·ñ²¿Êğ?")
+      (if (ui:confirm "æœ¬åœ°æ²¡æœ‰è¿è¡ŒOllama,æ˜¯å¦éƒ¨ç½²?")
 	  (aigc:Local-deployment))
       ))
       
 (defun aigc:check-drawing ()
-  (@::prompt '("Éó²éÍ¼Ö½ÖĞÊÇ·ñÓĞ²»ºÏ¹æµÄµØ·½£¬ÒÔ¼°Í¼Ö½·ÖÎö"
-	       "Èç£ºÒıÓÃ±ê×¼ÊÇ·ñ¹ıÆÚ"
-	       "Èç£ºÍ¼Ö½Éî¶È£¬ÊÇ·ñÓĞÂ©ÏîµÄÄÚÈİ"
+  (@::prompt '("å®¡æŸ¥å›¾çº¸ä¸­æ˜¯å¦æœ‰ä¸åˆè§„çš„åœ°æ–¹ï¼Œä»¥åŠå›¾çº¸åˆ†æ"
+	       "å¦‚ï¼šå¼•ç”¨æ ‡å‡†æ˜¯å¦è¿‡æœŸ"
+	       "å¦‚ï¼šå›¾çº¸æ·±åº¦ï¼Œæ˜¯å¦æœ‰æ¼é¡¹çš„å†…å®¹"
 	       ))
-  (@::prompt  "   ±¾¹¦ÄÜÕıÔÚ¿ª·¢ÖĞ")
+  (@::prompt  "   æœ¬åŠŸèƒ½æ­£åœ¨å¼€å‘ä¸­")
   (princ)
   )
 

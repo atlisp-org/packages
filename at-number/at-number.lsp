@@ -1,26 +1,26 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-number:first ÓÃÓÚ Ó¦ÓÃ°ü at-number µÄ µÚÒ»¸öÅäÖÃÏî first 
-(@:define-config '@number:layer "number"  "±àºÅÎÄ×ÖËùÔÚÍ¼²ã")
-(@:define-config '@number:order "yx"  "±àºÅµÄÎ»ÖÃË³Ğò")
-(@:define-config '@number:fontsize 2.5  "±àºÅµÄ×ÖÌå´óĞ¡£¬Êµ¼ÊÖµÎª¸ÃÖµ³ËÒÔ@lisp»æÍ¼±ÈÀı¡£")
-;; (@:define-config '@number:layer "number"  "±àºÅÎÄ×ÖËùÔÚÍ¼²ã")
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
+;; å®šä¹‰é…ç½®é¡¹ 'at-number:first ç”¨äº åº”ç”¨åŒ… at-number çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+(@:define-config '@number:layer "number"  "ç¼–å·æ–‡å­—æ‰€åœ¨å›¾å±‚")
+(@:define-config '@number:order "yx"  "ç¼–å·çš„ä½ç½®é¡ºåº")
+(@:define-config '@number:fontsize 2.5  "ç¼–å·çš„å­—ä½“å¤§å°ï¼Œå®é™…å€¼ä¸ºè¯¥å€¼ä¹˜ä»¥@lispç»˜å›¾æ¯”ä¾‹ã€‚")
+;; (@:define-config '@number:layer "number"  "ç¼–å·æ–‡å­—æ‰€åœ¨å›¾å±‚")
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
 (@:add-menus
- '("±àºÅ¹¤¾ß"
-   ("±àºÅÉèÖÃ" (at-number:setup))
-   ("Í¼ĞÎ±àºÅ" (at-number:number-entity))
-   ("É¾³ı±àºÅ" (at-number:delete-number))
+ '("ç¼–å·å·¥å…·"
+   ("ç¼–å·è®¾ç½®" (at-number:setup))
+   ("å›¾å½¢ç¼–å·" (at-number:number-entity))
+   ("åˆ é™¤ç¼–å·" (at-number:delete-number))
 
    ))
 (defun at-number:setup (/ res)
   (setq @::tmp-search-str "@number")
   (@::edit-config-dialog))
 (defun at-number:number-entity ()
-  (@::prompt '("¸øÑ¡ÖĞµÄÍ¼ĞÎ½øĞĞ±àºÅ£¬¿ÉÒÔÏÈÑ¡ÔñÏàËÆÍ¼ĞÎ£¬ÔÙÖ´ĞĞ¸Ã¹¦ÄÜ¡£"
+  (@::prompt '("ç»™é€‰ä¸­çš„å›¾å½¢è¿›è¡Œç¼–å·ï¼Œå¯ä»¥å…ˆé€‰æ‹©ç›¸ä¼¼å›¾å½¢ï¼Œå†æ‰§è¡Œè¯¥åŠŸèƒ½ã€‚"
 	     ))
-  (@::prompt "ÇëÑ¡ÔñÒª±àºÅµÄÍ¼ĞÎ")
+  (@::prompt "è¯·é€‰æ‹©è¦ç¼–å·çš„å›¾å½¢")
   (if (null (tblsearch "layer" (@::get-config '@number:layer)))
       (layer:make (@::get-config '@number:layer) 1 nil nil))
   (if (null (setq ents (cadr (ssgetfirst))))

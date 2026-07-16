@@ -69,7 +69,7 @@
     (setq key (append key (psk-csvfile-get sizefile (p-template-eval templ key))))
   )
 
-  ;; ("W" 50) ´¦Àí ×Ö·û½øĞĞÇóÖµ Êı×Ö²»´¦Àí
+  ;; ("W" 50) å¤„ç† å­—ç¬¦è¿›è¡Œæ±‚å€¼ æ•°å­—ä¸å¤„ç†
   (setq param (mapcar '(lambda (e)
                          (if (= 'str (type e))
                            (p-get key e)
@@ -109,7 +109,7 @@
 
   (p-make-setenv r)
 
-  ;; ´´½¨ĞÂ¿é»òĞŞ¸ÄÒÑÓĞ¿é
+  ;; åˆ›å»ºæ–°å—æˆ–ä¿®æ”¹å·²æœ‰å—
   (if (null en)
     (setq en (p-make-insert name p 1. 1. 1. a))
     (p-entmod en (cons 2 name))
@@ -146,7 +146,7 @@
 ;;
 
 
-;;; ÔÚÂ·¾¶ÉÏ²åÈëÊµÌå²¿¼ş(¹Ü¼ş»ò¹Ü¼ş°ü)
+;;; åœ¨è·¯å¾„ä¸Šæ’å…¥å®ä½“éƒ¨ä»¶(ç®¡ä»¶æˆ–ç®¡ä»¶åŒ…)
 ;;;(defun d-insert-pack (router p func params / en name old rs)
 ;;;  (setq	old (p-make-setenv
 ;;;	      (list "0" 0 "ByBlock" -2 nil p)
@@ -176,22 +176,22 @@
   (mapcar 'car $psk-keys)
 )
 ;;;_$ (psk-part-gettext "DS")
-;;;"Ë«²ã°ÙÒ¶·ç¿Ú"
+;;;"åŒå±‚ç™¾å¶é£å£"
 (defun psk-part-gettext (name)
   (p-get (p-get $psk-keys name) "DESC")
 )
 ;;;_$ (psk-part-getparam "DS")
-;;;"Ë«²ã°ÙÒ¶·ç¿Ú"
+;;;"åŒå±‚ç™¾å¶é£å£"
 (defun psk-part-getparam (name)
   (p-get (p-get $psk-keys name) "PARAM")
 )
 ;;;_$ (psk-part-getdesc "DS")
-;;;((".TYPE"...) ("A" 1070 "·ç¿Ú³¤¶È") ("B" 1070 "·ç¿Ú¿í¶È"))
+;;;((".TYPE"...) ("A" 1070 "é£å£é•¿åº¦") ("B" 1070 "é£å£å®½åº¦"))
 (defun psk-part-getdesc (name)
   (append (list
             (list ".TYPE"
                   1000
-                  "¼şºÅ"
+                  "ä»¶å·"
                   "NAME\n"
                   (mapcar
                     (function
@@ -331,7 +331,7 @@
 
   (while do
     (initget "N")
-    (setq p2 (getpoint p "\nÖ¸¶¨¹Ü¼ş·½Ïò»ò [Ñ¡Ôñ×î½ü¹Ü¶Ë(N)]:"))
+    (setq p2 (getpoint p "\næŒ‡å®šç®¡ä»¶æ–¹å‘æˆ– [é€‰æ‹©æœ€è¿‘ç®¡ç«¯(N)]:"))
 
     (cond
       ((= "N" p2)
@@ -355,7 +355,7 @@
 (defun psk-part-create (/ keydef p param paramnames path prop tp)
   (if (and (setq path (psk-paths-pick 1))
            (setq
-             ;; (("DUCT-STOR" . "·½Ô²±ä¾¶") ...)
+             ;; (("DUCT-STOR" . "æ–¹åœ†å˜å¾„") ...)
              $psk-part-lastname
               (car
                 (psk-selectd
@@ -376,7 +376,7 @@
             param      (p-get keydef "PARAM")
             paramnames (mapcar 'car param)
 
-            ;; ½«Â·¾¶ÊôĞÔ´«µİ¸ø¹Ü¼ş°ü¶ÔÏó
+            ;; å°†è·¯å¾„å±æ€§ä¼ é€’ç»™ç®¡ä»¶åŒ…å¯¹è±¡
             prop       (psk-part-getcreatevalues $psk-part-lastname)
       )
 
@@ -444,7 +444,7 @@
 
 ;;;  (if (and (setq path (psk-paths-pick 1))
 ;;;	   (setq prop (psk-part-createvalue-prompt))
-;;;;;;	   (setq p (getpoint "Ö¸¶¨²åÈëµã"))
+;;;;;;	   (setq p (getpoint "æŒ‡å®šæ’å…¥ç‚¹"))
 ;;;      )
 ;;;    (psk-path-createattach
 ;;;      (caar path)
@@ -525,7 +525,7 @@
 ;;;      (close file)
 ;;;    )
 ;;;    (princ
-;;;      (strcat "\nError (psk-part-fromcsvfile): ÎŞ·¨´ò¿ªÎÄ¼ş \""
+;;;      (strcat "\nError (psk-part-fromcsvfile): æ— æ³•æ‰“å¼€æ–‡ä»¶ \""
 ;;;	      filename
 ;;;	      "\""
 ;;;      )

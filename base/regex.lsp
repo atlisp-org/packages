@@ -8,7 +8,7 @@
    str3 (try-lst-nto1 str2)
    str4 (vl-remove-if-not '(lambda (x) (wcmatch x "~*[~0-9]*")) str3)
    len (mapcar 'strlen str4)
-   maxn(apply 'max len);Ñ°ÕÒ×î´óµÄÊı×Ö
+   maxn(apply 'max len);å¯»æ‰¾æœ€å¤§çš„æ•°å­—
    b (mapcar '(lambda(x) (xx x maxn)) lst)
    b-a (mapcar 'list b lst)
    c (try-str-sort b-a 0)
@@ -54,8 +54,8 @@
 	  (setq 
 	   str_sort(cdr str_sort)
 	   b(assoc a str_ac)
-	   n(vl-position b str_ac);Ñ°ÕÒË÷Òı
-	   str_ac(try-lst-move str_ac n);É¾³ı±íÖĞÖ¸¶¨Ë÷ÒıÔªËØ
+	   n(vl-position b str_ac);å¯»æ‰¾ç´¢å¼•
+	   str_ac(try-lst-move str_ac n);åˆ é™¤è¡¨ä¸­æŒ‡å®šç´¢å¼•å…ƒç´ 
 	   lst-ret(cons (cdr b)lst-ret)
 	   )
 	  )
@@ -65,10 +65,10 @@
   )
 (defun _Replace(str1 str2 bull str3 / lst matchcollect reg)
   (setq lst '())
-  (setq reg (vlax-create-object "vbscript.regexp")) ;´´½¨ÕıÔò±í´ïÊ½
+  (setq reg (vlax-create-object "vbscript.regexp")) ;åˆ›å»ºæ­£åˆ™è¡¨è¾¾å¼
   (if (null reg)
       (progn
-	(alert "·¢ÏÖÏµÍ³vbscriptÃ»ÓĞ×¢²á£¬ÏÖ³¢ÊÔ¶ÔÆä×¢²á")
+	(alert "å‘ç°ç³»ç»Ÿvbscriptæ²¡æœ‰æ³¨å†Œï¼Œç°å°è¯•å¯¹å…¶æ³¨å†Œ")
 	(command"shell" "copy %systemroot%\\System32\\vbscript.dll %systemroot%\\System\\")
 					;(command"shell" "copy C:\\Windows\\System32\\vbscript.dll C:\\Windows\\")
 	(command"shell" "regsvr32 vbscript.dll")
@@ -86,30 +86,30 @@
 		)
 	      (command"shell" "regsvr32 vbscript.dll")
 	      (setq reg (vlax-create-object "vbscript.regexp"))
-	      (if (null reg)(princ "\nvbscript×é¼ş×¢²áÊ§°Ü£¬ÇëÔÚÒÔÏÂÄ¿Â¼Ñ°ÕÒvbscript.dllÎÄ¼ş²¢¸´ÖÆµ½ÒÔÏÂ¼¸¸öÄ¿Â¼ÖĞ\nC:\\Windows¡¢C:\\Windows\\System32¡¢C:\\Windows\\System¡¢C:\\Windows\\SysWOW64"))
+	      (if (null reg)(princ "\nvbscriptç»„ä»¶æ³¨å†Œå¤±è´¥ï¼Œè¯·åœ¨ä»¥ä¸‹ç›®å½•å¯»æ‰¾vbscript.dllæ–‡ä»¶å¹¶å¤åˆ¶åˆ°ä»¥ä¸‹å‡ ä¸ªç›®å½•ä¸­\nC:\\Windowsã€C:\\Windows\\System32ã€C:\\Windows\\Systemã€C:\\Windows\\SysWOW64"))
 	      (princ)
 	      )
 	    )
 	)
       )
-  (vlax-put-property reg 'global -1) ;ÊÇ·ñÆ¥ÅäÈ«²¿ £¨-1ÊÇ £¬0 ²»ÊÇ£©
-  (vlax-put-property reg 'Multiline -1);ÊÇ·ñ¶àĞĞÆ¥Åä £¨-1ÊÇ £¬0 ²»ÊÇ£©
-  (vlax-put-property reg 'IgnoreCase -1);ÊÇ·ñºöÂÔ´óĞ¡Ğ´ £¨-1ÊÇ £¬0 ²»ÊÇ£©
+  (vlax-put-property reg 'global -1) ;æ˜¯å¦åŒ¹é…å…¨éƒ¨ ï¼ˆ-1æ˜¯ ï¼Œ0 ä¸æ˜¯ï¼‰
+  (vlax-put-property reg 'Multiline -1);æ˜¯å¦å¤šè¡ŒåŒ¹é… ï¼ˆ-1æ˜¯ ï¼Œ0 ä¸æ˜¯ï¼‰
+  (vlax-put-property reg 'IgnoreCase -1);æ˜¯å¦å¿½ç•¥å¤§å°å†™ ï¼ˆ-1æ˜¯ ï¼Œ0 ä¸æ˜¯ï¼‰
   (vlax-put-property reg 'pattern str2);lisp \\
-  ;; 	1.(vlax-invoke-method reg 'test str)ÅĞ¶Ï×Ö·û´®ÊÇ·ñÓëÕıÔò±í´ïÊ½Æ¥Åä
+  ;; 	1.(vlax-invoke-method reg 'test str)åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦ä¸æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…
   (if (vlax-invoke-method reg 'test str1)
-      ;; 	2.(vlax-invoke-method reg 'Execute str)Éú³ÉÆ¥Åä¼¯ºÏ	  
+      ;; 	2.(vlax-invoke-method reg 'Execute str)ç”ŸæˆåŒ¹é…é›†åˆ	  
       (progn (setq matchcollect (vlax-invoke-method reg 'Execute str1))
-	     ;; 	3.´òÓ¡Æ¥ÅäµÄÃ¿¸ö¼¯ºÏÔªËØµÄvalue		
+	     ;; 	3.æ‰“å°åŒ¹é…çš„æ¯ä¸ªé›†åˆå…ƒç´ çš„value		
 	     (vlax-for match_item matchcollect (setq lst(cons(eval (vlax-get-property match_item 'value))lst)))
 	     )
       )
-	;;; 	4.Ìæ»»Æ¥ÅäµÄÖµ	(vlax-invoke-method reg 'Replace str "replace")	Éú³Éstr¸±±¾  	
+	;;; 	4.æ›¿æ¢åŒ¹é…çš„å€¼	(vlax-invoke-method reg 'Replace str "replace")	ç”Ÿæˆstrå‰¯æœ¬  	
   (setq lst(reverse lst))
   (if bull
       (setq lst(vlax-invoke-method reg 'Replace str1 str3)))
-	;;;  ----------------- end ÕıÔò±í´ïÊ½·½·¨
-  (vlax-release-object reg);ÊÍ·ÅÄÚ´æ
+	;;;  ----------------- end æ­£åˆ™è¡¨è¾¾å¼æ–¹æ³•
+  (vlax-release-object reg);é‡Šæ”¾å†…å­˜
   lst
   )
 (defun try-lst-move(lst n / i)

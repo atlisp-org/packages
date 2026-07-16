@@ -1,14 +1,14 @@
 (@:def-pkg 
 '((:name . "block-update")
-  (:full-name . "¿é¸üĞÂ")
+  (:full-name . "å—æ›´æ–°")
   (:author . "VitalGG")
   (:email . "vitalgg@gmail.com")
   (:version . "0.0.2")
   (:locale . "CHS")
-  (:category . "¶¨Ïò¿ª·¢")
+  (:category . "å®šå‘å¼€å‘")
   (:required . "base")
   (:opensource . 0) 
-  (:description . "´ÓÄ³¸öÎÄ¼ş¼ĞÖĞ¸üĞÂ×îĞÂÍ¼¿éµÄ¶¨Òå¡£")
+  (:description . "ä»æŸä¸ªæ–‡ä»¶å¤¹ä¸­æ›´æ–°æœ€æ–°å›¾å—çš„å®šä¹‰ã€‚")
   (:url . "http://atlisp.cn")
   (:files . ("block-update"
               ;; you can add file name that you will included in the package.

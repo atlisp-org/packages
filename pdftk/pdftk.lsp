@@ -2,24 +2,24 @@
 ;; This file was created by @lisp DEV-tools
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; define a first config item  'pdftk:first for package pdftk 's configitem first 
-(@:define-config 'pdftk:stamp "D:\\Design\\standard\\stamp.pdf" "ÓÃÓÚ¼ÓÎª´Á¼ÇµÄpdfÎÄ¼ş")
-(@:define-config 'pdftk:background "D:\\Design\\standard\\background.pdf" "ÓÃÓÚ×÷ÎªË®Ó¡µÄpdfÎÄ¼ş¡£±»¼ÓË®Ó¡µÄPDFÎÄ¼şĞëÎªÍ¸Ã÷±³¾°¡£")
-(@:define-config 'pdftk:pre-folder "D:\\" "Ñ¡ÔñpdfÎÄ¼şÂ·¾¶Ê±£¬×îºóÒ»´Î²Ù×÷µÄÎÄ¼şÎ»ÖÃ¡£")
+(@:define-config 'pdftk:stamp "D:\\Design\\standard\\stamp.pdf" "ç”¨äºåŠ ä¸ºæˆ³è®°çš„pdfæ–‡ä»¶")
+(@:define-config 'pdftk:background "D:\\Design\\standard\\background.pdf" "ç”¨äºä½œä¸ºæ°´å°çš„pdfæ–‡ä»¶ã€‚è¢«åŠ æ°´å°çš„PDFæ–‡ä»¶é¡»ä¸ºé€æ˜èƒŒæ™¯ã€‚")
+(@:define-config 'pdftk:pre-folder "D:\\" "é€‰æ‹©pdfæ–‡ä»¶è·¯å¾„æ—¶ï¼Œæœ€åä¸€æ¬¡æ“ä½œçš„æ–‡ä»¶ä½ç½®ã€‚")
 (if (null (findfile (@:get-config 'pdftk:stamp)))
     (@:mkdir (@:path (vl-filename-directory(@:get-config 'pdftk:stamp)))))
 ;; (@:get-config 'pdftk:first) 
 ;; (@:set-config 'pdftk:first  "New Value")
 ;; Add menu in @lisp panel
-(@::add-menus '("PDFÏà¹Ø"
-	       ("PDFÉèÖÃ" "(pdftk:setup)" )
-	       ("ºÏ²¢PDF" "(pdftk:menu-merge)" )
-	       ("²ğ·ÖPDF" "(pdftk:menu-burst)" )
-	       ("PDF¼Ó´Á¼Ç" "(pdftk:menu-stamp)" )
-	       ("ÅúÁ¿¼Ó´Á¼Ç" "(pdftk:menu-batch-stamp)" )
-	       ("PDF¼ÓË®Ó¡" "(pdftk:menu-background)")
-	       ("ÅúÁ¿¼ÓË®Ó¡" "(pdftk:menu-batch-background)")
-	       ("½âÃÜPDF" "(pdftk:menu-decrypt)" )
-	       ("¼ÓÃÜPDF" "(pdftk:menu-encrypt)" )
+(@::add-menus '("PDFç›¸å…³"
+	       ("PDFè®¾ç½®" "(pdftk:setup)" )
+	       ("åˆå¹¶PDF" "(pdftk:menu-merge)" )
+	       ("æ‹†åˆ†PDF" "(pdftk:menu-burst)" )
+	       ("PDFåŠ æˆ³è®°" "(pdftk:menu-stamp)" )
+	       ("æ‰¹é‡åŠ æˆ³è®°" "(pdftk:menu-batch-stamp)" )
+	       ("PDFåŠ æ°´å°" "(pdftk:menu-background)")
+	       ("æ‰¹é‡åŠ æ°´å°" "(pdftk:menu-batch-background)")
+	       ("è§£å¯†PDF" "(pdftk:menu-decrypt)" )
+	       ("åŠ å¯†PDF" "(pdftk:menu-encrypt)" )
 	       ))
 (or @:enable-start
     (@:check-pgp)
@@ -28,7 +28,7 @@
 (defun pdftk:setup (/ res)
   "pdf tools"
   (setq res 
-	(ui:input "ÅäÖÃĞÅÏ¢"
+	(ui:input "é…ç½®ä¿¡æ¯"
 		  (mapcar '(lambda (x) (list (strcase (vl-symbol-name (car x)) T)(cadr x)(cddr x)))
 			  (vl-remove-if '(lambda (x) (not (wcmatch (vl-symbol-name (car x)) "PDFTK:*")))
 					(if @:*config.db*
@@ -41,7 +41,7 @@
   (if (null (findfile "bin\\iconv.exe"))
       (@:down-and-unzip "archives/iconv.zip" "bin"))
   (if (null (findfile app))
-      ;; ÏÂÔØÑ¹Ëõ°ü
+      ;; ä¸‹è½½å‹ç¼©åŒ…
       (@:down-and-unzip "archives/pdftk.zip" "bin"))
   (if (null (findfile "packages\\pdftk\\background.pdf"))
       (@:down-pkg-file (@:uri)"pdftk/background.pdf" "stable"))
@@ -50,16 +50,16 @@
   )
 
 (defun pdftk:menu-merge (/ folder)
-  (@::prompt "ºÏ²¢Ñ¡ÔñµÄÎÄ¼ş¼ĞÏÂµÄËùÓĞpdf,µ½¸¸¼¶Ä¿Â¼£¬²¢´ò¿ª¸ÃÄ¿Â¼¡£")
-  (if (setq folder (system:get-folder "ÇëÑ¡ÔñÒªºÏ²¢µÄPDFÎÄ¼ş¼Ğ"))
+  (@::prompt "åˆå¹¶é€‰æ‹©çš„æ–‡ä»¶å¤¹ä¸‹çš„æ‰€æœ‰pdf,åˆ°çˆ¶çº§ç›®å½•ï¼Œå¹¶æ‰“å¼€è¯¥ç›®å½•ã€‚")
+  (if (setq folder (system:get-folder "è¯·é€‰æ‹©è¦åˆå¹¶çš„PDFæ–‡ä»¶å¤¹"))
       (progn
 	(@:set-config 'pdftk:pre-folder (system:dir folder))
 	(pdftk:merge folder)
 	(system:explorer (strcat folder "\\..\\" )))))
 (defun pdftk:merge (folder / app files filetmp filename-bk fp-bookmark file-bk file-bk-utf8)
-  "½«²ÎÊıfolder ÎÄ¼ş¼ĞÏÂµÄ pdf ÎÄ¼şºÏ²¢³ÉÒ»¸öÎÄ¼ş¡£ºÏ²¢ºóµÄÎÄ¼şÃûÎª `ÎÄ¼ş¼Ğ-merge-all.pdf' "
+  "å°†å‚æ•°folder æ–‡ä»¶å¤¹ä¸‹çš„ pdf æ–‡ä»¶åˆå¹¶æˆä¸€ä¸ªæ–‡ä»¶ã€‚åˆå¹¶åçš„æ–‡ä»¶åä¸º `æ–‡ä»¶å¤¹-merge-all.pdf' "
   ""
-  "(pdftk:merge \"D:\\Output\\AÏîÄ¿\")"
+  "(pdftk:merge \"D:\\Output\\Aé¡¹ç›®\")"
   (setq app "bin\\pdftk.exe")
   (pdftk:download)
   (if (and (findfile app)
@@ -71,7 +71,7 @@
 	(setq filetmp "merge-tmp.pdf")
 	(setq filename-bk "merge-all.pdf")
 	(setvar "cmdecho" 0)
-	;;´´½¨±êÇ©ÎÄ¼ş¡£
+	;;åˆ›å»ºæ ‡ç­¾æ–‡ä»¶ã€‚
 	(setq fp-bookmark (open (strcat folder "\\bk.txt")"w"))
 	(setq i 0)
 	(foreach bk% (vl-directory-files folder "*.pdf" 1)
@@ -84,7 +84,7 @@
 				     (itoa (setq i (1+ i))))
 			     fp-bookmark))
 	(close fp-bookmark)
-	;; ×ªÂë
+	;; è½¬ç 
 	(setq file-bk (strcat folder "\\bk.txt"))
 	(setq file-bk-utf8 (strcat folder "\\bk-utf8.txt"))
 	(command "shell-bg"
@@ -133,24 +133,24 @@
 	)
     (cond
      ((not (findfile app))
-      (princ "ºÏ²¢PDFÃ»ÓĞÕıÈ·Ö´ĞĞ£¡Ã»ÓĞ·¢ÏÖ pdftk.exe")
+      (princ "åˆå¹¶PDFæ²¡æœ‰æ­£ç¡®æ‰§è¡Œï¼æ²¡æœ‰å‘ç° pdftk.exe")
       )
      (t
-      (princ "ºÏ²¢PDFÃ»ÓĞÕıÈ·Ö´ĞĞ£¡")
+      (princ "åˆå¹¶PDFæ²¡æœ‰æ­£ç¡®æ‰§è¡Œï¼")
      )
     )
   (princ)
   )
 
 (defun pdftk:menu-burst (/ pdf-file)
-  (@::prompt "²ğ·ÖÑ¡ÔñµÄ pdf ÎÄ¼ş£¬²¢´ò¿ªÎÄ¼şËùÔÚÄ¿Â¼¡£")
-  (if (setq pdf-file  (getfiled "ÇëÑ¡ÔñÒª²ğ·ÖµÄPDFÎÄ¼ş" (@:get-config 'pdftk:pre-folder) "pdf" 8))
+  (@::prompt "æ‹†åˆ†é€‰æ‹©çš„ pdf æ–‡ä»¶ï¼Œå¹¶æ‰“å¼€æ–‡ä»¶æ‰€åœ¨ç›®å½•ã€‚")
+  (if (setq pdf-file  (getfiled "è¯·é€‰æ‹©è¦æ‹†åˆ†çš„PDFæ–‡ä»¶" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config 'pdftk:pre-folder (system:dir (vl-filename-directory pdf-file )))
 	(pdftk:burst pdf-file)
 	(system:explorer (vl-filename-directory pdf-file)))))
 (defun pdftk:burst (pdf-filename / app )
-  "²ğ·Ö pdf ÎÄ¼şÎªµ¥Ò³ÎÄ¼ş"
+  "æ‹†åˆ† pdf æ–‡ä»¶ä¸ºå•é¡µæ–‡ä»¶"
   (setq app "bin\\pdftk.exe")
   (pdftk:download)
   (if (and (findfile app)
@@ -172,51 +172,51 @@
   )
 
 (defun pdftk:menu-encrypt (/ filename pw permission permissions)
-  (@::prompt "Ñ¡ÔñÒ»¸ö pdf ÎÄ¼ş,ÉèÖÃËùÓĞÕßÃÜÂëºÍÓÃ»§ÃÜÂë£¬²¢´ò¿ªÎÄ¼şËùÔÚÄ¿Â¼¡£")
-  (setq permission '(("Printing"  nil "¸ßÖÊÁ¿´òÓ¡")
-		     ("DegradedPrinting" nil "µÍÖÊÁ¿´òÓ¡")
-		     ("ModifyContents" nil "±à¼­ÄÚÈİ,Í¬Ê±ÔÊĞí Assembly.")
-		     ("Assembly" nil "×é×°")
-		     ("CopyContents" nil "¸´ÖÆÄÚÈİ£¬Í¬Ê±ÔÊĞí ScreenReaders")
-		     ("ScreenReaders" nil "ÆÁÄ»ÔÄ¶ÁÆ÷")
-		     ("ModifyAnnotations" nil "±à¼­×¢ÊÍ£¬Í¬Ê±ÔÊĞí FillIn")
-		     ("FillIn" nil "?Ìî³ä?")
-		     ("AllFeatures" nil "ÒÔÉÏËùÓĞ.")))
+  (@::prompt "é€‰æ‹©ä¸€ä¸ª pdf æ–‡ä»¶,è®¾ç½®æ‰€æœ‰è€…å¯†ç å’Œç”¨æˆ·å¯†ç ï¼Œå¹¶æ‰“å¼€æ–‡ä»¶æ‰€åœ¨ç›®å½•ã€‚")
+  (setq permission '(("Printing"  nil "é«˜è´¨é‡æ‰“å°")
+		     ("DegradedPrinting" nil "ä½è´¨é‡æ‰“å°")
+		     ("ModifyContents" nil "ç¼–è¾‘å†…å®¹,åŒæ—¶å…è®¸ Assembly.")
+		     ("Assembly" nil "ç»„è£…")
+		     ("CopyContents" nil "å¤åˆ¶å†…å®¹ï¼ŒåŒæ—¶å…è®¸ ScreenReaders")
+		     ("ScreenReaders" nil "å±å¹•é˜…è¯»å™¨")
+		     ("ModifyAnnotations" nil "ç¼–è¾‘æ³¨é‡Šï¼ŒåŒæ—¶å…è®¸ FillIn")
+		     ("FillIn" nil "?å¡«å……?")
+		     ("AllFeatures" nil "ä»¥ä¸Šæ‰€æœ‰.")))
 
-  (if (setq filename (getfiled "ÇëÑ¡ÔñÒª¼ÓÃÜµÄPDFÎÄ¼ş" (@:get-config 'pdftk:pre-folder) "pdf" 8))
+  (if (setq filename (getfiled "è¯·é€‰æ‹©è¦åŠ å¯†çš„PDFæ–‡ä»¶" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config 'pdftk:pre-folder (system:dir (vl-filename-directory filename )))
-	(setq pw (ui:input "ÇëÊäÈëÃÜÂëÓÃÓÚ¼ÓÃÜPDF:"
-			   '(("ËùÓĞÕßÃÜÂë:" "" "ÇëÊäÈëËùÓĞÕßÃÜÂë" T)
-			     ("ËùÓĞÕßÃÜÂë2:" "" "ÔÙ´ÎÊäÈëÒÔÈ·ÈÏ" T)
-			     ("ÓÃ»§ÃÜÂë:"  "" "ÇëÊäÈëÊ¹ÓÃÕßÃÜÂë" T)
-			     ("ÓÃ»§ÃÜÂë2:" "" "ÔÙ´ÎÊäÈëÒÔÈ·ÈÏ" T))))
+	(setq pw (ui:input "è¯·è¾“å…¥å¯†ç ç”¨äºåŠ å¯†PDF:"
+			   '(("æ‰€æœ‰è€…å¯†ç :" "" "è¯·è¾“å…¥æ‰€æœ‰è€…å¯†ç " T)
+			     ("æ‰€æœ‰è€…å¯†ç 2:" "" "å†æ¬¡è¾“å…¥ä»¥ç¡®è®¤" T)
+			     ("ç”¨æˆ·å¯†ç :"  "" "è¯·è¾“å…¥ä½¿ç”¨è€…å¯†ç " T)
+			     ("ç”¨æˆ·å¯†ç 2:" "" "å†æ¬¡è¾“å…¥ä»¥ç¡®è®¤" T))))
 	(setq permissions
 	      (mapcar '(lambda (x) (car (string:to-list x ": ")))
-		      (ui:select-multi "ÇëÑ¡ÔñÓÃ»§È¨ÏŞ:" (mapcar '(lambda (x) (strcat (car x) ": " (last x))) permission))))
+		      (ui:select-multi "è¯·é€‰æ‹©ç”¨æˆ·æƒé™:" (mapcar '(lambda (x) (strcat (car x) ": " (last x))) permission))))
 	(if (null permissions)
 	    (setq permissions '("")))
 	
 	(while (and pw
 		    (or 
-		     (not (eq (cdr (assoc "ËùÓĞÕßÃÜÂë:" pw))(cdr (assoc "ËùÓĞÕßÃÜÂë2:" pw))))
-		     (not (eq (cdr (assoc "ÓÃ»§ÃÜÂë:" pw))(cdr (assoc "ÓÃ»§ÃÜÂë2:" pw))))))
-	  (alert "Çë×¢ÒâËùÓĞÕß»òÓÃ»§µÄÁ½´ÎÊäÈë±ØĞëÏàÍ¬¡£ËùÓĞÕßºÍÓÃ»§µÄÃÜÂë¿ÉÒÔ²»Í¬¡£")
-	  (setq pw (ui:input "ÇëÊäÈëÃÜÂëÓÃÓÚ¼ÓÃÜPDF:"
-			     '(("ËùÓĞÕßÃÜÂë:" "" "ÇëÊäÈëËùÓĞÕßÃÜÂë" T)
-			       ("ËùÓĞÕßÃÜÂë2:" "" "ÔÙ´ÎÊäÈëÒÔÈ·ÈÏ" T)
-			       ("ÓÃ»§ÃÜÂë:"  "" "ÇëÊäÈëÊ¹ÓÃÕßÃÜÂë" T)
-			       ("ÓÃ»§ÃÜÂë2:" "" "ÔÙ´ÎÊäÈëÒÔÈ·ÈÏ" T))))
+		     (not (eq (cdr (assoc "æ‰€æœ‰è€…å¯†ç :" pw))(cdr (assoc "æ‰€æœ‰è€…å¯†ç 2:" pw))))
+		     (not (eq (cdr (assoc "ç”¨æˆ·å¯†ç :" pw))(cdr (assoc "ç”¨æˆ·å¯†ç 2:" pw))))))
+	  (alert "è¯·æ³¨æ„æ‰€æœ‰è€…æˆ–ç”¨æˆ·çš„ä¸¤æ¬¡è¾“å…¥å¿…é¡»ç›¸åŒã€‚æ‰€æœ‰è€…å’Œç”¨æˆ·çš„å¯†ç å¯ä»¥ä¸åŒã€‚")
+	  (setq pw (ui:input "è¯·è¾“å…¥å¯†ç ç”¨äºåŠ å¯†PDF:"
+			     '(("æ‰€æœ‰è€…å¯†ç :" "" "è¯·è¾“å…¥æ‰€æœ‰è€…å¯†ç " T)
+			       ("æ‰€æœ‰è€…å¯†ç 2:" "" "å†æ¬¡è¾“å…¥ä»¥ç¡®è®¤" T)
+			       ("ç”¨æˆ·å¯†ç :"  "" "è¯·è¾“å…¥ä½¿ç”¨è€…å¯†ç " T)
+			       ("ç”¨æˆ·å¯†ç 2:" "" "å†æ¬¡è¾“å…¥ä»¥ç¡®è®¤" T))))
 	  )
 	(if pw
 	    (progn
-	      (pdftk:encrypt filename (cdr (assoc "ËùÓĞÕßÃÜÂë:" pw)) (cdr (assoc "ÓÃ»§ÃÜÂë:" pw)) permissions)
+	      (pdftk:encrypt filename (cdr (assoc "æ‰€æœ‰è€…å¯†ç :" pw)) (cdr (assoc "ç”¨æˆ·å¯†ç :" pw)) permissions)
 	      (system:explorer (vl-filename-directory filename)))
 	  ))))
 
 (defun pdftk:encrypt (filename owner-pw user-pw permissions / app)
-  "Îª pdf ÎÄ¼şÉèÖÃÃÜÂë¼°ÓÃ»§È¨ÏŞ¡£"
-  ;; ¿ÉÖ´ĞĞÎÄ¼şÂ·¾¶
+  "ä¸º pdf æ–‡ä»¶è®¾ç½®å¯†ç åŠç”¨æˆ·æƒé™ã€‚"
+  ;; å¯æ‰§è¡Œæ–‡ä»¶è·¯å¾„
   (setq app "bin\\pdftk.exe")
   (pdftk:download)
   ;;(setq files (vl-directory-files (system:get-folder) "*.pdf"))
@@ -232,7 +232,7 @@
 			 filename "\" "
 			 "output \""
 			 (strcat (vl-filename-directory filename) "\\"
-				 (vl-filename-base filename) "-¼ÓÃÜ.pdf\" ")
+				 (vl-filename-base filename) "-åŠ å¯†.pdf\" ")
 			 "owner_pw \"" owner-pw  "\" "
 			 "user_pw \"" user-pw "\" "
 			 "allow " (string:from-lst permissions " ") " "
@@ -243,20 +243,20 @@
   )
 
 (defun pdftk:menu-decrypt (/ pdf-file)
-  (@::prompt "Ñ¡ÔñÒ»¸ö pdf ÎÄ¼ş,È¥³ıËùÓĞÕßÃÜÂë£¬²¢´ò¿ªÎÄ¼şËùÔÚÄ¿Â¼¡£")
-  (if (setq pdf-file (getfiled "ÇëÑ¡ÔñÒª½âÃÜµÄPDFÎÄ¼ş" (@:get-config 'pdftk:pre-folder) "pdf" 8))
+  (@::prompt "é€‰æ‹©ä¸€ä¸ª pdf æ–‡ä»¶,å»é™¤æ‰€æœ‰è€…å¯†ç ï¼Œå¹¶æ‰“å¼€æ–‡ä»¶æ‰€åœ¨ç›®å½•ã€‚")
+  (if (setq pdf-file (getfiled "è¯·é€‰æ‹©è¦è§£å¯†çš„PDFæ–‡ä»¶" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config 'pdftk:pre-folder (system:dir (vl-filename-directory pdf-file )))
 	(pdftk:decrypt
 	 pdf-file
-	 (cdr (assoc "ËùÓĞÕßÃÜÂë:"
-		     (ui:input "ÇëÊäÈëÃÜÂëÓÃÓÚ½âÃÜPDF:"
-			       '(("ËùÓĞÕßÃÜÂë:" "" "ÇëÊäÈëËùÓĞÕßÃÜÂë" T))))))
+	 (cdr (assoc "æ‰€æœ‰è€…å¯†ç :"
+		     (ui:input "è¯·è¾“å…¥å¯†ç ç”¨äºè§£å¯†PDF:"
+			       '(("æ‰€æœ‰è€…å¯†ç :" "" "è¯·è¾“å…¥æ‰€æœ‰è€…å¯†ç " T))))))
 	(system:explorer (vl-filename-directory filename))
 	)))
 
 (defun pdftk:decrypt (filename owner-pw / app )
-  ;; ¿ÉÖ´ĞĞÎÄ¼şÂ·¾¶
+  ;; å¯æ‰§è¡Œæ–‡ä»¶è·¯å¾„
   (setq app "bin\\pdftk.exe")
   (pdftk:download)
   (if (and (findfile app)
@@ -271,22 +271,22 @@
 			 "input_pw \"" owner-pw"\" "
 			 "output \""
 			 (strcat (vl-filename-directory filename) "\\"
-				 (vl-filename-base filename) "-½âÃÜ.pdf\" ")
+				 (vl-filename-base filename) "-è§£å¯†.pdf\" ")
 			 ))
 	(setvar "cmdecho" 1)
 	))
   (princ)
   )
 (defun pdftk:menu-stamp (/ filename)
-  (@::prompt "Ñ¡ÔñÒ»¸öÎÄ¼ş£¬¸ø¸ÃÎÄ¼ş¼ÓÉÏ´Á¼Ç£¬´Á¼ÇÎÄ¼şÔÚpdfÉèÖÃÖĞ½øĞĞÉèÖÃ¡£")
-  (if (setq filename (getfiled "ÇëÑ¡ÔñÒª¼Ó´Á¼ÇµÄPDFÎÄ¼ş" (@:get-config 'pdftk:pre-folder) "pdf" 8))
+  (@::prompt "é€‰æ‹©ä¸€ä¸ªæ–‡ä»¶ï¼Œç»™è¯¥æ–‡ä»¶åŠ ä¸Šæˆ³è®°ï¼Œæˆ³è®°æ–‡ä»¶åœ¨pdfè®¾ç½®ä¸­è¿›è¡Œè®¾ç½®ã€‚")
+  (if (setq filename (getfiled "è¯·é€‰æ‹©è¦åŠ æˆ³è®°çš„PDFæ–‡ä»¶" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config  'pdftk:pre-folder(system:dir (vl-filename-directory filename)))
 	(pdftk:stamp filename)
 	(system:explorer (vl-filename-directory filename)))))
 (defun pdftk:menu-batch-stamp (/ filename)
-  (@::prompt "Ñ¡ÔñÒ»¸öÎÄ¼ş¼Ğ£¬¸ø¸ÃÎÄ¼ş¼ĞÏÂµÄpdfÎÄ¼ş¼ÓÉÏ´Á¼Ç£¬´Á¼ÇÎÄ¼şÔÚpdfÉèÖÃÖĞ½øĞĞÉèÖÃ¡£")
-  (if (setq pathname (system:get-folder "ÇëÑ¡ÔñÒª¼Ó´Á¼ÇµÄPDFÎÄ¼ş¼Ğ"))
+  (@::prompt "é€‰æ‹©ä¸€ä¸ªæ–‡ä»¶å¤¹ï¼Œç»™è¯¥æ–‡ä»¶å¤¹ä¸‹çš„pdfæ–‡ä»¶åŠ ä¸Šæˆ³è®°ï¼Œæˆ³è®°æ–‡ä»¶åœ¨pdfè®¾ç½®ä¸­è¿›è¡Œè®¾ç½®ã€‚")
+  (if (setq pathname (system:get-folder "è¯·é€‰æ‹©è¦åŠ æˆ³è®°çš„PDFæ–‡ä»¶å¤¹"))
       (progn
 	(@:set-config  'pdftk:pre-folder (system:dir pathname))
 	(setq pdfs (vl-directory-files pathname "*.pdf"))
@@ -297,7 +297,7 @@
 	(system:explorer (system:dir pathname))
 	)))
 (defun pdftk:stamp (filename / app)
-  ;; ¿ÉÖ´ĞĞÎÄ¼şÂ·¾¶
+  ;; å¯æ‰§è¡Œæ–‡ä»¶è·¯å¾„
   (setq app "bin\\pdftk.exe")
   (pdftk:download)
   (if (null (findfile  (@:get-config 'pdftk:stamp)))
@@ -309,7 +309,7 @@
   (if (and (findfile app)
 	   filename)
       (progn
-	;;(setq folder (system:get-folder "ÇëÑ¡ÔñÒªºÏ²¢µÄPDFÎÄ¼ş¼Ğ"))
+	;;(setq folder (system:get-folder "è¯·é€‰æ‹©è¦åˆå¹¶çš„PDFæ–‡ä»¶å¤¹"))
 	;;(setq files (strcat folder  "\\*.pdf"))
 	(if (/= "" (@:get-config 'pdftk:stamp))
 	    (progn
@@ -330,16 +330,16 @@
   (princ)
   )
 (defun pdftk:menu-background (/ filename)
-  (@::prompt "Ñ¡ÔñÒ»¸öÎÄ¼ş£¬¸ø¸ÃÎÄ¼ş¼ÓÉÏË®Ó¡£¬Ë®Ó¡ÎÄ¼şÔÚpdfÉèÖÃÖĞ½øĞĞÉèÖÃ¡£ËùÑ¡µÄ pdf ÎÄ¼ş±ØĞëÎªÍ¸Ã÷±³¾°²ÅÓĞĞ§¹û¡£")
-  (if (setq filename  (getfiled "ÇëÑ¡ÔñÒª¼ÓË®Ó¡µÄPDFÎÄ¼ş" (@:get-config 'pdftk:pre-folder) "pdf" 8))
+  (@::prompt "é€‰æ‹©ä¸€ä¸ªæ–‡ä»¶ï¼Œç»™è¯¥æ–‡ä»¶åŠ ä¸Šæ°´å°ï¼Œæ°´å°æ–‡ä»¶åœ¨pdfè®¾ç½®ä¸­è¿›è¡Œè®¾ç½®ã€‚æ‰€é€‰çš„ pdf æ–‡ä»¶å¿…é¡»ä¸ºé€æ˜èƒŒæ™¯æ‰æœ‰æ•ˆæœã€‚")
+  (if (setq filename  (getfiled "è¯·é€‰æ‹©è¦åŠ æ°´å°çš„PDFæ–‡ä»¶" (@:get-config 'pdftk:pre-folder) "pdf" 8))
       (progn
 	(@:set-config  'pdftk:pre-folder (system:dir (vl-filename-directory filename)))
 	(pdftk:background filename)
 	(system:explorer (vl-filename-directory filename))
 	)))
 (defun pdftk:menu-batch-background (/ filename)
-  (@::prompt "Ñ¡ÔñÒ»¸öÎÄ¼ş¼Ğ£¬¸ø¸ÃÎÄ¼ş¼ĞÏÂµÄpdfÎÄ¼ş¼ÓÉÏË®Ó¡£¬Ë®Ó¡ÎÄ¼şÔÚpdfÉèÖÃÖĞ½øĞĞÉèÖÃ¡£ËùÑ¡µÄ pdf ÎÄ¼ş±ØĞëÎªÍ¸Ã÷±³¾°²ÅÓĞĞ§¹û¡£")
-  (if (setq pathname (system:get-folder "ÇëÑ¡ÔñÒª¼ÓË®Ó¡µÄPDFÎÄ¼ş¼Ğ"))
+  (@::prompt "é€‰æ‹©ä¸€ä¸ªæ–‡ä»¶å¤¹ï¼Œç»™è¯¥æ–‡ä»¶å¤¹ä¸‹çš„pdfæ–‡ä»¶åŠ ä¸Šæ°´å°ï¼Œæ°´å°æ–‡ä»¶åœ¨pdfè®¾ç½®ä¸­è¿›è¡Œè®¾ç½®ã€‚æ‰€é€‰çš„ pdf æ–‡ä»¶å¿…é¡»ä¸ºé€æ˜èƒŒæ™¯æ‰æœ‰æ•ˆæœã€‚")
+  (if (setq pathname (system:get-folder "è¯·é€‰æ‹©è¦åŠ æ°´å°çš„PDFæ–‡ä»¶å¤¹"))
       (progn
 	(@:set-config  'pdftk:pre-folder (system:dir pathname))
 	(setq pdfs (vl-directory-files pathname "*.pdf"))
@@ -351,7 +351,7 @@
 	)))
 
 (defun pdftk:background (filename / app)
-  ;; ¿ÉÖ´ĞĞÎÄ¼şÂ·¾¶
+  ;; å¯æ‰§è¡Œæ–‡ä»¶è·¯å¾„
   (setq app "bin\\pdftk.exe")
   (pdftk:download)
   (if (null (findfile (@:get-config 'pdftk:background)))
@@ -364,7 +364,7 @@
   (if (and (findfile app)
 	   filename)
       (progn
-	;;(setq folder (system:get-folder "ÇëÑ¡ÔñÒªºÏ²¢µÄPDFÎÄ¼ş¼Ğ"))
+	;;(setq folder (system:get-folder "è¯·é€‰æ‹©è¦åˆå¹¶çš„PDFæ–‡ä»¶å¤¹"))
 	;;(setq files (strcat folder  "\\*.pdf"))
 	(if (/= "" (@:get-config 'pdftk:background))
 	    (progn

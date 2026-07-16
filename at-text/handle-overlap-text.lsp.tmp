@@ -1,0 +1,2 @@
+(defun @text:locate-overlay-text(/ txts box)
+  (@::prompt "楂樹寒鏄剧ず鏈夐噸鍙犵殑鏂囧瓧銆

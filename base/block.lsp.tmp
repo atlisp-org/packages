@@ -1,0 +1,4 @@
+
+
+(defun block:get-effectivename (blk / tem blkname)
+  "鍙栧緱鍧楃湡瀹炲悕绉帮紝鏀

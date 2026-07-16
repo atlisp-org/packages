@@ -1,10 +1,10 @@
 (defun at-dim:menu-zbbz (/ pt-b  pt-c  txtx txty txth line th unit1)
-  (@:help "±ê×¢Ñ¡¶¨µãµÄ×ø±ê¼°±ê¸ß")
+  (@:help "æ ‡æ³¨é€‰å®šç‚¹çš„åæ ‡åŠæ ‡é«˜")
   (if (and (/= "" (@:get-config '@dim:layer))
 	   (null(tblsearch "layer"  (@:get-config '@dim:layer))))
       (layer:make  (@:get-config '@dim:layer) 2 nil nil))
       
-  (setq pt-b (getpoint "Ñ¡¶¨×ø±êµã:"))
+  (setq pt-b (getpoint "é€‰å®šåæ ‡ç‚¹:"))
   (setq th (* (@:get-config '@dim:textheight)(@:get-config '@dim:scale)))
   (cond
     ((= (@:get-config '@dim:draw-units)(@:get-config '@dim:text-units))
@@ -22,7 +22,7 @@
   (setq ss (ssget pt-b))
   ;;relative position
   (setq ang-rel (angle (point:centroid (pickset:getbox ss 0)) pt-b))
-  ;;»æÖÆ
+  ;;ç»˜åˆ¶
   (if(= 0 (@:get-config '@dim:coordinate-position))
      (cond
        ((< ang-rel (* 0.5 pi))
@@ -38,8 +38,8 @@
 	(setq txt-ang 0)
 	(setq pt-c (polar pt-b (* 1.75 pi) (* th 4)))))
      (progn
-       (setq pt-c (getpoint pt-b "ÎÄ×ÖÎ»ÖÃ:"))
-       (setq txt-ang (getangle pt-c "ÎÄ×Ö·½Ïò:"))
+       (setq pt-c (getpoint pt-b "æ–‡å­—ä½ç½®:"))
+       (setq txt-ang (getangle pt-c "æ–‡å­—æ–¹å‘:"))
        ))
   (cond
     ((<= (* 0.75 pi) txt-ang (* 1.01 pi))
@@ -99,7 +99,7 @@
 			 (setq box (text:box x))
 			 (distance (car box)(cadr box)))
 		       ents)))
-	;;µ÷ÕûÎª×ó¶ÔÆë
+	;;è°ƒæ•´ä¸ºå·¦å¯¹é½
 	(if (= 2 (entity:getdxf txtx 72))
       (mapcar '(lambda(x)
 		(entity:putdxf
@@ -123,11 +123,11 @@
 	    (mapcar '(lambda (x)
 		      (entity:putdxf x 8 (@:get-config '@dim:layer)))
 		    ents))
-	;; ±à×é
+	;; ç¼–ç»„
 	(group:make ents (strcat "XY" (@:timestamp)))
 	)
-      (progn ;;ÒıÏß
-	;;(if (= "RB"  txtdq) ;;ĞŞÕı txt µÄµã
+      (progn ;;å¼•çº¿
+	;;(if (= "RB"  txtdq) ;;ä¿®æ­£ txt çš„ç‚¹
 	;;    (setq pt-c (polar pt-c pi  (distance pt-b pt-c))))
 	(vla-put-ScaleFactor
 	 (e2o(entity:make-multileader (list pt-b pt-c)

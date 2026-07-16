@@ -1,0 +1,2 @@
+(defun @:string-subst-in-file ( newstr oldstr lspfile / vf zf text)
+  "鍒犻櫎鏂囦欢涓

@@ -1,27 +1,27 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'boundary:first ÓÃÓÚ Ó¦ÓÃ°ü boundary µÄ µÚÒ»¸öÅäÖÃÏî first 
-(@::define-config 'boundary:blkname "gc124" "ÒªÉú³É±ß½çµÄ¿éÃû")
-(@::define-config 'boundary:layer "tmp-boundary" "Éú³ÉµÄ±ß½çËùÔÚµÄÍ¼²ã")
-(@::define-config 'boundary:color 2 "Éú³ÉµÄ±ß½çËùÔÚµÄÍ¼²ãµÄÑÕÉ«")
-;; (@:get-config 'boundary:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'boundary:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "±ß½ç" "Éú³É±ß½ç" "(boundary:make-by-blk)" )
-(@:add-menu "±ß½ç" "Ìî³ä±ß½ç" "(boundary:hatch)" )
-(@:add-menu "±ß½ç" "É¾³ı±ß½ç" "(boundary:remove-boundary)" )
-(@:add-menu "±ß½ç" "É¾³ı±ß½çÌî³ä" "(boundary:remove-hatch)" )
-(@:add-menu "±ß½ç" "ÏÔÊ¾¿é" "(boundary:show-ent)" )
+;; å®šä¹‰é…ç½®é¡¹ 'boundary:first ç”¨äº åº”ç”¨åŒ… boundary çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+(@::define-config 'boundary:blkname "gc124" "è¦ç”Ÿæˆè¾¹ç•Œçš„å—å")
+(@::define-config 'boundary:layer "tmp-boundary" "ç”Ÿæˆçš„è¾¹ç•Œæ‰€åœ¨çš„å›¾å±‚")
+(@::define-config 'boundary:color 2 "ç”Ÿæˆçš„è¾¹ç•Œæ‰€åœ¨çš„å›¾å±‚çš„é¢œè‰²")
+;; (@:get-config 'boundary:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'boundary:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "è¾¹ç•Œ" "ç”Ÿæˆè¾¹ç•Œ" "(boundary:make-by-blk)" )
+(@:add-menu "è¾¹ç•Œ" "å¡«å……è¾¹ç•Œ" "(boundary:hatch)" )
+(@:add-menu "è¾¹ç•Œ" "åˆ é™¤è¾¹ç•Œ" "(boundary:remove-boundary)" )
+(@:add-menu "è¾¹ç•Œ" "åˆ é™¤è¾¹ç•Œå¡«å……" "(boundary:remove-hatch)" )
+(@:add-menu "è¾¹ç•Œ" "æ˜¾ç¤ºå—" "(boundary:show-ent)" )
 
 (defun boundary:make-by-blk (/ *error*)
-  "ÓÉÌØ¶¨µÄ¿éÉú³ÉÇøÓò"
+  "ç”±ç‰¹å®šçš„å—ç”ŸæˆåŒºåŸŸ"
   (defun *error*(msg)
     (pop-var)
     )
   (setq filter (list '(0 . "insert")(cons 2 (@::get-config 'boundary:blkname))))
   (setq blks (pickset:to-list(ssget filter)))
-  ;; Ëõ·Å
+  ;; ç¼©æ”¾
   (pickset:zoom blks)
   (layer:make (@::get-config 'boundary:layer)
 	      (@::get-config 'boundary:color)
@@ -38,7 +38,7 @@
 	(progn
 	  (setq blks-in-zone
 		(pickset:to-list
-		 ;;¿É¼ûµÄÇé¿öÏÂ²ÅÄÜÑ¡ÖĞ
+		 ;;å¯è§çš„æƒ…å†µä¸‹æ‰èƒ½é€‰ä¸­
 		 (ssget "wp" (curve:get-points zone) filter)))
 	  (setq blks (list:difference blks blks-in-zone))
 	  (mapcar '(lambda(x) (entity:set-visible x nil))
@@ -50,7 +50,7 @@
   )
 
 (defun boundary:hatch (/ boundarys)
-  "Ìî³ä±ß½ç"
+  "å¡«å……è¾¹ç•Œ"
   (setq boundarys
 	(ssget"x"
 	      (list '(0 . "lwpolyline")
@@ -59,7 +59,7 @@
   (princ)
   )
 (defun boundary:remove-hatch ()
-  "É¾³ıÌî³ä±ß½ç"
+  "åˆ é™¤å¡«å……è¾¹ç•Œ"
   (mapcar 'entdel
 	  (pickset:to-list
 	   (ssget
@@ -69,7 +69,7 @@
   (princ)
   )
 (defun boundary:remove-boundary ()
-  "É¾³ı±ß½ç"
+  "åˆ é™¤è¾¹ç•Œ"
   (mapcar 'entdel
 	  (pickset:to-list
 	   (ssget
@@ -79,7 +79,7 @@
   (princ)
   )
 (defun boundary:show-ent ()
-  "ÏÔÊ¾¿é"
+  "æ˜¾ç¤ºå—"
   (setq filter (list '(0 . "insert")(cons 2 (@::get-config 'boundary:blkname))))
   (mapcar '(lambda(x)(entity:set-visible x t))
 	  (pickset:to-list (ssget "x" filter))))

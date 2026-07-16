@@ -1,8 +1,8 @@
 (@:add-menus
- '(("ÅÅ°æ"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(composing:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(composing:hello)")))
-   ("ÅÅ°æ1"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(composing:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(composing:hello)")))
+ '(("æŽ’ç‰ˆ"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(composing:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(composing:hello)")))
+   ("æŽ’ç‰ˆ1"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(composing:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(composing:hello)")))
    )

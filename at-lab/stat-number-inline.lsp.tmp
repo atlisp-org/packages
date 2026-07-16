@@ -1,0 +1,2 @@
+(defun @lab:stat-number-inline ()
+  (@::prompt '("缁熻

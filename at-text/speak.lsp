@@ -1,5 +1,5 @@
 (defun @text:menu-speak ()
-  (prompt "请选择要朗读的文本:")
+  (prompt "鐠囩兘鈧瀚ㄧ憰浣规箷鐠囪崵娈戦弬鍥ㄦ拱:")
   (setq texts (ssget '((0 . "*text,ACAD_TABLE,TCH_DRAWINGNAME"))))
   (setq texts (pickset:sort
 	       (pickset:to-list texts)

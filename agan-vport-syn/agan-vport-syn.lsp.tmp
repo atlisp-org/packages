@@ -1,0 +1,13 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; This file was created by @lisp DEV-tools
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; define a first config item  'agan-vport-syn:first for package agan-vport-syn 's configitem first 
+;; (@:get-config 'agan-vport-syn:first) 
+;; (@:set-config 'agan-vport-syn:first  "New Value")
+;; Add menu in @lisp panel
+(@:add-menu "甯冨眬宸ュ叿" "闃跨敇瀵瑰浘" "(agan-vport-syn:load)")
+
+(defun agan-vport-syn:load (/ vers filesize)
+  (setq vers (substr (getvar "acadver") 1 2))
+  (if (< (atoi vers) 18)
+      (princ "CAD 鐗堟湰杩囦綆锛岄樋鐢樺

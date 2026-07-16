@@ -1,47 +1,47 @@
-(@:define-config '@select:blksname "" "Ñ¡ÔñÊ±ÒªÆ¥ÅäµÄ¿éÃû")
-(@:define-config '@select:onboundary 1 "1 Ñ¡ÔñÔÚ±ß½çÉÏÍ¼Ôª; 0 ²»Ñ¡±ß½çÉÏµÄÍ¼Ôª")
-(@::define-config 'curve:similarity 0.95 "ÇúÏßÏàËÆ¶È£¬0µ½1Ö®¼äµÄÖµ")
+(@:define-config '@select:blksname "" "é€‰æ‹©æ—¶è¦åŒ¹é…çš„å—å")
+(@:define-config '@select:onboundary 1 "1 é€‰æ‹©åœ¨è¾¹ç•Œä¸Šå›¾å…ƒ; 0 ä¸é€‰è¾¹ç•Œä¸Šçš„å›¾å…ƒ")
+(@::define-config 'curve:similarity 0.95 "æ›²çº¿ç›¸ä¼¼åº¦ï¼Œ0åˆ°1ä¹‹é—´çš„å€¼")
 (defun @select:setup (/ res) 
   (setq @::tmp-search-str "@SELECT")
   (@::edit-config-dialog))
 (defun c:ss1 (/ ss) 
-  (@::prompt '("¼ÇÂ¼µ±Ç°ÒÑÑ¡ÔñµÄÍ¼ĞÎ Îªss1¡£ÒÔ·½±ãÆäËüÃüÁîÊ¹ÓÃ¡£Èç¹ûÃ»ÓĞÑ¡ÔñÇÒ¸ßÁÁµÄÍ¼ĞÎ£¬Ôò¸ßÁÁss1"))
+  (@::prompt '("è®°å½•å½“å‰å·²é€‰æ‹©çš„å›¾å½¢ ä¸ºss1ã€‚ä»¥æ–¹ä¾¿å…¶å®ƒå‘½ä»¤ä½¿ç”¨ã€‚å¦‚æœæ²¡æœ‰é€‰æ‹©ä¸”é«˜äº®çš„å›¾å½¢ï¼Œåˆ™é«˜äº®ss1"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss1 ss)
     (if ss1 
       (sssetfirst nil ss1))))
 (defun c:ss2 (/ ss) 
-  (@::prompt '("¼ÇÂ¼µ±Ç°ÒÑÑ¡ÔñµÄÍ¼ĞÎ Îªss2¡£"))
+  (@::prompt '("è®°å½•å½“å‰å·²é€‰æ‹©çš„å›¾å½¢ ä¸ºss2ã€‚"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss2 ss)
     (if ss2 
       (sssetfirst nil ss2))))
 (defun c:ss3 (/ ss) 
-  (@::prompt '("¼ÇÂ¼µ±Ç°ÒÑÑ¡ÔñµÄÍ¼ĞÎ Îªss3¡£"))
+  (@::prompt '("è®°å½•å½“å‰å·²é€‰æ‹©çš„å›¾å½¢ ä¸ºss3ã€‚"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss3 ss)
     (if ss3 
       (sssetfirst nil ss3))))
 (defun c:ss4 (/ ss) 
-  (@::prompt '("¼ÇÂ¼µ±Ç°ÒÑÑ¡ÔñµÄÍ¼ĞÎ Îªss4¡£"))
+  (@::prompt '("è®°å½•å½“å‰å·²é€‰æ‹©çš„å›¾å½¢ ä¸ºss4ã€‚"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss4 ss)
     (if ss4 
       (sssetfirst nil ss4))))
 (defun c:ss5 (/ ss) 
-  (@::prompt '("¼ÇÂ¼µ±Ç°ÒÑÑ¡ÔñµÄÍ¼ĞÎ Îªss5¡£"))
+  (@::prompt '("è®°å½•å½“å‰å·²é€‰æ‹©çš„å›¾å½¢ ä¸ºss5ã€‚"))
   (setq ss (cadr (ssgetfirst)))
   (if ss 
     (setq ss5 ss)
     (if ss5 
       (sssetfirst nil ss5))))
 (defun boundarypath2pts (bdpath / pts) 
-    "±ß½çÂ·¾¶×ªÀ¸Ñ¡µã¼¯"
-    ;; ²»ÊÇ¶à¶ÎÏßµÄ´¦Àí
+    "è¾¹ç•Œè·¯å¾„è½¬æ é€‰ç‚¹é›†"
+    ;; ä¸æ˜¯å¤šæ®µçº¿çš„å¤„ç†
     (if (= 0 (boole 1 2 (cdr (assoc 92 bdpath)))) 
       (progn 
         (setq parts (list:split-by bdpath '(lambda (x) (= (car x) 72))))
@@ -66,7 +66,7 @@
                     '(lambda (x) (or (= 10 (car x)) (= 11 (car x))))
                     bdpath))
                 0.001)))
-;; ×Ô½»µãÎ§À¸µã
+;; è‡ªäº¤ç‚¹å›´æ ç‚¹
 (defun interself-p (pts / flag pt1 pt2 n)
   (while (and
 	  (null flag)
@@ -85,7 +85,7 @@
 
 (defun at-select:select-blk-by-hatch (/ ha res all-outer ss-all all-inter ss-in 
                                       selopt) 
-  (@::prompt '("Ñ¡ÔñÒ»¸öÌî³ä£¬·µ»ØÌî³äÄÚµÄ¿é¡£"))
+  (@::prompt '("é€‰æ‹©ä¸€ä¸ªå¡«å……ï¼Œè¿”å›å¡«å……å†…çš„å—ã€‚"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
@@ -98,11 +98,11 @@
 	   (setq res (car (list:split-by res '(lambda (x) (= (car x) 75)))))
 	   (setq res (cdr (list:split-by res '(lambda (x) (= (car x) 92)))))
 	   ;; (setq res (vl-sort res '(lambda (x y) (> (cdar x) (cdar y)))))
-	   ;; Íâ²¿±ß½çÂ·¾¶ÖĞµÄÍ¼Ôª
+	   ;; å¤–éƒ¨è¾¹ç•Œè·¯å¾„ä¸­çš„å›¾å…ƒ
 	   (setq all-outer (vl-remove-if-not 
 			    '(lambda (x) (= 1 (boole 1 1 (cdr (assoc 92 x)))))
 			    res))
-	   (princ (strcat (itoa (length all-outer)) "ÌõÍâ²¿±ß½çÂ·¾¶"))
+	   (princ (strcat (itoa (length all-outer)) "æ¡å¤–éƒ¨è¾¹ç•Œè·¯å¾„"))
 	   (foreach outer all-outer 
 		    ;; debug (entity:make-lwpolyline (boundarypath2pts outer) nil 0 1 0)
 		    (setq blk-all (pickset:to-list 
@@ -118,8 +118,8 @@
 	   (setq all-inter (vl-remove-if-not 
 			    '(lambda (x) (= 0 (boole 1 1 (cdr (assoc 92 x)))))
 			    res))
-	   (princ (strcat (itoa (length all-inter)) "ÌõÄÚ²¿¹Âµº±ß½çÂ·¾¶"))
-	   ;; ÄÚ²¿¹Âµº±ß½çÂ·¾¶ÖĞµÄÍ¼Ôª
+	   (princ (strcat (itoa (length all-inter)) "æ¡å†…éƒ¨å­¤å²›è¾¹ç•Œè·¯å¾„"))
+	   ;; å†…éƒ¨å­¤å²›è¾¹ç•Œè·¯å¾„ä¸­çš„å›¾å…ƒ
 	   (foreach inter all-inter 
 		    (setq blk-in (pickset:to-list 
 				  (ssget 
@@ -136,7 +136,7 @@
   (sssetfirst nil (pickset:from-list ss-res)))
 
 (defun @select:line-to-ss ()
-  (@::prompt "»æÖÆÖ¸ÏòÑ¡Ôñ¼¯µÄÏß¡£")
+  (@::prompt "ç»˜åˆ¶æŒ‡å‘é€‰æ‹©é›†çš„çº¿ã€‚")
   (setq pt (getpoint))
   (mapcar 
   '(lambda (x) (entity:make-line pt (entity:getdxf x 10)))
@@ -144,7 +144,7 @@
 )))
 (defun at-select:select-blk-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
                                      selopt pts-fence) 
-  (@::prompt '("Ñ¡ÔñÒ»¸öµ¥»·±ÕºÏ¶à¶ÎÏß£¬Ñ¡ÖĞÇúÏßÄÚµÄ¿é¡£"))
+  (@::prompt '("é€‰æ‹©ä¸€ä¸ªå•ç¯é—­åˆå¤šæ®µçº¿ï¼Œé€‰ä¸­æ›²çº¿å†…çš„å—ã€‚"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
@@ -163,16 +163,16 @@
   
 (defun at-select:select-by-lwpl (/ lwpls res all-outer ss-all all-inter ss-in 
                                       selopt en ssfilter pts-fence) 
-  (@::prompt '("Ñ¡ÔñÒ»¸öµ¥»·±ÕºÏ¶à¶ÎÏß£¬Ñ¡ÖĞÇúÏßÄÚµÄÍ¼Ôª¡£"))
+  (@::prompt '("é€‰æ‹©ä¸€ä¸ªå•ç¯é—­åˆå¤šæ®µçº¿ï¼Œé€‰ä¸­æ›²çº¿å†…çš„å›¾å…ƒã€‚"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
-  (@:prompt "Ñ¡ÔñÒ»¸öµ¥»·±ÕºÏ¶à¶ÎÏß:")
+  (@:prompt "é€‰æ‹©ä¸€ä¸ªå•ç¯é—­åˆå¤šæ®µçº¿:")
   (if (setq lwpl (car (pickset:to-list (ssget ":S" '((0 . "*polyline")(70 . 1))))))
       (if (and (setq pts-fence (list:delsame (curve:get-points lwpl) 0.01))
 	       (not (interself-p pts-fence)))
 	  (progn
-	    (setq en (car (entsel"ÇëµãÑ¡ÒªÑ¡ÔñµÄÍ¼Ôª:")))
+	    (setq en (car (entsel"è¯·ç‚¹é€‰è¦é€‰æ‹©çš„å›¾å…ƒ:")))
 	    (setq ssfilter
 		  (if (= "INSERT" (entity:getdxf en 0))
 		      (append 
@@ -185,18 +185,18 @@
 			 (car selopt)
 			 pts-fence
 			 ssfilter)))
-	  (@:alert "ËùÑ¡µÄ¶à¶ÎÏß²»ÊÇµ¥»·µÄ¡£"))
+	  (@:alert "æ‰€é€‰çš„å¤šæ®µçº¿ä¸æ˜¯å•ç¯çš„ã€‚"))
       ))
   
 (defun at-select:select-by-hatch (/ ha res all-outer ss-all all-inter ss-in 
                                       selopt en ssfilter) 
-  (@::prompt '("Ñ¡ÔñÒ»¸ö»ò¶àÌî³äÍ¼ĞÎ£¬ÔÙÑ¡ÔñÔÚÌî³äÍ¼ĞÎÄÚĞèÒªÑ¡ÖĞµÄÍ¼ĞÎ¡£"))
+  (@::prompt '("é€‰æ‹©ä¸€ä¸ªæˆ–å¤šå¡«å……å›¾å½¢ï¼Œå†é€‰æ‹©åœ¨å¡«å……å›¾å½¢å†…éœ€è¦é€‰ä¸­çš„å›¾å½¢ã€‚"))
   (setq selopt '("cp" "wp"))
   (if (/= 1 (@:get-config '@select:onboundary)) 
       (setq selopt (reverse selopt)))
-  (@:prompt "ÇëÑ¡ÔñÌî³äÍ¼ĞÎ:")
+  (@:prompt "è¯·é€‰æ‹©å¡«å……å›¾å½¢:")
   (setq hatchs (pickset:to-list (ssget '((0 . "hatch")))))
-  (setq en (car (entsel"ÇëµãÑ¡ÒªÑ¡ÔñµÄÍ¼Ôª:")))
+  (setq en (car (entsel"è¯·ç‚¹é€‰è¦é€‰æ‹©çš„å›¾å…ƒ:")))
   (setq ssfilter
 	(if (= "INSERT" (entity:getdxf en 0))
 	    (append 
@@ -212,11 +212,11 @@
 	   (setq res (car (list:split-by res '(lambda (x) (= (car x) 75)))))
 	   (setq res (cdr (list:split-by res '(lambda (x) (= (car x) 92)))))
 	   ;; (setq res (vl-sort res '(lambda (x y) (> (cdar x) (cdar y)))))
-	   ;; Íâ²¿±ß½çÂ·¾¶ÖĞµÄÍ¼Ôª
+	   ;; å¤–éƒ¨è¾¹ç•Œè·¯å¾„ä¸­çš„å›¾å…ƒ
 	   (setq all-outer (vl-remove-if-not 
 			    '(lambda (x) (= 1 (boole 1 1 (cdr (assoc 92 x)))))
 			    res))
-	   (princ (strcat (itoa (length all-outer)) "ÌõÍâ²¿±ß½çÂ·¾¶"))
+	   (princ (strcat (itoa (length all-outer)) "æ¡å¤–éƒ¨è¾¹ç•Œè·¯å¾„"))
 	   (foreach outer all-outer 
 		    ;; debug (entity:make-lwpolyline (boundarypath2pts outer) nil 0 1 0)
 		    (setq blk-all (pickset:to-list 
@@ -229,8 +229,8 @@
 	   (setq all-inter (vl-remove-if-not 
 			    '(lambda (x) (= 0 (boole 1 1 (cdr (assoc 92 x)))))
 			    res))
-	   (princ (strcat (itoa (length all-inter)) "ÌõÄÚ²¿¹Âµº±ß½çÂ·¾¶"))
-	   ;; ÄÚ²¿¹Âµº±ß½çÂ·¾¶ÖĞµÄÍ¼Ôª
+	   (princ (strcat (itoa (length all-inter)) "æ¡å†…éƒ¨å­¤å²›è¾¹ç•Œè·¯å¾„"))
+	   ;; å†…éƒ¨å­¤å²›è¾¹ç•Œè·¯å¾„ä¸­çš„å›¾å…ƒ
 	   (foreach inter all-inter 
 		    (setq blk-in (pickset:to-list 
 				  (ssget 

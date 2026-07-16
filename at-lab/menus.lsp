@@ -1,12 +1,12 @@
 (@:add-menus
- '(("@ÊÔÑéÊÒ"
-    ("Åú¸Ä²¼¾ÖÃû" (@lab:named-first-layout-from-filename))
-    ("µ¼³ö¿é²ÎÊı" (@lab:attxyz2csv))
-    ("»æÖÆ¾ØĞÎ¹Ü" (@lab:rec-tube))
-    ("¶¯Ì¬µ÷Õû"  (@lab:dyn-adjust))
-    ("»ã×ÜĞÅÏ¢"  (@lab:summary-data))
-    ("Ã·»¨²¼Ô²"  (@lab:array-circle))
-    ("·Ö¸ô×Ö´®" (@lab:split-text))
-    ("×¨ÓÃ»ã×Ü" (@lab:summary-lst))
-    ("ÖğĞĞ±êÊı" (@lab:stat-number-inline))
+ '(("@è¯•éªŒå®¤"
+    ("æ‰¹æ”¹å¸ƒå±€å" (@lab:named-first-layout-from-filename))
+    ("å¯¼å‡ºå—å‚æ•°" (@lab:attxyz2csv))
+    ("ç»˜åˆ¶çŸ©å½¢ç®¡" (@lab:rec-tube))
+    ("åŠ¨æ€è°ƒæ•´"  (@lab:dyn-adjust))
+    ("æ±‡æ€»ä¿¡æ¯"  (@lab:summary-data))
+    ("æ¢…èŠ±å¸ƒåœ†"  (@lab:array-circle))
+    ("åˆ†éš”å­—ä¸²" (@lab:split-text))
+    ("ä¸“ç”¨æ±‡æ€»" (@lab:summary-lst))
+    ("é€è¡Œæ ‡æ•°" (@lab:stat-number-inline))
     )))

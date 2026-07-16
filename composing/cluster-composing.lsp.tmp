@@ -1,0 +1,2 @@
+(defun composing:set-clustergap ()
+  (setq @:cluster-gap (getdist "杈撳叆閫傚綋鐨勫垎鍫嗛棿闅欏€

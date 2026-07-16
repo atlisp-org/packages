@@ -1,7 +1,7 @@
 
-;;;Öù±íÕûÀíV2.0
-;;;×÷Õß£ºÇúÒøµÂ
-;;;½ö¹©ÄÚ²¿Ê¹ÓÃ
+;;;æŸ±è¡¨æ•´ç†V2.0
+;;;ä½œè€…ï¼šæ›²é“¶å¾·
+;;;ä»…ä¾›å†…éƒ¨ä½¿ç”¨
 (defun c:ZBZL()
     (setvar "cmdecho" 0)
 (if (= hd nil) (setq hd 2800))
@@ -11,15 +11,15 @@
 (if (= L_cLu nil) (setq L_cLu "*S-OUTLINE*"))
 (if (= L_tab nil) (setq L_tab "*TAB*"))
 (if (= L_pdx nil) (setq L_pdx "*pdx*"))
-        (princ "\nÇëÑ¡Ôñ¶ÔÏó<¿Õ¸ñ»òÕß»Ø³µÉèÖÃ>£º")
+        (princ "\nè¯·é€‰æ‹©å¯¹è±¡<ç©ºæ ¼æˆ–è€…å›è½¦è®¾ç½®>ï¼š")
         (while (= nil ss_tab )
                (setq tab (ssget(list (cons 0 "LWPOLYLINE")(cons 8 L_tab))))        
                (if (= nil tab) (dcl_ZBZL_Form1) (ZBZL))
         )
 )
 (defun dcl_ZBZL_Form1()
-  (setq dcl_id (load_dialog "ZBZL.dcl"));¼ÓÔØDCL
-     (if (not (new_dialog "ZBZL" dcl_id))(exit)) ;;¼¤»î¶Ô»°¿ò
+  (setq dcl_id (load_dialog "ZBZL.dcl"));åŠ è½½DCL
+     (if (not (new_dialog "ZBZL" dcl_id))(exit)) ;;æ¿€æ´»å¯¹è¯æ¡†
 
   (set_tile "Text1" (rtos hd))
   (set_tile "Text2" (rtos ht))
@@ -44,31 +44,31 @@
      ((= dZBZL 3) (setq ht (QYD:dist)) (dcl_ZBZL_Form1))
      ((= dZBZL 4) (setq DL (QYD:dist)) (dcl_ZBZL_Form1))
      ((= dZBZL 5) (setq PDL (QYD:dist)) (dcl_ZBZL_Form1))
-     ((= dZBZL 6) (setq s_sym (ssget)) (setq L_tab (QYD:SQTY 8 s_sym L_tab ",")) (dcl_ZBZL_Form1)) ;78.Ê°È¡Í¼ÔªÀàĞÍ£¬Í¼²ã(°´Å¥)
+     ((= dZBZL 6) (setq s_sym (ssget)) (setq L_tab (QYD:SQTY 8 s_sym L_tab ",")) (dcl_ZBZL_Form1)) ;78.æ‹¾å–å›¾å…ƒç±»å‹ï¼Œå›¾å±‚(æŒ‰é’®)
      ((= dZBZL 7) (setq s_sym (ssget)) (setq L_cLu (QYD:SQTY 8 s_sym L_cLu ",")) (dcl_ZBZL_Form1)) 
      ((= dZBZL 8) (setq s_sym (ssget)) (setq L_pdx (QYD:SQTY 8 s_sym L_pdx ",")) (dcl_ZBZL_Form1))
   )
  )
 
-;;;¸³Öµ¸ø¸÷²ÎÊı
+;;;èµ‹å€¼ç»™å„å‚æ•°
 (defun get_TabText()
-  (setq hd (atof (get_tile "Text1")))   ;;;Öù¿òÏßÖÁµ×±ß¾à
-  (setq ht (atof (get_tile "Text2")))    ;;;±í¸ñÎÄ×Ö¿ò×Ü¸ß¶È
-  (setq DL (atof (get_tile "Text3")))   ;;;³ß´çÏßÍâÆ«¾àÀë
-  (setq PDL (atof (get_tile "Text4")))    ;;;Ç½ÆÊ¶ÏÏß³¤
-  (setq L_tab (get_tile "Text5"))  ;;;Öù±íÍ¼²ã
-  (setq L_cLu (get_tile "Text6"))   ;;;Öù±ßÏßÍ¼²ã
-  (setq L_pdx (get_tile "Text7"))   ;;;ÆÊ¶ÏÏßÍ¼²ã
+  (setq hd (atof (get_tile "Text1")))   ;;;æŸ±æ¡†çº¿è‡³åº•è¾¹è·
+  (setq ht (atof (get_tile "Text2")))    ;;;è¡¨æ ¼æ–‡å­—æ¡†æ€»é«˜åº¦
+  (setq DL (atof (get_tile "Text3")))   ;;;å°ºå¯¸çº¿å¤–åè·ç¦»
+  (setq PDL (atof (get_tile "Text4")))    ;;;å¢™å‰–æ–­çº¿é•¿
+  (setq L_tab (get_tile "Text5"))  ;;;æŸ±è¡¨å›¾å±‚
+  (setq L_cLu (get_tile "Text6"))   ;;;æŸ±è¾¹çº¿å›¾å±‚
+  (setq L_pdx (get_tile "Text7"))   ;;;å‰–æ–­çº¿å›¾å±‚
 )
-;;;Á½µã¾àÀë
+;;;ä¸¤ç‚¹è·ç¦»
 (defun QYD:dist()
-  (setq pt1 (getpoint "\nµãÈ¡µÚÒ»µã:"))
-  (setq pt2 (getpoint pt1 "\nµãÈ¡µÚ¶şµã:"))
+  (setq pt1 (getpoint "\nç‚¹å–ç¬¬ä¸€ç‚¹:"))
+  (setq pt2 (getpoint pt1 "\nç‚¹å–ç¬¬äºŒç‚¹:"))
   (setq pdist (distance pt1 pt2))
   pdist
 )
 
-;;;Á½µã¾àÀëÖù³ÌĞò
+;;;ä¸¤ç‚¹è·ç¦»æŸ±ç¨‹åº
 (defun ZBZL()  
   (if tab    
  (progn
@@ -81,11 +81,11 @@
        (vlax-ename->vla-object obj)
        'p1
        'p2
-     ) ;_È¡µÃ°üÈİÍ¼ÔªµÄ×î´óµãºÍ×îĞ¡µã
-     (setq p1 (vlax-safearray->list p1)) ;_×óÏÂ½Ç
-     (setq p2 (vlax-safearray->list p2)) ;_ÓÒÉÏ½Ç
+     ) ;_å–å¾—åŒ…å®¹å›¾å…ƒçš„æœ€å¤§ç‚¹å’Œæœ€å°ç‚¹
+     (setq p1 (vlax-safearray->list p1)) ;_å·¦ä¸‹è§’
+     (setq p2 (vlax-safearray->list p2)) ;_å³ä¸Šè§’
      (command "..zoom" p1 p2)
-     (setq ss1 (ssget "_w" (mapcar '+ p1 (list 0 ht)) p2 (list (cons -4 "<not")(cons 8 "Åä¹¿Ğ£ºË")(cons -4 "not>")(cons -4 "<not")(cons 8 L_tab)(cons -4 "not>"))))
+     (setq ss1 (ssget "_w" (mapcar '+ p1 (list 0 ht)) p2 (list (cons -4 "<not")(cons 8 "é…ç®æ ¡æ ¸")(cons -4 "not>")(cons -4 "<not")(cons 8 L_tab)(cons -4 "not>"))))
      (setq ss2 (ssget "_p" (list                                 
                              (cons 0 "*LINE")(cons 8 L_cLu) 
                              (cons -4 "<not")
@@ -104,10 +104,10 @@
 	)
 )      
       (command "_u")
-;;;Öù¿òÖĞÏÂµã
+;;;æŸ±æ¡†ä¸­ä¸‹ç‚¹
   (if (/= ss2 nil)
     (progn
-      (setq &ss1 (MJ:GetssBox ss2));64.Ñ¡Ôñ¼¯µÄÊµÌåÍâ¾ØĞÎ¿ò by gxl
+      (setq &ss1 (MJ:GetssBox ss2));64.é€‰æ‹©é›†çš„å®ä½“å¤–çŸ©å½¢æ¡† by gxl
       (setq p1 (car &ss1))
       (setq p2 (cadr &ss1))        
      )
@@ -122,13 +122,13 @@
      (command "move" ss1 """non" pz "non"pb1 ) 
    )
    (setvar "cmdecho" oldmcdecho)
-   (princ "\nÍê³É")
+   (princ "\nå®Œæˆ")
  )
   )
   (princ)
 )
-;64.Ñ¡Ôñ¼¯µÄÊµÌåÍâ¾ØĞÎ¿ò by gxl
-;;Êä³ö×óÏÂ½ÇµãºÍÓÒÉÏ½Çµã×é³ÉµÄµã±í
+;64.é€‰æ‹©é›†çš„å®ä½“å¤–çŸ©å½¢æ¡† by gxl
+;;è¾“å‡ºå·¦ä¸‹è§’ç‚¹å’Œå³ä¸Šè§’ç‚¹ç»„æˆçš„ç‚¹è¡¨
 (defun MJ:GetssBox (ss / i l1 l2 ll ur)
   (repeat (setq i (sslength ss))
     (vla-getboundingbox
@@ -162,9 +162,9 @@
 	       (list l1 l2)
   )
 )
-;12.ÓÃ·Ö¸ô·ûÁĞ±í½âÊÍ×Ö·û´®³É±í
-;ÓÃ·Ö¸ô·ûÁĞ±í½âÊÍ×Ö·û´®³É±í by PEACE 2013/09/06
-;string=×Ö·û´®£¬strkeylst=·Ö¸ô·ûÁĞ±í
+;12.ç”¨åˆ†éš”ç¬¦åˆ—è¡¨è§£é‡Šå­—ç¬¦ä¸²æˆè¡¨
+;ç”¨åˆ†éš”ç¬¦åˆ—è¡¨è§£é‡Šå­—ç¬¦ä¸²æˆè¡¨ by PEACE 2013/09/06
+;string=å­—ç¬¦ä¸²ï¼Œstrkeylst=åˆ†éš”ç¬¦åˆ—è¡¨
 (defun QYD:Split (string strkeylst / strkey i j po strlst strlst0 xlen)
   (setq strlst (cons string '()))
   (cond
@@ -211,9 +211,9 @@
   )
   (setq strlst (reverse strlst0))
   strlst
-);12.ÓÃ·Ö¸ô·ûÁĞ±í½âÊÍ×Ö·û´®³É±í
-;ÓÃ·Ö¸ô·ûÁĞ±í½âÊÍ×Ö·û´®³É±í by PEACE 2013/09/06
-;string=×Ö·û´®£¬strkeylst=·Ö¸ô·ûÁĞ±í
+);12.ç”¨åˆ†éš”ç¬¦åˆ—è¡¨è§£é‡Šå­—ç¬¦ä¸²æˆè¡¨
+;ç”¨åˆ†éš”ç¬¦åˆ—è¡¨è§£é‡Šå­—ç¬¦ä¸²æˆè¡¨ by PEACE 2013/09/06
+;string=å­—ç¬¦ä¸²ï¼Œstrkeylst=åˆ†éš”ç¬¦åˆ—è¡¨
 (defun QYD:Split (string strkeylst / strkey i j po strlst strlst0 xlen)
   (setq strlst (cons string '()))
   (cond
@@ -261,35 +261,35 @@
   (setq strlst (reverse strlst0))
   strlst
 )
-;;48. [¹¦ÄÜ] É¾³ı±íÖĞÏàÍ¬Í¼Ôª
+;;48. [åŠŸèƒ½] åˆ é™¤è¡¨ä¸­ç›¸åŒå›¾å…ƒ
 (defun MJ:delsame (l)
   (if L
     (cons (car L) (MJ:delsame (vl-remove (car L) (cdr L))))
   )
 )
-;59a.Á¬½á±íÖĞ×Ö·û´®
+;59a.è¿ç»“è¡¨ä¸­å­—ç¬¦ä¸²
 (defun QYD:List_str(lst str)
   (substr (apply 'strcat (mapcar '(lambda (a) (strcat str a)) lst))
    (1+ (strlen str))
   )
 )
 
-;77.»ñÈ¡Í¼Ôª¶ÔÓ¦µÄDXFÂëÊôĞÔ
+;77.è·å–å›¾å…ƒå¯¹åº”çš„DXFç å±æ€§
 (defun QYD:dxf (n s1) (cdr (assoc n (entget s1))))
 
-;78.Ê°È¡Í¼ÔªÀàĞÍ£¬Í¼²ã(°´Å¥)
-;ÒıÓÃº¯Êı
+;78.æ‹¾å–å›¾å…ƒç±»å‹ï¼Œå›¾å±‚(æŒ‰é’®)
+;å¼•ç”¨å‡½æ•°
 (defun QYD:SQTY (n s_sym s_sym_1 chrm)
      (setq s_sym_0 s_sym_1)
      (setq in0 0 num (sslength s_sym))
    (repeat num
-     (setq s_sym_i (QYD:dxf n (ssname s_sym in0)));77.»ñÈ¡Í¼Ôª¶ÔÓ¦µÄDXFÂëÊôĞÔ
+     (setq s_sym_i (QYD:dxf n (ssname s_sym in0)));77.è·å–å›¾å…ƒå¯¹åº”çš„DXFç å±æ€§
      (setq s_sym_0 (strcat s_sym_0","s_sym_i))
      (setq in0 (1+ in0)
    ) 
-   (setq s_sym_list (QYD:Split s_sym_0 '(","))) ;12.ÓÃ·Ö¸ô·ûÁĞ±í½âÊÍ×Ö·û´®³É±í
-   (setq s_sym_list (MJ:delsame s_sym_list))     ;;48. [¹¦ÄÜ] É¾³ı±íÖĞÏàÍ¬Í¼Ôª
-    (setq s_sym_1 (QYD:List_str s_sym_list chrm));59a.Á¬½á±íÖĞ×Ö·û´®
+   (setq s_sym_list (QYD:Split s_sym_0 '(","))) ;12.ç”¨åˆ†éš”ç¬¦åˆ—è¡¨è§£é‡Šå­—ç¬¦ä¸²æˆè¡¨
+   (setq s_sym_list (MJ:delsame s_sym_list))     ;;48. [åŠŸèƒ½] åˆ é™¤è¡¨ä¸­ç›¸åŒå›¾å…ƒ
+    (setq s_sym_1 (QYD:List_str s_sym_list chrm));59a.è¿ç»“è¡¨ä¸­å­—ç¬¦ä¸²
      s_sym_1
      )
 )

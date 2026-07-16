@@ -1,10 +1,10 @@
 (defun @lab:rec-tube (/ res w h t1 ang)
-  (@::prompt "»æÖÆ¾ØĞÎ¹Ü")
-  (while (setq res (ui:input "ÇëÊäÈë²ÎÊı"
-			     '(("Width" 200 "¾ØĞÎ¹Ü¿í¶È")
-                               ("Height" 300 "¾ØĞÎ¹Ü¸ß¶È")
-                               ("t" 10 "¾ØĞÎ¹Üºñ¶È"))))
-    (while (setq pt (getpoint "\n ÇëÊäÈë»æÖÆÎ»ÖÃ:"))
+  (@::prompt "ç»˜åˆ¶çŸ©å½¢ç®¡")
+  (while (setq res (ui:input "è¯·è¾“å…¥å‚æ•°"
+			     '(("Width" 200 "çŸ©å½¢ç®¡å®½åº¦")
+                               ("Height" 300 "çŸ©å½¢ç®¡é«˜åº¦")
+                               ("t" 10 "çŸ©å½¢ç®¡åšåº¦"))))
+    (while (setq pt (getpoint "\n è¯·è¾“å…¥ç»˜åˆ¶ä½ç½®:"))
       (setq w (* 0.5 (cdr (assoc "Width" res))))
       (setq h (* 0.5 (cdr (assoc "Height" res))))
       (setq t1  (cdr (assoc "t" res)))

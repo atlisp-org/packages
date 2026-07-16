@@ -1,13 +1,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ÕâÊÇÊ¹ÓÃ¿ª·¢¹¤¾ß dev-tools ×Ô¶¯´´½¨µÄ³ÌĞòÔ´ÎÄ¼ş 
+;; è¿™æ˜¯ä½¿ç”¨å¼€å‘å·¥å…· dev-tools è‡ªåŠ¨åˆ›å»ºçš„ç¨‹åºæºæ–‡ä»¶ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¶¨ÒåÅäÖÃÏî 'at-sidebar:first ÓÃÓÚ Ó¦ÓÃ°ü at-sidebar µÄ µÚÒ»¸öÅäÖÃÏî first 
-;; (@:define-config 'at-sidebar:first "ÎÒÊÇÅäÖÃÏî at-sidebar:first µÄÖµ" "Õâ¸öÅäÖÃÏîµÄÓÃÍ¾ËµÃ÷¡£")
-;; (@:get-config 'at-sidebar:first) ;; »ñÈ¡ÅäÖÃ¶¥µÄÖµ
-;; (@:set-config 'at-sidebar:first  "ĞÂÉèµÄÖµ") ;; ÉèÖÃÅäÖÃ¶¥µÄÖµ
-;; ÏòÏµÍ³ÖĞÌí¼Ó²Ëµ¥ 
-(@:add-menu "@²à±ßÀ¸" "¼ÓÔØ²à±ßÀ¸" "(at-sidebar:load)" )
-(@:add-menu "@²à±ßÀ¸" "±àÒë²à±ßÀ¸" "(at-sidebar:compile)" )
+;; å®šä¹‰é…ç½®é¡¹ 'at-sidebar:first ç”¨äº åº”ç”¨åŒ… at-sidebar çš„ ç¬¬ä¸€ä¸ªé…ç½®é¡¹ first 
+;; (@:define-config 'at-sidebar:first "æˆ‘æ˜¯é…ç½®é¡¹ at-sidebar:first çš„å€¼" "è¿™ä¸ªé…ç½®é¡¹çš„ç”¨é€”è¯´æ˜ã€‚")
+;; (@:get-config 'at-sidebar:first) ;; è·å–é…ç½®é¡¶çš„å€¼
+;; (@:set-config 'at-sidebar:first  "æ–°è®¾çš„å€¼") ;; è®¾ç½®é…ç½®é¡¶çš„å€¼
+;; å‘ç³»ç»Ÿä¸­æ·»åŠ èœå• 
+(@:add-menu "@ä¾§è¾¹æ " "åŠ è½½ä¾§è¾¹æ " "(at-sidebar:load)" )
+(@:add-menu "@ä¾§è¾¹æ " "ç¼–è¯‘ä¾§è¾¹æ " "(at-sidebar:compile)" )
 (defun at-sidebar:load ()
   (setq netdll
 	(strcat (@::package-path  "at-sidebar")
@@ -23,17 +23,17 @@
   (if (findfile netdll)
       (progn
 	;; (vla-Load (vla-GetInterfaceObject *ACAD* (findfile new-netdll)))
-	;;±È½ÏÔ´ºÍÄ¿±êÎÄ¼şÈ·¶¨ÊÇ·ñ±àÒë¡£
+	;;æ¯”è¾ƒæºå’Œç›®æ ‡æ–‡ä»¶ç¡®å®šæ˜¯å¦ç¼–è¯‘ã€‚
 	(if (< (@::mktime1900(vl-file-systime netdll))
 	       (@::mktime1900(vl-file-systime (strcat (@::package-path  "at-sidebar") "at-sidebar.slnx"))))
 	    (at-sidebar:compile))
-	;; ¸´ÖÆ×îĞÂÎÄ¼ş
+	;; å¤åˆ¶æœ€æ–°æ–‡ä»¶
 	(vl-file-copy netdll
 		      (setq new-netdll (strcat netdll "."(@::timestamp)".dll")))
 	(command-s "netload" (findfile new-netdll))
 	(command "@Palette"))
     (progn
-      (@::@log "INFO" "±àÒë at-sidebar, ÇëÔÚ±àÒë³É¹¦ºóÖØĞÂ¼ÓÔØ.")
+      (@::@log "INFO" "ç¼–è¯‘ at-sidebar, è¯·åœ¨ç¼–è¯‘æˆåŠŸåé‡æ–°åŠ è½½.")
       (at-sidebar:compile)
       )))
 (defun at-sidebar:compile ()
@@ -50,7 +50,7 @@
 		".dll"))
   
   (progn
-    (@::@log "INFO" "±àÒë at-sidebar")
+    (@::@log "INFO" "ç¼–è¯‘ at-sidebar")
     (if (or (system:which "dotnet")
 	    (findfile "C:\\Program Files\\dotnet\\dotnet.exe"))
 	(command "start"
@@ -58,7 +58,7 @@
 				   "compile.bat"))
 		 )
       (progn
-	(@::@log "WARN" "Ã»ÓĞ·¢ÏÖ .NET SDK¿ª·¢»·¾³,ÇëÔÚ³É¹¦°²×° .NET SDKºóÖØÊÔ.")
+	(@::@log "WARN" "æ²¡æœ‰å‘ç° .NET SDKå¼€å‘ç¯å¢ƒ,è¯·åœ¨æˆåŠŸå®‰è£… .NET SDKåé‡è¯•.")
 	(command "start"
 		 (findfile (strcat (@::package-path  "at-sidebar")
 				   "install-dotnet.bat"))
@@ -66,7 +66,7 @@
 	))
     ))
 (defun at-sidebar:make-pattern-img ()
-  "¿ª·¢°æ±¾"
+  "å¼€å‘ç‰ˆæœ¬"
   (setq pat-files (vl-directory-files (strcat @::*prefix*"pattern/") "*.pat" 1))
   (setq rec
 	(entity:make-rectangle '(0 0)'(200 200)))
@@ -95,7 +95,7 @@
   (while (setq line (read-line patfp))
     (cond
      ((= 42 (ascii line))
-      ;;¹Ø±ÕÇ°Ò»¸ö
+      ;;å…³é—­å‰ä¸€ä¸ª
       (if opatfp (close opatfp))
       (setq opatfile (vl-string-trim "*" (car (string:to-list line ","))))
       (setq opatfp (open (strcat @::*prefix* opatfile".pat")"w" "utf8"))
@@ -106,8 +106,8 @@
   (if patfp (close patfp))
   )
 (defun at-sidebar:make-library-img ()
-  "¿ª·¢°æ±¾"
-  (setq pat-files (vl-directory-files (strcat @::*prefix*"standard/lib/ËµÃ÷/") "*.dwg" 1))
+  "å¼€å‘ç‰ˆæœ¬"
+  (setq pat-files (vl-directory-files (strcat @::*prefix*"standard/lib/è¯´æ˜/") "*.dwg" 1))
   (setq rec
 	(entity:make-rectangle '(0 0)'(200 200)))
   (setq box (entity:getbox rec 0))
@@ -131,10 +131,10 @@
   (princ)
   )
 (defun at-sidebar:insertlib (blkname / dwgfile content)
-  ;; TODO: ÏÂÔØpat
+  ;; TODO: ä¸‹è½½pat
   (setq dwgfile (strcat @::*prefix* "dw/" blkname".dwg"))
   (@::mkdir (@::path (vl-filename-directory dwgfile)))
-  ;;±È½ÏÊ±¼ä
+  ;;æ¯”è¾ƒæ—¶é—´
   (if (or (not (findfile dwgfile))
       	  (< (@::mktime1900(vl-file-systime dwgfile))
 	     (@::get-filemtime-from-web blkname)))
@@ -152,17 +152,17 @@
 	(block:insert (last (@::path blkname))
 		      (@::path-os
 		       (strcat (vl-filename-directory dwgfile)"/"))
-		      (getpoint "Çë¸ø³ö²åÈëµã:") 0 1)
+		      (getpoint "è¯·ç»™å‡ºæ’å…¥ç‚¹:") 0 1)
 	)
-    (@::@log "WARN" "ÏÂÔØ Í¼¿â ÎÄ¼şÊ§°Ü")
+    (@::@log "WARN" "ä¸‹è½½ å›¾åº“ æ–‡ä»¶å¤±è´¥")
     ))
 (defun at-sidebar:hatch (patname / patfile content)
-  ;; TODO: ÏÂÔØpat
+  ;; TODO: ä¸‹è½½pat
   (setq patfile (strcat @::*prefix* patname".pat"))
   (if (and (not (findfile patfile))
 	   (setq content (@::@get (strcat (@::uri)"/dw/pat/"patname".pat"))))
       (progn
-	;;´¦ÀíÂÒÂë
+	;;å¤„ç†ä¹±ç 
 	(setq lines (string:to-list content "\n"))
 	(setq patfp  (open patfile "w"))
 	(write-line (strcat  "*" patname) patfp)
@@ -172,7 +172,7 @@
 		      (vl-string-trim "\r" line%)
 		      patfp)))
 	(close patfp))
-    (@::@log "WARN" "ÏÂÔØ pat ÎÄ¼şÊ§°Ü")
+    (@::@log "WARN" "ä¸‹è½½ pat æ–‡ä»¶å¤±è´¥")
     )
   
   (if (findfile patfile)
@@ -181,7 +181,7 @@
 	(command "-hatch")
 	)))
 (defun at-sidebar:solve-self-reference ()
-  "½â¾ö×Ô²ÎÕÕÎÊÌâ"
+  "è§£å†³è‡ªå‚ç…§é—®é¢˜"
   (if (member (setq bname (vl-filename-base(getvar "dwgname")))(block:list))
       (mapcar
        '(lambda(x)

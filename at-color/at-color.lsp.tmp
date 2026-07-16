@@ -1,0 +1,6 @@
+(@:add-menu (_ "Color") (_ "Modify color") "(at-color:change-color)")
+(@:add-menu (_ "Color") (_ "Remove TrueColor") "(at-color:del-rgb)")
+(@:add-menu (_ "Color") (_ "鍥惧彉鍗曡壊") "(at-color:one-color)")
+
+(defun at-color:one-color (/ color obj-color ents)
+  (@::prompt '("灏嗗浘绾稿彉涓哄崟涓€棰滆壊" "鎵€鏈夊浘鍧楀畾涔夊潎鍙樿壊" "鎵€閫夊浘鍏冨彉鑹诧紝濡傛灉娌℃湁閫夋嫨鍥惧厓锛屽垯鏁翠釜dwg鍧囧彉鑹

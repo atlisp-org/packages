@@ -1,0 +1,12 @@
+(("FL-PL"
+   ("TYPE" . "INLINE")
+   ("KEY" . "FL-PL-{PN}-{DN:0}")
+   ("DESC" . "鏉垮紡骞崇剨娉曞叞")
+   ("SIZEFILE" . "sizes\\Flange PN.csv")
+   ("PARAM"
+     ("PN" 1000
+           "娉曞叞鍘嬪姏绛夌骇"
+           ""
+           ("2.5" "6" "10" "16" "25" "40")
+     )
+     ("DN" 1070 "娉曞叞鍏

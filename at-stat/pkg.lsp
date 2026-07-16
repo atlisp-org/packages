@@ -1,5 +1,5 @@
 (@:def-pkg '((:NAME . "at-stat")
-        (:FULL-NAME . "Í³¼Æ±í¸ñ")
+        (:FULL-NAME . "ç»Ÿè®¡è¡¨æ ¼")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
         (:VERSION . "0.0.5")
@@ -7,7 +7,7 @@
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "Í³¼ÆÍ¼Ôª£¬²¢»æÖÆ±í¸ñ¡£")
+        (:DESCRIPTION . "ç»Ÿè®¡å›¾å…ƒï¼Œå¹¶ç»˜åˆ¶è¡¨æ ¼ã€‚")
         (:URL . "http://atlisp.cn")
         (:FILES "at-stat"
             "menus")))

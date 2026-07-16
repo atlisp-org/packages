@@ -1,8 +1,8 @@
 (@:add-menus
- '(("±ß½ç"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(boundary:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(boundary:hello)")))
-   ("±ß½ç1"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(boundary:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(boundary:hello)")))
+ '(("è¾¹ç•Œ"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(boundary:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(boundary:hello)")))
+   ("è¾¹ç•Œ1"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(boundary:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(boundary:hello)")))
    )

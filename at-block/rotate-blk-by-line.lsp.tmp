@@ -1,0 +1,2 @@
+(defun @block:rotate-blk-by-line()
+  (@:prompt '("閫夋嫨鍧楀唴涓€鏉＄洿绾匡紝鎸夎

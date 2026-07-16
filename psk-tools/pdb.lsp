@@ -23,7 +23,7 @@
 )
 
 (defun pdb-list-update (ctl idx text /)
-  (start_list ctl 1 idx) ;_ 修改指定位置上的数据
+  (start_list ctl 1 idx) ;_ 淇敼鎸囧畾浣嶇疆涓婄殑鏁版嵁
   (add_list text)
   (end_list)
 )
@@ -78,8 +78,8 @@
       ;; TODO
 ;;;      (if (cdr init)
 ;;;	(vl-catch-all-apply (car init) (cdr init))
-	(if (or	(= 'usubr (type init)) ;_ 加载lsp
-		(= 'subr (type init)) ;_ 编译后fas
+	(if (or	(= 'usubr (type init)) ;_ 鍔犺浇lsp
+		(= 'subr (type init)) ;_ 缂栬瘧鍚巉as
 	    )
 	  (vl-catch-all-apply (function init))
 	)

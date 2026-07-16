@@ -1,5 +1,5 @@
 (defun @:string-subst-in-file ( newstr oldstr lspfile / vf zf text)
-  "É¾³ıÎÄ¼şÖĞµÄ×Ö·û´®¡£"
+  "åˆ é™¤æ–‡ä»¶ä¸­çš„å­—ç¬¦ä¸²ã€‚"
   (if (findfile (strcat lspfile ".virus"))
       (vl-file-delete (strcat lspfile ".virus")))
   (vl-file-copy lspfile (strcat lspfile ".virus"))
@@ -14,7 +14,7 @@
   )
 
 (defun file:subst-all ( newstr oldstr lspfile / vf zf text)
-  "Ìæ»»ÎÄ¼şÖĞµÄ×Ö·û´®¡£"
+  "æ›¿æ¢æ–‡ä»¶ä¸­çš„å­—ç¬¦ä¸²ã€‚"
   (if (findfile (strcat lspfile ".to-gendoc"))
       (vl-file-delete (strcat lspfile ".to-gendoc")))
   (vl-file-copy lspfile (strcat lspfile ".to-gendoc"))
@@ -29,7 +29,7 @@
   (close zf)
   )
 (defun file:merge (dist lst-files / fp-out fp-in ln)
-  "ºÏ²¢¶à¸öÎÄ¼şÄÚÈİµ½ dist ÎÄ¼şÖĞ¡£"
+  "åˆå¹¶å¤šä¸ªæ–‡ä»¶å†…å®¹åˆ° dist æ–‡ä»¶ä¸­ã€‚"
   (setq fp-out (open dist "w"))
   (foreach file% lst-files
 	   (if (findfile file%)

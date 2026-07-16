@@ -1,4 +1,4 @@
-;; Ç½ÆğÖÕµãp1 p2 ÔÚÇ½ÏßÔÚÄÄÒ»²à»­ a »æÖÆ¸ß¶È(Ò»°ëµÄ»æÖÆÇø¸ß) h ÅÌ¹Ü¾àÇ½d1 ÅÌ¹Ü¼ä¾àd2
+;; å¢™èµ·ç»ˆç‚¹p1 p2 åœ¨å¢™çº¿åœ¨å“ªä¸€ä¾§ç”» a ç»˜åˆ¶é«˜åº¦(ä¸€åŠçš„ç»˜åˆ¶åŒºé«˜) h ç›˜ç®¡è·å¢™d1 ç›˜ç®¡é—´è·d2
 (defun psk-draw-dnpg (p1 p2 a h d1 d2 / a1 h1 p11 p12)
   (setq a1  (angle p1 p2)
         p11 (polar (polar p1 a1 d1) a d1)
@@ -18,15 +18,15 @@
   )
 )
 (defun c:tt (/ p1 p2 p3 p4 size)
-  (if (and (setq p1 (getpoint "\nÖ¸¶¨Æğµã:"))
-           (setq p2 (getcorner p1 "\nÖ¸¶¨¶Ô½Çµã:"))
+  (if (and (setq p1 (getpoint "\næŒ‡å®šèµ·ç‚¹:"))
+           (setq p2 (getcorner p1 "\næŒ‡å®šå¯¹è§’ç‚¹:"))
       )
     (progn
       (setq p3   (list (car p2) (cadr p1) 0)
             p4   (list (car p1) (cadr p2) 0)
-            d1   100 ;_ ¾àÇ½
-            d2   300 ;_ ¹Ü¼ä¾à
-;;;            a    100 ;_ µ¹½Ç
+            d1   100 ;_ è·å¢™
+            d2   300 ;_ ç®¡é—´è·
+;;;            a    100 ;_ å€’è§’
             size (mapcar '- p2 p1)
             a1   (angle p1 p4)
       )

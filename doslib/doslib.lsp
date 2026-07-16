@@ -1,10 +1,10 @@
 (defun doslib:load (/ vers arxname darx *error* filesize)
-  (defun *error* (msg) ;;´íÎóÖĞ¶ÏÌáÊ¾
-    (princ (strcat "\n³ÌĞò¼ÓÔØÊ§°Ü£¬ÎÄ¼ş " arxname " È±Ê§")) (princ) )
+  (defun *error* (msg) ;;é”™è¯¯ä¸­æ–­æç¤º
+    (princ (strcat "\nç¨‹åºåŠ è½½å¤±è´¥ï¼Œæ–‡ä»¶ " arxname " ç¼ºå¤±")) (princ) )
   
   (setq vers (substr (getvar "acadver") 1 2))
   (setq arxname (strcat "DOSLib" vers (if (= (getenv "PROCESSOR_ARCHITECTURE") "AMD64") "x64" "") ".arx")) 
-  (if (or(null (findfile arxname)) ;; Ã»ÓĞ arx ÎÄ¼ş£¬»ò´óĞ¡²»Ò»ÖÂĞèÏÂÔØ
+  (if (or(null (findfile arxname)) ;; æ²¡æœ‰ arx æ–‡ä»¶ï¼Œæˆ–å¤§å°ä¸ä¸€è‡´éœ€ä¸‹è½½
 	 (and (setq filesize (@:get-filesize-from-web (strcat "doslib/" arxname)))
 	  (< (vl-file-size (strcat @:*prefix* "packages/doslib/" arxname))
 	     filesize)))
@@ -20,15 +20,15 @@
 	      (vl-file-copy (strcat @:*prefix* "packages/doslib/" arxname)
 			    (strcat @:*prefix* arxname))
 	      ))
-	(if (and (setq doslib-arx (findfile arxname)) ;; ÓĞ doslib ÎÄ¼ş 
+	(if (and (setq doslib-arx (findfile arxname)) ;; æœ‰ doslib æ–‡ä»¶ 
 		 (= (vl-file-size (strcat @:*prefix* "packages/doslib/" arxname))
 		    (vl-file-size doslib-arx)))
-	    (if (null (member arxname (arx))) ;; »¹Ã»¼ÓÔØ
+	    (if (null (member arxname (arx))) ;; è¿˜æ²¡åŠ è½½
 		(arxload doslib-arx))
 	  (progn
 	    (vl-file-copy (strcat @:*prefix* "packages/doslib/" arxname)
 			  (strcat @:*prefix* arxname))
-	    (if (null (member arxname (arx))) ;; »¹Ã»¼ÓÔØ
+	    (if (null (member arxname (arx))) ;; è¿˜æ²¡åŠ è½½
 		(arxload doslib-arx))
 	    )))
       (arxload arxname)))

@@ -4,8 +4,8 @@
       (progn
 	(defun Load_OdclRuntime (/ vers arxname darx filesize)
           (setq vers (substr (getvar "acadver") 1 2))
-          (setq arxname (strcat "OpenDCL." (if (= (getenv "PROCESSOR_ARCHITECTURE") "AMD64") "x64." "") vers ".arx"))  ;;Çø·Ö CAD Î»
-	  (if (null (findfile arxname)) ;; Ã»ÓĞ arx ÎÄ¼ş£¬ĞèÏÂÔØ
+          (setq arxname (strcat "OpenDCL." (if (= (getenv "PROCESSOR_ARCHITECTURE") "AMD64") "x64." "") vers ".arx"))  ;;åŒºåˆ† CAD ä½
+	  (if (null (findfile arxname)) ;; æ²¡æœ‰ arx æ–‡ä»¶ï¼Œéœ€ä¸‹è½½
 	      (if (and (@:load-module 'pkgman)
 		       (setq filesize (@:get-filesize-from-web (strcat "opendcl/" arxname)))
 	               (or (< (vl-file-size (strcat @:*prefix* "packages/opendcl/" arxname))
@@ -44,8 +44,8 @@
 				  (strcat @:*prefix* "Runtime.Res.dll"))
 		    (vl-file-copy (strcat @:*prefix* "packages/opendcl/ENU/Runtime.Res.dll")
 				  (strcat @:*prefix* "Runtime.Res.dll"))))))
-        (Load_OdclRuntime) ;;ÔËĞĞ¼ÓÔØº¯Êı
-        (setq Load_OdclRuntime nil) ;;ÊÍ·Å¼ÓÔØº¯Êı
+        (Load_OdclRuntime) ;;è¿è¡ŒåŠ è½½å‡½æ•°
+        (setq Load_OdclRuntime nil) ;;é‡Šæ”¾åŠ è½½å‡½æ•°
 	)
       )
   )

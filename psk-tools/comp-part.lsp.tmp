@@ -1,0 +1,72 @@
+
+
+;; (setq key (psk-part-create "DUCT-STOR" '(("W" . 500) ("H" . 250) ("D" . 320) ("L" . 300))))
+;;;(defun psk-part-create (en key /)
+;;;  (cons (cons ".TYPE" name) prop)
+;;;)
+
+(defun psk-part-getdef (name)
+  (p-get $psk-keys name)
+)
+
+;;;_$ (psk-part-gettype (psk-part-getdef "SS"))
+;;;"ATTACH"
+(defun psk-part-gettype (keydef)
+  (p-get keydef ".TYPE")
+)
+
+;;;_$ (psk-part-getdrawfunc (psk-part-getdef "SS"))
+;;;PSK-DRAW-SINGLESHUTTER
+(defun psk-part-getdrawer (keydef)
+  (p-get keydef "DRAWER")
+)
+
+;;;_$ (psk-part-getdrawparam (psk-part-getdef "SS"))
+;;;("A" "B")
+(defun psk-part-getdrawparam (keydef)
+  (cadr (p-get keydef "DRAWER"))
+)
+
+(defun psk-part-getparam (keydef)
+  (mapcar 'car (p-get keydef "PARAM"))
+)
+
+;; (psk-part-getkeytemplate (psk-part-getdef key))
+(defun psk-part-getkeytemplate (keydef)
+  (p-get keydef "KEY")
+)
+
+;; (psk-part-evalkey '((".TYPE" . "DUCT-STOR") ("W" . 500) ("H" . 250) ("D" . 320) ("L" . 300)))
+(defun psk-part-evalkey (key / keydef templ)
+  (setq keydef (psk-part-getdef (p-get key ".TYPE"))
+        templ  (psk-part-getkeytemplate keydef)
+  )
+  (p-template-eval templ key)
+)
+
+
+;; (setq $psk-block-base '(0 0) $psk-block-angle 0.)
+;; (psk-part-draw '((".TYPE" . "DUCT-STOR") ("W" . 500) ("H" . 250) ("D" . 320) ("L" . 300)))
+(defun psk-part-draw (key / e func keydef param)
+;;;  (psk-set-customlayerbyid
+;;;    (strcat (p-get key "SERV") "-DUCT")
+;;;  )
+
+  (setq def (psk-part-getdef (p-get key ".TYPE")))
+
+  (if (null def)
+    (setq def (p-get $psk-pipe-parts (p-get key ".TYPE")))
+  )
+
+  (setq templ    (p-get def "KEY")
+        sizefile (p-get def "SIZEFILE")
+        drawer   (car (p-get def "DRAWER"))
+        func     (car drawer)
+        param    (cdr drawer)
+  )
+
+  (if (and templ sizefile)
+    (setq key (append key (psk-csvfile-get sizefile (p-template-eval templ key))))
+  )
+
+  ;; ("W" 50) 澶勭悊 瀛楃

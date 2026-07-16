@@ -61,13 +61,13 @@
 
 (setq $psk-last-flr 500.)
 ;;;(defun c:sumbranchs ()
-;;;  (p-commandrun '(psk-path-sum (psk-comp-buildmap (psk-comps-all) (getpoint)) (p-edit-value "输入末端流量" $psk-last-flr)))
+;;;  (p-commandrun '(psk-path-sum (psk-comp-buildmap (psk-comps-all) (getpoint)) (p-edit-value "杈撳叆鏈娴侀噺" $psk-last-flr)))
 ;;;)
 
 (defun movepath	(resize / en pf pt)
   (if (and (setq en (car (entsel)))
-	   (setq pf (trans (getpoint "指定管口") 1 0))
-	   (setq pt (trans (getpoint pf "指定管口的新位置") 1 0))
+	   (setq pf (trans (getpoint "鎸囧畾绠″彛") 1 0))
+	   (setq pt (trans (getpoint pf "鎸囧畾绠″彛鐨勬柊浣嶇疆") 1 0))
       )
     (progn
       (psk-path-moveport en pf pt resize)
@@ -90,7 +90,7 @@
 )
 
 (defun c:pskdn (/)
-  (setq r (p-confirm "重置管道DN" "N"))
+  (setq r (p-confirm "閲嶇疆绠￠亾DN" "N"))
   (if (= r "Y")
     (setq r t)
     (setq r nil)

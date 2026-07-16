@@ -1,10 +1,10 @@
 (@:def-pkg '((:NAME . "psk-tools")
-        (:FULL-NAME . "�ܵ���⹤��")
+        (:FULL-NAME . "管道求解工具")
         (:AUTHOR . "vectra")
         (:EMAIL . "vitalgg@foxmail.com")
         (:VERSION . "0.3.5")
-        (:DESCRIPTION . "�ܵ���⹤����һ���������ȡ����ҵACS10.0��ůͨ�յ���ͼ�����")
-        (:CATEGORY . "ůͨ")
+        (:DESCRIPTION . "管道求解工具是一款设计用以取代鸿业ACS10.0的暖通空调绘图插件。")
+        (:CATEGORY . "暖通")
         (:URL . "http://atlisp.cn")
         (:FILES "psk-tools"
             "menu"

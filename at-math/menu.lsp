@@ -1,8 +1,8 @@
-(@:add-menus '(("ÊıÑ§2"
-		("·¶Î§Ñ¡Êı" "(@math:select-number)")
-		("ÏßÓò±êÊı" "(@math:mark-in-lwpl)")
-		("¿òÑ¡±êÊı" "(@math:mark-in-w)")
-		("ÌáÎïÀíÁ¿" "(@math:unit-number)")
-		("´úÊıÔËËã" "(@m:cal-text-post)")
+(@:add-menus '(("æ•°å­¦2"
+		("èŒƒå›´é€‰æ•°" "(@math:select-number)")
+		("çº¿åŸŸæ ‡æ•°" "(@math:mark-in-lwpl)")
+		("æ¡†é€‰æ ‡æ•°" "(@math:mark-in-w)")
+		("æç‰©ç†é‡" "(@math:unit-number)")
+		("ä»£æ•°è¿ç®—" "(@m:cal-text-post)")
 		)
 	       ))

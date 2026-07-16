@@ -4,14 +4,14 @@
 	  (cons (car x) (cons (cdr x) 
 			      'entity)))
        '(
-	 ("ÌìÕý±ê×¢" . "TCH_DIMENSION*")
-	 ("ÃÅ´°" . "TCH_OPENING")
-	 ("Ç½Ìå" . "TCH_WALL")
-	 ("Ç½" . "TCH_WALL")
-	 ("Öù" . "TCH_COLUMN")
-	 ("Â¥ÌÝ"  . "TCH_MULTISTAIR")
-	 ("·¿¼ä" . "TCH_SPACE")
-	 ("±ê¸ß" . "TCH_ELEVATION")
+	 ("å¤©æ­£æ ‡æ³¨" . "TCH_DIMENSION*")
+	 ("é—¨çª—" . "TCH_OPENING")
+	 ("å¢™ä½“" . "TCH_WALL")
+	 ("å¢™" . "TCH_WALL")
+	 ("æŸ±" . "TCH_COLUMN")
+	 ("æ¥¼æ¢¯"  . "TCH_MULTISTAIR")
+	 ("æˆ¿é—´" . "TCH_SPACE")
+	 ("æ ‡é«˜" . "TCH_ELEVATION")
 	 )))
 (setq at-nlp:*tangent-attribute*
       (mapcar
@@ -19,7 +19,7 @@
 	  (cons (car x) (cons (cdr x) 
 			      'attribute)))
        '(
-	 ("Ç½¸ß" . 39)
-	 ("Öù¸ß" . 149)
-	 ("×ó²à¿í" . 47)
+	 ("å¢™é«˜" . 39)
+	 ("æŸ±é«˜" . 149)
+	 ("å·¦ä¾§å®½" . 47)
 	 )))

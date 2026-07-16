@@ -1,0 +1,7 @@
+(@:add-menu "澶栭儴绋嬪簭" "Everything" "(everything:start)" )
+(defpackage :everything 
+  (:use :cl)
+  (:export :open)
+  )
+(defun everything:start ( / app )
+  ;; 鍙

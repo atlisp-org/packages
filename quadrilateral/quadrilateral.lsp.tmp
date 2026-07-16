@@ -1,0 +1,10 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; This file was created by @lisp DEV-tools
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; define a first config item  'quadrilateral:first for package quadrilateral 's configitem first 
+;; (@:define-config 'quadrilateral:first "I'm th default value for quadrilateral:first" "This Item 's Explain.")
+;; (@:get-config 'quadrilateral:first) 
+;; (@:set-config 'quadrilateral:first  "New Value")
+;; Add menu in @lisp panel
+(@:define-config 'quadrilateral:scale 1  "缁樺浘姣斾緥")
+(@:define-config 'quadrilateral:evalcode "" "鎵ц

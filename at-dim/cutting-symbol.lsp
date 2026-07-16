@@ -19,7 +19,7 @@
 			     )))
     (princ msg)
     )
-  (setq cutmode 1 ;;·ûºÅÄ£Ê½
+  (setq cutmode 1 ;;ç¬¦å·æ¨¡å¼
 	loopit t)
   (setvar "CELTYPE" "BYLAYER")
   (if (null (tblsearch "ltype" "DASHED"))
@@ -42,13 +42,13 @@
     )
   (while (progn
 	   (initget "S")
-	   (if (= (setq s (getpoint (@:speak "Ö¸¶¨ÆÊÇĞÏßÆğÊ¼µã,»ò²¶×½¶ÔÆëµã,»ò[ÉèÖÃ(S)]:")))
+	   (if (= (setq s (getpoint (@:speak "æŒ‡å®šå‰–åˆ‡çº¿èµ·å§‹ç‚¹,æˆ–æ•æ‰å¯¹é½ç‚¹,æˆ–[è®¾ç½®(S)]:")))
 		  "S"
 		  )
 	       (progn
 		 (dcl:dialog "cuttingSetting")
-		 (dcl:input "txtHeight" "ÎÄ×Ö¸ß¶È" "3.5" "")
-		 (dcl:input "arrowSize" "¼ıÍ·´óĞ¡" "3.5" "")
+		 (dcl:input "txtHeight" "æ–‡å­—é«˜åº¦" "3.5" "")
+		 (dcl:input "arrowSize" "ç®­å¤´å¤§å°" "3.5" "")
 		 (dcl:dialog-end-ok-cancel)
 		 (dcl:new "cuttingSetting")
 		 (set_tile "txtHeight" (rtos (* cscale 4)))
@@ -63,9 +63,9 @@
 	   )
     )
   (if (ssget "c" pt0 pt0)
-      (setq pt0 (getpoint pt0 (@:speak"Ö¸¶¨Æğµã£º")))
+      (setq pt0 (getpoint pt0 (@:speak"æŒ‡å®šèµ·ç‚¹ï¼š")))
     )
-  (@:prompt (strcat "\nÖ¸¶¨¼ıÍ··½Ïò,»ò·ûºÅ:<" cutn  ">,ÓÒ¼üÏòÊÓ"))
+  (@:prompt (strcat "\næŒ‡å®šç®­å¤´æ–¹å‘,æˆ–ç¬¦å·:<" cutn  ">,å³é”®å‘è§†"))
   
   (setq l0
 	(entity:putdxf
@@ -107,17 +107,17 @@
 		 data (cadr gr)
 		 )
 	   (cond
-	    ((= code 2)	       ; ¼üÅÌÇøÓò
+	    ((= code 2)	       ; é”®ç›˜åŒºåŸŸ
 	     (redraw)
 	     (if (= data 15)
 		 (progn
 		   (if (= (getvar "ORTHOMODE") 0)
 		       (progn
-			 (@:prompt "<Õı½» ¿ª>")
+			 (@:prompt "<æ­£äº¤ å¼€>")
 			 (setvar "orthomode" 1)
 			 )
 		     (progn
-		       (@:prompt "<Õı½» ¹Ø>")
+		       (@:prompt "<æ­£äº¤ å…³>")
 		       (setvar "orthomode" 0)
 		       )
 		     )
@@ -133,13 +133,13 @@
 		   )
 	       )
 	     (if (= cutmode 1)
-		 (@:prompt(strcat "\nÖ¸¶¨¼ıÍ··½Ïò,»ò·ûºÅ:<" cutn  ">,ÓÒ¼üÏòÊÓ"))
+		 (@:prompt(strcat "\næŒ‡å®šç®­å¤´æ–¹å‘,æˆ–ç¬¦å·:<" cutn  ">,å³é”®å‘è§†"))
 	       )
 	     (if (= cutmode 3)
-		 (@:prompt(strcat "\nÖ¸¶¨¼ıÍ··½Ïò,»ò·ûºÅ:<" cutn  ">,ÓÒ¼üÆÊÊÓ"))
+		 (@:prompt(strcat "\næŒ‡å®šç®­å¤´æ–¹å‘,æˆ–ç¬¦å·:<" cutn  ">,å³é”®å‰–è§†"))
 	       )
 	     )
-	    ((= code 3)	    ; Êó±ê×ó»÷,±êË÷ÒıÏêÍ¼ºÅ
+	    ((= code 3)	    ; é¼ æ ‡å·¦å‡»,æ ‡ç´¢å¼•è¯¦å›¾å·
 	     (redraw)
 	     (cond
 	      ((= cutmode 1)
@@ -205,11 +205,11 @@
 		      nil
 		      0 
 		      0 0))
-	       (@:prompt "\nÖ¸¶¨²åÈëµã:")
+	       (@:prompt "\næŒ‡å®šæ’å…¥ç‚¹:")
 	       )
 	      )
 	     )
-	    ((= code 5)   ;; Êó±êÒÆ¶¯
+	    ((= code 5)   ;; é¼ æ ‡ç§»åŠ¨
 	     (if (= (getvar "ORTHOMODE") 1)
 		 (progn
 		   (setq x0 (car pt0)
@@ -238,7 +238,7 @@
 					   (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* cscale 4)))
 
 				     )
-		   ;; ÎÄ×ÖÎ»ÖÃ
+		   ;; æ–‡å­—ä½ç½®
 		   (entity:putdxf cuttext1  11
 				  (polar pt0(m:fix-angle (- r (* 0.5 pi))) (* cscale 6)))
 		   
@@ -254,7 +254,7 @@
 		   (entity:putdxf cuttext2 50(m:fix-angle (- r (* 0.5 pi))))
 		   ))
 	     (if (= cutmode 2)
-		 (progn ;; ÒÆ¶¯detail
+		 (progn ;; ç§»åŠ¨detail
 		   (entity:putdxf cutdetail-text 11 data)
 		   (setq box (text:box cutdetail-text))
 		   (curve:put-points cutdetail-l1
@@ -272,7 +272,7 @@
 						 (* cscale 1.5)))
 					     (list (car box)(cadr box))))
 		   ))
-	     (if (= cutmode 3);;ÏòÊÓ
+	     (if (= cutmode 3);;å‘è§†
 		 (progn
 		   (entity:putdxf l0 11 pt)
 		   (curve:put-points
@@ -308,19 +308,19 @@
 		   )
 	       ))
 	    
-	    ((or(= code 11) (= code 25));; Êó±êÓÒ»÷
+	    ((or(= code 11) (= code 25));; é¼ æ ‡å³å‡»
 	     (if (= cutmode 1)
 		 (progn
-		   (@:prompt (strcat "\nÖ¸¶¨¼ıÍ··½Ïò,»ò·ûºÅ:<" cutn  ">,ÓÒ¼üÆÊÊÓ"))
+		   (@:prompt (strcat "\næŒ‡å®šç®­å¤´æ–¹å‘,æˆ–ç¬¦å·:<" cutn  ">,å³é”®å‰–è§†"))
 		   (setq cutmode 3)
-		   ;;É¾³ıÆÊÊÓ
+		   ;;åˆ é™¤å‰–è§†
 		   (mapcar '(lambda(x)
 			      (if (e2o x)
 				  (vla-put-visible
 				   (e2o x)
 				   :vlax-false)))
 			   (list cutline2 cuttext2))
-		   ;;»æÖÆÏòÊÓ(¸Äline1 text1)
+		   ;;ç»˜åˆ¶å‘è§†(æ”¹line1 text1)
 		   (curve:put-points
 		    curline1
 		    (list pt0
@@ -328,7 +328,7 @@
 			  (polar pt0 pi (* cscale 10))
 			  (polar pt0 pi (* cscale 12))
 			  ))
-		   (entity:putdxf cuttext11 1 (strcat cutn  "Ïò"))
+		   (entity:putdxf cuttext11 1 (strcat cutn  "å‘"))
 		   (entity:putdxf cuttext11 11
 				  (polar
 				   (point:mid
@@ -343,9 +343,9 @@
 		   )
 	       (if (= cutmode 3)
 		   (progn
-		     (@:prompt (strcat "\nÖ¸¶¨¼ıÍ··½Ïò,»ò·ûºÅ:<" cutn ">,ÓÒ¼üÏòÊÓ"))
+		     (@:prompt (strcat "\næŒ‡å®šç®­å¤´æ–¹å‘,æˆ–ç¬¦å·:<" cutn ">,å³é”®å‘è§†"))
 		     (setq cutmode 1)
-		     ;; line1 text1 ¸ÄÆÊÊÓĞÎÌ¬
+		     ;; line1 text1 æ”¹å‰–è§†å½¢æ€
 		     (or r (setq r (* 0.5 pi)))
 		     (curve:put-points cutline1
 				       (list (polar pt0 r (* cscale 4))

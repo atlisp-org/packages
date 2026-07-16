@@ -17,7 +17,7 @@
 (defun p-error-handler (s)
   (if (or (= s "Function cancelled")
 	  (= s "quit / exit abort")
-	  (= s "º¯Êı±»È¡Ïû")
+	  (= s "å‡½æ•°è¢«å–æ¶ˆ")
       )
     (princ)
     (princ s)
@@ -31,12 +31,12 @@
 
 
 (defun p-osnap-disable ()
-  ;; ½ö±£´æµÚÒ»´Îµ÷ÓÃp-osnap-disableÊ±µÄosmode Öµ
+  ;; ä»…ä¿å­˜ç¬¬ä¸€æ¬¡è°ƒç”¨p-osnap-disableæ—¶çš„osmode å€¼
   (if (null $p-saved-osmode)
     (setq $p-saved-osmode (getvar "OSMODE"))
   )
   (if (< $p-saved-osmode 16384)
-    (setvar "OSMODE" (+ $p-saved-osmode 16384)) ;_ ½ûÓÃ²¶×½
+    (setvar "OSMODE" (+ $p-saved-osmode 16384)) ;_ ç¦ç”¨æ•æ‰
   )
 )
 
@@ -86,8 +86,8 @@
 	  value	(cdr pair)
 	  old	(getvar name)
     )
-    ;; Èç¹ûold = nil£¬¿ÉÄÜÊÇµ±Ç°CAD°æ±¾²»Ö§³Ö¸Ã±äÁ¿
-    ;; ´ËÊ±·ÅÆú¶Ô±äÁ¿½øĞĞĞŞ¸Ä
+    ;; å¦‚æœold = nilï¼Œå¯èƒ½æ˜¯å½“å‰CADç‰ˆæœ¬ä¸æ”¯æŒè¯¥å˜é‡
+    ;; æ­¤æ—¶æ”¾å¼ƒå¯¹å˜é‡è¿›è¡Œä¿®æ”¹
     (if	old
       (progn
 	(setq changed (cons (cons name old) changed))
@@ -95,7 +95,7 @@
       )
     )
   )
-  (reverse changed) ;_ ·µ»Ø¾ÉÖµÁĞ±í
+  (reverse changed) ;_ è¿”å›æ—§å€¼åˆ—è¡¨
 )
 
 
@@ -149,7 +149,7 @@
   (princ)
 )
 
-;;; BOOKMARK ÊıÑ§Ïà¹Ø
+;;; BOOKMARK æ•°å­¦ç›¸å…³
 
 
 
@@ -180,7 +180,7 @@
   (mapcar '- v)
 )
 
-;;;;;; ÅĞ¶Ï¶şÊ¸Á¿µÄ·½ÏòÇé¿ö:  1 = Í¬Ïò, -1 = ·´Ïò, 0 = ´¹Ö±
+;;;;;; åˆ¤æ–­äºŒçŸ¢é‡çš„æ–¹å‘æƒ…å†µ:  1 = åŒå‘, -1 = åå‘, 0 = å‚ç›´
 ;;;_$ (p-vector-dotproduct '(1 0 0) '(1 0 0))
 ;;;1
 ;;;_$ (p-vector-dotproduct '(1 0 0) '(0 1 0))
@@ -197,7 +197,7 @@
   (p-vector-normal (mapcar '- p2 p1))
 )
 
-;;;  ·µ»ØÁ½µ¥Î»Ê¸Á¿µÄ¼Ğ½Ç, ·µ»Ø¼Ğ½Ç·¶Î§ÔÚ 0 ~ pi/2
+;;;  è¿”å›ä¸¤å•ä½çŸ¢é‡çš„å¤¹è§’, è¿”å›å¤¹è§’èŒƒå›´åœ¨ 0 ~ pi/2
 ;;;_$ (p-vector-angle2 '(1 0 0) '(0 1 0))
 ;;;1.5708
 ;;;_$ (p-vector-angle2 '(1 0 0) '(-1 0 0))
@@ -213,7 +213,7 @@
 )
 
 
-;;; ·µ»Ø¶şÎ¬Ê¸Á¿ÔÚÆ½ÃæÖĞµÄ½Ç¶È
+;;; è¿”å›äºŒç»´çŸ¢é‡åœ¨å¹³é¢ä¸­çš„è§’åº¦
 ;;;_$ (p-vector-angle '(1 1))
 ;;;0.785398
 (defun p-vector-angle (v /)
@@ -245,12 +245,12 @@
     (setq bulge (tan (/ (- pi (acos (abs dot))) 4.0)))
   )
 
-  ;; ½«Ê¸Á¿ V1 (p1 -> p2), V2 (p1 -> pc)Ò»ÆğÑØ p1 µãĞı×ª, Ê¹ V1 Óë X ÖáÕıÏòÒ»ÖÂ, ´ËÊ±
-  ;; V2 µÄ·½Ïò¼´¿ÉÈ·¶¨Í¹¶ÈÊÇÕı»¹ÊÇ¸º
+  ;; å°†çŸ¢é‡ V1 (p1 -> p2), V2 (p1 -> pc)ä¸€èµ·æ²¿ p1 ç‚¹æ—‹è½¬, ä½¿ V1 ä¸ X è½´æ­£å‘ä¸€è‡´, æ­¤æ—¶
+  ;; V2 çš„æ–¹å‘å³å¯ç¡®å®šå‡¸åº¦æ˜¯æ­£è¿˜æ˜¯è´Ÿ
 
   (setq a2 (- a2 a1))
-  ;; (- a2 a1) ¼´Îª V1 Óë X ÖáÕıÏòÒ»ÖÂÊ±, V2 Óë X ÖáËù³ÉµÄ½Ç¶È (-pi ~ pi)
-  ;; ´ËÖµÎªÕıÊ±, »¡ÑØË³Ê±Õë·½ÏòĞı×ª, Í¹¶ÈÎª¸º
+  ;; (- a2 a1) å³ä¸º V1 ä¸ X è½´æ­£å‘ä¸€è‡´æ—¶, V2 ä¸ X è½´æ‰€æˆçš„è§’åº¦ (-pi ~ pi)
+  ;; æ­¤å€¼ä¸ºæ­£æ—¶, å¼§æ²¿é¡ºæ—¶é’ˆæ–¹å‘æ—‹è½¬, å‡¸åº¦ä¸ºè´Ÿ
   (if (or
 	(and (>= a2 0) (< a2 pi))
 	(and (< a2 0) (< a2 (- pi)))
@@ -302,7 +302,7 @@
 )
 
 
-;; ¹æÕû»¯½Ç¶ÈÔÚ-pi/2 ~ pi/2
+;; è§„æ•´åŒ–è§’åº¦åœ¨-pi/2 ~ pi/2
 (defun p-angle-regular (a)
   (if (> a $pi/2)
     (- a pi)
@@ -313,7 +313,7 @@
   )
 )
 
-;; ¹æÕû»¯½Ç¶ÈÔÚ 0-2pi
+;; è§„æ•´åŒ–è§’åº¦åœ¨ 0-2pi
 (defun p-angle-normal (a)
   (setq a (rem a $2pi))
   (if (< a 0)
@@ -321,7 +321,7 @@
   )
   a
 )
-;; ÇóÁ½½ÇµÄ¼Ğ½Ç·µ»ØÖµ·¶Î§ 0-pi bugĞŞÕı2012-2-15
+;; æ±‚ä¸¤è§’çš„å¤¹è§’è¿”å›å€¼èŒƒå›´ 0-pi bugä¿®æ­£2012-2-15
 ;;;_$ (p-angle-include (* 0.5 pi) (* -0.5 pi))
 ;;;3.14159
 ;;;_$ (p-angle-include 0 $2pi)
@@ -348,7 +348,7 @@
 ;;;  (or (equal a pi 1e-3) (equal a 0. 1e-3))
 ;;;)
 
-;; 2022-5-26: ceilingÓëroundº¯ÊıÃû³Æ»¥»»£¬ÒÔÓëexcelÖĞµÄº¬ÒåÍ³Ò»
+;; 2022-5-26: ceilingä¸roundå‡½æ•°åç§°äº’æ¢ï¼Œä»¥ä¸excelä¸­çš„å«ä¹‰ç»Ÿä¸€
 ;;;_$ (p-ceiling pi 5)
 ;;;3.142
 (defun p-ceiling (f num / f1)
@@ -364,7 +364,7 @@
 ;;;150
 (defun p-round (f dig /)
 ;;;  (setq num (expt 10. dig))
-;;;  (/ (fix (+ 0.5 (* f num))) num) Êı¾İ¿ÉÄÜÒç³ö£¬·ÏÆú
+;;;  (/ (fix (+ 0.5 (* f num))) num) æ•°æ®å¯èƒ½æº¢å‡ºï¼ŒåºŸå¼ƒ
   (- f (rem f (expt 0.1 dig)))
 )
 
@@ -470,14 +470,14 @@
 )
 
 
-;;; ·µ»ØÖ¸¶¨ÊµÀıÄÚµÄµãµÄWCS×ø±êÖµ
-;;; p ¿é¶¨ÒåÄÚµÄµã
-;;; insert ¿éÊµÀıÍ¼Ôª
+;;; è¿”å›æŒ‡å®šå®ä¾‹å†…çš„ç‚¹çš„WCSåæ ‡å€¼
+;;; p å—å®šä¹‰å†…çš„ç‚¹
+;;; insert å—å®ä¾‹å›¾å…ƒ
 (defun p-block-trans (p geom /)
   (mapcar '+ (p-mxv (car geom) p) (cadr geom))
 )
 
-;; ¿é¶¨ÒåÖĞµÄ¶ÔÏó °üÀ¨ÊôĞÔ¶¨Òå
+;; å—å®šä¹‰ä¸­çš„å¯¹è±¡ åŒ…æ‹¬å±æ€§å®šä¹‰
 ;; (p-block-items "A$C3CA026BF")
 ;; (mapcar '(lambda (e) (p-dxf e 0)) (p-block-items "A$C3CA026BF"))
 ;; ("SEQEND" "ATTRIB" "LWPOLYLINE" "LWPOLYLINE" "TEXT" "ATTDEF" "LWPOLYLINE" "LWPOLYLINE")
@@ -505,7 +505,7 @@
   (p-block-items-inner en)
 )
 ;; (p-insert-seqs (car (entsel)))
-;; ¿éÒıÓÃÖĞµÄ¶ÔÏó Ö÷ÒªÊÇ¸úÊµÀıµÄÊôĞÔµÈ
+;; å—å¼•ç”¨ä¸­çš„å¯¹è±¡ ä¸»è¦æ˜¯è·Ÿå®ä¾‹çš„å±æ€§ç­‰
 (defun p-insert-seqs (en / r)
   (while (and (setq en (entnext en))
 	      (/= "SEQEND" (p-dxf en 0))
@@ -515,7 +515,7 @@
   r
 )
 
-;;; BOOKMARK ¶ÔÏó´´½¨
+;;; BOOKMARK å¯¹è±¡åˆ›å»º
 
 ;;(p-item (vla-get-layouts (vla-get-activedocument (vlax-get-acad-object))) "1" )
 (defun p-item (obj name / r)
@@ -530,7 +530,7 @@
 
 
 
-;;; BOOKMARK - LAYER Í¼²ãÏà¹Ø
+;;; BOOKMARK - LAYER å›¾å±‚ç›¸å…³
 
 ;;; (p-layer-get1 "0" nil)
 ;;; ((0 . "LAYER") (2 . "0") (70 . 0) (62 . 7) (6 . "Continuous"))
@@ -557,7 +557,7 @@
   )
   r
 )
-;; È·±£Ö¸¶¨Í¼²ã´æÔÚ²¢·µ»Ø£¬²»´æÔÚÊ±Ê¹ÓÃconf²ÎÊı½øĞĞÍ¼²ãµÄ´´½¨
+;; ç¡®ä¿æŒ‡å®šå›¾å±‚å­˜åœ¨å¹¶è¿”å›ï¼Œä¸å­˜åœ¨æ—¶ä½¿ç”¨confå‚æ•°è¿›è¡Œå›¾å±‚çš„åˆ›å»º
 ;;;(defun p-layer-get (name conf / layer layers)
 ;;;  (setq layers (vla-get-layers (vla-get-activedocument (vlax-get-acad-object))))
 ;;;  
@@ -637,7 +637,7 @@
 ;;;  (entmake (list '(0 . "LTYPE") '(100 . "AcDbSymbolTableRecord") '(100 . "AcDbLinetypeTableRecord") (cons 2 "BERDIG 5-545") '  (3 . "Border ____   ____   ____   ____   ____") '(70 . 0) '(73 . 2) '(40 . 15.0) '(49 . 10.0) '(74 . 0) '
 ;;;   (49 . -5.0) '(74 . 0)    ) )
 
-;; È·±£Ö¸¶¨ÏßĞÍ´æÔÚ²¢·µ»Ø
+;; ç¡®ä¿æŒ‡å®šçº¿å‹å­˜åœ¨å¹¶è¿”å›
 (defun p-linetype-get	(name / lt)
   (setq	lt
 	 (vl-catch-all-apply
@@ -665,7 +665,7 @@
   )
 )
 
-;; È·±£Ö¸¶¨ÎÄ×ÖÑùÊ½´æÔÚ²¢·µ»Ø
+;; ç¡®ä¿æŒ‡å®šæ–‡å­—æ ·å¼å­˜åœ¨å¹¶è¿”å›
 ;;; (p-textstyle-get "1" "simplex8.shx" "hztxt.shx")
 (defun p-textstyle-get (name font bigfont width / style styles)
   (setq	styles (vla-get-textstyles
@@ -705,7 +705,7 @@
 ;;;  $addnew-layer	     "0"
 ;;;  $addnew-color	     256 ;_ 0 ByBlock 256 ByLayer
 ;;;  $addnew-linetype   "BYLAYER"
-;;;  $addnew-lineweight -1 ;_ -1 ByLayer -2 ByBlock -3 Ä¬ÈÏ
+;;;  $addnew-lineweight -1 ;_ -1 ByLayer -2 ByBlock -3 é»˜è®¤
 ;;;  $addnew-textstyle  "Standard"
 ;;;  $addnew-block-base '(0. 0. 0.)
 
@@ -738,7 +738,7 @@
 (p-make-setenv $addnew-default)
 
 
-;; ¸üĞÂÊµÌåÖ¸¶¨×éÂëÖµ
+;; æ›´æ–°å®ä½“æŒ‡å®šç»„ç å€¼
 ;; (p-entmod (car (entsel)) '((62 . 1) (370 . 13)))
 ;; (p-entmod (car (entsel)) '(62 . 7))
 (defun p-entmod	(ent datas /)
@@ -746,7 +746,7 @@
 )
 
 
-;; Ä¬ÈÏ¶ÔÏó´´½¨Âß¼­
+;; é»˜è®¤å¯¹è±¡åˆ›å»ºé€»è¾‘
 (defun p-entmake (dxf / r)
 ;;;(if $p-user-block (entmake '((0 . "ENDBLK"))))
   (p-linetype-get $addnew-linetype)
@@ -788,7 +788,7 @@
   )
   r
 )
-;;;  Éú³ÉÖ±Ïß (p-make-line (getpoint) (getpoint))
+;;;  ç”Ÿæˆç›´çº¿ (p-make-line (getpoint) (getpoint))
 (defun p-make-line (p1 p2 /)
   (p-entmake (list
 	       '(0 . "LINE")
@@ -797,7 +797,7 @@
 	     )
   )
 )
-;;;  Éú³ÉÔ² (p-make-circle (getpoint) 100.)
+;;;  ç”Ÿæˆåœ† (p-make-circle (getpoint) 100.)
 (defun p-make-circle (center radius /)
   (p-entmake (list
 	       '(0 . "CIRCLE")
@@ -806,7 +806,7 @@
 	     )
   )
 )
-;;;  Éú³ÉÔ²»¡ (p-make-arc (getpoint) 100. 0 (/ pi 2.))
+;;;  ç”Ÿæˆåœ†å¼§ (p-make-arc (getpoint) 100. 0 (/ pi 2.))
 (defun p-make-arc (point radius start end /)
   (p-entmake (list
 	       '(0 . "ARC")
@@ -817,7 +817,7 @@
 	     )
   )
 )
-;; Ê¼ÖÕÉú³ÉĞ¡ÓÚĞ¡ÓÚ180dµÄÔ²»¡
+;; å§‹ç»ˆç”Ÿæˆå°äºå°äº180dçš„åœ†å¼§
 (defun p-make-sharparc (p r a4 a5)
   (if (or (and (> a5 a4) (< (- a5 a4) pi))
 	  (and (< a5 a4) (> (- a4 a5) pi))
@@ -840,7 +840,7 @@
 	     )
   )
 )
-;;; Éú³É¶à¶ÎÏß (p-make-polyline (list (getpoint) (getpoint) (getpoint)) 1 20.)
+;;; ç”Ÿæˆå¤šæ®µçº¿ (p-make-polyline (list (getpoint) (getpoint) (getpoint)) 1 20.)
 (defun p-make-polyline (points closed width / e)
   (p-entmake (append
 	       (list '(0 . "LWPOLYLINE")
@@ -854,7 +854,7 @@
 	     )
   )
 )
-;;; Éú³Éµ¥ĞĞÎÄ×Ö (p-make-text "123456" (getpoint) "C" 4. 0.7 0.)
+;;; ç”Ÿæˆå•è¡Œæ–‡å­— (p-make-text "123456" (getpoint) "C" 4. 0.7 0.)
 (defun p-make-text (text point align height width ang / c)
   (p-textstyle-get
     $addnew-textstyle
@@ -898,7 +898,7 @@
   )
 )
 
-;;; Éú³É¿é
+;;; ç”Ÿæˆå—
 ;;; (p-make-block "*U" '(lambda () (p-make-line '(0 0 0) '(10 0 0)) (p-make-circle '(0 0 0) 10.)) nil)
 ;;; (setq p '(0 0) r 13.)
 ;;; (p-make-block "C13" 'p-make-circle (list p r))
@@ -931,7 +931,7 @@
     en
   )
 )
-;;; Éú³É¿é²ÎÕÕ (p-make-insert "*U8" (getpoint) 1 1 1 0)
+;;; ç”Ÿæˆå—å‚ç…§ (p-make-insert "*U8" (getpoint) 1 1 1 0)
 (defun p-make-insert (name point sx sy sz ang)
   (p-entmake (list '(0 . "INSERT")
 		   (cons 2 name)
@@ -943,7 +943,7 @@
 	     )
   )
 )
-;;; Éú³É¿é²¢²åÈë´Ë¿é²ÎÕÕ
+;;; ç”Ÿæˆå—å¹¶æ’å…¥æ­¤å—å‚ç…§
 ;;; (p-make-insert-with-funcs "*U" (getpoint) 'p-make-circle '((0 0 0) 10.))
 ;;; (p-make-insert-with-funcs "*U" (getpoint) '(lambda () (p-make-circle '(0 0 0) 13.) (p-make-circle '(0 0 0) 10.)) nil)
 ;;; (p-make-insert-with-funcs "*U" (getpoint) 'p-make-circle (p-get-params '(a b) '((a 0 0 0) (b . 10.))))
@@ -966,7 +966,7 @@
   ;;(setq $addnew-block-base '(0 0 0))
   (p-make-insert name point sx sy sz ang)
 )
-;;; ¸ù¾İ²ÎÊıÃû¼°ÊôĞÔ±íÉú³É²ÎÊı±í (p-get-params '(Length FlangeDiameter) '((FlangeDiameter . 80) (Length . 12)))
+;;; æ ¹æ®å‚æ•°ååŠå±æ€§è¡¨ç”Ÿæˆå‚æ•°è¡¨ (p-get-params '(Length FlangeDiameter) '((FlangeDiameter . 80) (Length . 12)))
 ;;;(defun p-get-params (pnames property / params)
 ;;;  (foreach e pnames
 ;;;    (if	(vl-symbolp e)
@@ -1001,7 +1001,7 @@
 )
 
 
-;;;  ±äÁ¿Óëlist»¥×ª
+;;;  å˜é‡ä¸listäº’è½¬
 ;;;_$ (p-var->list (p-list->var '(1 2 3 (4 5 6))))
 ;;;(1 2 3 (4 5 6))
 (defun p-var->list (var / e)
@@ -1038,7 +1038,7 @@
 
 
 
-;;; ARRAY Êı×é
+;;; ARRAY æ•°ç»„
 
 (defun p-array-create (n /)
   (vlax-make-safearray vlax-vbvariant (cons 0 n))
@@ -1056,16 +1056,16 @@
 
 
 
-;;; BOOKMARK - À©Õ¹Êı¾İ(XDATA)¼°»ùÓÚXDATAµÄÊôĞÔ¹ÜÀí
+;;; BOOKMARK - æ‰©å±•æ•°æ®(XDATA)åŠåŸºäºXDATAçš„å±æ€§ç®¡ç†
 
 
 ;; (p-xdata-get-inner (car (entsel)) "KTGX")
-;; (("KTGX" (1002 . "{") (1070 . 2) (1000 . "M-ËÍ·ç-·ç¹Ü") (1002 . "}")))
+;; (("KTGX" (1002 . "{") (1070 . 2) (1000 . "M-é€é£-é£ç®¡") (1002 . "}")))
 ;; (p-xdata-get-inner (car (entsel)) "*")
-;; (("KTGX" (1002 . "{") (1070 . 2) (1000 . "M-ËÍ·ç-·ç¹Ü") (1002 . "}")) ("TFGX" (1002 . "{") (1000 . "(\"R\" 400 400 3000.00 3000.00 \"M\" 0.00)") (1002 . "}")) ...))
+;; (("KTGX" (1002 . "{") (1070 . 2) (1000 . "M-é€é£-é£ç®¡") (1002 . "}")) ("TFGX" (1002 . "{") (1000 . "(\"R\" 400 400 3000.00 3000.00 \"M\" 0.00)") (1002 . "}")) ...))
 ;; (p-xdata-get-inner (car (entsel)) "KTGX,TFGX")
-;; (("KTGX" (1002 . "{") (1070 . 2) (1000 . "M-ËÍ·ç-·ç¹Ü") (1002 . "}")) ("TFGX" (1002 . "{") (1000 . "(\"R\" 400 400 3000.00 3000.00 \"M\" 0.00)") (1002 . "}")))
-;; ²ÎÊı appname Îª"*"·µ»ØËùÓĞÓ¦ÓÃÃû³ÆµÄÀ©Õ¹Êı¾İ»ò·µ»ØÖ¸¶¨Ó¦ÓÃÃûµÄÀ©Õ¹Êı¾İ
+;; (("KTGX" (1002 . "{") (1070 . 2) (1000 . "M-é€é£-é£ç®¡") (1002 . "}")) ("TFGX" (1002 . "{") (1000 . "(\"R\" 400 400 3000.00 3000.00 \"M\" 0.00)") (1002 . "}")))
+;; å‚æ•° appname ä¸º"*"è¿”å›æ‰€æœ‰åº”ç”¨åç§°çš„æ‰©å±•æ•°æ®æˆ–è¿”å›æŒ‡å®šåº”ç”¨åçš„æ‰©å±•æ•°æ®
 (defun p-xdata-get-inner (ename appname /)
   ;;  (vla-getxdata (p-ensure-object obj) appname 'xtypeout 'xdataout)
   ;;  (if xtypeout
@@ -1073,8 +1073,8 @@
   ;;	    (vlax-safearray->list xtypeout)
   ;;	    (mapcar '(lambda (e)
   ;;		       (if (>= (vlax-variant-type e) 8192)
-  ;;			 (vlax-safearray->list (vlax-variant-value e)) ;_ µã¼°Ê¸Á¿
-  ;;			 (vlax-variant-value e) ;_ str int realÊı¾İÀàĞÍ
+  ;;			 (vlax-safearray->list (vlax-variant-value e)) ;_ ç‚¹åŠçŸ¢é‡
+  ;;			 (vlax-variant-value e) ;_ str int realæ•°æ®ç±»å‹
   ;;		       )
   ;;		     )
   ;;		    (vlax-safearray->list xdataout)
@@ -1082,7 +1082,7 @@
   ;;    )
   ;;  )
   ;;  "Benchmark loops = 10000, in 2281 ms, 4384 invoke / s"
-  ;; ÒòÎªĞÔÄÜÎÊÌâ ¸ÄÓÃÏÂÃæµÄĞ´·¨
+  ;; å› ä¸ºæ€§èƒ½é—®é¢˜ æ”¹ç”¨ä¸‹é¢çš„å†™æ³•
   ;;  "Benchmark loops = 10000, in 422 ms, 23697 invoke / s"
   (cdr (assoc -3 (entget ename (list appname))))
 )
@@ -1093,7 +1093,7 @@
   (cdar (p-xdata-get-inner ename appname))
 )
 ;;;(defun p-xdata-set (obj xdata / e appname n datatype data)
-;;;  ;; ×Ô¶¯×¢²áÓ¦ÓÃÃû³Æ
+;;;  ;; è‡ªåŠ¨æ³¨å†Œåº”ç”¨åç§°
 ;;;  (setq appname (cdr (assoc 1001 xdata)))
 ;;;  (if (null (tblsearch "APPID" appname))
 ;;;    (regapp appname)
@@ -1148,7 +1148,7 @@
 )
 
 
-;;; ÒÆ³ıÖ¸¶¨Ó¦ÓÃÊı¾İ
+;;; ç§»é™¤æŒ‡å®šåº”ç”¨æ•°æ®
 ;; (p-xdata-remove (car (entsel)) "KTGX")
 ;; (p-xdata-remove (car (entsel)) '("KTGX" "TFGX"))
 ;;;_$ (p-xdata-remove (car (entsel)) "*")
@@ -1173,9 +1173,9 @@
 
 
 
-;;; Ö§³ÖÊôĞÔÃû³ÆË÷ÒıµÄÊı¾İµÄÀ©Õ¹Êı¾İ¹ÜÀí
+;;; æ”¯æŒå±æ€§åç§°ç´¢å¼•çš„æ•°æ®çš„æ‰©å±•æ•°æ®ç®¡ç†
 
-;; »ñÈ¡Ö¸¶¨µÄÊôĞÔÖµ
+;; è·å–æŒ‡å®šçš„å±æ€§å€¼
 ;; (p-xprop-get (car (entsel)) "PSK-FIT" "W")
 ;; 1000.
 ;; (p-xprop-get (car (entsel)) "PSK-FIT" '("H" "W"))
@@ -1211,7 +1211,7 @@
 
 (defun p-xprop-unpack (xdata / rv)
   (while xdata
-    ;; ×éºÏÊôĞÔÃû³Æ¼°Öµ
+    ;; ç»„åˆå±æ€§åç§°åŠå€¼
     (setq rv	(cons (cons (cdar xdata) (cdadr xdata)) rv)
 	  xdata	(cddr xdata)
     )
@@ -1219,7 +1219,7 @@
   (reverse rv)
 )
 
-;;; »ñÈ¡Ö¸¶¨Ó¦ÓÃÃûÏÂµÄËùÓĞÊôĞÔ¹ØÁªÁĞ±í
+;;; è·å–æŒ‡å®šåº”ç”¨åä¸‹çš„æ‰€æœ‰å±æ€§å…³è”åˆ—è¡¨
 ;;; (p-xprop-getall (car (entsel)) "MYPROPS_ROUTER")
 ;;; (("W" . 1000) ("H" . 400) ("SERV" . "EA(SE)") ...)
 (defun p-xprop-getall (ename appname / )
@@ -1227,7 +1227,7 @@
 )
 
 
-;; ÊôĞÔÃû³Æ×ªÎª·ûºÅ
+;; å±æ€§åç§°è½¬ä¸ºç¬¦å·
 ;;; (p-xprop-getall-s (car (entsel)) "MYPROPS_ROUTER")
 ;;; ((WIDTH . 1000) (HEIGHT . 400) (SERVICE . "EA(SE)") ...)
 ;;;(defun p-xprop-getall-s (ename appname / e props)
@@ -1258,7 +1258,7 @@
 
 
 
-;; ·µ»ØÓÃÒ»¶Ô×éÂë±í´ïµÄµ¥Ò»ÊôĞÔ£¬ÒÔ±ãÔÚxdataÖĞ±£´æ
+;; è¿”å›ç”¨ä¸€å¯¹ç»„ç è¡¨è¾¾çš„å•ä¸€å±æ€§ï¼Œä»¥ä¾¿åœ¨xdataä¸­ä¿å­˜
 ;;;_$ (p-xprop-pack1 '("P1" . 2) nil)
 ;;;((1000 . "P1") (1070 . 2))
 ;;;_$ (p-xprop-pack1 '("P1" . 2) '(("P1" . 1013)))
@@ -1268,7 +1268,7 @@
 	value (cdr kv)
   )
   (or (setq code (cdr (assoc name xdatatypes)))
-      ;; µ±Î´Ìá¹©Ãû³ÆÏà¹Ø×éÂë±íÊ±£¬¹¹ÔìÄ¬ÈÏÊı¾İÀàĞÍ
+      ;; å½“æœªæä¾›åç§°ç›¸å…³ç»„ç è¡¨æ—¶ï¼Œæ„é€ é»˜è®¤æ•°æ®ç±»å‹
       (setq code
 	     (cdr
 	       (assoc (type value)
@@ -1299,12 +1299,12 @@
 
   (p-xdata-set ename appname (p-xprop-pack prop datadef))
 )
-;;; ¿É¶ÔÒ»¸ö»ò¼¸¸öÊôĞÔµ¥¶À½øĞĞÉèÖÃ£¬ÒÑ´æÔÚµÄÆäËüÊôĞÔ²»ÊÜÓ°Ïì
-;;; ÌØÊâµÄ×éÂë¿ÉÔÚdatadefÖĞÖ¸¶¨
+;;; å¯å¯¹ä¸€ä¸ªæˆ–å‡ ä¸ªå±æ€§å•ç‹¬è¿›è¡Œè®¾ç½®ï¼Œå·²å­˜åœ¨çš„å…¶å®ƒå±æ€§ä¸å—å½±å“
+;;; ç‰¹æ®Šçš„ç»„ç å¯åœ¨datadefä¸­æŒ‡å®š
 ;;; (p-xprop-set-inner (car (entsel)) "MYPROPS_ROUTER" '("A" . 30) '(("A" . 1040)))
 ;;; (p-xprop-set-inner (car (entsel)) "MYPROPS_ROUTER" '("A" . 30) nil)
 ;;; (p-xprop-set-inner (car (entsel)) "MYPROPS_ROUTER" '(("A" . 800) ("B" . 400)) nil)
-;; TODO: ´«ÈëµÄÊı¾İ·Çµã¶Ô±íÊ± ·µ»Ø½á¹ûÓĞÎó
+;; TODO: ä¼ å…¥çš„æ•°æ®éç‚¹å¯¹è¡¨æ—¶ è¿”å›ç»“æœæœ‰è¯¯
 (defun p-xprop-set-inner
        (ename appname prop datadef / xdata xdata2 tmp)
   (if (atom (car prop))
@@ -1320,7 +1320,7 @@
 		)
 	       prop
 	     )
-  ) ;_ È¥³ıÎŞĞ§µÄÊôĞÔÃû³Æ
+  ) ;_ å»é™¤æ— æ•ˆçš„å±æ€§åç§°
 
   (if prop
     (progn
@@ -1385,9 +1385,9 @@
 )
 
 
-;;; BOOKMARK ±äÁ¿´¦Àí¸¨Öúº¯Êı
+;;; BOOKMARK å˜é‡å¤„ç†è¾…åŠ©å‡½æ•°
 
-;;; »ñÈ¡ÓÃ»§ÊäÈëµÄÊıÖµ
+;;; è·å–ç”¨æˆ·è¾“å…¥çš„æ•°å€¼
 (defun p-edit-value (msg old / value)
   (cond
     ((= 'real (type old))
@@ -1427,7 +1427,7 @@
 
 (defun p-confirm (msg default / r)
   (initget "Y N ")
-  (if (null (setq r (getkword (strcat msg " [ÊÇ(Y)/·ñ(N)] <" default ">:"))))
+  (if (null (setq r (getkword (strcat msg " [æ˜¯(Y)/å¦(N)] <" default ">:"))))
     (setq r default)
   )
   r
@@ -1440,7 +1440,7 @@
     r
   )
 )
-;; (p-getkword1 "Ñ¡Ôñ" '(("A" "OPTIONA") ("B" "OPTIONB") ("C" "OPTIONC")) "A")
+;; (p-getkword1 "é€‰æ‹©" '(("A" "OPTIONA") ("B" "OPTIONB") ("C" "OPTIONC")) "A")
 (defun p-getkword1 (msg kwords default / r)
   (initget (p-string-connect (mapcar 'car kwords) " "))
   (setq	r (getkword (strcat msg
@@ -1677,7 +1677,7 @@
     (cond
       ((= ch (ascii gs)) ;_ {
        (if buff
-	 (setq result (cons (vl-list->string (reverse buff)) result) ;_ { ÆÕÍ¨ÎÄ±¾µÄ½áÊø
+	 (setq result (cons (vl-list->string (reverse buff)) result) ;_ { æ™®é€šæ–‡æœ¬çš„ç»“æŸ
 	       buff   nil
 	 )
        )
@@ -1685,7 +1685,7 @@
       ((= ch (ascii ge)) ;_ }
        (if buff
 	 (setq result
-		(cons (list (vl-list->string (reverse buff))) result) ;_ } ÊôĞÔ½áÊø
+		(cons (list (vl-list->string (reverse buff))) result) ;_ } å±æ€§ç»“æŸ
 	       buff nil
 	 )
        )
@@ -1734,13 +1734,13 @@
                                (setq dig 0)
                                (setq dig (atoi dig))
                              )
-                             (p-number-padding-last r dig);_ Ä£°å"{L:2}"½«·µ»ØÊôĞÔL(±£ÁôÁ½Î»Ğ¡Êı)
+                             (p-number-padding-last r dig);_ æ¨¡æ¿"{L:2}"å°†è¿”å›å±æ€§L(ä¿ç•™ä¸¤ä½å°æ•°)
 			    )
 			    (t
 			     (vl-princ-to-string r)
 			    )
 		      )
-		      (strcat "{" (car e) "}") ;_ ÊôĞÔ²»´æÔÚÊ±ĞŞ¸ÄÎª·µ»ØÄ£°å±¾Éí
+		      (strcat "{" (car e) "}") ;_ å±æ€§ä¸å­˜åœ¨æ—¶ä¿®æ”¹ä¸ºè¿”å›æ¨¡æ¿æœ¬èº«
 		    )
 		    e
 		  )
@@ -1749,7 +1749,7 @@
       (p-template-parse template)
     )
   )
-  ;; ĞŞ¸ÄÎªµ±Ö¸¶¨ÊôĞÔ²»´æÔÚÊ±·µ»Ønil
+  ;; ä¿®æ”¹ä¸ºå½“æŒ‡å®šå±æ€§ä¸å­˜åœ¨æ—¶è¿”å›nil
 ;;;  (setq	tmpl (p-template-parse template)
 ;;;	str  ""
 ;;;  )
@@ -1772,7 +1772,7 @@
 
 
 
-;;; »ñÈ¡ÀàÊôĞÔ
+;;; è·å–ç±»å±æ€§
 ;;;_$ (p-get '((10 . "1") (11 . "2")) 11)
 ;;;"2"
 ;;;_$ (p-get '((10 . "1") (11 . "2")) '(11 10))
@@ -1801,7 +1801,7 @@
     (mapcar 'cons keys (p-get lst keys))
   )
 )
-;;; ÉèÖÃÀàÊôĞÔ
+;;; è®¾ç½®ç±»å±æ€§
 ;;;_$ (p-set '() '("A" . 10))
 ;;;(("A" . 10))
 ;;;_$ (p-set nil '("A" . 10))
@@ -1815,7 +1815,7 @@
 ;;;_$ (p-set '((1 . "2")) '((1 . "1") (2 . "2")))
 ;;;((1 . "1") (2 . "2"))
 (defun p-set (lst values / old)
-  ;; Ç¿ÖÆ'(1 . 1) ×ª»»µ½ '((1 . 1)) Ê¹ºóĞø²Ù×÷Í³Ò»
+  ;; å¼ºåˆ¶'(1 . 1) è½¬æ¢åˆ° '((1 . 1)) ä½¿åç»­æ“ä½œç»Ÿä¸€
   (if (and values (atom (car values)))
     (setq values (list values))
   )
@@ -1850,7 +1850,7 @@
     lst
   )
 )
-;;; ÔÚÀàÒÑÓĞÊôĞÔÁĞ±íÖµÔö¼ÓÄÚÈİ
+;;; åœ¨ç±»å·²æœ‰å±æ€§åˆ—è¡¨å€¼å¢åŠ å†…å®¹
 ;;;(defun p-cls-append (lst values /)
 ;;;  (p-set lst (append (assoc (car values) lst) (cdr values)))
 ;;;)
@@ -1915,7 +1915,7 @@
 
     (cond
       ((null ent)
-       (princ "Î´Ñ¡Ôñ¶ÔÏó¡£")
+       (princ "æœªé€‰æ‹©å¯¹è±¡ã€‚")
       )
 
       ((= (type ent) 'list)
@@ -1923,7 +1923,7 @@
 		(not (wcmatch (p-dxf (car ent) 0) filter))
 	   )
 	 (progn
-	   (princ "Ñ¡Ôñ¶ÔÏóÒÑ±»¹ıÂË¡£")
+	   (princ "é€‰æ‹©å¯¹è±¡å·²è¢«è¿‡æ»¤ã€‚")
 	   (setq ent nil)
 	 )
        )
@@ -2015,7 +2015,7 @@
 
 ;;;_$ (p-line-getendnear (car (entsel)) (getpoint))
 ;;;(11 2080.69 1885.93 0.0)
-;;; p WCSµã
+;;; p WCSç‚¹
 (defun p-line-getendnear (line p / pts)
   (setq pts (p-dxf1 line '(10 11)))
 
@@ -2039,7 +2039,7 @@
 	  (cdr (assoc 11 dx1))
 	  (cdr (assoc 10 dx2))
 	  (cdr (assoc 11 dx2))
-	  nil ;_ ÔÊĞí½»µãÔÚÖ±ÏßÍâ
+	  nil ;_ å…è®¸äº¤ç‚¹åœ¨ç›´çº¿å¤–
   )
 )
 
@@ -2089,9 +2089,9 @@
   result
 )
 
-;; ÔÚÄ¿Â¼¼°×ÓÄ¿Â¼ÖĞ²éÕÒÎÄ¼ş
+;; åœ¨ç›®å½•åŠå­ç›®å½•ä¸­æŸ¥æ‰¾æ–‡ä»¶
 ;; (p-file-search (psk-get-filename "\\catelog") "*.csv")
-;; ("D:\\Profile\\desktop\\dd3\\bin\\catelog\\fcu\\fp.csv" "D:\\Profile\\desktop\\dd3\\bin\\catelog\\vrf\\daikin\\¶àÁª»ú¿Õµ÷ÊÒÄÚ»ú£¨´ó½ğ£©.csv")
+;; ("D:\\Profile\\desktop\\dd3\\bin\\catelog\\fcu\\fp.csv" "D:\\Profile\\desktop\\dd3\\bin\\catelog\\vrf\\daikin\\å¤šè”æœºç©ºè°ƒå®¤å†…æœºï¼ˆå¤§é‡‘ï¼‰.csv")
 (defun p-file-search (path patten / r)
   (foreach dir (cddr (vl-directory-files path nil -1))
     (setq r (append r (p-file-search (strcat path "\\" dir) patten)))
@@ -2159,7 +2159,7 @@
 (defun p-lisp-load (filename /)
   (if (setq content (p-file-readstring filename))
     (read content)
-    (princ (strcat "\npsk-load-lispfile´íÎó: ÎŞ·¨¼ÓÔØÎÄ¼ş \""
+    (princ (strcat "\npsk-load-lispfileé”™è¯¯: æ— æ³•åŠ è½½æ–‡ä»¶ \""
 		   filename
 		   "\""
 	   )
@@ -2168,7 +2168,7 @@
 )
 
 
-;;; ¸ù¾İÅäÖÃ±í×ª»»Ò»ĞĞÊı¾İÀàĞÍ
+;;; æ ¹æ®é…ç½®è¡¨è½¬æ¢ä¸€è¡Œæ•°æ®ç±»å‹
 ;;;(defun p-convert-datatype (v dt /)
 ;;;  (cond
 ;;;    ((= dt 1040)
@@ -2252,12 +2252,12 @@
 )
 ;;
 
-;;; ´ø»º³åµÄcsvÊı¾İ¼ÓÔØ·½·¨£¬¶ÔÓÚÒÑ¼ÓÔØ¹ıµÄÎÄ¼şÖ±½Ó´Ó»º³åÇøÖĞ·µ»Ø½âÎöºóµÄcsvÊı¾İ±í£¬ÒÔÌá¸ßÊı¾İ·ÃÎÊËÙ¶È
+;;; å¸¦ç¼“å†²çš„csvæ•°æ®åŠ è½½æ–¹æ³•ï¼Œå¯¹äºå·²åŠ è½½è¿‡çš„æ–‡ä»¶ç›´æ¥ä»ç¼“å†²åŒºä¸­è¿”å›è§£æåçš„csvæ•°æ®è¡¨ï¼Œä»¥æé«˜æ•°æ®è®¿é—®é€Ÿåº¦
 ;;; (p-csvfile-readcache (psk-get-filename "sizes/flange pn.csv") '$psk-csvread-cache)
 (defun p-csvfile-readcache (filename cache / data)
   (if (and (setq filename (findfile filename))
            (setq filename (strcase filename))
-           (null (setq data (p-get (vl-symbol-value cache) filename))) ;_ ÒÔÎÄ¼şÃû´óĞ´Îª»º³åË÷Òı
+           (null (setq data (p-get (vl-symbol-value cache) filename))) ;_ ä»¥æ–‡ä»¶åå¤§å†™ä¸ºç¼“å†²ç´¢å¼•
       )
     (progn
       (setq data (p-csvfile-read filename))
@@ -2266,17 +2266,17 @@
   )
   data
 )
-;; (p-csvread-keys (p-csvfile-read "\\catelog\\vrf\\daikin\\¶àÁª»ú¿Õµ÷ÊÒÄÚ»ú£¨´ó½ğ£©.csv"))
+;; (p-csvread-keys (p-csvfile-read "\\catelog\\vrf\\daikin\\å¤šè”æœºç©ºè°ƒå®¤å†…æœºï¼ˆå¤§é‡‘ï¼‰.csv"))
 ;; ("F2.8" "F3.6" "F4.5" "F5.6" "F7.1" "F8" "F9" "F10" "F11.2" "F12.5" "F14" "D2.2" "D2.5" "D2.8" "D3.2" "D3.6" "D4" "D4.5" "D5" "D5.6" "D6.3" "D7.1" "S2.2" "S2.8" "S3.6" "S4.5" "S5.6" "S7.1" "S8" "S9" "S10" "S11.2" "S12.5" "S14" "S15" "Q10" "Q16" "Q20" "Q25" "Q30" "Q40")
 (defun p-csvread-keys (csv /)
   (mapcar (function car) (cdr csv))
 )
 ;;;_$ (p-csvread-get rows "F2.8")
-;;;(("NAME" . "F2.8") ("DESC" . "ËÄÏò³ö·çÊÒÄÚ»ú") ("CLD" . "2.8") ("HLD" . "3.2") ("POW" . "0.053") ("NOIS" . "30") ("CMH" . "") ("ESP" . "") ("PS" . "220V") ("DWG" . "FXFP-KMVC") ("PORT" . "") ("PORT2" . "DN32"))
+;;;(("NAME" . "F2.8") ("DESC" . "å››å‘å‡ºé£å®¤å†…æœº") ("CLD" . "2.8") ("HLD" . "3.2") ("POW" . "0.053") ("NOIS" . "30") ("CMH" . "") ("ESP" . "") ("PS" . "220V") ("DWG" . "FXFP-KMVC") ("PORT" . "") ("PORT2" . "DN32"))
 (defun p-csvread-get (csv key /)
   (mapcar (function cons) (car csv) (p-get1 (cdr csv) key))
 )
-;; ¸ù¾İÁĞÃû½øĞĞÊı¾İÀàĞÍ×ª»» ¶ÔÓÚ#¿ªÍ·µÄÁĞÃû½«Öµ×ª»»ÎªÊı×Ö·µ»ØµÄÁĞÃûÖĞÇå³ı#×Ö·û
+;; æ ¹æ®åˆ—åè¿›è¡Œæ•°æ®ç±»å‹è½¬æ¢ å¯¹äº#å¼€å¤´çš„åˆ—åå°†å€¼è½¬æ¢ä¸ºæ•°å­—è¿”å›çš„åˆ—åä¸­æ¸…é™¤#å­—ç¬¦
 ;;;_$ (p-csvread-get1 csv "FL-PL-2.5-15")
 ;;;(("Name" . "FL-PL-2.5-15") ("OD" . 80.0) ("BLTD" . 55.0) ("BLTH" . 11.0) ("BLTN" . "M10") ("BLTA" . 4.0) ("L" . 12.0))
 (defun p-csvread-get1 (csv key / r)
@@ -2302,11 +2302,11 @@
 ;;;  (if data
 ;;;    (progn
 ;;;      (if (null symbols)
-;;;	(setq symbols (car data)) ;_ symbolsÎªnilÊ±·µ»ØËùÓĞÊôĞÔ
+;;;	(setq symbols (car data)) ;_ symbolsä¸ºnilæ—¶è¿”å›æ‰€æœ‰å±æ€§
 ;;;      )
 ;;;      (setq pos	 (mapcar '(lambda (e) (vl-position e (car data)))
 ;;;			 (mapcar 'read symbols)
-;;;		 ) ;_ ¸ù¾İ±íÍ·»ñÈ¡×Ö¶ÎË³Ğò
+;;;		 ) ;_ æ ¹æ®è¡¨å¤´è·å–å­—æ®µé¡ºåº
 ;;;	    data (assoc key data)
 ;;;      )
 ;;;      (mapcar 'cons

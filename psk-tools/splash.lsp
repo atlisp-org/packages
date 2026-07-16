@@ -7,6 +7,6 @@
 )
 
 (princ
-  (strcat "\n" $psk-about "." (psk-file-version) " ря╪сть")
+  (strcat "\n" $psk-about "." (psk-file-version) " Е╥╡Е┼═Х╫╫")
 )
 (princ)

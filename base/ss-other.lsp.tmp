@@ -1,0 +1,7 @@
+(defun c:km (/ ss ss0 s1 ss1 n x ptn)
+  (setq ss1 (SsgetCP (list(car (entsel))'(0 . "*") )) )
+  (sssetfirst nil ss1)
+  (princ)
+  )
+(defun makepl (argments)
+  ;;argments==>(list pts 闂

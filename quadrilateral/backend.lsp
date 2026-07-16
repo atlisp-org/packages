@@ -1,8 +1,8 @@
 (defun quadrilateral:dim-backend ( / segments pts-ent i% )
-  "²éÕÒËÄ±ßÐÎ"
-  ;; ¼ì²éÈ¨ÏÞ
+  "æŸ¥æ‰¾å››è¾¹å½¢"
+  ;; æ£€æŸ¥æƒé™
   (if (= (@:get-config 'quadrilateral:evalcode) "DEMO")
-      (alert "µ±Ç°Ê¹ÓÃµÄÊÇ²âÊÔ°æ±¾£¬Ö´ÐÐÊýÁ¿»áÓÐÏÞÖÆ!\n")
+      (alert "å½“å‰ä½¿ç”¨çš„æ˜¯æµ‹è¯•ç‰ˆæœ¬ï¼Œæ‰§è¡Œæ•°é‡ä¼šæœ‰é™åˆ¶!\n")
       (if (/= (@:get-config 'quadrilateral:evalcode) (@:get-eval-code "quadrilateral"))
 	  (progn (princ "ERROR:invalid code.")
 		 (exit))))
@@ -11,8 +11,8 @@
 		   (ssget "x"
 			  '((0 . "LINE")))));,LWPOLYLINE,POLYLINE")))))
   (@:debug "INFO" (strcat (itoa (length lst-lines))))
-  (setq result '()) ;; 4¸öÍ¼ÔªÒ»×éµÄËÄ±ßÐÎ
-  ;;(setq pts (curve:pline-3dpoints (car lst-lines))) ;;µÚÒ»¸öÔªËØµÄ¶Ëµã
+  (setq result '()) ;; 4ä¸ªå›¾å…ƒä¸€ç»„çš„å››è¾¹å½¢
+  ;;(setq pts (curve:pline-3dpoints (car lst-lines))) ;;ç¬¬ä¸€ä¸ªå…ƒç´ çš„ç«¯ç‚¹
   (setq pts '())
   (defun ssget-by-point (pt1 / lst-ss1)
     (command "zoom" "C" pt1 "1000")
@@ -20,31 +20,31 @@
 		   (ssget "C" (polar pt1 (* 1.25 pi) 1)
 			  (polar pt1 (* 0.25 pi) 1) 
 			  '((0 . "LINE"))))));; ,LWPOLYLINE,POLYLINE"))))))
-  ;; ÏòÇ°ÕÒ;
+  ;; å‘å‰æ‰¾;
   (setq i% 0)
-  ;; lst-ss-pre ¸ù¾ÝÒ»µãµÃµ½µÄÏß¼¯
+  ;; lst-ss-pre æ ¹æ®ä¸€ç‚¹å¾—åˆ°çš„çº¿é›†
   (while (and (> (length lst-lines) 3)
 	      (< i% 10))
     (setq quad (list (car lst-lines)))
     (setq lst-lines (cdr lst-lines))
     (setq pts (curve:pline-3dpoints (car quad)))
     ;; (print pts)
-    ;; Ñ°ÕÒÁ¬ÐøÏß
+    ;; å¯»æ‰¾è¿žç»­çº¿
     (setq i% 0)
     (while (and (> (length (setq lst-ss-pre (ssget-by-point (car pts)))) 1)
 		(< (length pts) 6)
 		(< 100 (distance (last pts) (car pts)));;
 		(< i% 10)
-		;; DEMO °æ
+		;; DEMO ç‰ˆ
 		(if (= "DEMO" (@:get-config 'quadrilateral:evalcode))
 		    (< (length result) 6)
 		    T)
 		)
-      ;; ×¢ÒâÈý±ßÐÎËÀ»·
+      ;; æ³¨æ„ä¸‰è¾¹å½¢æ­»çŽ¯
       (foreach ent% lst-ss-pre
 	       (if (null (member ent% quad))
 		   (progn
-		     (setq quad (cons ent% quad));;¼ÓÈëÑ¡Ôñ¼¯
+		     (setq quad (cons ent% quad));;åŠ å…¥é€‰æ‹©é›†
 		     (setq lst-lines (vl-remove ent% lst-lines))
 		     (setq pts-ent (curve:pline-3dpoints ent%))
 		     (if (< (distance (car pts-ent) (car pts)) 0.001)
@@ -58,13 +58,13 @@
     ;; (entity:make-arrow (car pts)(caddr pts) 50)
     (if (and (= (length quad) 4)
 	     (= (length pts) 5))
-	;; ²âÊÔËÄ±ßÐÎ
-	;; ´Ó×ÜÏß¼¯ÖÐÈ¥³ý
+	;; æµ‹è¯•å››è¾¹å½¢
+	;; ä»Žæ€»çº¿é›†ä¸­åŽ»é™¤
 	(progn
 	  ;;
 	  (setq result (append result (list quad)))
 	  (setq quad '())
-	  ;; ÏÔÊ¾½á¹û
+	  ;; æ˜¾ç¤ºç»“æžœ
 	  ;; (print pts)
 	  (setq pt-mid (polar (car pts) (angle (car pts)(cadr pts)) (* 0.5 (distance (car pts) (cadr pts)))))
 	  (entity:dimaligned (car pts) (cadr pts) (polar pt-mid (+ (angle (car pts)(cadr  pts)) (* 0.5 pi)) (* scale1 750)))
@@ -81,7 +81,7 @@
 	  (setq pt-mid (polar (nth 1 pts) (angle (nth 1 pts)(nth 3 pts)) (* 0.5 (distance (nth 1 pts) (nth 3 pts)))))
 	  (entity:dimaligned (nth 1 pts) (nth 3 pts) (polar pt-mid (+ (angle (nth 1 pts)(nth 3 pts)) (* 0.5 pi)) (* scale1 750)))
 	  
-	  (setq i% 0) ; ÖØÐÂ¼ÆÊý¡£
+	  (setq i% 0) ; é‡æ–°è®¡æ•°ã€‚
 	  ))
     )
   

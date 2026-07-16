@@ -1,0 +1,6 @@
+(@::def-pkg '((:NAME . "at-layer")
+        (:FULL-NAME . "@lisp鍥惧眰")
+        (:AUTHOR . "VitalGG")
+        (:EMAIL . "vitalgg@gmail.com")
+        (:VERSION . "1.2.14")
+        (:DESCRIPTION . "@lisp鍥惧眰宸ュ叿锛氬姛鑳藉寘鎷

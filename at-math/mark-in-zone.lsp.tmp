@@ -1,0 +1,38 @@
+(defun @math:mark-in-ss (ent-nums)
+  (if (and (setq ent-nums (vl-remove-if-not 
+			  '(lambda (x) 
+			    (string:numberp 
+			     (entity:getdxf x 1)))
+			  ent-nums))
+	   (setq ent-nums (vl-sort 
+			  ent-nums
+			  '(lambda (x y) 
+			    (>= 
+			     (atof (entity:getdxf x 1))
+			     (atof (entity:getdxf y 1))))))
+	   (setq ent-nums (list:group-by 
+			  ent-nums
+			  '(lambda (x y) 
+			    (= 
+			     (atof (entity:getdxf x 1))
+			     (atof (entity:getdxf y 1)))))))
+      (progn
+	(foreach nmax (car ent-nums) 
+		 (entity:putdxf 
+		  (entity:make-circle 
+		   (point:centroid 
+		    (setq box (entity:getbox nmax 0)))
+		   (* 0.5 (apply 'distance box)))
+		  62
+		  1))
+	(foreach nmin (last ent-nums) 
+		 (entity:putdxf 
+		  (entity:make-circle 
+		   (point:centroid 
+		    (setq box (entity:getbox nmin 0)))
+		   (* 0.5 (apply 'distance box)))
+		  62
+		  3)))))
+
+(defun @math:mark-in-lwpl (/ ent-nums) 
+  (@::prompt '("鍖哄煙鏍囨暟锛氱瓫鍒嗗

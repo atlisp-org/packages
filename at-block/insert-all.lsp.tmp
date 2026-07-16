@@ -1,0 +1,2 @@
+(defun @block:insert-all (/ pt0 pt1 ang dist blk)
+  (@::prompt (strcat "鍧楁搷浣

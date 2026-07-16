@@ -1,0 +1,9 @@
+
+(@:add-menus '("鍥惧眰"
+	       ("鍏抽棴鍏跺畠" "(@layer:off-other)")
+	       ("鍐荤粨鍏跺畠" "(@layer:frozen-other)")
+	       ("閿佸畾鍏跺畠" "(@layer:lock-other)")
+	       ("瑙ｉ攣鍏ㄩ儴" "(@layer:unlock-all)")
+	       ("瑙ｅ喕鍏ㄩ儴" "(@layer:thaw-all)")
+	       ("鍥惧眰鍏ㄥ紑" "layon")
+	       ("鍥惧眰鎭㈠

@@ -1,8 +1,8 @@
 (@:add-menus
- '(("²à±ßÀ¸"
-    (("µÚ¶ş¸ö¹¦ÄÜ" "(lpsidemenu:hello)")
-     ("µÚÈı¸ö¹¦ÄÜ" "(lpsidemenu:hello)")))
-   ("²à±ßÀ¸1"
-    (("µÚ¶ş¸ö¹¦ÄÜ" "(lpsidemenu:hello)")
-     ("µÚÈı¸ö¹¦ÄÜ" "(lpsidemenu:hello)")))
+ '(("ä¾§è¾¹æ "
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(lpsidemenu:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(lpsidemenu:hello)")))
+   ("ä¾§è¾¹æ 1"
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(lpsidemenu:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(lpsidemenu:hello)")))
    )

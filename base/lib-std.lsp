@@ -1,15 +1,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; @ base -- @lisp »ù´¡º¯Êı¿â
+;;; @ base -- @lisp åŸºç¡€å‡½æ•°åº“
 ;;; Author: VitalGG<vitalgg@gmail.com>
-;;; Description: »ùÓÚ AutoLisp/VisualLisp ¿ª·¢µÄ»æÍ¼¹¤¾ß¼¯
+;;; Description: åŸºäº AutoLisp/VisualLisp å¼€å‘çš„ç»˜å›¾å·¥å…·é›†
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; »ù±¾¿â lib-std.lsp
-;;; »ù±¾³£ÓÃº¯Êı¡£
+;;; åŸºæœ¬åº“ lib-std.lsp
+;;; åŸºæœ¬å¸¸ç”¨å‡½æ•°ã€‚
 
-;;; ÎÄ¼ş²Ù×÷º¯Êı
+;;; æ–‡ä»¶æ“ä½œå‡½æ•°
 
 (defun @:check-consistency (contents order / ti% tmplist)
-  "¼ì²éÄ³¼üÖµµÄÎ¨Ò»ĞÔ¡£·µ»ØÖµÎªÕûÊı¡£"
+  "æ£€æŸ¥æŸé”®å€¼çš„å”¯ä¸€æ€§ã€‚è¿”å›å€¼ä¸ºæ•´æ•°ã€‚"
   (setq tmplist '())
   (foreach ti% contents 
 	   (if (= nil (member (cdr (assoc order ti%)) tmplist))

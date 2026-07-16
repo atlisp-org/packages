@@ -1,0 +1,2 @@
+(defun @text:join-in-line ()
+  (@::prompt '("鍚堝苟鍚屼竴琛岀殑澶氫釜鍗曡

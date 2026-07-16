@@ -6,24 +6,24 @@
 ;; (@:get-config 'quadrilateral:first) 
 ;; (@:set-config 'quadrilateral:first  "New Value")
 ;; Add menu in @lisp panel
-(@:define-config 'quadrilateral:scale 1  "»æÍ¼±ÈÀı")
-(@:define-config 'quadrilateral:evalcode "" "Ö´ĞĞÂë")
-(@:add-menu "ËÄ±ßĞÎ±ê×¢" "$ËÄ±ßĞÎ±ê×¢" "(quadrilateral:dim)" )
+(@:define-config 'quadrilateral:scale 1  "ç»˜å›¾æ¯”ä¾‹")
+(@:define-config 'quadrilateral:evalcode "" "æ‰§è¡Œç ")
+(@:add-menu "å››è¾¹å½¢æ ‡æ³¨" "$å››è¾¹å½¢æ ‡æ³¨" "(quadrilateral:dim)" )
 
 (defun quadrilateral:dim (/ eval-code)
-  (@:help (strcat "±ê×¢ÓÉ4ÌõÖ±Ïß¶Î×é³ÉµÄËÄ±ßĞÎµÄ±ß³¤ºÍ¶Ô½Ç³¤¡£\n"
-		  "ÈçĞèÍêÕû°æÇëÓë×÷ÕßÁªÏµ¡£ÑİÊ¾°æ×î¶àÖ»ÄÜ±ê×¢6¸öËÄ±ßĞÎ¡£\n"
-		  "ÑİÊ¾°æÖ´ĞĞÂëÎª DEMO ¡£"
+  (@:help (strcat "æ ‡æ³¨ç”±4æ¡ç›´çº¿æ®µç»„æˆçš„å››è¾¹å½¢çš„è¾¹é•¿å’Œå¯¹è§’é•¿ã€‚\n"
+		  "å¦‚éœ€å®Œæ•´ç‰ˆè¯·ä¸ä½œè€…è”ç³»ã€‚æ¼”ç¤ºç‰ˆæœ€å¤šåªèƒ½æ ‡æ³¨6ä¸ªå››è¾¹å½¢ã€‚\n"
+		  "æ¼”ç¤ºç‰ˆæ‰§è¡Œç ä¸º DEMO ã€‚"
   	  	  ))
   (if (or (= "" (@:get-config 'quadrilateral:evalcode))
 	  (= "DEMO" (@:get-config 'quadrilateral:evalcode)))
-      (if (= (setq eval-code (getstring "ÇëÊäÈëÖ´ĞĞÂë, ÑİÊ¾ÇëÊäÈë<DEMO>:"))
+      (if (= (setq eval-code (getstring "è¯·è¾“å…¥æ‰§è¡Œç , æ¼”ç¤ºè¯·è¾“å…¥<DEMO>:"))
 	     (@:get-eval-code  "quadrilateral"))
 	  (@:set-config 'quadrilateral:evalcode eval-code)
 	  (if (= "DEMO" eval-code)
 	      (@:set-config 'quadrilateral:evalcode "DEMO")
 	      (progn
-		(princ "Ö´ĞĞÂë´íÎó! ")
+		(princ "æ‰§è¡Œç é”™è¯¯! ")
 		(@:set-config 'quadrilateral:evalcode ""))
 	      ))
       )

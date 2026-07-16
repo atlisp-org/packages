@@ -1,20 +1,20 @@
 (@:add-menus
- '("@¸øÅÅË®"
-   ("¸øÅÅË®ËµÃ÷" (@wsad:draw-readme))
-   ("¸øÅÅË®Í¼Àı" (@wsad:draw-legend-example))
-   ("¸øÅÅË®Æ½ÃæÑùÀı" (@wsad:draw-plan-example))
-   ("¸øÅÅË®ÏµÍ³ÑùÀı" (@wsad:draw-system-example))
-   ("¸øÅÅË®ÏêÍ¼ÑùÀı" (@wsad:draw-detail-example))
+ '("@ç»™æ’æ°´"
+   ("ç»™æ’æ°´è¯´æ˜" (@wsad:draw-readme))
+   ("ç»™æ’æ°´å›¾ä¾‹" (@wsad:draw-legend-example))
+   ("ç»™æ’æ°´å¹³é¢æ ·ä¾‹" (@wsad:draw-plan-example))
+   ("ç»™æ’æ°´ç³»ç»Ÿæ ·ä¾‹" (@wsad:draw-system-example))
+   ("ç»™æ’æ°´è¯¦å›¾æ ·ä¾‹" (@wsad:draw-detail-example))
    ))
 (defun @wsad:draw-readme ()
-  (@:help '("²åÈë¸øÅÅË®ËµÃ÷¡£" ))
+  (@:help '("æ’å…¥ç»™æ’æ°´è¯´æ˜ã€‚" ))
   (if (findfile (strcat @::*prefix* "packages/at-wsad/readme-wsad.dwg"))
       (progn
 	(setq readme-wsad
 	      (block:insert
 	       "readme-wsad"
 	       (strcat @::*prefix* "packages/at-wsad/")
-	       (getpoint "Çëµã»÷²åÈëÎ»ÖÃ:")
+	       (getpoint "è¯·ç‚¹å‡»æ’å…¥ä½ç½®:")
 	       0 1))
 	(if (string-equal "insert" (entity:getdxf readme-wsad 0))
 	    (progn
@@ -23,7 +23,7 @@
 	
   )
 (defun @wsad:draw-plan-example ()
-  (@:help '("²åÈë¸øÅÅË®Æ½ÃæÍ¼ÑùÀı¡£"
+  (@:help '("æ’å…¥ç»™æ’æ°´å¹³é¢å›¾æ ·ä¾‹ã€‚"
 	    ))
   (if (findfile (strcat @::*prefix* "packages/at-wsad/example-wsad-plan.dwg"))
       (progn
@@ -31,39 +31,39 @@
 	      (block:insert
 	       "example-wsad-plan"
 	       (strcat @::*prefix* "packages/at-wsad/")
-	       (getpoint "Çëµã»÷²åÈëÎ»ÖÃ:")
+	       (getpoint "è¯·ç‚¹å‡»æ’å…¥ä½ç½®:")
 	       0 1))
 	)))
 (defun @wsad:draw-system-example ()
-  (@:help '("²åÈë¸øÅÅË®ÏµÍ³Í¼ÑùÀı¡£"
+  (@:help '("æ’å…¥ç»™æ’æ°´ç³»ç»Ÿå›¾æ ·ä¾‹ã€‚"
 	    ))
   (if (findfile (strcat @::*prefix* "packages/at-wsad/example-wsad-system.dwg"))
       (progn
 	(block:insert
 	 "example-wsad-system"
 	 (strcat @::*prefix* "packages/at-wsad/")
-	 (getpoint "Çëµã»÷²åÈëÎ»ÖÃ:")
+	 (getpoint "è¯·ç‚¹å‡»æ’å…¥ä½ç½®:")
 	 0 1))
       ))
 (defun @wsad:draw-legend-example ()
-  (@:help '("²åÈë¸øÅÅË®Í¼ÀıÑùÀı¡£"
+  (@:help '("æ’å…¥ç»™æ’æ°´å›¾ä¾‹æ ·ä¾‹ã€‚"
 	    ))
   (if (findfile (strcat @::*prefix* "packages/at-wsad/example-wsad-legend.dwg"))
       (progn
 	(block:insert
 	 "example-wsad-legend"
 	 (strcat @::*prefix* "packages/at-wsad/")
-	 (getpoint "Çëµã»÷²åÈëÎ»ÖÃ:")
+	 (getpoint "è¯·ç‚¹å‡»æ’å…¥ä½ç½®:")
 	 0 1))
       ))
 (defun @wsad:draw-detail-example ()
-  (@:help '("²åÈë¸øÅÅË®Í¼ÀıÑùÀı¡£"
+  (@:help '("æ’å…¥ç»™æ’æ°´å›¾ä¾‹æ ·ä¾‹ã€‚"
 	    ))
   (if (findfile (strcat @::*prefix* "packages/at-wsad/example-wsad-detail.dwg"))
       (progn
 	(block:insert
 	 "example-wsad-detail"
 	 (strcat @::*prefix* "packages/at-wsad/")
-	 (getpoint "Çëµã»÷²åÈëÎ»ÖÃ:")
+	 (getpoint "è¯·ç‚¹å‡»æ’å…¥ä½ç½®:")
 	 0 1))
       ))

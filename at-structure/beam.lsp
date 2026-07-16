@@ -1,7 +1,7 @@
-(@:define-config '@structure:layer-beam "*BEAM*,*Áº*" "ÁºÍ¼²ã")
-;; (@:add-menu "½á¹¹" "*Áº±à×é" "(at-structure:find-beam)")
+(@:define-config '@structure:layer-beam "*BEAM*,*æ¢*" "æ¢å›¾å±‚")
+;; (@:add-menu "ç»“æ„" "*æ¢ç¼–ç»„" "(at-structure:find-beam)")
 (defun at-structure:find-beam (/ ss-beam lst-beam en-line1 en-line2) 
-  "ÕÒ³öÁº±ß(³É¶ÔµÄÆ½ĞĞÏß)"
+  "æ‰¾å‡ºæ¢è¾¹(æˆå¯¹çš„å¹³è¡Œçº¿)"
   (setq ss-beam (pickset:to-list 
                   (ssget 
                     (list 
@@ -13,7 +13,7 @@
   )
   ;; (setq ss-beam
   ;; 	(vl-sort ss-beam
-  ;; 		 '(lambda (x y) ;;°´½Ç¶ÈÅÅĞò
+  ;; 		 '(lambda (x y) ;;æŒ‰è§’åº¦æ’åº
   ;; 		   (< (angle (entity:getdxf x 10)(entity:getdxf x 11))
   ;; 		    (angle (entity:getdxf y 10)(entity:getdxf y 11))))))
   (setq lst-beam nil)
@@ -54,9 +54,9 @@
 )
 
 	     
-(@:add-menu "PKPM" "´ÎÁº½á¹û" '(at-structure:secondarybeam-result))
+(@:add-menu "PKPM" "æ¬¡æ¢ç»“æœ" '(at-structure:secondarybeam-result))
 (defun at-structure:secondarybeam-result () 
-  "ÕÒ³öÁº±ß(³É¶ÔµÄÆ½ĞĞÏß)"
+  "æ‰¾å‡ºæ¢è¾¹(æˆå¯¹çš„å¹³è¡Œçº¿)"
   (setq beamlines (pickset:to-list 
                     (ssget 
                       (list 
@@ -67,7 +67,7 @@
                   )
   )
   (foreach beamline beamlines 
-    ;; ÏòÉÏÏò×ó500£¬ÏòÏÂ200È¡ÎÄ×Ö
+    ;; å‘ä¸Šå‘å·¦500ï¼Œå‘ä¸‹200å–æ–‡å­—
     (setq pt-mid (curve:midpoint beamline))
     (setq ang (apply 'angle (entity:getdxf beamline '(10 11))))
     (setq uptext (ssget 
@@ -84,7 +84,7 @@
     (if uptext 
       (progn 
         (foreach ent (pickset:to-list uptext) 
-          (entity:putdxf ent 8 "´ÎÁºÊı¾İ")
+          (entity:putdxf ent 8 "æ¬¡æ¢æ•°æ®")
           (entity:putdxf 
             ent
             1
@@ -108,7 +108,7 @@
     (if downtext 
       (progn 
         (foreach ent (pickset:to-list downtext) 
-          (entity:putdxf ent 8 "´ÎÁºÊı¾İ")
+          (entity:putdxf ent 8 "æ¬¡æ¢æ•°æ®")
           (entity:putdxf 
             ent
             1

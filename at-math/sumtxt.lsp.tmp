@@ -1,0 +1,2 @@
+(defun at-math:sumtxt (/ res1 ents txts data textnumpair)
+  (@::help '("缁熻

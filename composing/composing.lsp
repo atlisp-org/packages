@@ -1,7 +1,7 @@
 
-(@:add-menu "ÅÅ°æ" "·Ö¶ÑµÈ¼äÏ¶ÅÅ°æ" "(composing:cluster-gap)")
-(@:add-menu "ÅÅ°æ" "·Ö¶Ñ×Ü³¤µÈ¾àÅÅ°æ" "(composing:cluster)")
-(@:add-menu "ÅÅ°æ" "Í¼ĞÎ×Ü³¤µÈ¾àÅÅ°æ" "(composing:entity)")
-(@:add-menu "ÅÅ°æ" "Í¼ĞÎµÈ¼äÏ¶ÅÅ°æ" "(composing:entity-gap)")
-;; (@:add-menu "ÅÅ°æ" "·Ö×é×Ü³¤µÈ¾àÅÅ°æ" "(composing:group)")
-;; (@:add-menu "ÅÅ°æ" "·Ö×éµÈ¼äÏ¶ÅÅ°æ" "(composing:group-gap)")
+(@:add-menu "æ’ç‰ˆ" "åˆ†å †ç­‰é—´éš™æ’ç‰ˆ" "(composing:cluster-gap)")
+(@:add-menu "æ’ç‰ˆ" "åˆ†å †æ€»é•¿ç­‰è·æ’ç‰ˆ" "(composing:cluster)")
+(@:add-menu "æ’ç‰ˆ" "å›¾å½¢æ€»é•¿ç­‰è·æ’ç‰ˆ" "(composing:entity)")
+(@:add-menu "æ’ç‰ˆ" "å›¾å½¢ç­‰é—´éš™æ’ç‰ˆ" "(composing:entity-gap)")
+;; (@:add-menu "æ’ç‰ˆ" "åˆ†ç»„æ€»é•¿ç­‰è·æ’ç‰ˆ" "(composing:group)")
+;; (@:add-menu "æ’ç‰ˆ" "åˆ†ç»„ç­‰é—´éš™æ’ç‰ˆ" "(composing:group-gap)")

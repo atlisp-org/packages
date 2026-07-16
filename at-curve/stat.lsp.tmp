@@ -1,0 +1,2 @@
+(defun at-curve:stat (/ curves res classname dxfno)
+  (@::prompt "鍒嗙被姹囨€绘洸绾跨殑闀垮害銆

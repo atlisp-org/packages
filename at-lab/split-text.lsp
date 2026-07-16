@@ -1,5 +1,5 @@
 (defun @lab:split-text ( / dcl-fp strs)
-   (@::prompt "ÅúÁ¿½«µ¥ĞĞÎÄ±¾°´¹æÂÉ·Ö¸ô²¢»æÖÆ±í¸ñ£¬")
+   (@::prompt "æ‰¹é‡å°†å•è¡Œæ–‡æœ¬æŒ‰è§„å¾‹åˆ†éš”å¹¶ç»˜åˆ¶è¡¨æ ¼ï¼Œ")
   (defun align-str (n str / flag)
     (if (null str)(setq str ""))
     (setq flag nil)
@@ -23,14 +23,14 @@
   (progn
     (dcl:begin-cluster "column" "")
     (write-line (strcat ":text{label=\""
-			"ËµÃ÷:²»Í¬µÄ·Ö¸ô·ûÖ®¼äÓÃ &&& ¶Ï¿ª¡£É¾¼õ×Ö·ûÓÃÓÚÉ¾³ı×Ö´®ÖĞÇ°ºó²»ĞèÒªµÄ×Ö·û¡£"
+			"è¯´æ˜:ä¸åŒçš„åˆ†éš”ç¬¦ä¹‹é—´ç”¨ &&& æ–­å¼€ã€‚åˆ å‡å­—ç¬¦ç”¨äºåˆ é™¤å­—ä¸²ä¸­å‰åä¸éœ€è¦çš„å­—ç¬¦ã€‚"
 			"\";}"
 			)
 		dcl-fp)
-    (write-line (strcat ":edit_box{key=\"sepa\";label=\"·Ö¸ô·û:\";}"
+    (write-line (strcat ":edit_box{key=\"sepa\";label=\"åˆ†éš”ç¬¦:\";}"
 			)
 		dcl-fp)
-    (write-line (strcat ":edit_box{key=\"trim\";label=\"É¾¼õ×Ö·û:\";}"
+    (write-line (strcat ":edit_box{key=\"trim\";label=\"åˆ å‡å­—ç¬¦:\";}"
 			)
 		dcl-fp)
     (dcl:hr 0.08)
@@ -70,13 +70,13 @@
   
   (action_tile "sepa" "(update-strs)")
   (action_tile "trim" "(update-strs)")
-  (set_tile "title" "ÎÄ±¾×ª±í¸ñ")
+  (set_tile "title" "æ–‡æœ¬è½¬è¡¨æ ¼")
   (dcl:show)
   (setq @:tmp-result strs)
   (if (and (listp strs)(> (length strs) 0))
       (table:make
-       (getpoint "±í¸ñ²åÈëµã:")
-       "·Ö¸ô½á¹û"
+       (getpoint "è¡¨æ ¼æ’å…¥ç‚¹:")
+       "åˆ†éš”ç»“æœ"
        (mapcar 'chr
 	       (list:range (ascii "A")
 			   (+ (ascii "A")
@@ -87,9 +87,9 @@
     ))
 
 (defun @lab:summary-lst (/ res)
-  (@::prompt "·ÖÀà»ã×Ü×Ö·û´®·Ö¸ôµÄ½á¹û")
-  (if (null @:tmp-result)(progn (@:log "INFO" "Ã»ÓĞÉú³É½á¹ûÊı¾İÓÃÓÚ»ã×Ü¡£") (exit)))
-  (setq lst-ge (vl-remove-if-not '(lambda(x)(member "½ğ¶î" x)) @:tmp-result))
+  (@::prompt "åˆ†ç±»æ±‡æ€»å­—ç¬¦ä¸²åˆ†éš”çš„ç»“æœ")
+  (if (null @:tmp-result)(progn (@:log "INFO" "æ²¡æœ‰ç”Ÿæˆç»“æœæ•°æ®ç”¨äºæ±‡æ€»ã€‚") (exit)))
+  (setq lst-ge (vl-remove-if-not '(lambda(x)(member "é‡‘é¢" x)) @:tmp-result))
   (setq res nil)
   (foreach ge lst-ge
 	   (if (assoc (car ge) res)
@@ -97,21 +97,21 @@
 		     (subst
 		      (cons (car ge)
 			    (+ (cdr (assoc (car ge) res))
-			       (atof (cadr (string:parse-by-lst (cadr (member "½ğ¶î" ge)) '("("")"))))))
+			       (atof (cadr (string:parse-by-lst (cadr (member "é‡‘é¢" ge)) '("("")"))))))
 		      (assoc (car ge) res)
 		      res))
 	     (setq res
 		   (cons
 		    (cons (car ge)
-			  (atof (cadr (string:parse-by-lst (cadr (member "½ğ¶î" ge)) '("("")")))))
+			  (atof (cadr (string:parse-by-lst (cadr (member "é‡‘é¢" ge)) '("("")")))))
 		    res))))
   (setq res (reverse res))
-  (table:make (getpoint "×Ü¼Û±í²åÈëµã:")
-	      "×Ü¼Û±í"
-	      '("ÏîÄ¿" "×Ü¼Û")
+  (table:make (getpoint "æ€»ä»·è¡¨æ’å…¥ç‚¹:")
+	      "æ€»ä»·è¡¨"
+	      '("é¡¹ç›®" "æ€»ä»·")
 	      (mapcar '(lambda(x)(list (car x)(cdr x))) res)
 	      )
-  (setq lst-ge (vl-remove-if-not '(lambda(x)(member "¿×Êı" x)) @:tmp-result))
+  (setq lst-ge (vl-remove-if-not '(lambda(x)(member "å­”æ•°" x)) @:tmp-result))
   (setq res nil)
   (foreach ge lst-ge
 	   (if (assoc (car ge) res)
@@ -119,17 +119,17 @@
 		     (subst
 		      (cons (car ge)
 			    (+ (cdr (assoc (car ge) res))
-			       (atoi (cadr (member "¿×Êı" ge)))))
+			       (atoi (cadr (member "å­”æ•°" ge)))))
 		      (assoc (car ge) res)
 		      res))
 	     (setq res
 		   (cons
 		    (cons (car ge)
-			  (atoi (cadr (member "¿×Êı" ge))))
+			  (atoi (cadr (member "å­”æ•°" ge))))
 		    res))))
   (setq res (reverse res))
-  (table:make (getpoint "¿×Êı±í²åÈëµã:")
-	      "¿×Êı±í"
-	      '("ÏîÄ¿" "¿×Êı")
+  (table:make (getpoint "å­”æ•°è¡¨æ’å…¥ç‚¹:")
+	      "å­”æ•°è¡¨"
+	      '("é¡¹ç›®" "å­”æ•°")
 	      (mapcar '(lambda(x)(list (car x)(cdr x))) res)
 	      ))

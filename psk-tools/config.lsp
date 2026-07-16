@@ -1,18 +1,18 @@
-(setq $psk-about "�ܵ������� PSK 0.61")
+(setq $psk-about "管道求解组件 PSK 0.61")
 
 (setq $psk-regroot	"HKEY_CURRENT_USER\\Software\\InkPaint Computing\\PSK"
       $psk-install-path	(vl-registry-read $psk-regroot "Install Path")
 )
 
 (if (or (null $psk-install-path) (= $psk-install-path ""))
-  (progn (princ "\nδ����Ӧ�ó���װ·����")
+  (progn (princ "\n未设置应用程序安装路径。")
 	 (vl-registry-write $psk-regroot "Install Path" "")
 	 (vl-exit-with-value 1)
   )
 )
 
 
-;;; BOOKMARK - ������ʼ��
+;;; BOOKMARK - 变量初始化
 
 ;;;_$ (psk-get-filename "a")
 ;;;"C:\\Users\\hhs\\Desktop\\dd2\\a"
@@ -68,21 +68,21 @@
 
 
 (defun psk-setting-load	(/ e settings)
-  ;; ���뱣����ÿ��dwg�е�����
+  ;; 导入保存于每个dwg中的设置
   (if (setq settings (vlax-ldata-get "PSK" "SETTINGS"))
     (foreach e settings
       (set (read (car e)) (cdr e))
     )
   )
 
-  ;; ��������¿������ӵı��� ��Ĭ��ֵ���䶨��
+  ;; 程序因更新可能增加的变量 用默认值补充定义
   (foreach e $psk-settings-default
     (if	(null (vl-symbol-value (read(car e))))
       (set (read (car e)) (cdr e))
     )
   )
 
-  ;; �Կ��������ı�������
+  ;; 对可能新增的变量保存
   (psk-setting-save)
 )
 
@@ -98,7 +98,7 @@
 )
 (defun psk-createvaluelast-load	(/ r)
   (if (setq r (vlax-ldata-get "PSK" "CREATEVALUELAST"))
-    ;; ���и�ֵ �����޷������±���
+    ;; 进行赋值 否则无法添加新变量
     (foreach r1 r
       (setq $psk-path-createvaluelast
              (p-set
@@ -128,65 +128,65 @@
 (setq $psk-settings-desc
        '(("$PSK-CUSTOMDIR"
            1000
-           "�����ļ�Ŀ¼"
-           "ϵͳ��ͼ��������ļ����ڵ�Ŀ¼"
+           "配置文件目录"
+           "系统及图层等配置文件所在的目录"
            ("config/profiles/hanjia/" "config/profiles/default/" "")
          )
           ("$PSK-IDEN-TEXTHEIGHT"
             1040
-            "��ע���ָ߶�"
+            "标注文字高度"
             ""
             (2.5 3.0 4.0 5.0 "")
           )
           ("$PSK-IDEN-WIDFACTOR"
             1040
-            "��������"
+            "宽度因子"
             ""
             (0.5 0.6 0.7 0.75 0.8 0.9 1.0 "")
           )
-          ("$PSK-IDEN-SCALE" 1040 "ȫ�ֱ���" "" (50. 100. 150. 200. ""))
-          ("$PSK-IDEN-TEXTSTYLE" 1000 "��ע������ʽ")
-          ("$PSK-IDEN-MINLENGTH" 1040 "��ע���߳�����ֵ")
+          ("$PSK-IDEN-SCALE" 1040 "全局比例" "" (50. 100. 150. 200. ""))
+          ("$PSK-IDEN-TEXTSTYLE" 1000 "标注文字样式")
+          ("$PSK-IDEN-MINLENGTH" 1040 "标注管线长度限值")
           ("$PSK-AUTOREDRAW"
             1000
-            "�Զ�����ͼ��"
-            "���ƹܵ�ʱ�Զ�����ͼ��"
-            (("Y" "��") ("N" "��"))
+            "自动更新图面"
+            "绘制管道时自动更新图面"
+            (("Y" "是") ("N" "否"))
           )
-          ("$PSK-TEMPL-PIPE" 1000 "ˮ�ܱ�עģ��" "ˮ�ܱ�עģ��" ("{SERV} DN{DN}" ""))
+          ("$PSK-TEMPL-PIPE" 1000 "水管标注模板" "水管标注模板" ("{SERV} DN{DN}" ""))
           ("$PSK-TEMPL-DUCT"
             1000
-            "���η�ܱ�עģ��"
-            "���η�ܱ�עģ��"
+            "矩形风管标注模板"
+            "矩形风管标注模板"
             ("{W}x{H}" "{SERV}D {W}x{H}" "{SERV}D {W}x{H} (H+{EL:3})" "")
           )
-          ("$PSK-TEMPL-DUCTROUND" 1000 "Բ�η�ܱ�עģ��" "Բ�η�ܱ�עģ��" ("%%C{D}" ""))
+          ("$PSK-TEMPL-DUCTROUND" 1000 "圆形风管标注模板" "圆形风管标注模板" ("%%C{D}" ""))
           ("$PSK-TEMPL-REFPIPE"
             1000
-            "��ý�ܱ�עģ��"
-            "��ý�ܱ�עģ��"
+            "冷媒管标注模板"
+            "冷媒管标注模板"
             ("{SERV} {REFS}" "{REFS}" "")
           )
-          ("$PSK-IDEN-OFFSET" 1070 "��ϱ�עƫ��" "��ϱ�ע��һ�������뿪������߾���")
+          ("$PSK-IDEN-OFFSET" 1070 "组合标注偏移" "组合标注第一个文字离开最近基线距离")
           ("$PSK-ERF-CREATE"
             1040
-            "�½���ͷ�뾶"
-            "�����ܼ�ʱĬ�ϲ��õ���ͷ�뾶����"
+            "新建弯头半径"
+            "创建管件时默认采用的弯头半径参数"
             (0.8 1.0 1.5 "")
           )
-          ("$PSK-IDEN-OFFSET" 1070 "��ϱ�עƫ��" "��ϱ�ע��һ�������뿪������߾���")
-          ("$PSK-DUCT-FLEXTEND" 1070 "˫�߷�ܷ���ͻ������" "˫�߷�ܷ���ͻ������")
-	  ("$PSK-ANGLE-TOLERANCE" 1040 "�Ƕ��ж��ݲ�" "�ܵ�����ʱ�Ի��ȽǶ��ж��ݲ�")
+          ("$PSK-IDEN-OFFSET" 1070 "组合标注偏移" "组合标注第一个文字离开最近基线距离")
+          ("$PSK-DUCT-FLEXTEND" 1070 "双线风管法兰突出距离" "双线风管法兰突出距离")
+	  ("$PSK-ANGLE-TOLERANCE" 1040 "角度判断容差" "管道连接时以弧度角度判断容差")
         )
 )
 (setq $psk-settings-default
-       '(("$PSK-IDEN-TEXTHEIGHT" . 3.0) ;_��ע����Ĭ�ϸ߶�
-	 ("$PSK-IDEN-WIDFACTOR" . 0.7) ;_��ע���ֿ��ȱ���
-	 ("$PSK-IDEN-SCALE" . 100.) ;_ȫ�ֱ���Ӱ���ע����
+       '(("$PSK-IDEN-TEXTHEIGHT" . 3.0) ;_标注文字默认高度
+	 ("$PSK-IDEN-WIDFACTOR" . 0.7) ;_标注文字宽度比例
+	 ("$PSK-IDEN-SCALE" . 100.) ;_全局比例影响标注文字
 	 ("$PSK-IDEN-TEXTSTYLE" . "HJ-GBXWXT")
-	 ("$PSK-IDEN-MINLENGTH" . 1000.0) ;_С�ڸó��ȵ�ֱ�߲���ע
+	 ("$PSK-IDEN-MINLENGTH" . 1000.0) ;_小于该长度的直线不标注
 	 ("$PSK-AUTOREDRAW" . "Y")
-	 ("$PSK-DUCT-FLEXTEND" . 50.) ;_������ͻ������
+	 ("$PSK-DUCT-FLEXTEND" . 50.) ;_法兰边突出长度
 	 ("$PSK-TEMPL-PIPE" . "{SERV} DN{DN}" )
 	 ("$PSK-TEMPL-DUCT" . "{W}x{H}" )
 	 ("$PSK-TEMPL-DUCTROUND" . "%%C{D}" )
@@ -224,7 +224,7 @@
   )
 )
 
-;; ����ϵͳ����
+;; 加载系统变量
 ;;;(load (psk-get-filename "var.lsp"))
 (eval
   (p-lisp-load (psk-get-filename "var.lsp"))

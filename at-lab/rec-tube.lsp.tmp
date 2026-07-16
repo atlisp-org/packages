@@ -1,0 +1,2 @@
+(defun @lab:rec-tube (/ res w h t1 ang)
+  (@::prompt "缁樺埗鐭╁舰绠

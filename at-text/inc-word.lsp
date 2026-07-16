@@ -1,9 +1,9 @@
 
-;;;×ÖÄ¸Êý×Ö¶¯Ì¬µÝÔö
-;;;µãÄÄ¸ö¾Í¼ÓÄÄ¸ö
-;;;luyu9635 2012.11.15ÉîÛÚ
+;;;å­—æ¯æ•°å­—åŠ¨æ€é€’å¢ž
+;;;ç‚¹å“ªä¸ªå°±åŠ å“ªä¸ª
+;;;luyu9635 2012.11.15æ·±åœ³
 (defun @text:inc-word (/ z a ad ab str str2 str1 dxf adx len xlen loop i su zors p1 p2 pt box npt xpt pt10 zc pjz do)
-  (if (or (setq a (entsel "\nÑ¡ÔñÊý×Ö»ò×ÖÄ¸:"))
+  (if (or (setq a (entsel "\né€‰æ‹©æ•°å­—æˆ–å­—æ¯:"))
 	  ;;(ssget (cadr a) '((0 . "*TEXT")))
 	  )
       (progn
@@ -41,7 +41,7 @@
 	   )
       (cond 
 	    ((or (wcmatch zors  "~*[~.0-9]*" )(wcmatch zors "*[a-zA-Z]"))
-               (setq p1 (getpoint "\nÑ¡Ôñ»ùµã:") loop T)
+               (setq p1 (getpoint "\né€‰æ‹©åŸºç‚¹:") loop T)
 	   (while loop
             (setq str(1+ str) tmp(strcat str1 (chr str) str2))
             (vla-copy (vlax-ename->vla-object ab))

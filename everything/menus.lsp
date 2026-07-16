@@ -1,8 +1,8 @@
 (@:add-menus
  '(("Everything"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(everything:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(everything:hello)")))
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(everything:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(everything:hello)")))
    ("Everything1"
-    (("µÚ¶þ¸ö¹¦ÄÜ" "(everything:hello)")
-     ("µÚÈý¸ö¹¦ÄÜ" "(everything:hello)")))
+    (("ç¬¬äºŒä¸ªåŠŸèƒ½" "(everything:hello)")
+     ("ç¬¬ä¸‰ä¸ªåŠŸèƒ½" "(everything:hello)")))
    )

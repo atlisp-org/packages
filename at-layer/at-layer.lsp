@@ -1,23 +1,23 @@
 
-(@:add-menus '("Í¼²ã"
-	       ("¹Ø±ÕÆäËü" "(@layer:off-other)")
-	       ("¶³½áÆäËü" "(@layer:frozen-other)")
-	       ("Ëø¶¨ÆäËü" "(@layer:lock-other)")
-	       ("½âËøÈ«²¿" "(@layer:unlock-all)")
-	       ("½â¶³È«²¿" "(@layer:thaw-all)")
-	       ("Í¼²ãÈ«¿ª" "layon")
-	       ("Í¼²ã»Ö¸´" "layerp")
-	       ("ÌØĞÔËæ²ã" "laycur")
-	       ("ºÏ²¢Í¼²ã" "laymrg")
-	       ("É¾³ıÍ¼²ã" "laydel")
-	       ("Í¼²ãÂşÓÎ" "laywalk")
-	       ("Ñ¡Í¼½ø²ã" "(@layer:ent-to-clayer)")
+(@:add-menus '("å›¾å±‚"
+	       ("å…³é—­å…¶å®ƒ" "(@layer:off-other)")
+	       ("å†»ç»“å…¶å®ƒ" "(@layer:frozen-other)")
+	       ("é”å®šå…¶å®ƒ" "(@layer:lock-other)")
+	       ("è§£é”å…¨éƒ¨" "(@layer:unlock-all)")
+	       ("è§£å†»å…¨éƒ¨" "(@layer:thaw-all)")
+	       ("å›¾å±‚å…¨å¼€" "layon")
+	       ("å›¾å±‚æ¢å¤" "layerp")
+	       ("ç‰¹æ€§éšå±‚" "laycur")
+	       ("åˆå¹¶å›¾å±‚" "laymrg")
+	       ("åˆ é™¤å›¾å±‚" "laydel")
+	       ("å›¾å±‚æ¼«æ¸¸" "laywalk")
+	       ("é€‰å›¾è¿›å±‚" "(@layer:ent-to-clayer)")
 
 	       ))
-;; (@:add-menu "Í¼²ã" "³£ÓÃÃüÁî" "(@layer:ent-to-clayer)")
+;; (@:add-menu "å›¾å±‚" "å¸¸ç”¨å‘½ä»¤" "(@layer:ent-to-clayer)")
 
 (defun @layer:get-layers-by-ss(ss / layer ti% ename e)
-  "¸ù¾İËùÑ¡¶ÔÏóÉú³ÉÍ¼²ã±í"
+  "æ ¹æ®æ‰€é€‰å¯¹è±¡ç”Ÿæˆå›¾å±‚è¡¨"
   (setq layer nil )
   (setq ti% 0)
   (if (/= ss nil)
@@ -39,11 +39,11 @@
   layer
   )
 (defun @layer:off-other( /  ss  layer  lay-act-list )
-  "¹Ø±ÕÆäËüÍ¼²ã"
+  "å…³é—­å…¶å®ƒå›¾å±‚"
   (setq lay-act-list "")
   (setq ss (ssget ))
   (foreach layer (layer:list)
-           ;;; Èç¹ûµ±Ç°Í¼²ã²»ÔÚ ËùÑ¡¶ÔÏóÖĞ£¬Éèµ±Ç°²ãÎªµÚÒ»¸öµ±Ç°¶ÔÏó²ã
+           ;;; å¦‚æœå½“å‰å›¾å±‚ä¸åœ¨ æ‰€é€‰å¯¹è±¡ä¸­ï¼Œè®¾å½“å‰å±‚ä¸ºç¬¬ä¸€ä¸ªå½“å‰å¯¹è±¡å±‚
            (if (= (member (getvar "clayer")  (@layer:get-layers-by-ss ss)) nil)
                (setvar "clayer" (car  (@layer:get-layers-by-ss ss)) )
              )
@@ -59,11 +59,11 @@
   )
 
 (defun @layer:frozen-other( /  ss  layer  lay-act-list )
-  "¶³½áÆäËüÍ¼²ã"
+  "å†»ç»“å…¶å®ƒå›¾å±‚"
   (setq lay-act-list "")
   (setq ss (ssget ))
   (foreach layer (layer:list)
-           ;;; Èç¹ûµ±Ç°Í¼²ã²»ÔÚ ËùÑ¡¶ÔÏóÖĞ£¬Éèµ±Ç°²ãÎªµÚÒ»¸öµ±Ç°¶ÔÏó²ã
+           ;;; å¦‚æœå½“å‰å›¾å±‚ä¸åœ¨ æ‰€é€‰å¯¹è±¡ä¸­ï¼Œè®¾å½“å‰å±‚ä¸ºç¬¬ä¸€ä¸ªå½“å‰å¯¹è±¡å±‚
            (if (= (member (getvar "clayer")  (@layer:get-layers-by-ss ss)) nil)
                (setvar "clayer" (car  (@layer:get-layers-by-ss ss)) )
              )
@@ -77,11 +77,11 @@
   )
 
 (defun @layer:lock-other( /  ss  layer  lay-act-list )
-  "Ëø¶¨ÆäËüÍ¼²ã"
+  "é”å®šå…¶å®ƒå›¾å±‚"
   (setq lay-act-list "")
   (setq ss (ssget ))
   (foreach layer (layer:list)
-           ;;; Èç¹ûµ±Ç°Í¼²ã²»ÔÚ ËùÑ¡¶ÔÏóÖĞ£¬Éèµ±Ç°²ãÎªµÚÒ»¸öµ±Ç°¶ÔÏó²ã
+           ;;; å¦‚æœå½“å‰å›¾å±‚ä¸åœ¨ æ‰€é€‰å¯¹è±¡ä¸­ï¼Œè®¾å½“å‰å±‚ä¸ºç¬¬ä¸€ä¸ªå½“å‰å¯¹è±¡å±‚
            (if (= (member (getvar "clayer")  (@layer:get-layers-by-ss ss)) nil)
                (setvar "clayer" (car  (@layer:get-layers-by-ss ss)) )
              )
@@ -95,7 +95,7 @@
   )
 
 (defun @layer:unlock-all( /  ss  layer  lay-act-list )
-   "½âËøÈ«²¿Í¼²ã"
+   "è§£é”å…¨éƒ¨å›¾å±‚"
   (setq lay-act-list "")
   (foreach layer (layer:list)
            (if (= lay-act-list "")
@@ -107,7 +107,7 @@
   )
 
 (defun @layer:thaw-all( /  layer  lay-act-list )
-  "½â¶³È«²¿Í¼²ã"
+  "è§£å†»å…¨éƒ¨å›¾å±‚"
   (setq lay-act-list "")
   (foreach layer (layer:list)
            (if (= lay-act-list "")
@@ -133,7 +133,7 @@
 	    (layer:make (vl-symbol-name curr-layer) nil nil nil))
 	(setvar "clayer" (vl-symbol-name curr-layer)))))
   (@::prompt (list
-	   (strcat "Ñ¡Ôñ¶ÔÏóµ½" (getvar "clayer") "²ã")))
+	   (strcat "é€‰æ‹©å¯¹è±¡åˆ°" (getvar "clayer") "å±‚")))
   (if (setq ss-curr (cadr (ssgetfirst)))
       (foreach ent (pickset:to-list ss-curr)
 	       (entity:putdxf ent 8 (getvar "clayer"))

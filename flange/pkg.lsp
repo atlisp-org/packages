@@ -1,13 +1,13 @@
 (@:def-pkg '((:NAME . "flange")
-        (:FULL-NAME . "∑®¿ºπ§æﬂ")
+        (:FULL-NAME . "Ê≥ïÂÖ∞Â∑•ÂÖ∑")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
         (:VERSION . "0.0.9")
         (:LOCALE . "chs")
-        (:CATEGORY . "π‹µ¿")
+        (:CATEGORY . "ÁÆ°ÈÅì")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "∑®¿ºªÊÕºπ§æﬂ°£")
+        (:DESCRIPTION . "Ê≥ïÂÖ∞ÁªòÂõæÂ∑•ÂÖ∑„ÄÇ")
         (:URL . "http://atlisp.cn")
         (:FILES "flange"
             "data.lst"

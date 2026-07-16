@@ -1,0 +1,2 @@
+(defun @curve:spline2lwpl()
+  (setq ent (entsel "\n閫夋嫨涓€涓

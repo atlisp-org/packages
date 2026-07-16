@@ -1,9 +1,9 @@
 
 ;;(vl-Load-COM)
-;·µ»ØÍÏ½øÈ¥µÄ³ÌĞòµÄÂ·¾¶
+;è¿”å›æ‹–è¿›å»çš„ç¨‹åºçš„è·¯å¾„
 ;(setq path(try-tuo-path))
 ;; (defun try-tuo-path-G(/ path str)
-;; 	;;;»ñÈ¡°²×°Â·¾¶
+;; 	;;;è·å–å®‰è£…è·¯å¾„
 ;; 	(princ "\n")
 ;; 	(setq path (getvar "lastprompt"))
 ;; 	(if (wcmatch (strcase path) "*(LOAD \"*")
@@ -18,9 +18,9 @@
 ;; 	)	
 ;; 	path
 ;; )
-;¹¦ÄÜ£ºÌí¼ÓcadËÑË÷Â·¾¶(Ç°»òºó²¿)¡£
-;²ÎÊı£ºnewpathÎªĞÂÔöÂ·¾¶£»mode£¬"L"ÎªÇ°¡¢"R"Îªºó¡£
-;·µ»ØÖµ£ºÂ·¾¶ÁĞ±í¡£
+;åŠŸèƒ½ï¼šæ·»åŠ cadæœç´¢è·¯å¾„(å‰æˆ–åéƒ¨)ã€‚
+;å‚æ•°ï¼šnewpathä¸ºæ–°å¢è·¯å¾„ï¼›modeï¼Œ"L"ä¸ºå‰ã€"R"ä¸ºåã€‚
+;è¿”å›å€¼ï¼šè·¯å¾„åˆ—è¡¨ã€‚
 ;; (defun xyp-Path-Add (path mode)
 ;;   (setenv "ACAD"
 ;; 	  (cond	((or (= mode "R") (not mode))
@@ -30,43 +30,43 @@
 ;; 	  )
 ;;   )
 ;; )
-;; ;;³ÌĞò¿ªÊ¼
+;; ;;ç¨‹åºå¼€å§‹
 ;; (setq path(try-tuo-path-G))
 ;; (if (= ":"(substr path 2 1))
 ;; 	(progn
 ;; 		(xyp-Path-Add path "L")
-;; 		(prompt "\n³É¹¦ÍÏ·ÅÌí¼ÓÎÄ¼şÖ§³ÖËÑË÷Â·¾¶")
+;; 		(prompt "\næˆåŠŸæ‹–æ”¾æ·»åŠ æ–‡ä»¶æ”¯æŒæœç´¢è·¯å¾„")
 ;; 	)
-;; 	(prompt "\n±¾³ÌĞòÖ»ÄÜÍ¨¹ıÍÏ¶¯À´¼ÓÔØ£¬»òÊÖ¶¯Ìí¼ÓÎÄ¼şÖ§³ÖËÑË÷Â·¾¶")	
+;; 	(prompt "\næœ¬ç¨‹åºåªèƒ½é€šè¿‡æ‹–åŠ¨æ¥åŠ è½½ï¼Œæˆ–æ‰‹åŠ¨æ·»åŠ æ–‡ä»¶æ”¯æŒæœç´¢è·¯å¾„")	
 ;; )
 ;;;******************************************************
 ;;;******************************************************
-;;;OpenDcl¿ª·¢¹¤¾ß                                      *
-;;;BlockView Í¼¿é&Í¼µµÔ¤ÀÀ²åÈë                          *
-;;;³ÌÊ½Éè¼Æ ShenHung                                    *
-;;;³ÌÊ½Àú³Ì                                             *
+;;;OpenDclå¼€å‘å·¥å…·                                      *
+;;;BlockView å›¾å—&å›¾æ¡£é¢„è§ˆæ’å…¥                          *
+;;;ç¨‹å¼è®¾è®¡ ShenHung                                    *
+;;;ç¨‹å¼å†ç¨‹                                             *
 ;;;2013,04,04 V1.0                                      *
-;;;2019-08-22 V2.0 ĞŞÕıµ½ OPENDCL V9.0                  *
+;;;2019-08-22 V2.0 ä¿®æ­£åˆ° OPENDCL V9.0                  *
 ;;;******************************************************
-;;;ÃüÁî                                                 *
-;;;BlockView Í¼¿é²åÈë                                   *
-;;;DwgView   Í¼µµ²åÈë                                   *
+;;;å‘½ä»¤                                                 *
+;;;BlockView å›¾å—æ’å…¥                                   *
+;;;DwgView   å›¾æ¡£æ’å…¥                                   *
 ;;------------------------------------------------------*
-;;;PGPµµÉè¶¨¾«¼òÃüÁî                                    *
+;;;PGPæ¡£è®¾å®šç²¾ç®€å‘½ä»¤                                    *
 ;;;BV,           *BlockView                             *
 ;;;DV,           *DwgView                               *
 ;;;******************************************************
-;;;AUTOCAD Ñ¡Ïî.Ö§Ô®µµËÑÑ°Â·¾¶.Çë¼ÓÈë V2.0 Ä¿Â¼Â·¾¶  
+;;;AUTOCAD é€‰é¡¹.æ”¯æ´æ¡£æœå¯»è·¯å¾„.è¯·åŠ å…¥ V2.0 ç›®å½•è·¯å¾„  
 ;;;                                          
-;; (defun C:B8()(c:DwgVIew));;µ±Ç°dwgÖĞµÄÍ¼¿é¹ÜÀí
-;; (defun C:B7()(c:BlockView));;Ñ¡dwgÎÄ¼ş½øĞĞ²åÈë
-;; (prompt "\n***Ö¸ÁîÃû: Ñ¡dwgÎÄ¼ş½øĞĞ²å  B7 ***")
-;; (prompt "\n***Ö¸ÁîÃû: µ±Ç°dwgÖĞµÄÍ¼¿é¹ÜÀí B8 ***")
+;; (defun C:B8()(c:DwgVIew));;å½“å‰dwgä¸­çš„å›¾å—ç®¡ç†
+;; (defun C:B7()(c:BlockView));;é€‰dwgæ–‡ä»¶è¿›è¡Œæ’å…¥
+;; (prompt "\n***æŒ‡ä»¤å: é€‰dwgæ–‡ä»¶è¿›è¡Œæ’  B7 ***")
+;; (prompt "\n***æŒ‡ä»¤å: å½“å‰dwgä¸­çš„å›¾å—ç®¡ç† B8 ***")
 ;; (vl-load-com)
 ;; (setq BVPATH  (vl-filename-directory (findfile "Blockview.lsp")))
 ;---------------------------------------------------------------------------
-;(prompt "\n***Ö¸ÁîÃû: BlockView Í¼¿éInsert ***")
-;(prompt "\n***Ö¸ÁîÃû: DwgView   Í¼µµInsert ***")
+;(prompt "\n***æŒ‡ä»¤å: BlockView å›¾å—Insert ***")
+;(prompt "\n***æŒ‡ä»¤å: DwgView   å›¾æ¡£Insert ***")
 (defun c:BlockView (/ cmdecho)
 	(setq cmdecho (getvar "CMDECHO"))
 	(setvar "CMDECHO" 0)
@@ -75,19 +75,19 @@
 	(if dcl-form-show
 		(progn
 			(dcl-Project-Load  (strcat @:*prefix* "packages\\block-view\\BlockView.odcl"))
-			(setq intshow (dcl-Form-Show BlockView/Form )) ;intshow Îªclose ¶Ô»°¿òáá.È¡µÃµÄ·µ»ØÖµ.BlockView/Form
+			(setq intshow (dcl-Form-Show BlockView/Form )) ;intshow ä¸ºclose å¯¹è¯æ¡†å¾Œ.å–å¾—çš„è¿”å›å€¼.BlockView/Form
 			)
-		(prompt "\nÕâ¸ö°æ±¾ AutoCad ²»Ö§Ô® BlockView ¹¦ÄÜ")
+		(prompt "\nè¿™ä¸ªç‰ˆæœ¬ AutoCad ä¸æ”¯æ´ BlockView åŠŸèƒ½")
 		)
 	(cond 
-		((= intshow 1) (c:dwgview));·µ»ØÖµÎª1.¿ªÆôÍ¼µµ¹ÜÀí
-		((= intshow 2) (BlockView:insert));²åÈëÍ¼¿é
+		((= intshow 1) (c:dwgview));è¿”å›å€¼ä¸º1.å¼€å¯å›¾æ¡£ç®¡ç†
+		((= intshow 2) (BlockView:insert));æ’å…¥å›¾å—
 	)      
 	(princ)
 )
 ;------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------
-;--DWG VIEW Í¼µµÔ¤ÀÀ²åÈë-------------------------------------------------------------------
+;--DWG VIEW å›¾æ¡£é¢„è§ˆæ’å…¥-------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------
 ;Main progeam------------------------------------------------------------------------------
 (defun c:DwgVIew (/ cmdecho)
@@ -98,59 +98,59 @@
 	(if dcl-form-show
 		(progn
 			(dcl-Project-Load  (strcat  @:*prefix* "packages\\block-view\\BlockView.odcl"))
-			(setq intshow (dcl-Form-Show     BlockView/DwgForm)) ;intshow Îª¶Ô»°¿òClose ·µ»ØÖµ.ÔÚ dcl-from-close ááÖ¸¶¨.
-		)                                                    ;(dcl-Form-close     BlockView/DwgForm 1 )  1Îª·µ»ØÖµ~
-		(prompt "\nÕâ¸ö°æ±¾ AutoCad ²»Ö§Ô® DwgView ¹¦ÄÜ")
+			(setq intshow (dcl-Form-Show     BlockView/DwgForm)) ;intshow ä¸ºå¯¹è¯æ¡†Close è¿”å›å€¼.åœ¨ dcl-from-close å¾ŒæŒ‡å®š.
+		)                                                    ;(dcl-Form-close     BlockView/DwgForm 1 )  1ä¸ºè¿”å›å€¼~
+		(prompt "\nè¿™ä¸ªç‰ˆæœ¬ AutoCad ä¸æ”¯æ´ DwgView åŠŸèƒ½")
 	)
-	;(if (= intshow 1) (DwgView:insert)) ;²åÈëÍ¼µµ.
+	;(if (= intshow 1) (DwgView:insert)) ;æ’å…¥å›¾æ¡£.
 	(princ)
 )
-;;BlockView_³õÊ¼»¯Éè¶¨-----------------------------------------------------
+;;BlockView_åˆå§‹åŒ–è®¾å®š-----------------------------------------------------
 (defun c:BlockView/Form#OnInitialize (/)
 	(dcl-LISTBOX-CLEAR BlockView/Form/BlockList)
 	(setq BlkName_List nil unBlkName_List nil)
 	;(dcl-Control-SetEnabled BlockView/Form/PickFile l)
-	(if (<= (SUBSTR (GETVAR "ACADVER") 1 2) "18") ;2010ÒÔÏÂ
-		(BlockView->stbla-1);È¡µÃÍ¼¿é(vla)
-		(BlockView->stbla  );È¡µÃÍ¼¿é(´«Í³)
+	(if (<= (SUBSTR (GETVAR "ACADVER") 1 2) "18") ;2010ä»¥ä¸‹
+		(BlockView->stbla-1);å–å¾—å›¾å—(vla)
+		(BlockView->stbla  );å–å¾—å›¾å—(ä¼ ç»Ÿ)
 	)  
-	(setq   BlkName_List (Blockview_trans_list tbl_list))  ;×ª³É30¸ö1×éµÄ´®ÁĞ
+	(setq   BlkName_List (Blockview_trans_list tbl_list))  ;è½¬æˆ30ä¸ª1ç»„çš„ä¸²åˆ—
 	(setq UnBlkName_List (Blockview_trans_list tbl_UnName_List))
-	(if (or (= (length   BlkName_List) 0)    ;ÈçÓĞ1¸ö Option ´®ÁĞÊÇ0
+	(if (or (= (length   BlkName_List) 0)    ;å¦‚æœ‰1ä¸ª Option ä¸²åˆ—æ˜¯0
 				(= (length UnBlkName_List) 0)  
 	    )	
-		(dcl-Control-SetEnabled BlockView/Form/OptionList nil)  ; ¹Ø±ÕÊµÃû/ÄäÃûÑ¡Ïî
+		(dcl-Control-SetEnabled BlockView/Form/OptionList nil)  ; å…³é—­å®å/åŒ¿åé€‰é¡¹
 		(dcl-Control-SetEnabled BlockView/Form/OptionList T)		
 	)	
-	;(if (= Dwg_page_inx 0) (dcl-Control-SetEnabled BlockView/DwgForm/UpPage1   nil)) ;Ò³´ÎÈôÎª0.ÉÏÒ»Ò³¹Ø
-	;(if (= Dwg_page_inx (1- Dwg_page_n)) (dcl-Control-SetEnabled BlockView/DwgForm/NextPage1   nil)) ;Ò³´ÎÈôÎª×îáá.ÏÂÒ»Ò³¹Ø
+	;(if (= Dwg_page_inx 0) (dcl-Control-SetEnabled BlockView/DwgForm/UpPage1   nil)) ;é¡µæ¬¡è‹¥ä¸º0.ä¸Šä¸€é¡µå…³
+	;(if (= Dwg_page_inx (1- Dwg_page_n)) (dcl-Control-SetEnabled BlockView/DwgForm/NextPage1   nil)) ;é¡µæ¬¡è‹¥ä¸ºæœ€å¾Œ.ä¸‹ä¸€é¡µå…³
 	;(if (or(null dwg_page_inx)(zerop dwg_page_inx))
 	;	(progn
 	;		(dcl-Control-SetEnabled BlockView/DwgForm/UpPage1 nil)
 	;		(dcl-Control-SetEnabled BlockView/DwgForm/NextPage1 nil)
 	;	)
 	;)
-	;; Éè¶¨BlockName_Value-³õÊ¼-------------------------------------------------------
+	;; è®¾å®šBlockName_Value-åˆå§‹-------------------------------------------------------
 	(if (null curBlockName_value)
 		(cond ((/= (length BlkName_List) 0)
-						(setq curBlockName_value "ÊµÃûÍ¼¿é")
+						(setq curBlockName_value "å®åå›¾å—")
 						(dcl-Control-SetCurrentSelection BlockView/Form/OptionList 0)
 						(setq BlkName_all tbl_list)
 						(setq block_list_all blkname_list)
 					)
 		  ((/= (length UNBlkName_List) 0)
-				(setq curBlockName_value "ÄäÃûÍ¼¿é")
+				(setq curBlockName_value "åŒ¿åå›¾å—")
 				(dcl-Control-SetCurrentSelection BlockView/Form/OptionList 1)
 				(setq BlkName_all tbl_UnName_list)
 				(setq block_list_all UnBlkname_List)
 		  )
 		)
 		(progn
-	    (cond ((= CurBlockName_value "ÊµÃûÍ¼¿é")
+	    (cond ((= CurBlockName_value "å®åå›¾å—")
 							(setq BlkName_all tbl_list)
 							(setq block_list_all blkname_list)
 						)
-				((= CurBlockName_value "ÄäÃûÍ¼¿é")
+				((= CurBlockName_value "åŒ¿åå›¾å—")
 					(setq BlkName_all tbl_UnName_list)
 					(setq block_list_all UnBlkname_List)
 				) 
@@ -164,8 +164,8 @@
 	(if (null blk_x_sc)     (dcl-Control-SetText BlockView/Form/x-sc "1"))
 	(if (null blk_y_sc)     (dcl-Control-SetText BlockView/Form/y-sc "1"))
 	(if (null blk_explode ) (setq blk_explode 0))
-	;·Ö½â
-	(if (= blk_explode 0) ;·Ö½â²»´ò¹´
+	;åˆ†è§£
+	(if (= blk_explode 0) ;åˆ†è§£ä¸æ‰“å‹¾
 		(dcl-Control-SetEnabled BlockView/Form/y-sc T)
 		(dcl-Control-SetEnabled BlockView/Form/y-sc nil)
 	)
@@ -173,19 +173,19 @@
 		(dcl-Control-SetEnabled BlockView/Form/PreView nil)
 		(dcl-Control-SetEnabled BlockView/Form/PreView T)
 	)
-	(BlockView_image_clear) ; Çå¿Õimage
+	(BlockView_image_clear) ; æ¸…ç©ºimage
 	(if (or tbl_list tbl_UnName_List);;;;;66
 		(BlockView_BlockShow_Start)
 		(progn
 			(dcl-CONTROL-SetCaption BlockView/Form/error "")
-			(dcl-CONTROL-SetCaption BlockView/Form/BlockTile  (strcat "Í¼¿éÁĞ±í->Ä¿Ç°Í¼ÃæÃ»ÓĞÍ¼¿é"))
+			(dcl-CONTROL-SetCaption BlockView/Form/BlockTile  (strcat "å›¾å—åˆ—è¡¨->ç›®å‰å›¾é¢æ²¡æœ‰å›¾å—"))
 		)  
 	)
 )
 ;;-------------------------------------------------------------------------------------
 (defun BlockView_image_clear(/ $i $j key_index)
-	(setq $i 0 $J 1) ;³õÊ¼
-	(repeat 30     ;Çå¿ÕImage½çÃæ
+	(setq $i 0 $J 1) ;åˆå§‹
+	(repeat 30     ;æ¸…ç©ºImageç•Œé¢
 		(setq key_index (itoa $j))
 		(dcl-CONTROL-SetCaption   (eval (read (strcat "BlockView/Form/Label"     key_index)))  "")
 		(dcl-Control-SetBackColor (eval (read (strcat "BlockView/Form/BlockView" key_index))) -22)
@@ -193,19 +193,19 @@
 	)
 )  
 ;;-------------------------------------------------------------------------------------
-;;Block_List_pick-----------------------------------Ë÷Òı--------Value=µãµ½µÄÃû³Æ-------
+;;Block_List_pick-----------------------------------ç´¢å¼•--------Value=ç‚¹åˆ°çš„åç§°-------
 (defun c:BlockView/Form/BlockList#OnSelChanged (ItemIndexOrCount Value /)
 	(setq curBlk_name Value) 
 	(setq $bk_Page_inx (/ ItemIndexOrCount 30))
 	(setq $bk_list_inx (VL-POSITION value (nth $bk_page_inx block_List_all)))
-	(dcl-CONTROL-SetCaption BlockView/Form/error  (strcat "Í¼¿éÃû³Æ: " Value))
-	(cond ((= $bk_page_inx block_page_inx) ;µãÈ¡Ä¿Ç°Ò³
+	(dcl-CONTROL-SetCaption BlockView/Form/error  (strcat "å›¾å—åç§°: " Value))
+	(cond ((= $bk_page_inx block_page_inx) ;ç‚¹å–ç›®å‰é¡µ
 					(if old_key_inx (dcl-Control-SetBackColor (eval (read (strcat "BlockView/Form/BlockView" (itoa Old_key_inx)))) -22))
 					(dcl-Control-SetBackColor                 (eval (read (strcat "BlockView/Form/BlockView" (itoa (1+ $bk_list_inx))))) 151)
 					(setq old_key_inx (1+ $bk_list_inx))
 				)	
 		(T
-			(BlockView_image_clear) ; Çå¿Õimage
+			(BlockView_image_clear) ; æ¸…ç©ºimage
 			(setq block_page_inx $bk_page_inx)
 			(BlockView_BlockShow_Start)
 			(if old_key_inx (dcl-Control-SetBackColor (eval (read (strcat "BlockView/Form/BlockView" (itoa Old_key_inx )))) -22))
@@ -214,16 +214,16 @@
 		)
 	)       
 )
-;;ÇĞ»»ÊµÃûÍ¼¿éºÍÄäÃûÍ¼¿é--------------------------------------------------
+;;åˆ‡æ¢å®åå›¾å—å’ŒåŒ¿åå›¾å—--------------------------------------------------
 (defun c:BlockView/Form/OptionList#OnSelChanged (ItemIndexOrCount Value /)
-  (setq curBlk_Name nil) ;ÇĞ»»áá.Ä¿Ç°Blk_nameÉèÎªnil
+  (setq curBlk_Name nil) ;åˆ‡æ¢å¾Œ.ç›®å‰Blk_nameè®¾ä¸ºnil
   (dcl-Control-SetEnabled BlockView/Form/PreView nil)
   (dcl-CONTROL-SetCaption BlockView/Form/Error "") ;Error_Tile Clear
   (setq old_curBlockName_Value CurBlockName_value)
   (setq curBlockName_value value)
   (setq curBlockName_Index ItemIndexOrCount)
-  (cond ((and (= ItemIndexOrCount 0) (= Old_curBlockName_Value "ÄäÃûÍ¼¿é")) ;Ñ¡µ½ÊµÃûÍ¼¿é
-					(BlockView_image_clear) ; Çå¿Õimage
+  (cond ((and (= ItemIndexOrCount 0) (= Old_curBlockName_Value "åŒ¿åå›¾å—")) ;é€‰åˆ°å®åå›¾å—
+					(BlockView_image_clear) ; æ¸…ç©ºimage
 					(setq  block_page_inx 0)
 					(dcl-ListBox-Clear   BlockView/Form/BlockList)
 					(dcl-LISTBOX-ADDList BlockView/Form/BlockList tbl_List)
@@ -231,8 +231,8 @@
 					(setq BlkName_all Tbl_list)
 					(if blkname_list (BlockView_BlockShow_Start))
 				)
-		((and (= ItemIndexOrCount 1) (= Old_curBlockName_Value "ÊµÃûÍ¼¿é")) ;Ñ¡µ½ÄäÃûÍ¼¿é.
-			(BlockView_image_clear) ; Çå¿Õimage
+		((and (= ItemIndexOrCount 1) (= Old_curBlockName_Value "å®åå›¾å—")) ;é€‰åˆ°åŒ¿åå›¾å—.
+			(BlockView_image_clear) ; æ¸…ç©ºimage
 			(setq  block_page_inx 0)
 			(dcl-ListBox-Clear   BlockView/Form/BlockList)
 			(dcl-LISTBOX-ADDList BlockView/Form/BlockList tbl_UnName_List)
@@ -240,43 +240,43 @@
 			(setq BlkName_all Tbl_UnName_list)
 			(if unblkname_list (BlockView_BlockShow_Start))
 		)
-		(T (dcl-CONTROL-SetCaption BlockView/Form/Error "ÖØ¸²µãÈ¡,ÇëÇĞ»»ÁíÒ»¸ö"))
+		(T (dcl-CONTROL-SetCaption BlockView/Form/Error "é‡è¦†ç‚¹å–,è¯·åˆ‡æ¢å¦ä¸€ä¸ª"))
   )
-  (if old_key_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/Form/BlockView" (itoa old_key_inx ))))   -22)) ;Çå³ıImage Sel HighLight
+  (if old_key_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/Form/BlockView" (itoa old_key_inx ))))   -22)) ;æ¸…é™¤Image Sel HighLight
 )  
-;--²åÈë°´Å¥-------------------------------------------------------------------
+;--æ’å…¥æŒ‰é’®-------------------------------------------------------------------
 (defun c:BlockView/Form/ok#OnClicked (/)
   (setq blk_x_sc    (dcl-Control-GetText     BlockView/Form/x-sc))
   (setq blk_y_sc    (dcl-Control-GetText     BlockView/Form/y-sc))
-  (setq blk_explode (dcl-Control-GetValue BlockView/Form/Explode)) ;ÔÙ´ÎÈ¡µÃ·Ö½â°´Å¥µÄÖµ
-  (dcl-Form-close  BlockView/Form 2)   ;²åÈë·µ»ØÖµÉèÎª 2
+  (setq blk_explode (dcl-Control-GetValue BlockView/Form/Explode)) ;å†æ¬¡å–å¾—åˆ†è§£æŒ‰é’®çš„å€¼
+  (dcl-Form-close  BlockView/Form 2)   ;æ’å…¥è¿”å›å€¼è®¾ä¸º 2
 )
-;(setq curdwg_name   (dcl-DWGPreview-GetDwgName   (eval (read (strcat "BlockView/DwgForm/ViewDwg"   (itoa $$inx)))))) ;ÍêÕûÂ·¾¶µµÃû
-;(setq LabelDwg_name (dcl-Control-getCaption      (eval (read (strcat "BlockView/DwgForm/Label"     (itoa $$inx)))))) ;µµÃû
-;;;²åÈëÍ¼¿é--------------------------------------------------------
+;(setq curdwg_name   (dcl-DWGPreview-GetDwgName   (eval (read (strcat "BlockView/DwgForm/ViewDwg"   (itoa $$inx)))))) ;å®Œæ•´è·¯å¾„æ¡£å
+;(setq LabelDwg_name (dcl-Control-getCaption      (eval (read (strcat "BlockView/DwgForm/Label"     (itoa $$inx)))))) ;æ¡£å
+;;;æ’å…¥å›¾å—--------------------------------------------------------
 (defun BlockView:insert()
   (setvar "cmdecho" 0)
-  (if (and curblk_name(/= curblk_name ""));;;ÍêÉÆ
-		(while  (setq ipt (getpoint "\n²åÈëµã:"))
-			(cond ((= CurBlockName_value "ÄäÃûÍ¼¿é")
+  (if (and curblk_name(/= curblk_name ""));;;å®Œå–„
+		(while  (setq ipt (getpoint "\næ’å…¥ç‚¹:"))
+			(cond ((= CurBlockName_value "åŒ¿åå›¾å—")
 							(BlockView_MakeInsert)
-							(prompt "\nĞı×ª½Ç¶È:")
+							(prompt "\næ—‹è½¬è§’åº¦:")
 							(command "rotate" "l" "" ipt pause)
 						)
 				((or (= blk_explode 0)(= blk_explode nil))
 	        (command "-insert" curblk_name ipt blk_x_sc blk_y_sc pause)
 				)
-				((= blk_explode 1)  ;±¬ÆÆ
+				((= blk_explode 1)  ;çˆ†ç ´
 	        (command "-insert" (strcat "*" curblk_name) ipt blk_x_sc "0")
 				)
 			)
 		) ;while
-		(DCL-MESSAGEBOX (strcat "***ÇëÏÈÑ¡È¡Í¼¿é***") "Í¼¿éÑ¡È¡")
+		(DCL-MESSAGEBOX (strcat "***è¯·å…ˆé€‰å–å›¾å—***") "å›¾å—é€‰å–")
   ) ;if 
   (setvar "cmdecho" 1)
   (princ)
 )
-;-BlockView_MAKE_INSERT-ÄäÃûÇø¿é²åÈë---------------------------
+;-BlockView_MAKE_INSERT-åŒ¿ååŒºå—æ’å…¥---------------------------
 (defun BlockView_MakeInsert()
 	(entmake (list (cons 0 "INSERT")
 						 (cons 2 Curblk_name)
@@ -289,40 +289,40 @@
 	(ENTMAKE '((0 . "SEQEND")))
 )  
 ;-------------------------------------------------------------
-;;--È¡Ïû°´Å¥--------------------------------------------------
+;;--å–æ¶ˆæŒ‰é’®--------------------------------------------------
 (defun c:BlockView/Form/cancel#OnClicked (/)
 	(dcl-Form-close  BlockView/Form)
 )
-;----·Ö½â°´Å¥-------------------------------------------------
+;----åˆ†è§£æŒ‰é’®-------------------------------------------------
 (defun c:BlockView/Form/Explode#OnClicked (ExpValue /)
   (setq blk_explode ExpValue)
-  (if (= blk_explode 0) ;·Ö½â²»´ò¹´
+  (if (= blk_explode 0) ;åˆ†è§£ä¸æ‰“å‹¾
 		(dcl-Control-SetEnabled BlockView/Form/y-sc T)
 		(dcl-Control-SetEnabled BlockView/Form/y-sc nil)
   )  
 )
-;µÈ±ÈÀı°´Å¥-----------------------------------------------------------------
+;ç­‰æ¯”ä¾‹æŒ‰é’®-----------------------------------------------------------------
 (defun c:BlockView/Form/same-sc#OnClicked (/)
 	(setq blk_x_sc (dcl-Control-GetText BlockView/Form/x-sc))
 	(setq blk_y_sc blk_x_sc)
 	(dcl-Control-SeTText BlockView/Form/y-sc Blk_y_sc)
 )
-;--·Å´óÔ¤ÀÀ²Ù×÷--------------------------------------------
+;--æ”¾å¤§é¢„è§ˆæ“ä½œ--------------------------------------------
 (defun c:BlockView/Form/PreView#OnClicked (/)  ;open PreView Form
 	(dcl-Form-Show     BlockView/PreViewScale)
 )  
-(defun c:BlockView/PreViewScale#OnInitialize (/)  ; ³õÊ¼»¯Éè¶¨ show blockVIew
+(defun c:BlockView/PreViewScale#OnInitialize (/)  ; åˆå§‹åŒ–è®¾å®š show blockVIew
 	(dcl-BlockView-Clear       BlockView/PreviewScale/blockView)
 	(dcl-Control-SetBlockName  BlockView/PreViewScale/BlockView Curblk_name)
-	(dcl-CONTROL-SetCaption    BlockView/PreviewScale/Frame (strcat "Í¼¿éÃû³Æ: " curblk_Name))
+	(dcl-CONTROL-SetCaption    BlockView/PreviewScale/Frame (strcat "å›¾å—åç§°: " curblk_Name))
 )
 (defun c:BlockView/PreViewScale/cancel#OnClicked (/)  ;close Form
 	(dcl-Form-close     BlockView/PreViewScale)
 )
-;;;È¡µÃÄ¿Ç°Í¼ÃæËùÓĞÍ¼¿é.²¢×ª»»³ÉBlock Show Ô¤±¸×ÊÁÏĞÍÌ¬------
+;;;å–å¾—ç›®å‰å›¾é¢æ‰€æœ‰å›¾å—.å¹¶è½¬æ¢æˆBlock Show é¢„å¤‡èµ„æ–™å‹æ€------
 ;(WCMATCH tbl_name "`*U*,`*D*,`*X*,`*T*,_*,*|*,A$*")---------
 ;--vlax-tblsearch--------------------------------------------
-; ÊµÃû tbl_list  ÄäÃû tbl_UnName_list                        
+; å®å tbl_list  åŒ¿å tbl_UnName_list                        
 ;------------------------------------------------------------
 (defun Blockview->stbla ()
   (setq lay nil lays nil)
@@ -356,7 +356,7 @@
   (if tbl_list (setq tbl_list (acad_strlsort tbl_list)))
   (if tbl_UnName_list (setq tbl_UnName_list (acad_strlsort tbl_UnName_list)))
 )
-;---Í¼¿é×ª»»Îª30¸öÒ»×éµÄ´®ÁĞ-----------------------------------------------------------
+;---å›¾å—è½¬æ¢ä¸º30ä¸ªä¸€ç»„çš„ä¸²åˆ—-----------------------------------------------------------
 (defun Blockview_trans_list ($list_name / i j bk_lis $block_list_all)
 	(if $list_name
 		(progn
@@ -381,7 +381,7 @@
 )
 ;---------------------------------------------------
 ;Show Block to BlockView;---------------------------
-;Block_page_n  Ò³´Î±äÊı
+;Block_page_n  é¡µæ¬¡å˜æ•°
 (defun BlockView_BlockShow_Start ()
   (dcl-Control-SetEnabled BlockView/Form/UpPage   T)
   (dcl-Control-SetEnabled BlockView/Form/NextPage T)
@@ -391,11 +391,11 @@
 		(progn
       ;30 pcs Block SHow-------------------------------------------------------
       (BlockView_blockShow (nth block_page_inx Block_list_all))
-      ;¿ª¹ØÒ³´Î---------------------------------------------------------
-      (if (= Block_page_inx 0) (dcl-Control-SetEnabled BlockView/Form/UpPage   nil)) ;Ò³´ÎÈôÎª0.ÉÏÒ»Ò³¹Ø
-      (if (= Block_page_inx (1- Block_page_n)) (dcl-Control-SetEnabled BlockView/Form/NextPage   nil)) ;Ò³´ÎÈôÎª×îáá.ÏÂÒ»Ò³¹Ø
-      ;Í¼¿éÁĞ±í
-      (dcl-CONTROL-SetCaption BlockView/Form/BlockTile (strcat "Í¼¿éÁĞ±í µÚ" (itoa Block_page_n ) "Ö®" (itoa (1+ Block_page_inx) ) "Ò³          Ë«»÷Í¼Æ¬¿É·Å´óÔ¤ÀÀ"))
+      ;å¼€å…³é¡µæ¬¡---------------------------------------------------------
+      (if (= Block_page_inx 0) (dcl-Control-SetEnabled BlockView/Form/UpPage   nil)) ;é¡µæ¬¡è‹¥ä¸º0.ä¸Šä¸€é¡µå…³
+      (if (= Block_page_inx (1- Block_page_n)) (dcl-Control-SetEnabled BlockView/Form/NextPage   nil)) ;é¡µæ¬¡è‹¥ä¸ºæœ€å¾Œ.ä¸‹ä¸€é¡µå…³
+      ;å›¾å—åˆ—è¡¨
+      (dcl-CONTROL-SetCaption BlockView/Form/BlockTile (strcat "å›¾å—åˆ—è¡¨ ç¬¬" (itoa Block_page_n ) "ä¹‹" (itoa (1+ Block_page_inx) ) "é¡µ          åŒå‡»å›¾ç‰‡å¯æ”¾å¤§é¢„è§ˆ"))
       (if old_key_inx (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/Form/BlockView" (itoa old_key_inx )))) 151))
 		) ;progn
   )  
@@ -419,16 +419,16 @@
 		(setq $i (1+ $i) $j (1+ $j))
 	)
 )
-;ÉÏÒ»Ò³--------------------------------------------
+;ä¸Šä¸€é¡µ--------------------------------------------
 (defun c:BlockView/Form/UpPage#OnClicked (/)
-	(if old_key_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/Form/BlockView" (itoa old_key_inx ))))   -22)) ;Çå³ıImage Sel HighLight
+	(if old_key_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/Form/BlockView" (itoa old_key_inx ))))   -22)) ;æ¸…é™¤Image Sel HighLight
 	(setq block_page_inx (1- block_page_inx))
 	(BlockView_blockShow (nth block_page_inx Block_list_all))
-	(dcl-CONTROL-SetCaption BlockView/Form/BlockTile (strcat "Í¼¿éÁĞ±í µÚ" (itoa Block_page_n ) "Ö®" (itoa (1+ Block_page_inx) ) "Ò³          Ë«»÷Í¼Æ¬¿É·Å´óÔ¤ÀÀ"))
+	(dcl-CONTROL-SetCaption BlockView/Form/BlockTile (strcat "å›¾å—åˆ—è¡¨ ç¬¬" (itoa Block_page_n ) "ä¹‹" (itoa (1+ Block_page_inx) ) "é¡µ          åŒå‡»å›¾ç‰‡å¯æ”¾å¤§é¢„è§ˆ"))
   (cond
   	((< 0 block_page_inx)
-			(dcl-Control-SetEnabled BlockView/Form/UpPage T)  ;ÉÏÒ»Ò³¿ª
-			(dcl-Control-SetEnabled BlockView/Form/NextPage T);ÏÂÒ»Ò³¿ª
+			(dcl-Control-SetEnabled BlockView/Form/UpPage T)  ;ä¸Šä¸€é¡µå¼€
+			(dcl-Control-SetEnabled BlockView/Form/NextPage T);ä¸‹ä¸€é¡µå¼€
 		)
 		((= 0 block_page_inx)
 			(dcl-Control-SetEnabled BlockView/Form/UpPage nil)
@@ -436,12 +436,12 @@
 		)
   )	
 )
-;ÏÂÒ»Ò³------------------------------------------
+;ä¸‹ä¸€é¡µ------------------------------------------
 (defun c:BlockView/Form/NextPage#OnClicked (/)
-	(if old_key_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/Form/BlockView" (itoa old_key_inx ))))   -22)) ;Çå³ıImage Sel HighLight
+	(if old_key_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/Form/BlockView" (itoa old_key_inx ))))   -22)) ;æ¸…é™¤Image Sel HighLight
 	(setq block_page_inx (1+ block_page_inx))
 	(BlockView_blockShow (nth block_page_inx Block_list_all))
-	(dcl-CONTROL-SetCaption BlockView/Form/BlockTile (strcat "Í¼¿éÁĞ±í µÚ" (itoa Block_page_n ) "Ö®" (itoa (1+ Block_page_inx) ) "Ò³          Ë«»÷Í¼Æ¬¿É·Å´óÔ¤ÀÀ"))
+	(dcl-CONTROL-SetCaption BlockView/Form/BlockTile (strcat "å›¾å—åˆ—è¡¨ ç¬¬" (itoa Block_page_n ) "ä¹‹" (itoa (1+ Block_page_inx) ) "é¡µ          åŒå‡»å›¾ç‰‡å¯æ”¾å¤§é¢„è§ˆ"))
   (cond
   	((< block_page_inx (1- block_page_n))
 			(dcl-Control-SetEnabled BlockView/Form/UpPage T)
@@ -459,9 +459,9 @@
 	(dcl-Control-SetBackColor  (eval (read (strcat "BlockView/Form/BlockView" (itoa $$inx )))) 151)
 	(setq old_key_inx $$inx)
 	(if (<= $$inx (length curBlkName_List))
-		(progn  ;È¡µÃblk_name
+		(progn  ;å–å¾—blk_name
 			(setq curblk_name (nth (1- $$inx) curBlkName_List))
-			(dcl-CONTROL-SetCaption BlockView/Form/error  (strcat "Í¼¿éÃû³Æ: " curblk_name))
+			(dcl-CONTROL-SetCaption BlockView/Form/error  (strcat "å›¾å—åç§°: " curblk_name))
 			(setq $blkName_all_inx (VL-POSITION CurBlk_name BlkName_all))
 			(dcl-ListBox-SetCurSel BlockView/Form/BlockList $BlkName_all_inx)
 		)
@@ -470,13 +470,13 @@
 			(dcl-CONTROL-SetCaption BlockView/Form/error  "")
 		)
 	)
-	;·Å´óÔ¤ÀÀ¿ª¹Ø---------
+	;æ”¾å¤§é¢„è§ˆå¼€å…³---------
 	(if (null CurBlk_name)
 		(dcl-Control-SetEnabled BlockView/Form/PreView nil)
 		(dcl-Control-SetEnabled BlockView/Form/PreView T)
 	)  
 )
-;;;;;ä¯ÀÀµµ°¸-ºô½ĞDwgView-----------------------------------------------
+;;;;;æµè§ˆæ¡£æ¡ˆ-å‘¼å«DwgView-----------------------------------------------
 (defun c:BlockView/Form/PIckFile#OnClicked (/)
   (dcl-Form-close BlockView/Form 1)
 )
@@ -548,24 +548,24 @@
 (defun c:BlockView/Form/BlockView29#OnDblClicked (/)(dcl-Form-Show     BlockView_PreViewScale))
 (defun c:BlockView/Form/BlockView30#OnDblClicked (/)(dcl-Form-Show     BlockView_PreViewScale))
 
-;;¶Ô»°¿ò.³õÊ¼»¯~
+;;å¯¹è¯æ¡†.åˆå§‹åŒ–~
 (defun c:BlockView/DwgForm#OnInitialize (/)		
 	(dcl-Control-SetEnabled BlockView/DwgForm/UpPage1 nil)
 	(dcl-Control-SetEnabled BlockView/DwgForm/NextPage1 nil)
-  (dwgForm_dwg_clear) ;Çå¿Õ image
+  (dwgForm_dwg_clear) ;æ¸…ç©º image
   (dcl-Control-SetCaption  BlockView/DwgForm/error "")
-  (dcl-ListView-AddColumns BlockView/DwgForm/lst (list (list "µµ°¸Ãû³Æ" 0 150) (list "´óĞ¡" 1 100) (list "ÈÕÆÚ" 1 100)))
-	;±ÈÀıÉè¶¨ 
+  (dcl-ListView-AddColumns BlockView/DwgForm/lst (list (list "æ¡£æ¡ˆåç§°" 0 150) (list "å¤§å°" 1 100) (list "æ—¥æœŸ" 1 100)))
+	;æ¯”ä¾‹è®¾å®š 
   (if (null blk_x_sc) (dcl-Control-SetText BlockView/DwgForm/x-sc "1"))
   (if (null blk_y_sc) (dcl-Control-SetText BlockView/DwgForm/y-sc "1"))
   (if (null dwgblk_explode ) (setq dwgblk_explode 1))
-	;·Ö½â
-	(if (= dwgblk_explode 0) ;·Ö½â²»´ò¹´
+	;åˆ†è§£
+	(if (= dwgblk_explode 0) ;åˆ†è§£ä¸æ‰“å‹¾
 		(dcl-Control-SetEnabled BlockView/DwgForm/y-sc T)
 		(dcl-Control-SetEnabled BlockView/DwgForm/y-sc nil)
 	)
 	(IF (and curdwg_name (/= LabelDwg_name ""))
-    (dcl-Control-SetCaption BlockView/DwgForm/error (strcat "Í¼µµÃû³Æ: " LabelDwg_name ".DWG"))
+    (dcl-Control-SetCaption BlockView/DwgForm/error (strcat "å›¾æ¡£åç§°: " LabelDwg_name ".DWG"))
     (dcl-Control-SetCaption BlockView/DwgForm/error "")
 	)
 	;init
@@ -588,18 +588,18 @@
       (setq lstdir_len (length lstdir))
       (setq lstDwg_len (length lstdwg))
       (IF LstFileS (dcl-listview-filllist BlockView/DwgForm/lst lstFiles)) ;
-			;DWG trans data Îª Ğ¡Ğ´dwg
+			;DWG trans data ä¸º å°å†™dwg
       (setq $dwg_list (vl-directory-files strPath "*.dwg" 1))
       (foreach $dg $dwg_list (setq dwg_list (cons (strcat (vl-filename-base $dg) ".dwg") dwg_list)))
       (setq dwg_list (DwgForm_items_sort (reverse dwg_list))) ;sort
       ;dwg show
-      (setq dwg_list_all (dwg_trans_list dwg_list))   ;×ª»»Îª16¸ö1×éµÄLIST
-      (dcl-Control-SetCaption BlockView/DwgForm/Dir_Tile (strcat  (itoa (length dwg_list)) " ¸öDwg µµ°¸"))
+      (setq dwg_list_all (dwg_trans_list dwg_list))   ;è½¬æ¢ä¸º16ä¸ª1ç»„çš„LIST
+      (dcl-Control-SetCaption BlockView/DwgForm/Dir_Tile (strcat  (itoa (length dwg_list)) " ä¸ªDwg æ¡£æ¡ˆ"))
       (if dwg_list (BlockView_dwgShow_start))
     ); progn
   ); if
 ); 
-;;Çå³ıView dwg image
+;;æ¸…é™¤View dwg image
 (defun dwgForm_dwg_clear( / $i)
 	(setq $i 0 old_dwgkey_inx nil)
 	(repeat 16
@@ -609,7 +609,7 @@
 		(setq $i (1+ $i))
 	)  
 )
-;---Í¼¿é×ª»»Îª16¸öÒ»×éµÄ´®ÁĞ-----------------------------------------------------------
+;---å›¾å—è½¬æ¢ä¸º16ä¸ªä¸€ç»„çš„ä¸²åˆ—-----------------------------------------------------------
 (defun Dwg_trans_list ($list_name / i j bk_lis $block_list_all )
 	(if $list_name
 		(progn
@@ -636,16 +636,16 @@
   (dcl-Control-SetEnabled BlockView/DwgForm/UpPage1   T)
   (dcl-Control-SetEnabled BlockView/DwgForm/NextPage1 T)
   (if (null dwg_page_inx) (setq dwg_page_inx 0))
-  (setq dwg_page_n (length dwg_list_all)) ;ÊıÁ¿
+  (setq dwg_page_n (length dwg_list_all)) ;æ•°é‡
   (if (/= dwg_page_n 0)
 		(progn
       ;16 pcs Block SHow-------------------------------------------------------
       (BlockView_DwgShow (nth Dwg_page_inx Dwg_list_all))
-      ;¿ª¹ØÒ³´Î---------------------------------------------------------
-      (if (= Dwg_page_inx 0) (dcl-Control-SetEnabled BlockView/DwgForm/UpPage1   nil)) ;Ò³´ÎÈôÎª0.ÉÏÒ»Ò³¹Ø
-      (if (= Dwg_page_inx (1- Dwg_page_n)) (dcl-Control-SetEnabled BlockView/DwgForm/NextPage1   nil)) ;Ò³´ÎÈôÎª×îáá.ÏÂÒ»Ò³¹Ø
-      ;Í¼¿éÁĞ±í
-      (dcl-CONTROL-SetCaption BlockView/DwgForm/DwgTile (strcat "Í¼µµÁĞ±í Ë«»÷Í¼Æ¬¿É·Å´óÔ¤ÀÀ  µÚ" (itoa Dwg_page_n ) "Ö®" (itoa (1+ Dwg_page_inx) ) "Ò³"))
+      ;å¼€å…³é¡µæ¬¡---------------------------------------------------------
+      (if (= Dwg_page_inx 0) (dcl-Control-SetEnabled BlockView/DwgForm/UpPage1   nil)) ;é¡µæ¬¡è‹¥ä¸º0.ä¸Šä¸€é¡µå…³
+      (if (= Dwg_page_inx (1- Dwg_page_n)) (dcl-Control-SetEnabled BlockView/DwgForm/NextPage1   nil)) ;é¡µæ¬¡è‹¥ä¸ºæœ€å¾Œ.ä¸‹ä¸€é¡µå…³
+      ;å›¾å—åˆ—è¡¨
+      (dcl-CONTROL-SetCaption BlockView/DwgForm/DwgTile (strcat "å›¾æ¡£åˆ—è¡¨ åŒå‡»å›¾ç‰‡å¯æ”¾å¤§é¢„è§ˆ  ç¬¬" (itoa Dwg_page_n ) "ä¹‹" (itoa (1+ Dwg_page_inx) ) "é¡µ"))
       (if old_Dwgkey_inx (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/DwgForm/ViewDwg" (itoa old_Dwgkey_inx )))) 151))
 		) ;progn
   )  
@@ -653,9 +653,9 @@
 ;;DWG_LIST SHOW          
 ;dwg_page_inx ;
 ;dwg_list_all ;
-;curdwg_list ;Ä¿Ç°×÷ÓÃlist
+;curdwg_list ;ç›®å‰ä½œç”¨list
 (defun BlockView_Dwgshow ($curdwg_list)
-	(dwgForm_dwg_clear) ;Çå³ıimage
+	(dwgForm_dwg_clear) ;æ¸…é™¤image
 	(setq $i 0)
 	(if $curdwg_list
 		(progn
@@ -674,7 +674,7 @@
 				(setq $i (1+ $i))
 			) ;repeat
 		);progn
-		(dwgForm_dwg_clear);Çå³ıimage
+		(dwgForm_dwg_clear);æ¸…é™¤image
 	);if progn 
 )  
 ;---------------------------------------------------------------------------------
@@ -719,16 +719,16 @@
   strSize
 )
 ;---------------------------------------------------------------------------------
-;;Í¼µµ±»´ò¿ª×´Ì¬ÏÂ..FILE-SYSTIME »á»Ø´«NIL
+;;å›¾æ¡£è¢«æ‰“å¼€çŠ¶æ€ä¸‹..FILE-SYSTIME ä¼šå›ä¼ NIL
 (defun DwgForm_file_date (strFile / lstDate)
   (if (vl-file-systime strFile)
 		(progn 
       (setq a strfile)	
       (setq lstDate (mapcar 'DwgForm_check_digit (mapcar 'itoa (vl-file-systime strFile))))
-			; Äê                 ÔÂ                  ÈÕ                  Ê±                  ·Ö
+			; å¹´                 æœˆ                  æ—¥                  æ—¶                  åˆ†
 			(setq file-date (strcat (nth 0 lstDate) "-" (nth 1 lstDate) "-" (nth 3 lstDate) " " (nth 4 lstDate) ":" (nth 5 lstDate)))
 		)
-		(setq file-date "Ä¿Ç°Í¼µµ±à¼­ÖĞ")
+		(setq file-date "ç›®å‰å›¾æ¡£ç¼–è¾‘ä¸­")
 	)
 	(if file-date file-date)
 )
@@ -743,18 +743,18 @@
 )
 ;---------------------------------------------------------------------------------
 (defun c:BlockView/DwgForm/UpPage#OnClicked (/)
-	;Çå³ı
-	(dwgForm_dwg_clear) ;Çå¿Õ image
+	;æ¸…é™¤
+	(dwgForm_dwg_clear) ;æ¸…ç©º image
 	(setq curdwg_name nil)
 	(dcl-Control-SetCaption BlockView/DwgForm/error "")
-	(setq dwg_page_inx 0) ;´ÓµÚÒ»Ò³¿ªÊ¼
+	(setq dwg_page_inx 0) ;ä»ç¬¬ä¸€é¡µå¼€å§‹
 	;; 
   ;  (setq strFolder (dcl-ComboBox-GetDir BlockView/DwgForm/dir))  ;old
-	(setq strfolder (dcl-Control-GetText BlockView/DwgForm/DiskPath))  ;v9.0 ĞŞÕı
+	(setq strfolder (dcl-Control-GetText BlockView/DwgForm/DiskPath))  ;v9.0 ä¿®æ­£
   (if (setq lstChars (reverse (cdr (member 92 (reverse (vl-string->list strFolder))))))
     (progn
 			;      (setq strFolder (apply 'strcat (mapcar 'chr lstChars)))
-      (setq strfolder (vl-filename-directory (strcat strfolder ".dat"))) ;È¡µÃÄ¿Â¼. ¼ÓÈë.dat.Æ­³ÌĞòÄ¿Â¼ÎªÒ»¸öµµ°¸Ãû.
+      (setq strfolder (vl-filename-directory (strcat strfolder ".dat"))) ;å–å¾—ç›®å½•. åŠ å…¥.dat.éª—ç¨‹åºç›®å½•ä¸ºä¸€ä¸ªæ¡£æ¡ˆå.
       (dcl-ComboBox-AddPath BlockView/DwgForm/dir strFolder)
       (dcl-ComboBox-SelectString BlockView/DwgForm/dir       strFolder)
       (dcl-Control-SetText       BlockView/DwgForm/DiskPath  strFolder)
@@ -764,17 +764,17 @@
   ); if
 	; (DCL-MESSAGEBOX strFolder)
 )
-;;-µ¥»÷ListView-------------------------------------------------------------------
+;;-å•å‡»ListView-------------------------------------------------------------------
 (defun c:BlockView/DwgForm/lst#OnClicked (Row Column / $dwg_pick_inx $dwg_page_inx $dwg_list_inx);555
   (setq Labeldwg_name   (dcl-ListView-GetItemText BlockView/DwgForm/lst Row 0))
   (setq strCompleteFile (findfile (strcat strPath Labeldwg_name ".dwg")))
   (if strCompleteFile
 		(progn
-      (dcl-Control-SetCaption BlockView/DwgForm/error (strcat "Í¼µµÃû³Æ: " LabelDwg_name ".DWG"))
+      (dcl-Control-SetCaption BlockView/DwgForm/error (strcat "å›¾æ¡£åç§°: " LabelDwg_name ".DWG"))
       (setq curdwg_name strCompleteFile)
-			;Ñ¡µ½Í¼µµ.Image ¸ú×ÅÇĞ»».
-			(setq $dwg_pick_inx (- row lstdir_len)) ;Ñ¡µ½µÄÏî´Î
-			(setq $dwg_page_inx (/ $dwg_pick_inx 16)) ;Ò³´Î
+			;é€‰åˆ°å›¾æ¡£.Image è·Ÿç€åˆ‡æ¢.
+			(setq $dwg_pick_inx (- row lstdir_len)) ;é€‰åˆ°çš„é¡¹æ¬¡
+			(setq $dwg_page_inx (/ $dwg_pick_inx 16)) ;é¡µæ¬¡
 			(if (setq $dwg_List_inx (VL-POSITION (strcat  LabelDwg_name ".dwg") (nth $dwg_page_inx dwg_List_all))) ;Image_inx
 				(princ)
 				(progn
@@ -782,7 +782,7 @@
 					(setq $dwg_List_inx (VL-POSITION (strcat  LabelDwg_name ".dwg") (nth $dwg_page_inx dwg_List_all)))
 				)
 			)		
-			; (DCL-MESSAGEBOX (strcat (itoa $dwg_page_inx) "Ò³-" (itoa $dwg_list_inx) "ÕÅ"))
+			; (DCL-MESSAGEBOX (strcat (itoa $dwg_page_inx) "é¡µ-" (itoa $dwg_list_inx) "å¼ "))
 			(setq dwg_page_inx $dwg_page_inx)
 			(BlockView_dwgShow_start)
 			(BlockView_DwgForm_HighLight  (1+ $dwg_list_inx))
@@ -790,19 +790,19 @@
   )    
 )
 ;-------------------------------------------------------------------
-;--Ë«»÷ListView box-------------------------------------------------------------------
+;--åŒå‡»ListView box-------------------------------------------------------------------
 (defun c:BlockView/DwgForm/Lst#OnDblClicked (Row Column /)
 	; (setq strPath (DwgForm_check_path (dcl-ComboBox-GetDir BlockView/DwgForm/dir))) ;old
-	(setq strPath (DwgForm_check_path (dcl-Control-GetText BlockView/DwgForm/DiskPath)))  ;v9.0 ĞŞÕı
+	(setq strPath (DwgForm_check_path (dcl-Control-GetText BlockView/DwgForm/DiskPath)))  ;v9.0 ä¿®æ­£
 	; (DCL-MESSAGEBOX strpath)
 	(cond
     ((minusp Row) nil)
     ((zerop (dcl-ListView-GetItemImage BlockView/DwgForm/lst Row 0))
-			;µãµ½Ä¿Â¼
-			(dwgForm_dwg_clear) ;Çå¿Õ image
+			;ç‚¹åˆ°ç›®å½•
+			(dwgForm_dwg_clear) ;æ¸…ç©º image
 			(setq curdwg_name nil)
 			(dcl-Control-SetCaption BlockView/DwgForm/error "")
-			(setq dwg_page_inx 0) ;´ÓµÚÒ»Ò³¿ªÊ¼
+			(setq dwg_page_inx 0) ;ä»ç¬¬ä¸€é¡µå¼€å§‹
 			;------------------------------------------------------------------------------------------ 
 			(setq strPath (strcat strPath (dcl-ListView-GetItemText BlockView/DwgForm/lst Row 0)))
 			;  (DCL-MESSAGEBOX (dcl-ListView-GetItemText BlockView/DwgForm/lst Row 0))
@@ -813,25 +813,25 @@
 			(DwgForm_filllist strPath)
     )
     ((setq Labeldwg_name (dcl-ListView-GetItemText BlockView/DwgForm/lst Row 0))
-			;µãµ½Í¼µµ.
+			;ç‚¹åˆ°å›¾æ¡£.
 			(setq strCompleteFile (findfile (strcat strPath Labeldwg_name ".dwg")))
 			(if strcompletefile
 				(progn
-					(dcl-Control-SetCaption BlockView/DwgForm/error (strcat "Í¼µµÃû³Æ: " LabelDwg_name ".DWG"))
+					(dcl-Control-SetCaption BlockView/DwgForm/error (strcat "å›¾æ¡£åç§°: " LabelDwg_name ".DWG"))
 					(setq curdwg_name strCompleteFile)
 					(c:BlockView/DwgForm/ok#OnClicked);;;;;;55
 				)
 			) 
 			
-			;(DCL-MESSAGEBOX strCompleteFile "Ä¿Ç°Ñ¡È¡µÄµµ°¸") ; ÍêÕûÂ·¾¶Í¼µµ.
+			;(DCL-MESSAGEBOX strCompleteFile "ç›®å‰é€‰å–çš„æ¡£æ¡ˆ") ; å®Œæ•´è·¯å¾„å›¾æ¡£.
 			; (dcl-Control-SetCaption BlockView/DwgForm/error strpath)
     )
   ) ; cond
 )
-;--·Å´óÔ¤ÀÀ----------------------------------------------------------------------------
-(defun c:BlockView/DwgPreView#OnInitialize (/)  ; ³õÊ¼»¯Éè¶¨ show blockVIew
+;--æ”¾å¤§é¢„è§ˆ----------------------------------------------------------------------------
+(defun c:BlockView/DwgPreView#OnInitialize (/)  ; åˆå§‹åŒ–è®¾å®š show blockVIew
 	(dcl-BlockView-DisplayDwg BlockView/DwgPreView/BlockView curdwg_name)
-	(dcl-CONTROL-SetCaption    BlockView/DwgPreView/DwgNameFarme (strcat "Í¼¿éÃû³Æ: " curdwg_Name))
+	(dcl-CONTROL-SetCaption    BlockView/DwgPreView/DwgNameFarme (strcat "å›¾å—åç§°: " curdwg_Name))
 )
 ;;--------------------------------------------------------------------------------------
 (defun c:BlockView/DwgPreView/cancel#OnClicked (/)
@@ -839,8 +839,8 @@
 )
 ;getdwgname sublisp--------------------------------------------------------------------
 (defun BlockView_DwgForm_GetDWGName($$inx)
-  (setq curdwg_name   (dcl-DWGPreview-GetDwgName   (eval (read (strcat "BlockView/DwgForm/ViewDwg"   (itoa $$inx)))))) ;ÍêÕûÂ·¾¶µµÃû
-  (setq LabelDwg_name (dcl-Control-getCaption      (eval (read (strcat "BlockView/DwgForm/Label"     (itoa $$inx)))))) ;µµÃû
+  (setq curdwg_name   (dcl-DWGPreview-GetDwgName   (eval (read (strcat "BlockView/DwgForm/ViewDwg"   (itoa $$inx)))))) ;å®Œæ•´è·¯å¾„æ¡£å
+  (setq LabelDwg_name (dcl-Control-getCaption      (eval (read (strcat "BlockView/DwgForm/Label"     (itoa $$inx)))))) ;æ¡£å
 )
 ;getdwgname sublisp--------------------------------------------------------------------
 (defun BlockView_DwgForm_HighLight($$inx)
@@ -857,8 +857,8 @@
 	(dcl-DWGPreview-LoadDwg   (eval (read (strcat "BlockView/DwgForm/ViewDwg" (itoa $$inx))))  curdwg_name) 
 	(IF (/= LabelDwg_name "")
 		(progn
-			(dcl-Control-SetCaption BlockView/DwgForm/error (strcat "Í¼µµÃû³Æ: " LabelDwg_name ".DWG"))
-			(setq $dwg_temp_inx (+ (VL-POSITION  (strcat LabelDwg_name ".dwg") dwg_list) lstdir_len)) ;µãÈ¡imageáá.¶ÔÓ¦ ListViewµÄÎ»ÖÃ.
+			(dcl-Control-SetCaption BlockView/DwgForm/error (strcat "å›¾æ¡£åç§°: " LabelDwg_name ".DWG"))
+			(setq $dwg_temp_inx (+ (VL-POSITION  (strcat LabelDwg_name ".dwg") dwg_list) lstdir_len)) ;ç‚¹å–imageå¾Œ.å¯¹åº” ListViewçš„ä½ç½®.
 			;(DCL-MESSAGEBOX (itoa $dwg_temp_inx))
 			(dcl-ListView-SetCurSel BlockView/DwgForm/lst $dwg_temp_inx)
 			(dcl-Control-SetFocus BlockView/DwgForm/lst)
@@ -868,69 +868,69 @@
 	(setq old_dwgkey_inx $$inx)
 	(setq old_dwg_name curdwg_name) 
 )
-;----·Ö½â°´Å¥-------------------------------------------------
+;----åˆ†è§£æŒ‰é’®-------------------------------------------------
 (defun c:BlockView/DwgForm/Explode#OnClicked (ExpValue /)
   ;(print expValue)
   (setq dwgblk_explode ExpValue)
-  (if (= dwgblk_explode 0) ;·Ö½â²»´ò¹´
+  (if (= dwgblk_explode 0) ;åˆ†è§£ä¸æ‰“å‹¾
 		(dcl-Control-SetEnabled BlockView/DwgForm/y-sc T)
 		(dcl-Control-SetEnabled BlockView/DwgForm/y-sc nil)
   )  
 )
-;µÈ±ÈÀı°´Å¥-----------------------------------------------------------------
+;ç­‰æ¯”ä¾‹æŒ‰é’®-----------------------------------------------------------------
 (defun c:BlockView/DwgForm/same-sc#OnClicked (/)
 	(setq blk_x_sc (dcl-Control-GetText BlockView/DwgForm/x-sc))
 	(setq blk_y_sc blk_x_sc)
 	(dcl-Control-SeTText BlockView/DwgForm/y-sc Blk_y_sc)
 )
-;²åÈëÅ¥---
+;æ’å…¥é’®---
 (defun c:BlockView/DwgForm/ok#OnClicked (/)
 	(setq blk_x_sc (atof (dcl-Control-GetText  BlockView/DwgForm/x-sc)))
 	(setq blk_y_sc (atof (dcl-Control-GetText  BlockView/DwgForm/y-sc)))
-	(setq dwgblk_explode (dcl-Control-GetValue BlockView/DwgForm/Explode)) ;ÔÙ´ÎÈ¡µÃ·Ö½â°´Å¥µÄÖµ
-	;(dcl-Form-Close     BlockView/DwgForm 1)     ;²åÈëÍ¼µµ
+	(setq dwgblk_explode (dcl-Control-GetValue BlockView/DwgForm/Explode)) ;å†æ¬¡å–å¾—åˆ†è§£æŒ‰é’®çš„å€¼
+	;(dcl-Form-Close     BlockView/DwgForm 1)     ;æ’å…¥å›¾æ¡£
 	(DwgView:insert)
 )
 (defun DwgView:Insert()
 	(setvar "cmdecho" 0)
 	(setq %curdwg_name (vl-filename-BASE curdwg_name))
-	(if (and curdwg_name (/= curdwg_name ""));;ĞŞÕı
+	(if (and curdwg_name (/= curdwg_name ""));;ä¿®æ­£
 		(progn
-			(setq ipt (getpoint "\n²åÈëµã:"))
+			(setq ipt (getpoint "\næ’å…¥ç‚¹:"))
 			(cond 
-				((and (= dwgblk_explode 0) (tblsearch "block" %curdwg_name)) ;¸²¸Ç
+				((and (= dwgblk_explode 0) (tblsearch "block" %curdwg_name)) ;è¦†ç›–
 					(vl-cmdf "-insert" (strcat %curdwg_name "=" curdwg_name) ipt blk_x_sc blk_y_sc pause)
 				) 
 				((or (= dwgblk_explode 0) (= dwgblk_explode nil))
 					(vl-cmdf "-insert" curdwg_name ipt blk_x_sc blk_y_sc pause)
 				)
-				((= dwgblk_explode 1)  ;±¬ÆÆ
+				((= dwgblk_explode 1)  ;çˆ†ç ´
 					(vl-cmdf "_.insert" (strcat "*" curdwg_name) ipt blk_x_sc "0")
 				)
 	    )
 		);progn 
-		(DCL-MESSAGEBOX (strcat "***ÇëÏÈÑ¡È¡Í¼µµ***") "Í¼µµÑ¡È¡")
+		(DCL-MESSAGEBOX (strcat "***è¯·å…ˆé€‰å–å›¾æ¡£***") "å›¾æ¡£é€‰å–")
 	)  ;if
   (setvar "cmdecho" 1)
   (princ)
 )
-;È¡ÏûÅ¥
+;å–æ¶ˆé’®
 (defun c:BlockView/DwgForm/cancel#OnClicked (/)
 	(dcl-Form-Close     BlockView/DwgForm)
 )
-;-ÉÏÒ»Ò³
+;-ä¸Šä¸€é¡µ
 (defun c:BlockView/DwgForm/UpPage1#OnClicked (/)
 	(dcl-ListView-SetCurSel BlockView/DwgForm/lst -1) ;Dwg_formLst UnSelect
 	(setq curdwg_name nil old_dwgkey_inx nil )
 	(dcl-Control-SetCaption BlockView/DwgForm/error "")
-	(if old_dwgkey_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/DwgForm/ViewDwg" (itoa old_Dwgkey_inx ))))   -22)) ;Çå³ıImage Sel HighLight
+	(if old_dwgkey_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/DwgForm/ViewDwg" (itoa old_Dwgkey_inx ))))   -22)) ;æ¸…é™¤Image Sel HighLight
 	(setq Dwg_page_inx (1- Dwg_page_inx))
 	(BlockView_DwgShow (nth Dwg_page_inx Dwg_list_all))
-	(dcl-CONTROL-SetCaption BlockView/DwgForm/DwgTile (strcat "Í¼µµÁĞ±í Ë«»÷Í¼Æ¬¿É·Å´óÔ¤ÀÀ  µÚ" (itoa Dwg_page_n ) "Ö®" (itoa (1+ Dwg_page_inx) ) "Ò³"))
+	(dcl-CONTROL-SetCaption BlockView/DwgForm/DwgTile (strcat "å›¾æ¡£åˆ—è¡¨ åŒå‡»å›¾ç‰‡å¯æ”¾å¤§é¢„è§ˆ  ç¬¬" (itoa Dwg_page_n ) "ä¹‹" (itoa (1+ Dwg_page_inx) ) "é¡µ"))
 	(cond
   	((< 0 Dwg_page_inx)
-			(dcl-Control-SetEnabled BlockView/DwgForm/UpPage1 T)  ;ÉÏÒ»Ò³¿ª
-			(dcl-Control-SetEnabled BlockView/DwgForm/NextPage1 T);ÏÂÒ»Ò³¿ª
+			(dcl-Control-SetEnabled BlockView/DwgForm/UpPage1 T)  ;ä¸Šä¸€é¡µå¼€
+			(dcl-Control-SetEnabled BlockView/DwgForm/NextPage1 T);ä¸‹ä¸€é¡µå¼€
 		)
 		((= 0 Dwg_page_inx)
 			(dcl-Control-SetEnabled BlockView/DwgForm/UpPage1 nil)
@@ -938,15 +938,15 @@
 		)
 	)	
 )
-;;ÏÂÒ»Ò³
+;;ä¸‹ä¸€é¡µ
 (defun c:BlockView/DwgForm/NextPage1#OnClicked (/)
   (dcl-ListView-SetCurSel BlockView/DwgForm/lst -1) ;Dwg_formLst UnSelect
   (setq curdwg_name nil old_dwgkey_inx nil )
   (dcl-Control-SetCaption BlockView/DwgForm/error "")
-  (if old_Dwgkey_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/DwgForm/ViewDwg" (itoa old_Dwgkey_inx ))))   -22)) ;Çå³ıImage Sel HighLight
+  (if old_Dwgkey_inx  (dcl-Control-SetBackColor  (eval (read (strcat "BlockView/DwgForm/ViewDwg" (itoa old_Dwgkey_inx ))))   -22)) ;æ¸…é™¤Image Sel HighLight
 	(setq Dwg_page_inx (1+ Dwg_page_inx))
 	(BlockView_DwgShow (nth Dwg_page_inx Dwg_list_all))
-	(dcl-CONTROL-SetCaption BlockView/DwgForm/DwgTile (strcat "Í¼µµÁĞ±í Ë«»÷Í¼Æ¬¿É·Å´óÔ¤ÀÀ  µÚ" (itoa Dwg_page_n ) "Ö®" (itoa (1+ Dwg_page_inx) ) "Ò³"))
+	(dcl-CONTROL-SetCaption BlockView/DwgForm/DwgTile (strcat "å›¾æ¡£åˆ—è¡¨ åŒå‡»å›¾ç‰‡å¯æ”¾å¤§é¢„è§ˆ  ç¬¬" (itoa Dwg_page_n ) "ä¹‹" (itoa (1+ Dwg_page_inx) ) "é¡µ"))
   (cond
   	((< Dwg_page_inx (1- Dwg_page_n))
 			(dcl-Control-SetEnabled BlockView/DwgForm/UpPage1 T)
@@ -972,7 +972,7 @@
 
 
 
-;Í¼Æ¬Ë«»÷²åÈë                                                                                                               
+;å›¾ç‰‡åŒå‡»æ’å…¥                                                                                                               
 ;;1-5--
 (defun c:BlockView/DwgForm/ViewDwg1#OnDblClicked  (/) (BlockView_DwgForm_GetDwgName  1)(graphscr)(c:BlockView/DwgForm/ok#OnClicked))
 (defun c:BlockView/DwgForm/ViewDwg2#OnDblClicked  (/) (BlockView_DwgForm_GetDwgName  2)(c:BlockView/DwgForm/ok#OnClicked))
@@ -1001,7 +1001,7 @@
 
 
 
-;Í¼Æ¬Ë«»÷·Å´ó                                                                                                               
+;å›¾ç‰‡åŒå‡»æ”¾å¤§                                                                                                               
 ;;1-5--
 ;(defun c:BlockView/DwgForm/ViewDwg1#OnDblClicked  (/) (BlockView_DwgForm_GetDwgName  1)(dcl-Form-Show  BlockView/DwgPreView))
 ;(defun c:BlockView/DwgForm/ViewDwg2#OnDblClicked  (/) (BlockView_DwgForm_GetDwgName  2)(dcl-Form-Show  BlockView/DwgPreView))
@@ -1022,7 +1022,7 @@
 ;(defun c:BlockView/DwgForm/ViewDwg15#OnDblClicked (/) (BlockView_DwgForm_GetDwgName 15)(dcl-Form-Show  BlockView/DwgPreView))
 ;16
 ;(defun c:BlockView/DwgForm/ViewDwg16#OnDblClicked (/) (BlockView_DwgForm_GetDwgName 16)(dcl-Form-Show  BlockView/DwgPreView))
-;Í¼Æ¬µ¥»÷                                                                                                                    
+;å›¾ç‰‡å•å‡»                                                                                                                    
 ;;1-5--
 (defun c:BlockView/DwgForm/ViewDwg1#OnClicked  (/) (BlockView_DwgForm_HighLight  1))
 (defun c:BlockView/DwgForm/ViewDwg2#OnClicked  (/) (BlockView_DwgForm_HighLight  2))
@@ -1045,7 +1045,7 @@
 (defun c:BlockView/DwgForm/ViewDwg16#OnClicked (/) (BlockView_DwgForm_HighLight 16))
 (princ)
 ;-----------------------------------------------------------------------------------------
-;-insname Ä¿Â¼----------------------------------------------------------------------------
+;-insname ç›®å½•----------------------------------------------------------------------------
 (defun insname_path(/ $len path)
 	;(vl-filename-directory (GETVAR "INSNAME"))
 	(setq $insname (getvar "insname"))
@@ -1064,7 +1064,7 @@
 	(if path path) 
 )
 ;;;;QuickPath Funtion------------------------------------------------------------------
-;³õÊ¼»¯¿ìËÙÂ·¾¶---
+;åˆå§‹åŒ–å¿«é€Ÿè·¯å¾„---
 (defun c:BlockView/QuickPath#OnInitialize (/)
   (setq CurPath_value nil)
   (dcl-Control-SetText BlockView/QuickPath/PathTextBox StrPath)
@@ -1074,7 +1074,7 @@
   (dcl-ListBox-Clear BlockView/QuickPath/ListBox)
   (if QuickPath_list (dcl-ListBox-AddList BlockView/QuickPath/ListBox QuickPath_list))
 )
-;ok °´¼ü------------------------------------------------------------------------------------
+;ok æŒ‰é”®------------------------------------------------------------------------------------
 (defun c:BlockView/QuickPath/OkButton#OnClicked (/)
   (dcl-Form-close BlockView/QuickPath)
   (if (and
@@ -1091,7 +1091,7 @@
 (defun c:BlockView/QuickPath/CancelButton#OnClicked (/)
   (dcl-Form-close BlockView/QuickPath)
 )
-;Ë«»÷¿ìËÙÂ·¾¶ListBox--------------------------------------------------------------------
+;åŒå‡»å¿«é€Ÿè·¯å¾„ListBox--------------------------------------------------------------------
 (defun c:BlockView/QuickPath/ListBox#OnDblClicked (/)
   (dcl-Form-close BlockView/QuickPath)
   (if (and
@@ -1104,45 +1104,45 @@
 		)
   ) 
 )
-; ¼ÓÈëÂ·åÉ------------------------------------------------------------------------------
+; åŠ å…¥è·¯è¿³------------------------------------------------------------------------------
 (defun c:BlockView/QuickPath/AddPathBotton#OnClicked (/)
 	(setq New_strPath (dcl-Control-GetText BlockView/QuickPath/PathTextBox))
 	(if (member New_strPath QuickPath_List)
-		(dcl-Control-SetCaption BlockView/QuickPath/error "Â·¾¶ÒÑ¾­´æÔÚ.")
+		(dcl-Control-SetCaption BlockView/QuickPath/error "è·¯å¾„å·²ç»å­˜åœ¨.")
 		(progn
 			(setq QuickPath_list (cons New_strPath QuickPath_List))
 			(setq QuickPath_list (vl-sort QuickPath_List '>))
 			(BlockView:add_path QuickPath_List QuickPath_TxtName)
-      ;ÖØĞÂaddList
+      ;é‡æ–°addList
 			(dcl-ListBox-Clear BlockView/QuickPath/ListBox)
 			(if QuickPath_list (dcl-ListBox-AddList BlockView/QuickPath/ListBox QuickPath_list))
 		)
 	)  
 )
-;;Ñ¡È¡¿ìËÙÂ·¾¶ListBox ------------------------------------------------------------------------
+;;é€‰å–å¿«é€Ÿè·¯å¾„ListBox ------------------------------------------------------------------------
 (defun c:BlockView/QuickPath/ListBox#OnSelChanged (ItemIndexOrCount $pathValue /)
 	;(DCL-MESSAGEBOX $pathValue)
 	(setq curPath_value $PathValue)
 	(dcl-Control-SetCaption BlockView/QuickPath/error CurPath_Value)
 )
-;É¾³ıÂ·åÉ-----------------------------------------------------------------------------
+;åˆ é™¤è·¯è¿³-----------------------------------------------------------------------------
 (defun c:BlockView/QuickPath/DelPathButton#OnClicked (/)
   (if (null CurPath_value)
-		(DCL-MESSAGEBOX "Ã»ÓĞÑ¡È¡ÒªÉ¾³ıµÄÂ·¾¶")
+		(DCL-MESSAGEBOX "æ²¡æœ‰é€‰å–è¦åˆ é™¤çš„è·¯å¾„")
 		(progn
 			(dcl-Control-SetCaption BlockView/QuickPath/error "")
-			;ÒÆ³ıList ÄÚÂ·åÉ
+			;ç§»é™¤List å†…è·¯è¿³
 			(setq QuickPath_List (vl-remove curPath_value QuickPath_List))
-			; ÖØĞÂĞ´µµ.
+			; é‡æ–°å†™æ¡£.
 			(BlockView:add_path QuickPath_List QuickPath_TxtName)
-			;ÖØĞÂaddList
+			;é‡æ–°addList
 			(dcl-ListBox-Clear BlockView/QuickPath/ListBox)
 			(if QuickPath_list (dcl-ListBox-AddList BlockView/QuickPath/ListBox QuickPath_list))
 			(setq CurPath_value nil)
 		)	
   ) 
 )
-;ÖØĞ´Â·åÉµµ
+;é‡å†™è·¯è¿³æ¡£
 ;-----------------------------------------------------------
 (defun Blockview:add_Path (path_list Fullfile / i)
   (setq $fullfile (open Fullfile "w"))
@@ -1155,7 +1155,7 @@
   (close $fullfile)
 )
 ;---------------------------------------------------------
-;¶ÁÈ¡Â·¾¶µµ
+;è¯»å–è·¯å¾„æ¡£
 (defun Blockview:read_Path (Fullfile / i)
   (setq $fullfile (open Fullfile "r"))
   (setq i 0 QuickPath_list '())
@@ -1173,15 +1173,15 @@
 ;; 	(if (vl-string-search "(x86)" (getvar "platform"))
 ;;     (if (>= 30 (atoi *acadver*) 16)
 ;; 			(if (not dcl-Form-show) (arxload (strcat BVPATH "\\OpenDcl."     *acadver* ".arx")))
-;; 			(alert "OpenDcl.²»Ö§Ô®.Õâ¸ö°æ±¾µÄAutoCAD")
+;; 			(alert "OpenDcl.ä¸æ”¯æ´.è¿™ä¸ªç‰ˆæœ¬çš„AutoCAD")
 ;;     )
 ;;     (if (>= 30 (atoi *acadver*) 16)
 ;; 			(if (not dcl-Form-show) (arxload (strcat BVPATH "\\OpenDcl.x64." *acadver* ".arx")))
-;; 			(alert "OpenDcl.²»Ö§Ô®.Õâ¸ö°æ±¾µÄAutoCAD")
+;; 			(alert "OpenDcl.ä¸æ”¯æ´.è¿™ä¸ªç‰ˆæœ¬çš„AutoCAD")
 ;;     )  
 ;;   ) ;if
 ;; );defun
 ;------------------------------------------------------------------
-;(prompt "\n***Ö¸ÁîÃû: BlockView Í¼¿éInsert ***")
-;(prompt "\n***Ö¸ÁîÃû: DwgView   Í¼µµInsert ***")
+;(prompt "\n***æŒ‡ä»¤å: BlockView å›¾å—Insert ***")
+;(prompt "\n***æŒ‡ä»¤å: DwgView   å›¾æ¡£Insert ***")
 (princ)	    

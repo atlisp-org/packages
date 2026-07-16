@@ -1,2 +1,2 @@
-(@::def-pkg '((:name . "ocr")  (:full-name . "ocr")  (:author . "VitalGG")  (:email . "vitalgg@gmail.com")  (:version . "0.0.1")  (:locale . "chs")  (:category . "Common")  (:required . "base")  (:opensource . 0)   (:description . "识别视口中的文字")  (:url . "http://atlisp.cn")  (:files . ("ocr" "routes.py"
+(@::def-pkg '((:name . "ocr")  (:full-name . "ocr")  (:author . "VitalGG")  (:email . "vitalgg@gmail.com")  (:version . "0.0.1")  (:locale . "chs")  (:category . "Common")  (:required . "base")  (:opensource . 0)   (:description . "璇嗗埆瑙嗗彛涓殑鏂囧瓧")  (:url . "http://atlisp.cn")  (:files . ("ocr" "routes.py"
               ))))

@@ -1,14 +1,14 @@
 (@:def-pkg 
 '((:name . "quadrilateral")
-  (:full-name . "ËÄ±ßĞÎ±ê×¢")
+  (:full-name . "å››è¾¹å½¢æ ‡æ³¨")
   (:author . "VitalGG")
   (:email . "vitalgg@gmail.com")
   (:version . "0.0.9")
   (:locale . "CHS")
-  (:category . "¶¨Ïò¿ª·¢")
+  (:category . "å®šå‘å¼€å‘")
   (:required . "base")
   (:opensource . 0) 
-  (:description . "ËÄ±ßĞÎ±ê×¢£¬ÕÒ³öËÄ±ßĞÎ£¬²¢±ê×¢±ß³¤ºÍ¶Ô½Ç³¤¶È¡£")
+  (:description . "å››è¾¹å½¢æ ‡æ³¨ï¼Œæ‰¾å‡ºå››è¾¹å½¢ï¼Œå¹¶æ ‡æ³¨è¾¹é•¿å’Œå¯¹è§’é•¿åº¦ã€‚")
   (:url . "http://atlisp.cn")
   (:files . ("quadrilateral"
              ;; you can add file name that you will included in the package.

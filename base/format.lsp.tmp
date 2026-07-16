@@ -1,3 +1,0 @@
-(defun format (stream ctrl-string variables
-	       / flag-instruct  flag-comma number1 number2 result  to-string tmp-str init-flag)
-  ;;" D 鍗佽繘鍒舵暣鏁

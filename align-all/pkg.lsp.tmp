@@ -1,9 +1,0 @@
-(@:def-pkg '((:NAME . "align-all")
-        (:FULL-NAME . "瀵归綈鍥剧礌")
-        (:AUTHOR . "print1985")
-        (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.6")
-        (:LOCALE . "CHS")
-        (:CATEGORY . "閫氱敤")
-        (:OPENSOURCE . 0)
-        (:DESCRIPTION . "婧愯嚜 print1985 銆傚

@@ -1,5 +1,0 @@
-(@:add-menus 
- '(("鏂囨湰"
-    ("鏂囨湰璁剧疆" (@text:setup))
-    ("鏂囧瓧鎺掔増" (@text:multi-text-align))
-    ("鎻掑叆鏃堕棿鎴

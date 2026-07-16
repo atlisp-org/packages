@@ -1,2 +1,0 @@
-(defun @lab:summary-data (/ tbl-summary get-data)
-  (@::prompt (strcat "姹囨€诲浘妗嗗強鍥炬

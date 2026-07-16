@@ -1,2 +1,0 @@
-(defun @block:clip-to-blk ()
-  (@::prompt "鍓

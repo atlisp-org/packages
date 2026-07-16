@@ -1,7 +1,0 @@
-(setq at-nlp:*tangent*
-      (mapcar
-       '(lambda(x)
-	  (cons (car x) (cons (cdr x) 
-			      'entity)))
-       '(
-	 ("澶╂

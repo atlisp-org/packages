@@ -1,2 +1,0 @@
-(defun @lab:attxyz2csv (/ fp ss-blk)
-  (@::prompt "@瀹為獙瀹

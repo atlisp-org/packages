@@ -1,8 +1,0 @@
-
-(@:add-menus
- '("svg2dxf"
-   ("svg杞琩xf" "(svg2dxf:svg2dxf)" )
-   ("鍥剧墖杞瑂vg" "(svg2dxf:img2svg)" )
-   ))
-(defun svg2dxf:hello ()
-  (@:help (strcat "杩欓噷鐨勫唴瀹圭敤浜庡湪杩愯

@@ -1,8 +1,0 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; This file was created by @lisp DEV-tools
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; define a first config item  'autohotkey:first for package autohotkey 's configitem first 
-(@:add-menu "澶栭儴绋嬪簭" "AutoHotKey" "(autohotkey:open)" )
-
-(defun autohotkey:open (/ app )
-  ;; 鍙

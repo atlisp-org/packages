@@ -1,2 +1,0 @@
-(defun at-dim:make-deviation (/ anzhuangfeng)
-  (@::prompt "璋冩暣灏哄

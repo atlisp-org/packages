@@ -1,2 +1,0 @@
-(defun at-layout:stat-vp ()
-  (@::prompt '("缁熻

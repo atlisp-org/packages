@@ -1,8 +1,0 @@
-
-(defun at-arch:insert-block (dwgname / downfile)
-  (@::help "鎻掑叆鍥惧潡妯℃澘")
-  (setq downfile (strcat "at-arch/" dwgname ".dwg"))
-  (if (null (findfile (strcat "packages/" downfile)))
-      (progn
-	(@:load-module 'pkgman)
-	(@:down-pkg-file (@:uri) downfile "stable")(@:alert (strcat "姝ｅ湪涓嬭浇鎵€闇€鐨刣wg鏂囦欢, 璇风◢鍊欍€

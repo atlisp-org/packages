@@ -1,2 +1,0 @@
-(defun doslib:load (/ vers arxname darx *error* filesize)
-  (defun *error* (msg) ;;閿欒

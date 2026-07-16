@@ -1,3 +1,0 @@
-(defun @m:cal (str / arxs)
-  (setq arxs (arx))
-  ;; 鏇挎崲澶ф嫭鍙

@@ -1,6 +1,0 @@
-(defun psk-draw-text (p text a / h)
-  (setq a (p-angle-normal a))
-  (if (and (> a 1.65806)
-	   (< a 4.79966)
-      )
-    ;; 鏂囧瓧鏃嬭浆瓒呰繃95搴︿絾灏忎簬275搴︽椂瑕佹眰灏嗘枃瀛楁棆杞

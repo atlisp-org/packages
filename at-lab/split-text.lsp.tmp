@@ -1,2 +1,0 @@
-(defun @lab:split-text ( / dcl-fp strs)
-   (@::prompt "鎵归噺灏嗗崟琛屾枃鏈

@@ -1,1 +1,0 @@
-(@::def-pkg '((:name . "networkx")  (:full-name . "networkx")  (:author . "VitalGG")  (:email . "vitalgg@gmail.com")  (:version . "0.0.1")  (:locale . "chs")  (:category . "Common")  (:required . "base")  (:opensource . 0)   (:description . "鍥俱€佺綉鏍笺€佽矾寰勫垎鏋

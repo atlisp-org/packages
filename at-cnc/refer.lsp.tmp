@@ -1,8 +1,0 @@
-(defun at-cnc:gen-gcodeb ()
-  (@:help '("灏嗘洸绾跨敓鎴怗-code"))
- (setvar "CMDECHO" 0)
- (setq dnm (getvar "DWGNAME")
-          dnm (substr dnm 1 (- (strlen dnm) 4))
-          dnmb (strcat dnm "b.cnc")
-          dnm (strcat dnm ".cnc"))
- (setq tn (getstring "\nNumber of tools 鍒€鍏风紪鍙

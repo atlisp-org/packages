@@ -1,4 +1,0 @@
-(defun @block:overblocks (/ *error* blkname ss-blk blks blkent blkname box)
-  (@::prompt "瀹氫綅鐩镐簰閲嶅彔鐨勫悓鍚嶅潡")
-  (defun *error* (msg)
-    ;; 閲嶅惎鍔ㄥ

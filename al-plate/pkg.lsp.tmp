@@ -1,7 +1,0 @@
-(@::def-pkg '((:NAME . "al-plate")
-        (:FULL-NAME . "閾濇澘")
-        (:AUTHOR . "VitalGG")
-        (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.4")
-        (:LOCALE . "chs")
-        (:CATEGORY . "鏈烘

@@ -1,2 +1,0 @@
-(defun hvac:floor-heating-auto-snake (spacing / ss ent box width height rows cols row-height col-width start-x start-y x y i pts dxf-list ss-list ent-list)
-  "鑷

@@ -1,2 +1,0 @@
-(@:define-config 'mark-order:matchs "*M*,*C*" "娆插尮閰嶇殑鏂囧瓧")
-(@:define-config 'mark-order:notmatchs "*MM*,*CC*,*%C*" "涓嶈兘鍖归厤鐨勬枃瀛

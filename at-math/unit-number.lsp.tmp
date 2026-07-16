@@ -1,2 +1,0 @@
-(defun @math:unit-number (/ res lst-str)
-  (@::prompt  "浠庢枃瀛椾腑鎻愬彇鏈夌墿鐞嗛噺鐨勬暟鎹

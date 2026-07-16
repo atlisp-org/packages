@@ -1,5 +1,0 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; This file was created by @lisp DEV-tools
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; define a first config item  'at-dim:first for package at-dim 's configitem first 
-(@:define-config '@dim:layer "dim-coor" "鏍囨敞鍥惧眰锛屼负绌烘椂涓哄綋鍓嶅浘灞

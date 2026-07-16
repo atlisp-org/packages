@@ -1,2 +1,0 @@
-(defun @block:minsert2insert ()
-  (@::prompt "灏嗗

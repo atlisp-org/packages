@@ -29,7 +29,8 @@
    ((_"Align block base point") (@block:menu-align-base))
    ((_"Insert all block") (@block:insert-all))
    ((_"Select same block") (@block:select-same))
-   ("块间复制" (@block:copy-by-blk))
+   ((_"统计嵌套块个数") (@block:count-nested))
+    ("块间复制" (@block:copy-by-blk))
    ))
 (@:add-menus
  (list (strcat (_"Block") "2")
@@ -478,3 +479,97 @@
 			(mapcar '(lambda(blkref)
 				  (list:flatten (@block:explode-chain blkref)))
 				(pickset:to-list (ssget '((0 . "insert"))))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 统计一个图中指定块名的总参照个数(含嵌套块)。
+;; 块 A 为单桩块，块 B/C/D 为承台块，B/C/D 内嵌 A。
+;; 例如 B 内含 2 个 A，C 内含 3 个 A，
+;; 则总数 = 模型空间中 A 的个数 + 2*B个数 + 3*C个数。
+;; 支持多级嵌套：B 不含 A，但 B 内含 C，C 内含 A，也能正确计算。
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq @block:cnt-nested-memo nil)
+(defun @block:count-inblk (name targetname / total e d d0 b cmem)
+  "计算块定义 name 中单个实例内所含 targetname 块的总个数。
+   递归遍历其内部所有 insert，支持多级嵌套。结果缓存在 memo 中。"
+  (if (setq cmem (assoc name @block:cnt-nested-memo))
+      (cdr cmem)
+      (progn
+	;; 先缓存为 0，防止循环嵌套时无限递归
+	(setq @block:cnt-nested-memo (cons (cons name 0) @block:cnt-nested-memo))
+	(setq total 0)
+	(if (setq b (tblobjname "block" name))
+	    (progn
+	      (setq e (entnext b))
+	      (while (and e
+			  (setq d0 (cdr (assoc 0 (entget e))))
+			  (/= "ENDBLK" d0))
+		(if (equal "INSERT" d0)
+		    (setq d (block:get-effectivename e))
+		    (setq d nil))
+		(if d
+		    (if (= d targetname)
+			(setq total (1+ total))
+		      (if (tblsearch "block" d)
+			  (setq total (+ total (@block:count-inblk d targetname))))))
+		(setq e (entnext e)))))
+	(setq @block:cnt-nested-memo
+	      (subst (cons name total)
+		     (assoc name @block:cnt-nested-memo)
+		     @block:cnt-nested-memo))
+	total)))
+
+(defun @block:count-nested (target / pt eff cn dir-n n-total c
+			     lst-contrib lst-contrib-ss lst-bl lst-di)
+  "统计一个图中指定块名的总参照个数(含嵌套块)，并选中模型中包含该块的块参照。"
+  (@::prompt "统计一个图中指定块名的总个数(含嵌套块)。")
+(while (null target)
+    (if (setq pt (entsel "\n请选择要统计的目标块:"))
+	(setq target (block:get-effectivename (car pt)))))
+  (setq @block:cnt-nested-memo nil
+	lst-contrib nil lst-contrib-ss nil dir-n 0 n-total 0)
+  (foreach ins (pickset:to-list (ssget "x" '((0 . "insert"))))
+	   (setq eff (block:get-effectivename ins))
+	   (cond
+	     ((and eff (= eff target))
+	      (setq dir-n (1+ dir-n))
+	      (setq n-total (1+ n-total)))
+	     ((and eff (tblsearch "block" eff))
+	      (setq cn (@block:count-inblk eff target))
+	      (if (> cn 0)
+		  (progn
+		    (setq n-total (+ n-total cn))
+		    (setq lst-contrib-ss (cons ins lst-contrib-ss))
+		    (setq lst-contrib (cons eff lst-contrib)))))
+	     ))
+  ;; 汇总明细：块名 -> (模型内实例数 单实例所含target数)
+  (setq lst-bl nil)
+  (foreach n lst-contrib
+	   (if (not (member n lst-bl)) (setq lst-bl (cons n lst-bl))))
+  (setq lst-di nil)
+  (foreach n lst-bl
+	   (setq c 0)
+	   (foreach e lst-contrib-ss
+		    (if (= (block:get-effectivename e) n)
+			(setq c (1+ c))))
+	   (setq lst-di (cons (list n c (cdr (assoc n @block:cnt-nested-memo)))
+			      lst-di)))
+  ;; 输出
+  (princ (strcat "\n目标块 [" target "] 的总个数: "
+		 (itoa n-total)))
+  (princ (strcat "  (模型空间直接: " (itoa dir-n)))
+  (if lst-di
+      (progn
+	(princ (strcat " , 含于块内: "
+		       (itoa (- n-total dir-n))))
+	(princ "\n其中:")
+	(foreach x lst-di
+		 (princ (strcat "\n  块[" (car x) "]  模型中有 "
+				(itoa (cadr x)) " 个, 每实例含 target "
+				(itoa (caddr x)) " 个")))
+	(princ ")"))
+      (princ ")"))
+  (princ "\n")
+  ;; 选中模型中包含目标块的块参照(如 B、C)
+  (if lst-contrib-ss
+      (sssetfirst nil (pickset:from-entlist lst-contrib-ss)))
+  (list (cons "total" n-total) (cons "direct" dir-n) lst-di))

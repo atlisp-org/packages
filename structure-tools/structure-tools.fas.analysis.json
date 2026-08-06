@@ -1,0 +1,42 @@
+{
+  "file": "../packages/structure-tools/structure-tools.fas",
+  "size": 896,
+  "format": "dual-segment-encrypted",
+  "segments": [
+    {
+      "index": 0,
+      "offset": 41,
+      "total_len": 136,
+      "sub_count": 19,
+      "data_offset": 43,
+      "data_len": 136
+    },
+    {
+      "index": 1,
+      "offset": 188,
+      "total_len": 673,
+      "sub_count": 16,
+      "data_offset": 190,
+      "data_len": 673
+    }
+  ],
+  "func_count": 0,
+  "functions": [],
+  "trailer": "\n;fas4 crunch\n;$;A7/1/21",
+  "dual": {
+    "seg0_size": 136,
+    "seg1_size": 673,
+    "symbol_table_size": 19,
+    "encrypted": true,
+    "symbol_refs": [
+      {
+        "offset": 48,
+        "index": 18
+      }
+    ],
+    "xorkey": "8516dcd20c9d58fb0a3b66617334206372756e63680a3b",
+    "keylen": 23,
+    "decrypted_size": 673,
+    "decrypted_funcs": 1
+  }
+}

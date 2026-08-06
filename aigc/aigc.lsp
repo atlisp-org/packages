@@ -1,3 +1,4 @@
+(in-package :autolisp)
 (@:add-menus
  '("AIGC"
    ("*生成内容" "(aigc:gen-content)")

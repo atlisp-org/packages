@@ -7,129 +7,106 @@
   (setq id (load_dialog "integration.dcl"))
   (setq ok 2)
   (if (new_dialog "dcl_Integration" id)
-      (progn
-	(action_tile "F" "(setq f $value)") 			;从对话框中得到表达式
-	(action_tile "X1" "(setq x1 (myread $value))")		;从对话框中得到下届
-	(action_tile "X2" "(setq x2 (myread $value))")		;从对话框中得到上届
-	(action_tile "N" "(setq n (myread $value))") 		;从对话框中得到精度
-	(action_tile "help" "(choose 1)")				;帮助
-	(action_tile "S1" "(Read_DLg_Data x1 x2 n f \"S1\")")
-	(action_tile "S2" "(Read_DLg_Data x1 x2 n f \"S2\")")
-	(action_tile "S3" "(Read_DLg_Data x1 x2 n f \"S3\")")
-	(action_tile "S4" "(Read_DLg_Data x1 x2 n f \"S4\")")
-	(setq ok (start_dialog))
-	)
-    )
+    (progn
+      (action_tile "F" "(setq f $value)") ;从对话框中得到表达式
+      (action_tile "X1" "(setq x1 (myread $value))") ;从对话框中得到下届
+      (action_tile "X2" "(setq x2 (myread $value))") ;从对话框中得到上届
+      (action_tile "N" "(setq n (myread $value))") ;从对话框中得到精度
+      (action_tile "help" "(choose 1)") ;帮助
+      (action_tile "S1" "(Read_DLg_Data x1 x2 n f \"S1\")")
+      (action_tile "S2" "(Read_DLg_Data x1 x2 n f \"S2\")")
+      (action_tile "S3" "(Read_DLg_Data x1 x2 n f \"S3\")")
+      (action_tile "S4" "(Read_DLg_Data x1 x2 n f \"S4\")")
+      (setq ok (start_dialog))))
   (unload_dialog ID)
-  (princ)
-  )
+  (princ))
 ;;;读数据并求解
 (defun Read_DLg_Data (x1 x2 n f key / EPS RET T0 E)
   (if (and x1 x2 n f)
-      (progn
-	(if (> n 20)
-	    (setq n 20)
-	  )
-	(setq e (exp 1))
-	(setq f (trans_format f))
-	(eval (list 'defun 'func (list 'x) f))
-	(setq eps (expt 0.1 n))
+    (progn
+      (if (> n 20)
+        (setq n 20))
+      (setq e (exp 1))
+      (setq f (trans_format f))
+      (eval (list 'defun 'func (list 'x) f))
+      (setq eps (expt 0.1 n))
 
-	(setq t0 (getvar "TDUSRTIMER"))
-	(cond
-	 ((= key "S1")
-	  (setq ret (rtos (romberg x1 x2 eps) 2 20))
-	  (set_tile "R1" ret)
-	  (princ "\n龙贝格积分法为:")
-	  )
-	 ((= key "S2")
-	  (setq ret (rtos (simpson x1 x2 eps) 2 20))
-	  (set_tile "R2" ret)
-	  (princ "\n辛普森积分法为:")
-	  )
-	 ((= key "S3")
-	  (setq ret (rtos (Atrapezia x1 x2 1e-4 eps) 2 20))
-	  (set_tile "R3" ret)
-	  (princ "\n自适应积分法为:")
-	  )
-	 ((= key "S4")
-	  (setq ret (rtos (Trapezia x1 x2 eps) 2 20))
-	  (princ "\n变步长积分法为:")
-	  (set_tile "R4" ret)
-	  )
-	 )
-	(princ ret)
-	(princ "\n用时:")
-	(princ (* (- (getvar "TDUSRTIMER") t0) 86400))
-	(princ "秒")
-	(princ)
-	)
-    (alert "无效的输入或有空输入!")
-    )
-  )
+      (setq t0 (getvar "TDUSRTIMER"))
+      (cond
+        ((= key "S1")
+         (setq ret (rtos (romberg x1 x2 eps) 2 20))
+         (set_tile "R1" ret)
+         (princ "\n龙贝格积分法为:"))
+        ((= key "S2")
+         (setq ret (rtos (simpson x1 x2 eps) 2 20))
+         (set_tile "R2" ret)
+         (princ "\n辛普森积分法为:"))
+        ((= key "S3")
+         (setq ret (rtos (Atrapezia x1 x2 1e-4 eps) 2 20))
+         (set_tile "R3" ret)
+         (princ "\n自适应积分法为:"))
+        ((= key "S4")
+         (setq ret (rtos (Trapezia x1 x2 eps) 2 20))
+         (princ "\n变步长积分法为:")
+         (set_tile "R4" ret)))
+      (princ ret)
+      (princ "\n用时:")
+      (princ (* (- (getvar "TDUSRTIMER") t0) 86400))
+      (princ "秒")
+      (princ))
+    (alert "无效的输入或有空输入!")))
 (defun myread (str / e)
   (setq e (exp 1))
-  (eval (trans_format str))
-  )
+  (eval (trans_format str)))
 ;;;帮助说明函数
 (defun choose (n)
   (if (= n 1)
-      (alert
-       "方程式只接受x(小写)为变量,不规范很可能出错!
-    "\n龙贝格效率最高，变步长法效率最低(慎用).
-       "\n建议不要开始把精度设置很高，特别对于变步长法.
-    " \n程序采用多种方法求积,不保证每个方程都有效!
-       "\n有什么问题email: highflybird@qq.com"
-       )
-    (set_tile "error" "方程式只接受x(小写)为变量.")
-    )
-  )
+    (alert
+      "方程式只接受x(小写)为变量,不规范很可能出错!
+        龙贝格效率最高，变步长法效率最低(慎用).
+        建议不要开始把精度设置很高，特别对于变步长法.
+        程序采用多种方法求积,不保证每个方程都有效!
+        有什么问题email: highflybird@qq.com")
+    (set_tile "error" "方程式只接受x(小写)为变量.")))
 ;;;用方式1定义表达式求值函数
 (defun func1 (x)
-  (cal f)
-  )
+  (cal f))
 ;;; 龙贝格积分法
 (defun Romberg (a b eps / EP H I K M N P Q S X Y Y0)
   (setq h (- b a))
   (setq y nil)
   (setq i 0)
   (repeat 20
-	  (setq y (cons (cons i 0.0) y))
-	  (setq i (1+ i))
-	  )
+    (setq y (cons (cons i 0.0) y))
+    (setq i (1+ i)))
   (setq y (reverse y))
   (setq y0 (* h (+ (func a) (func b)) 0.5))
   (setq y (cons (cons 0 y0) (cdr y)))
-  (setq	m  1
-	n  1
-	ep (1+ eps)
-	)
+  (setq m  1
+        n  1
+        ep (1+ eps))
   (while (and (>= ep eps) (<= m 19))
     (setq p 0.0)
     (setq i 0)
     (repeat n
-	    (setq x (+ a (* (+ i 0.5) h)))
-	    (setq p (+ p (func x)))
-	    (setq i (1+ i))
-	    )
+      (setq x (+ a (* (+ i 0.5) h)))
+      (setq p (+ p (func x)))
+      (setq i (1+ i)))
     (setq p (/ (+ (cdar y) (* h p)) 2.0))
     (setq s 1.0)
     (setq k 1)
     (repeat m
-	    (setq s (+ s s s s))
-	    (setq q (/ (- (* s p) (cdr (assoc (1- k) y))) (1- s)))
-	    (setq y (subst (cons (1- k) p) (assoc (1- k) y) y))
-	    (setq p q)
-	    (setq k (1+ k))
-	    )
+      (setq s (+ s s s s))
+      (setq q (/ (- (* s p) (cdr (assoc (1- k) y))) (1- s)))
+      (setq y (subst (cons (1- k) p) (assoc (1- k) y) y))
+      (setq p q)
+      (setq k (1+ k)))
     (setq ep (abs (- q (cdr (assoc (1- m) y)))))
     (setq m (1+ m))
     (setq y (subst (cons (1- m) q) (assoc (1- m) y) y))
     (setq n (+ n n))
-    (setq h (/ h 2.0))
-    )
-  q
-  )
+    (setq h (/ h 2.0)))
+  q)
 ;;; 辛普森积分法
 (defun Simpson (a b eps / EP H ITER K N P S1 S2 T1 T2 X)
   (setq n 1)
@@ -142,10 +119,9 @@
     (setq p 0.0)
     (setq k 0)
     (repeat n
-	    (setq x (+ a (* (+ k 0.5) h)))
-	    (setq p (+ p (func x)))
-	    (setq k (1+ k))
-	    )
+      (setq x (+ a (* (+ k 0.5) h)))
+      (setq p (+ p (func x)))
+      (setq k (1+ k)))
     (setq t2 (/ (+ t1 (* h p)) 2.))
     (setq s2 (/ (- (* 4.0 t2) t1) 3.))
     (setq ep (abs (- s2 s1)))
@@ -153,12 +129,10 @@
     (setq s1 s2)
     (setq n (+ n n))
     (setq h (/ h 2))
-    (setq iter (1+ iter))
-    )
-  s2
-  )
+    (setq iter (1+ iter)))
+  s2)
 ;;; 变步长梯形求积分法
-(defun Trapezia	(a b eps / H K N P S T1 T2 X iter)
+(defun Trapezia (a b eps / H K N P S T1 T2 X iter)
   (setq n 1)
   (setq h (- b a))
   (setq t1 (* h (+ (func a) (func b)) 0.5))
@@ -168,41 +142,32 @@
     (setq s 0)
     (setq k 0)
     (repeat n
-	    (setq x (+ a (* (+ k 0.5) h)))
-	    (setq s (+ s (func x)))
-	    (setq k (1+ k))
-	    )
+      (setq x (+ a (* (+ k 0.5) h)))
+      (setq s (+ s (func x)))
+      (setq k (1+ k)))
     (setq t2 (/ (+ t1 (* h s)) 2.))
     (setq p (abs (- t1 t2)))
     (setq t1 t2)
     (setq n (+ n n))
     (setq h (/ h 2))
-    (setq iter (1+ iter))
-    )
-  t2
-  )
+    (setq iter (1+ iter)))
+  t2)
 ;;; 步长积分法
 (defun trapzd (a b n / DEL IT SUM TNM X)
   (if (= n 1)
-      (setq s (* 0.5 (- b a) (+ (func a) (func b))))
+    (setq s (* 0.5 (- b a) (+ (func a) (func b))))
     (progn
       (setq it 1)
       (repeat (- n 2)
-	      (setq it (lsh it 1))
-	      )
+        (setq it (lsh it 1)))
       (setq tnm it)
       (setq del (/ (- b a) tnm))
       (setq x (+ a (* 0.5 del)))
       (setq sum 0.0)
       (repeat it
-	      (setq sum (+ sum (func x)))
-	      (setq x (+ x del))
-	      )
-      (setq s (* 0.5 (+ s (/ (* (- b a) sum) tnm))))
-      )
-    )
-  )
-
+        (setq sum (+ sum (func x)))
+        (setq x (+ x del)))
+      (setq s (* 0.5 (+ s (/ (* (- b a) sum) tnm)))))))
 ;;; 自适应求积分法
 (defun Atrapezia (a b d eps / F0 F1 H S T0 TT)
   (setq h (- b a))
@@ -210,8 +175,7 @@
   (setq f0 (func a))
   (setq f1 (func b))
   (setq t0 (* h (+ f0 f1) 0.5))
-  (setq s (car (ppp a b h f0 f1 t0 eps d tt)))
-  )
+  (setq s (car (ppp a b h f0 f1 t0 eps d tt))))
 (defun PPP (x0 x1 h f0 f1 t0 eps d tt / EPS1 EPS2 F G P T1 T2 T3 X X2)
   (setq x (+ x0 (* h 0.5)))
   (setq f (func x))
@@ -219,24 +183,14 @@
   (setq t2 (* h (+ f1 f) 0.25))
   (setq p (abs (- t0 t1 t2)))
   (if (or (< p eps) (< (* 0.5 h) d))
-      (cons (+ (car tt) t1 t2) (cdr tt))
+    (cons (+ (car tt) t1 t2) (cdr tt))
     (progn
       (setq g (* h 0.5))
       (setq eps1 (/ eps 1.4))
       (setq t3 (ppp x0 x g f0 f t1 eps1 d tt))
-      (setq t3 (ppp x x1 g f f1 t2 eps1 d t3))
-      )
-    )
-  )
-
-
-
-
-
-
+      (setq t3 (ppp x x1 g f f1 t2 eps1 d t3)))))
 (DEFUN c:SAPI ()
   (setq sapi (vlax-create-object "Sapi.SpVoice"))
   ;;(vlax-invoke sapi "Speak" "Would you like to play Global Thermo Nuclear War ?" 0) ;;;
   (vlax-invoke sapi "Speak" "程序现在开始!" 0)
-  (vlax-release-object sapi)
-  )
+  (vlax-release-object sapi))

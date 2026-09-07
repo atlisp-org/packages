@@ -2,12 +2,12 @@
         (:FULL-NAME . "@建筑")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.20")
+        (:VERSION . "0.1.0")
         (:LOCALE . "chs")
         (:CATEGORY . "建筑工程")
         (:REQUIRED . "base")
         (:OPENSOURCE . 0)
-        (:DESCRIPTION . "建筑相关功能，车位编号统计等")
+        (:DESCRIPTION . "建筑设计工具：房间定位、窗地比检查、车位编号、门窗统计、面积汇总等。")
         (:URL . "http://atlisp.cn")
         (:FILES "at-arch"
             "lib"

@@ -18,6 +18,8 @@
     ("选择同名房间" "(at-arch:sel-same-name)")
     ("显隐房间面积" "(at-arch:onoff-spacearea)")
     ("总建筑面积" "(at-arch:sum-spacearea)")
+    ("面积汇总" "(at-arch:area-summary)")
+    ("导出面积CSV" "(at-arch:export-space-csv)")
     )
    ("@建筑说明"
     ("公建说明" "(at-arch:insert-block \"公建说明\")")
@@ -31,7 +33,9 @@
     ("插入机械车位" "(at-arch:insert-machineparking)" )
     ("车位编号" "(at-arch:parking-numbering)" )
     )
-
+   ("@门窗统计"
+    ("门窗统计表" "(at-arch:door-window-stat)")
+    )
    ))
 
 (defun at-arch:setup (/ res)
@@ -254,3 +258,147 @@
 
 	 ))
   )
+
+;;; ============================================================
+;;; 门窗统计表
+;;; ============================================================
+(defun at-arch:door-window-stat (/ ss doors windows stats i)
+  "统计所选门窗块的型号和数量，生成统计表"
+  (@:help '("选择门窗块，按型号分类统计数量，生成门窗统计表。"))
+  (@:prompt "请选择需要统计的门窗块:")
+  (setq ss (ssget '((0 . "INSERT"))))
+  (if ss
+      (progn
+        (setq stats nil)
+        (foreach blk (pickset:to-list ss)
+          (setq bname (block:get-effectivename blk))
+          (if bname
+              (if (assoc bname stats)
+                  (setq stats (subst (cons bname (1+ (cdr (assoc bname stats))))
+                                     (assoc bname stats)
+                                     stats))
+                (setq stats (cons (cons bname 1) stats)))))
+        ;; 排序
+        (setq stats (vl-sort stats '(lambda (a b) (< (car a) (car b)))))
+        ;; 输出统计
+        (princ "\n=== 门窗统计 ===")
+        (setq i 0)
+        (foreach s stats
+          (setq i (1+ i))
+          (princ (strcat "\n" (itoa i) ". " (car s) " x " (itoa (cdr s)))))
+        (princ (strcat "\n共 " (itoa (length stats)) " 种门窗"))
+        (princ (strcat "\n总计 " (itoa (apply '+ (mapcar 'cdr stats))) " 樘"))
+        ;; 生成表格
+        (if (ui:confirm1 "是否在图中生成统计表?" "是-否")
+            (at-arch:make-table stats)))
+    (@:prompt "未选中任何块。"))
+  (princ))
+
+(defun at-arch:make-table (stats / pt0 row-height col-width i)
+  "生成门窗统计表"
+  (setq pt0 (getpoint "\n请选择表格插入点:"))
+  (if pt0
+      (progn
+        (setq row-height (* (@:get-config '@::draw-scale) 8))
+        (setq col-width (* (@:get-config '@::draw-scale) 40))
+        ;; 表头
+        (entity:make-text "序号"
+                          (list (+ (car pt0) (* 0.5 col-width))
+                                (- (cadr pt0) (* 0.5 row-height)) 0)
+                          (* row-height 0.6) 0 0.72 0 "mm")
+        (entity:make-text "门窗型号"
+                          (list (+ (car pt0) (* 1.5 col-width))
+                                (- (cadr pt0) (* 0.5 row-height)) 0)
+                          (* row-height 0.6) 0 0.72 0 "mm")
+        (entity:make-text "数量"
+                          (list (+ (car pt0) (* 2.5 col-width))
+                                (- (cadr pt0) (* 0.5 row-height)) 0)
+                          (* row-height 0.6) 0 0.72 0 "mm")
+        ;; 数据行
+        (setq i 0)
+        (foreach s stats
+          (setq i (1+ i))
+          (entity:make-text (itoa i)
+                            (list (+ (car pt0) (* 0.5 col-width))
+                                  (- (cadr pt0) (* (+ i 0.5) row-height)) 0)
+                            (* row-height 0.6) 0 0.72 0 "mm")
+          (entity:make-text (car s)
+                            (list (+ (car pt0) (* 1.5 col-width))
+                                  (- (cadr pt0) (* (+ i 0.5) row-height)) 0)
+                            (* row-height 0.6) 0 0.72 0 "mm")
+          (entity:make-text (itoa (cdr s))
+                            (list (+ (car pt0) (* 2.5 col-width))
+                                  (- (cadr pt0) (* (+ i 0.5) row-height)) 0)
+                            (* row-height 0.6) 0 0.72 0 "mm"))
+        ;; 总计行
+        (entity:make-text "总计"
+                          (list (+ (car pt0) (* 1.5 col-width))
+                                (- (cadr pt0) (* (+ i 1.5) row-height)) 0)
+                          (* row-height 0.6) 0 0.72 0 "mm")
+        (entity:make-text (itoa (apply '+ (mapcar 'cdr stats)))
+                          (list (+ (car pt0) (* 2.5 col-width))
+                                (- (cadr pt0) (* (+ i 1.5) row-height)) 0)
+                          (* row-height 0.6) 0 0.72 0 "mm"))))
+
+;;; ============================================================
+;;; 房间面积报告导出
+;;; ============================================================
+(defun at-arch:export-space-csv (/ ss fp filepath spaces)
+  "将房间面积信息导出为CSV文件"
+  (@:help '("选择房间，将房间编号、名称、面积导出为CSV文件。"))
+  (@:prompt "请选择需要导出的房间:")
+  (setq ss (ssget '((0 . "TCH_SPACE"))))
+  (if ss
+      (progn
+        (setq spaces (pickset:to-list ss))
+        (setq filepath (getfiled "保存房间面积报告" "" "csv" 1))
+        (if filepath
+            (progn
+              (setq fp (open filepath "w"))
+              (write-line "房间编号,房间名称,面积(㎡)" fp)
+              (foreach space spaces
+                (write-line
+                 (strcat
+                  (vlax-get-property space 'code) ","
+                  (vlax-get-property space 'name) ","
+                  (vlax-get-property space 'useArea))
+                 fp))
+              (close fp)
+              (@:prompt (strcat "已导出到: " filepath)))
+          (@:prompt "未选择保存路径。")))
+    (@:prompt "未选中任何房间。"))
+  (princ))
+
+;;; ============================================================
+;;; 建筑面积汇总
+;;; ============================================================
+(defun at-arch:area-summary (/ ss spaces total-area area-by-name)
+  "按房间名称分类汇总建筑面积"
+  (@:help '("选择房间，按名称分类统计建筑面积。"))
+  (@:prompt "请选择需要统计的房间:")
+  (setq ss (ssget '((0 . "TCH_SPACE"))))
+  (if ss
+      (progn
+        (setq spaces (pickset:to-list ss))
+        (setq total-area 0.0)
+        (setq area-by-name nil)
+        (foreach space spaces
+          (setq name (vlax-get-property space 'name))
+          (setq area (atof (vlax-get-property space 'useArea)))
+          (setq total-area (+ total-area area))
+          (if (assoc name area-by-name)
+              (setq area-by-name
+                    (subst (cons name (+ (cdr (assoc name area-by-name)) area))
+                           (assoc name area-by-name)
+                           area-by-name))
+            (setq area-by-name (cons (cons name area) area-by-name))))
+        ;; 排序输出
+        (setq area-by-name
+              (vl-sort area-by-name '(lambda (a b) (> (cdr a) (cdr b)))))
+        (princ "\n=== 建筑面积汇总 ===")
+        (foreach item area-by-name
+          (princ (strcat "\n" (car item) ": "
+                         (rtos (cdr item) 2 2) " ㎡")))
+        (princ (strcat "\n总计: " (rtos total-area 2 2) " ㎡")))
+    (@:prompt "未选中任何房间。"))
+  (princ))

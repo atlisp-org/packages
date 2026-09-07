@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp Block")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "1.1.8")
+        (:VERSION . "1.1.9")
         (:LOCALE . "CHS")
         (:CATEGORY . "图块相关")
         (:REQUIRED . "base")
@@ -23,4 +23,6 @@
             "block-cluster"
             "explode"
             "clip-to-blk"
-            "rotate-blk-by-line")))
+            "rotate-blk-by-line"
+            "auto-block-break"
+            "copy-to-drawings")))

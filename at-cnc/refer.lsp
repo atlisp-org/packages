@@ -20,7 +20,7 @@
    (setq td (getdist "\nDiameter of tools 刀具直径 :"))
    (setq f (strcat " F" (rtos (getreal "\nFeedRate 进给率 :") 2) "\n"))
    (setq hd T
-            pl (cons (strcat "加工编号" stno "-N" (itoa n))))
+            pl (cons (strcat "加工编号" stno "-N" (itoa n)) pl))
   )
    (if (and (setq ent (entget(car s1)))
           (or (= (cdr (assoc 0 ent)) "LWPOLYLINE") (= (cdr (assoc 0 ent)) "POLYLINE"))

@@ -12,7 +12,8 @@
 			      filesize)
 			   (< (vl-file-size (findfile arxname))
 			      filesize)))
-		  (@:down-pkg-file (@:uri) (strcat "opendcl/" arxname) "stable")
+		  (progn
+		    (@:down-pkg-file (@:uri) (strcat "opendcl/" arxname) "stable")
 		  (if (member (getvar "locale") '("CHS" "DEU" "ENU" "ESM" "FRA" "RUS" "ZH"))
 		      (@:down-pkg-file (@:uri) (strcat "opendcl/" (getvar "locale") "/Runtime.Res.dll") "stable")
 		      (@:down-pkg-file (@:uri) (strcat "opendcl/ENU/Runtime.Res.dll") "stable"))
@@ -30,6 +31,7 @@
 					(strcat @:*prefix* "Runtime.Res.dll"))
 			    (vl-file-copy (strcat @:*prefix* "packages/opendcl/ENU/Runtime.Res.dll")
 					  (strcat @:*prefix* "Runtime.Res.dll")))))
+		    )
 		  ))
 	  (if (and (setq odcl-arx (findfile arxname))
 		   (= (vl-file-size (strcat @:*prefix* "packages/opendcl/" arxname))

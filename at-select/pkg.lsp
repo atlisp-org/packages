@@ -13,4 +13,6 @@
         (:FILES "at-select"
             "select"
             "cluster-box"
+            "object-align"
+            "chain-sel"
             "menus")))

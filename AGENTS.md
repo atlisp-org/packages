@@ -25,6 +25,12 @@
 - `dev-tools/`、`at-pm/` 是独立 git 子模块：内部改动在子模块仓库完成并升级 submodule 指针，不要直接改子模块里的代码。
 - 包编译/发布工具在 CAD 内的 `dev-tools` 包里（`@@@` 开发面板、`@::compile-package` 编译、`@::publish-package` 发布）。
 
+## 归属判定
+
+新需求是否应作为应用包，判定规则见 `../docs/@lisp/库与包归属规则.md`。
+满足以下任一条件归本包体系：完整交互流（选择→处理→确认→回滚）、带资源/外部依赖、注册命令菜单等全局状态、单一场景的领域逻辑。
+拿不准默认归包；通用原子函数被 ≥2 个包复用时，提取到 `lib/src/<ns>/<fn>.lsp`。
+
 ## 参考
 - 父仓库 `../AGENTS.md` 含全局规范（函数库命名 `lib/src/<ns>/<fn>.lsp` → `ns:fn`、各子项目构建命令、VSCode 扩展构建等）。
 - `dev-tools/AGENTS.md` 是 dev-tools 包自身规范（编译 LISPSYS 编码坑等）。

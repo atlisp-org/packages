@@ -9,6 +9,7 @@
     ("拆离所有" (@block:xfda))
     ("绑定选定" (@block:xfb))
     ("绑定所有" (@block:bdcz))
+    ("XRef转块" (@block:xref-to-insert))
     ("命令提示" (@block:help-xref-hk))))
 (defun @block:xref-layer (/ xrefs) 
   (@::prompt "将外部参照移至同一个图层，以便于锁定。图层名在设置中进行设置。")
@@ -157,6 +158,44 @@
   (setvar "BINDTYPE" BT)
   (command "-xref" "Bind" "*")
   (setvar "BINDTYPE" oldBT)
+  (princ))
+
+;;; 将XRef转换为块插入（源自 Paracadd.com）
+(defun @block:xref-to-insert (/ thisn this_xr thisblkname thisblk this_layer
+                               this_inspnt this_xscale this_yscale this_zscale
+                               this_rotation xrefent xrefpath old_texteval)
+  (if (setq thisn (nentselp))
+    (if (and
+          (= (length thisn) 4)
+          (= (length (last thisn)) 2)
+          (= (type (cadr (last thisn))) 'ename)
+          (setq this_xr (entget (cadr (last thisn))))
+          (setq thisblkname (assoc 2 this_xr))
+          (setq thisblk (tblsearch "BLOCK" (cdr thisblkname)))
+          (= (boole 1 4 (cdr (assoc 70 thisblk))) 4))
+      (progn
+        (setq this_layer    (cdr (assoc 8 this_xr))
+              this_inspnt   (cdr (assoc 10 this_xr))
+              this_xscale   (cdr (assoc 41 this_xr))
+              this_yscale   (cdr (assoc 42 this_xr))
+              this_zscale   (cdr (assoc 43 this_xr))
+              this_rotation (cdr (assoc 50 this_xr)))
+        (vl-load-com)
+        (setq xrefent (vlax-ename->vla-object (cadr (last thisn))))
+        (if (vlax-property-available-p xrefent 'Path)
+          (progn
+            (setq old_texteval (getvar "texteval"))
+            (setvar "texteval" 1)
+            (setq xrefpath (vla-get-path xrefent))
+            (command "-xref" "d" (cdr (assoc 2 this_xr)))
+            (setvar "texteval" old_texteval)
+            (command "-layer" "m" (cdr thisblkname) "")
+            (command "-insert" xrefpath this_inspnt
+                     this_xscale this_yscale
+                     (* 180 (/ this_rotation pi))))
+          (princ)))
+      (princ))
+    (princ))
   (princ))
 
 (@:define-hotkey "xfr" "(@block:xfr)")

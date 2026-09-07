@@ -27,6 +27,8 @@
 (@:add-menu "标注" "标注面积" "(at-dim:area)")
 (@:add-menu "标注" "尺寸偏差" "(at-dim:make-deviation)")
 (@:add-menu "标注" "尺寸原值" "(at-dim:true-value)")
+(@:add-menu "标注" "修复Z坐标" "(@dim:fixdims)")
+(@:add-menu "标注" "切换延伸线" "(@dim:dimext)")
 
 (defun @dim:setup (/ res)
   (setq @::tmp-search-str "@dim")

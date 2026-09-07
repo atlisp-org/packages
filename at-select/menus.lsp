@@ -6,6 +6,8 @@
     ("线域选择" "(at-select:select-by-lwpl)")
     ("填充选择" "(at-select:select-by-hatch)")
     ("绘线指引" "(@select:line-to-ss)")
+    ("链式选择" "(c:chain-sel)")
+    ("曲线对齐" "(c:obj-align)")
     ("ss1" "(c:ss1)")
     ("ss2" "(c:ss2)")
     ("ss3" "(c:ss3)")

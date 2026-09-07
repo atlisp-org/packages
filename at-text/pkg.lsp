@@ -21,4 +21,7 @@
             "sort-serial-number"
             "handle-overlap-text"
             "box"
-            "translate")))
+            "translate"
+            "curve-text"
+            "mask"
+            "numinc")))

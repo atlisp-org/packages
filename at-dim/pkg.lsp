@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp标注")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.26")
+        (:VERSION . "0.0.27")
         (:LOCALE . "CHS")
         (:CATEGORY . "标注")
         (:REQUIRED . "base")
@@ -16,4 +16,6 @@
             "dimarc"
             "area"
             "sum-dim"
-            "deviation")))
+            "deviation"
+            "centerline"
+            "dim-tools")))

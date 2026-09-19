@@ -3944,7 +3944,7 @@
 
 (defun @text:inc:increment ( lst inc )
     (foreach sym lst
-        (if (distof (eval sym) 2)
+        (if (distof (eval sym))
             (set sym (@text:inc:incrementnumba (eval sym) inc))
             (set sym (@text:inc:incrementalpha (eval sym) (fix (abs (distof inc)))))
         )

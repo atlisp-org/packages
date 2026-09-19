@@ -6,6 +6,7 @@
 ;; (@:get-config 'flange:first) ;; 获取配置顶的值
 ;; (@:set-config 'flange:first  "新设的值") ;; 设置配置顶的值
 ;; 向系统中添加菜单
+(@:add-menu "法兰工具" "绘制法兰" "(flange:draw)")
 
 (defun flange:make (pt-c DN Dw Dd Ds n t1 / ents)
   "pt-c 中心点 DN 公称直径(内径),Dw外径，Dd,螺丝间距,Ds 螺丝直径,n 螺丝个数，t1厚度"

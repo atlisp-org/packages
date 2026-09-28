@@ -14,10 +14,16 @@
 (@:define-config 'dim-leader:gap 1.0 "标注文字分层/分列时的间隙")
 (@:define-config 'dim-leader:columns 4 "允许横向错开的最大列数")
 (@:define-config 'dim-leader:avoid-leader 0 "尽量使文字不压引线(1开,较慢,密集时慎用)")
-(@:define-config 'dim-leader:layout 0 "布局: 0=本地错开 1=右侧表格 2=分区表格(每带局部右侧)")
+(@:define-config 'dim-leader:layout 0 "布局: 0=本地错开 1=右侧表格 2=分区表格 3=二维分区 4=四向 5=分向轨道 6=芯片式左右分区 7=紧凑双侧(均衡/居中/彩色循环) 8=通道布线(四带,引线零共线重叠)")
 (@:define-config 'dim-leader:zones 8 "分区表格的分带数")
 (@:define-config 'dim-leader:rotate 1 "允许把部分文本旋转为竖向(90°)，1 允许 0 不允许")
 (@:define-config 'dim-leader:leader-width nil "引线宽度，nil 为默认细线")
+(setq dim-leader:*chip-error* nil)
+
+;; 各布局的菜单名，下标即 dim-leader:layout 的取值；菜单与配置共用这一张表
+(setq dim-leader:*layout-names*
+      '("0 本地错开" "1 右侧表格" "2 分区表格" "3 二维分区" "4 四向"
+        "5 分向轨道" "6 芯片式左右分区" "7 紧凑双侧" "8 通道布线"))
 
 ;; ---------------------------------------------------------------------------
 ;; 工具函数
@@ -145,6 +151,364 @@
     (setq i (1+ i)))
   c)
 
+(defun dim-leader:orient (ax ay bx by cx cy / d)
+  (setq d (- (* (- bx ax) (- cy ay)) (* (- by ay) (- cx ax))))
+  (if (< d -1.0e-9)
+    -1
+    (if (> d 1.0e-9) 1 0)))
+
+(defun dim-leader:seg-seg-hit2 (ax ay bx by cx cy dx dy / o1 o2 o3 o4)
+  (setq o1 (dim-leader:orient ax ay bx by cx cy)
+        o2 (dim-leader:orient ax ay bx by dx dy)
+        o3 (dim-leader:orient cx cy dx dy ax ay)
+        o4 (dim-leader:orient cx cy dx dy bx by))
+  (and (<= (* o1 o2) 0)
+       (<= (* o3 o4) 0)
+       (<= (min ax bx) (+ (max cx dx) 1.0e-9))
+       (<= (min cx dx) (+ (max ax bx) 1.0e-9))
+       (<= (min ay by) (+ (max cy dy) 1.0e-9))
+       (<= (min cy dy) (+ (max ay by) 1.0e-9))))
+
+(defun dim-leader:seg-box-hit2 (x1 y1 x2 y2 bl br bb bt)
+  (or (dim-leader:pt-in-rect x1 y1 bl br bb bt)
+      (dim-leader:pt-in-rect x2 y2 bl br bb bt)
+      (dim-leader:seg-seg-hit2 x1 y1 x2 y2 bl bb br bb)
+      (dim-leader:seg-seg-hit2 x1 y1 x2 y2 br bb br bt)
+      (dim-leader:seg-seg-hit2 x1 y1 x2 y2 br bt bl bt)
+      (dim-leader:seg-seg-hit2 x1 y1 x2 y2 bl bt bl bb)))
+
+(defun dim-leader:route-hit-box (route box / hit a b i n)
+  (setq hit nil i 0 n (length route))
+  (while (and (not hit) (< i (1- n)))
+    (setq a (nth i route) b (nth (1+ i) route))
+    (if (dim-leader:seg-box-hit2 (car a) (cadr a) (car b) (cadr b)
+                                 (nth 0 box) (nth 1 box) (nth 2 box) (nth 3 box))
+      (setq hit t))
+    (setq i (1+ i)))
+  hit)
+
+(defun dim-leader:route-hit-boxes (route boxes / hit)
+  (setq hit nil)
+  (foreach box boxes
+    (if (and (not hit) (dim-leader:route-hit-box route box))
+      (setq hit t)))
+  hit)
+
+(defun dim-leader:route-hit-route (a b / hit s1 s2 sa1 sa2 i j n m)
+  (setq hit nil i 0 n (length a))
+  (while (and (not hit) (< i (1- n)))
+    (setq s1 (nth i a) s2 (nth (1+ i) a) j 0 m (length b))
+    (while (and (not hit) (< j (1- m)))
+      (setq sa1 (nth j b) sa2 (nth (1+ j) b))
+      (if (dim-leader:seg-seg-hit2 (car s1) (cadr s1) (car s2) (cadr s2)
+                                   (car sa1) (cadr sa1) (car sa2) (cadr sa2))
+        (setq hit t))
+      (setq j (1+ j)))
+    (setq i (1+ i)))
+  hit)
+
+(defun dim-leader:route-keepouts (route clearance / boxes a b x1 y1 x2 y2 i n)
+  (setq boxes nil i 0 n (length route))
+  (while (< i (1- n))
+    (setq a (nth i route) b (nth (1+ i) route)
+          x1 (car a) y1 (cadr a) x2 (car b) y2 (cadr b))
+    (if (= x1 x2)
+      (setq boxes (cons (list (- x1 clearance) (+ x1 clearance)
+                              (- (min y1 y2) clearance) (+ (max y1 y2) clearance))
+                        boxes))
+      (setq boxes (cons (list (- (min x1 x2) clearance) (+ (max x1 x2) clearance)
+                              (- y1 clearance) (+ y1 clearance))
+                        boxes)))
+    (setq i (1+ i)))
+  (reverse boxes))
+
+(defun dim-leader:route-safe-p (route boxes keepouts)
+  (and (not (dim-leader:route-hit-boxes route boxes))
+       (not (dim-leader:route-hit-boxes route keepouts))))
+
+(defun dim-leader:route-length (route / total a b i n)
+  (setq total 0.0 i 0 n (length route))
+  (while (< i (1- n))
+    (setq a (nth i route) b (nth (1+ i) route))
+    (setq total (+ total (distance a b)))
+    (setq i (1+ i)))
+  total)
+
+(defun dim-leader:route-bends (route / count a b i n)
+  (setq count 0 i 1 n (length route))
+  (while (< i (1- n))
+    (setq a (nth (1- i) route) b (nth (1+ i) route))
+    (if (and (/= (car a) (car b)) (/= (cadr a) (cadr b)))
+      (setq count (1+ count)))
+    (setq i (1+ i)))
+  count)
+
+(defun dim-leader:unique-nums (vals / res v eps)
+  (setq res nil eps 1.0e-7)
+  (foreach v (vl-sort (vl-remove-if-not (function numberp) vals)
+                      (function (lambda (a b) (< a b))))
+    (if (or (null res) (> (abs (- v (car res))) eps))
+      (setq res (cons v res))))
+  (reverse res))
+
+(defun dim-leader:expand-nums (vals gap / res)
+  (setq res nil)
+  (foreach v vals
+    (setq res (cons (- v gap) (cons v (cons (+ v gap) res)))))
+  (dim-leader:unique-nums res))
+
+(defun dim-leader:thin-nums (vals limit / res n i idx)
+  (setq vals (dim-leader:unique-nums vals) n (length vals))
+  (if (<= n limit)
+    vals
+    (progn
+      (setq res nil i 0)
+      (while (< i limit)
+        (setq idx (fix (+ 0.5 (* i (/ (1- n) (1- limit))))))
+        (setq res (cons (nth idx vals) res))
+        (setq i (1+ i)))
+      (reverse res))))
+
+(defun dim-leader:chip-route-cost (route gap)
+  (+ (dim-leader:route-length route)
+     (* (dim-leader:route-bends route) gap 2.0)))
+
+(defun dim-leader:chip-consider (route boxes keepouts gap / cost)
+  (setq route (dim-leader:dedupe-pts route))
+  (setq cost nil)
+  (if (and (> (length route) 1)
+           (dim-leader:route-safe-p route boxes keepouts))
+    (setq cost (dim-leader:chip-route-cost route gap)))
+  cost)
+
+(defun dim-leader:chip-find-route (start goal xs ys tracks boxes keepouts gap
+                                   / sx sy gx gy x y cand cost best bestcost)
+  (setq sx (car start) sy (cadr start)
+        gx (car goal) gy (cadr goal)
+        best nil bestcost nil)
+  (if (or (= sx gx) (= sy gy))
+    (progn
+      (setq cand (list start goal))
+      (setq cost (dim-leader:chip-consider cand boxes keepouts gap))
+      (if (and cost (or (null bestcost) (< cost bestcost)))
+        (setq best cand bestcost cost))))
+  (setq cand (list start (list sx gy) goal))
+  (setq cost (dim-leader:chip-consider cand boxes keepouts gap))
+  (if (and cost (or (null bestcost) (< cost bestcost)))
+    (setq best cand bestcost cost))
+  (setq cand (list start (list gx sy) goal))
+  (setq cost (dim-leader:chip-consider cand boxes keepouts gap))
+  (if (and cost (or (null bestcost) (< cost bestcost)))
+    (setq best cand bestcost cost))
+  (foreach x xs
+    (setq cand (list start (list x sy) (list x gy) goal))
+    (setq cost (dim-leader:chip-consider cand boxes keepouts gap))
+    (if (and cost (or (null bestcost) (< cost bestcost)))
+      (setq best cand bestcost cost)))
+  (foreach y ys
+    (setq cand (list start (list sx y) (list gx y) goal))
+    (setq cost (dim-leader:chip-consider cand boxes keepouts gap))
+    (if (and cost (or (null bestcost) (< cost bestcost)))
+      (setq best cand bestcost cost)))
+  (foreach x xs
+    (foreach y tracks
+      (setq cand (list start (list x sy) (list x y) (list gx y) goal))
+      (setq cost (dim-leader:chip-consider cand boxes keepouts gap))
+      (if (and cost (or (null bestcost) (< cost bestcost)))
+        (setq best cand bestcost cost))))
+  best)
+
+(defun dim-leader:chip-route-attempt (plans boxes xs ys tracks clearance gap / out ok keepouts route)
+  (setq out nil ok t keepouts nil)
+  (foreach plan plans
+    (setq route (dim-leader:dedupe-pts
+                  (dim-leader:chip-find-route (nth 8 plan) (nth 9 plan)
+                                              xs ys tracks boxes keepouts gap)))
+    (if route
+      (progn
+        (setq out (cons (append plan (list route)) out))
+        (setq keepouts (append keepouts
+                               (dim-leader:route-keepouts route clearance))))
+      (setq ok nil)))
+  (if ok (reverse out)))
+
+(defun dim-leader:routes-valid-p (routes boxes / ok i j)
+  (setq ok t i 0)
+  (while (and ok (< i (length routes)))
+    (if (dim-leader:route-hit-boxes (nth i routes) boxes)
+      (setq ok nil))
+    (setq j (1+ i))
+    (while (and ok (< j (length routes)))
+      (if (dim-leader:route-hit-route (nth i routes) (nth j routes))
+        (setq ok nil))
+      (setq j (1+ j)))
+    (setq i (1+ i)))
+  ok)
+
+(defun dim-leader:chip-side-plans (g side edge rowLo rowPitch rowCap colPitch gap
+                                   / plans i n colCount rowCount col row ctr ent ax ay hj box start goal)
+  (setq plans nil i 0 n (length g))
+  (setq colCount (max 1 (1+ (fix (/ (1- n) rowCap))))
+        rowCount (max 1 (fix (/ (+ n colCount -1) colCount))))
+  (while (< i n)
+    (setq col (fix (/ i rowCount)) row (rem i rowCount))
+    (setq ctr (nth 0 (nth i g)) ent (nth 1 (nth i g))
+          ay (+ rowLo (* row rowPitch)))
+    (if (= side 1)
+      (setq ax (+ edge (* col colPitch))
+            hj 0
+            box (list ax (+ ax (nth 4 (nth i g)))
+                      (- ay (/ (nth 5 (nth i g)) 2.0))
+                      (+ ay (/ (nth 5 (nth i g)) 2.0)))
+            start (list (car ctr) (cadr ctr))
+            goal (list (- ax (/ gap 2.0)) ay))
+      (setq ax (- edge (* col colPitch))
+            hj 2
+            box (list (- ax (nth 4 (nth i g))) ax
+                      (- ay (/ (nth 5 (nth i g)) 2.0))
+                      (+ ay (/ (nth 5 (nth i g)) 2.0)))
+            start (list (car ctr) (cadr ctr))
+            goal (list (+ ax (/ gap 2.0)) ay)))
+    (setq plans (cons (list side ctr ent ax ay hj 2 box start goal) plans))
+    (setq i (1+ i)))
+  (reverse plans))
+
+(defun dim-leader:layout-chip (matched obstacles
+                               / gap maxw maxh items m ctr ent dat ref h w tb box boxes
+                                 centerX minX maxX minY maxY cx cy ob rgroup lgroup
+                                 margin rowPitch colPitch rowLo rowHi rowSpan rowCap
+                                 rCount lCount rEdge lEdge vals xs ys tracks plans
+                                 orderplans clearances clearance order routed routeplans
+                                 results result k)
+  (setq gap (@:get-config 'dim-leader:gap))
+  (if (not (and (numberp gap) (> gap 0.0))) (setq gap 1.0))
+  (setq maxw 0.0 maxh 0.0 items nil)
+  (foreach m matched
+    (setq ctr (nth 0 m) ent (nth 1 m) dat (entget ent))
+    (setq ref (cdr (assoc 11 dat)))
+    (if (null ref) (setq ref (cdr (assoc 10 dat))))
+    (if (null ref) (setq ref ctr))
+    (setq h (cdr (assoc 40 dat)))
+    (if (not (and (numberp h) (> h 0.0))) (setq h 2.5))
+    (setq tb (vl-catch-all-apply 'textbox (list dat)))
+    (if (and (listp tb) (car tb) (cadr tb) (listp (car tb)) (listp (cadr tb)))
+      (setq w (abs (- (car (cadr tb)) (caar tb))))
+      (setq w (dim-leader:text-fallback-width dat)))
+    (if (not (and (numberp w) (> w 0.0))) (setq w (* h 4.0)))
+    (if (> w maxw) (setq maxw w))
+    (if (> h maxh) (setq maxh h))
+    (setq items (cons (list ctr ent (car ref) (cadr ref) w h) items)))
+  (if (or (null items) (= 0.0 maxw) (= 0.0 maxh))
+    (progn
+      (setq dim-leader:*chip-error* "无可用文字尺寸")
+      nil)
+    (progn
+      (setq centerX 0.0)
+      (foreach m items
+        (setq centerX (+ centerX (car (nth 0 m)))))
+      (setq centerX (/ centerX (length items)))
+      (setq rgroup nil lgroup nil)
+      (foreach m items
+        (if (>= (car (nth 0 m)) centerX)
+          (setq rgroup (cons m rgroup))
+          (setq lgroup (cons m lgroup))))
+      (setq boxes nil minX 1.0e30 maxX -1.0e30 minY 1.0e30 maxY -1.0e30)
+      (foreach m items
+        (setq cx (car (nth 0 m)) cy (cadr (nth 0 m)))
+        (if (< cx minX) (setq minX cx))
+        (if (> cx maxX) (setq maxX cx))
+        (if (< cy minY) (setq minY cy))
+        (if (> cy maxY) (setq maxY cy)))
+      (foreach ob obstacles
+        (setq box (list (nth 0 ob) (nth 1 ob) (nth 2 ob) (nth 3 ob)))
+        (setq boxes (cons box boxes))
+        (if (< (nth 0 box) minX) (setq minX (nth 0 box)))
+        (if (> (nth 1 box) maxX) (setq maxX (nth 1 box)))
+        (if (< (nth 2 box) minY) (setq minY (nth 2 box)))
+        (if (> (nth 3 box) maxY) (setq maxY (nth 3 box))))
+      (setq margin (max (* gap 3.0) maxh)
+            rowPitch (+ maxh gap)
+            colPitch (+ maxw gap)
+            rowLo (- (+ minY margin) (/ maxh 2.0))
+            rowHi (+ (- maxY margin) (/ maxh 2.0))
+            rowSpan (- rowHi rowLo)
+            rowCap (max 1 (1+ (fix (/ rowSpan rowPitch)))))
+      (setq rgroup (vl-sort rgroup (function (lambda (a b) (< (cadr (nth 0 a)) (cadr (nth 0 b)))))))
+      (setq lgroup (vl-sort lgroup (function (lambda (a b) (< (cadr (nth 0 a)) (cadr (nth 0 b)))))))
+      (setq rCount (length rgroup) lCount (length lgroup))
+      (setq rEdge (+ maxX margin) lEdge (- minX margin))
+      (setq plans nil)
+      (if rgroup
+        (setq plans (append plans
+                            (dim-leader:chip-side-plans
+                              rgroup 1 rEdge rowLo rowPitch rowCap
+                              colPitch gap))))
+      (if lgroup
+        (setq plans (append plans
+                            (dim-leader:chip-side-plans
+                              lgroup 2 lEdge rowLo rowPitch rowCap
+                              colPitch gap))))
+      (setq boxes (append boxes
+                          (mapcar (function (lambda (p) (nth 7 p))) plans)))
+      (setq vals nil)
+      (foreach p plans
+        (setq vals (cons (car (nth 8 p)) (cons (car (nth 9 p)) vals))
+              vals (cons (car (nth 7 p)) (cons (nth 1 (nth 7 p)) vals))))
+      (foreach b boxes
+        (setq vals (cons (nth 0 b) (cons (nth 1 b) vals))))
+      (setq xs (dim-leader:thin-nums (dim-leader:expand-nums vals gap) 90))
+      (setq vals nil)
+      (foreach p plans
+        (setq vals (cons (cadr (nth 8 p)) (cons (cadr (nth 9 p)) vals))
+              vals (cons (nth 2 (nth 7 p)) (cons (nth 3 (nth 7 p)) vals))))
+      (foreach b boxes
+        (setq vals (cons (nth 2 b) (cons (nth 3 b) vals))))
+      (setq ys (dim-leader:thin-nums (dim-leader:expand-nums vals gap) 90))
+      (setq tracks nil k 0)
+      (while (< k 4)
+        (setq tracks (cons (- rowLo margin (* k gap)) tracks)
+              tracks (cons (+ rowHi margin (* k gap)) tracks)
+              k (1+ k)))
+      (setq tracks (dim-leader:unique-nums tracks))
+      (setq orderplans (list plans (reverse plans))
+            clearances (list (/ gap 8.0) (/ gap 20.0) 0.001)
+            routed nil)
+      (while (and (null routed) clearances)
+        (setq clearance (max 0.001 (car clearances)))
+        (foreach order orderplans
+          (if (and (null routed) order)
+            (setq routed (dim-leader:chip-route-attempt order boxes xs ys tracks
+                                                        clearance gap))))
+        (setq clearances (cdr clearances)))
+      (setq dim-leader:*chip-error* nil)
+      (if (null routed)
+        (setq dim-leader:*chip-error* "无可用正交通道，未修改图形")
+        (progn
+          (setq routeplans (mapcar (function (lambda (p) (nth 10 p))) routed))
+          (if (not (dim-leader:routes-valid-p routeplans boxes))
+            (setq routed nil
+                  dim-leader:*chip-error* "引线交叉复核未通过，未修改图形"))))
+      (if routed
+        (progn
+          (setq results nil)
+          (foreach p routed
+            (setq result (list (nth 1 p) (nth 2 p) (nth 3 p) (nth 4 p) 0
+                               (nth 5 p) (nth 6 p) (nth 10 p)))
+            (setq results (cons result results)))
+          (reverse results))))))
+
+(defun dim-leader:text-fallback-width (dat / txt h wf w)
+  (setq txt (cdr (assoc 1 dat))
+        h (cdr (assoc 40 dat))
+        wf (cdr (assoc 41 dat)))
+  (if (not (and (numberp h) (> h 0.0))) (setq h 2.5))
+  (if (not (and (numberp wf) (> wf 0.0))) (setq wf 1.0))
+  (setq w (vl-catch-all-apply 'text:gettextwidth (list txt dat)))
+  (if (not (numberp w))
+    (setq w (* (abs (strlen (if txt txt "m"))) h wf 0.6)))
+  (if (< w 0.0) (setq w (- 0.0 w)))
+  w)
+
 ;; 计算一个文本当前的包围盒 (bl br bb bt)，用于作为障碍物
 ;; 依据实测：rot=0 盒=[x, x+w]x[y-h/2, y+h/2]；rot=90 盒=[x-h/2, x+h/2]x[y, y+w]
 ;; 其中 (x y) 为参考点(11/10)，角度组码以弧度计
@@ -161,7 +525,7 @@
   (setq tb (textbox dat))
   (if tb
     (setq w (- (car (cadr tb)) (caar tb)))
-    (setq w (* (text-width (cdr (assoc 7 dat)) (cdr (assoc 1 dat))) h wf)))
+    (setq w (dim-leader:text-fallback-width dat)))
   (if (< w 0.0) (setq w (- 0.0 w)))
   (if (> (rem (+ rot 0.001) pi) 1.5)
     (list (- (car ref) (/ h 2.0)) (+ (car ref) (/ h 2.0)) (cadr ref) (+ (cadr ref) w))
@@ -270,7 +634,7 @@
     (setq tb (textbox dat))
     (if tb
       (setq w (- (car (cadr tb)) (caar tb)))
-      (setq w (* (text-width style txt) h wf)))
+      (setq w (dim-leader:text-fallback-width dat)))
     (if (< w 0.0) (setq w (- 0.0 w)))
     (if (> w maxw) (setq maxw w))
     (if (> h maxh) (setq maxh h))
@@ -386,7 +750,7 @@
 ;; ---------------------------------------------------------------------------
 (defun dim-leader:layout-table (matched obstacles / gap maxw maxh colPitch rowPitch
                                 items m ctr ent dat ref h wf style txt w tb
-                                 x0 yTop yBottom rows i o col row lx ly gy route res cx cy t trkPitch)
+                                 x0 yTop yBottom rows i o col row lx ly gy route res cx cy trk trkPitch)
   (setq gap (@:get-config 'dim-leader:gap) maxw 0.0 maxh 0.0 items nil)
   (foreach m matched
     (setq ctr (nth 0 m) ent (nth 1 m))
@@ -397,7 +761,7 @@
     (setq wf (cdr (assoc 41 dat)))
     (if (not (and (numberp wf) (> wf 0.0))) (setq wf 1.0))
     (setq tb (textbox dat))
-    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (* (text-width style txt) h wf)))
+    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (dim-leader:text-fallback-width dat)))
     (if (> w maxw) (setq maxw w))
     (if (> h maxh) (setq maxh h))
     (setq items (cons (list ctr ent (car ref) (cadr ref) w h) items)))
@@ -419,17 +783,17 @@
   ;; 排线：为每条引线分配独占的水平轨道（互不重叠）
   (setq trkPitch (/ (- yTop yBottom) (max 1 (length items))))
   (if (< trkPitch 0.25) (setq trkPitch 0.25))
-  (setq i 0 t 0 res nil)
+  (setq i 0 trk 0 res nil)
   (foreach m items
     (setq ctr (nth 0 m) ent (nth 1 m) cx (car ctr) cy (cadr ctr) h (nth 5 m))
     (setq col (fix (/ i rows)) row (rem i rows))
     (setq lx (+ x0 (* col colPitch))
           ly (+ yBottom (* row rowPitch) (/ h 2.0))
-          gy (+ yBottom (* t trkPitch)))
+          gy (+ yBottom (* trk trkPitch)))
     (setq route (dim-leader:dedupe-pts
                   (list (list cx cy) (list cx gy) (list (- lx 0.5) gy) (list (- lx 0.5) ly) (list lx ly))))
     (setq res (cons (list ctr ent lx ly 0 route) res))
-    (setq i (1+ i) t (1+ t)))
+    (setq i (1+ i) trk (1+ trk)))
   (reverse res))
 
 ;; ---------------------------------------------------------------------------
@@ -448,7 +812,7 @@
     (setq wf (cdr (assoc 41 dat)))
     (if (not (and (numberp wf) (> wf 0.0))) (setq wf 1.0))
     (setq tb (textbox dat))
-    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (* (text-width style txt) h wf)))
+    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (dim-leader:text-fallback-width dat)))
     (if (> w maxw) (setq maxw w))
     (if (> h maxh) (setq maxh h))
     (setq items (cons (list ctr ent (car ref) (cadr ref) w h) items)))
@@ -514,7 +878,7 @@
     (setq wf (cdr (assoc 41 dat)))
     (if (not (and (numberp wf) (> wf 0.0))) (setq wf 1.0))
     (setq tb (textbox dat))
-    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (* (text-width style txt) h wf)))
+    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (dim-leader:text-fallback-width dat)))
     (if (> w maxw) (setq maxw w))
     (if (> h maxh) (setq maxh h))
     (setq items (cons (list ctr ent (car ref) (cadr ref) w h) items))
@@ -649,7 +1013,7 @@
     (setq wf (cdr (assoc 41 dat)))
     (if (not (and (numberp wf) (> wf 0.0))) (setq wf 1.0))
     (setq tb (textbox dat))
-    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (* (text-width style txt) h wf)))
+    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (dim-leader:text-fallback-width dat)))
     (if (> w maxw) (setq maxw w))
     (if (> h maxh) (setq maxh h))
     (setq items (cons (list ctr ent (car ref) (cadr ref) w h) items)))
@@ -708,7 +1072,7 @@
     (setq wf (cdr (assoc 41 dat)))
     (if (not (and (numberp wf) (> wf 0.0))) (setq wf 1.0))
     (setq tb (textbox dat))
-    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (* (text-width style txt) h wf)))
+    (if tb (setq w (abs (- (car (cadr tb)) (caar tb)))) (setq w (dim-leader:text-fallback-width dat)))
     (if (> w maxw) (setq maxw w))
     (if (> h maxh) (setq maxh h))
     (setq cx (car ctr) cy (cadr ctr))
@@ -818,7 +1182,7 @@
 ;; 主命令
 ;; ---------------------------------------------------------------------------
 (defun dim-leader:run (/ centers matched laid layer lw r ctr ent ax ay rot route nlead
-                          sst i e matchedef obstacles bx occx occy)
+                          sst i e matchedef obstacles bx occx occy pal pl)
   (setq centers (dim-leader:find-centers))
   (cond
     ((null centers)
@@ -855,12 +1219,24 @@
                     (dim-leader:layout-zone2d matched obstacles 3))
                    ((= 4 (@:get-config 'dim-leader:layout))
                     (dim-leader:layout-4dir matched obstacles))
-                   ((= 5 (@:get-config 'dim-leader:layout))
-                    (dim-leader:layout-lanes matched obstacles))
-                   (t (dim-leader:layout matched obstacles)))
-            layer (@:get-config 'dim-leader:layer)
-            lw (@:get-config 'dim-leader:leader-width)
-            nlead 0)
+                    ((= 5 (@:get-config 'dim-leader:layout))
+                     (dim-leader:layout-lanes matched obstacles))
+                     ((= 6 (@:get-config 'dim-leader:layout))
+                      (dim-leader:layout-chip matched obstacles))
+                     ((= 7 (@:get-config 'dim-leader:layout))
+                      (dim-leader:layout-compact matched obstacles))
+                     ((= 8 (@:get-config 'dim-leader:layout))
+                      (dim-leader:layout-channels matched obstacles))
+                     (t (dim-leader:layout matched obstacles)))
+             layer (@:get-config 'dim-leader:layer)
+             lw (@:get-config 'dim-leader:leader-width)
+             pal (dim-leader:parse-colors (@:get-config 'dim-leader:leader-colors))
+             nlead 0)
+      (if (and (= 6 (@:get-config 'dim-leader:layout)) (null laid))
+        (princ (strcat "\n芯片式布局: "
+                       (if dim-leader:*chip-error*
+                         dim-leader:*chip-error*
+                         "生成失败，未修改图形"))))
      (foreach r laid
        (setq ctr (nth 0 r)
              ent (nth 1 r)
@@ -870,10 +1246,12 @@
        (if (nth 7 r)
          (progn
            (dim-leader:place-text-j ent ax ay rot (nth 5 r) (nth 6 r))
-           (dim-leader:make-polyline (nth 7 r) layer lw))
+           (setq pl (dim-leader:make-polyline (nth 7 r) layer lw)))
          (progn
            (dim-leader:place-text ent ax ay rot)
-           (dim-leader:make-polyline (nth 5 r) layer lw)))
+           (setq pl (dim-leader:make-polyline (nth 5 r) layer lw))))
+       (if (and pal pl)
+         (entmod (dim-leader:setd (entget pl) 62 (nth (rem nlead (length pal)) pal))))
        (setq nlead (1+ nlead)))
      (princ (strcat "  生成引线: " (itoa nlead) " 条。"))))
   (princ))
@@ -882,4 +1260,36 @@
 (defun c:dimleader () (dim-leader:run))
 (defun c:dl () (dim-leader:run))
 
-(@:add-menu "标注" "圆心引线标注" "(dim-leader:run)")
+;; ---------------------------------------------------------------------------
+;; 菜单：按布局编号分项，免去手工改 dim-leader:layout
+;; ---------------------------------------------------------------------------
+
+(defun dim-leader:run-layout (n)
+  "按布局编号 n 执行圆心引线标注，并把 dim-leader:layout 设为 n。返回 dim-leader:run 的结果。"
+  (if (and (numberp n) (>= n 0) (< n (length dim-leader:*layout-names*)))
+    (progn
+      (@::set-config 'dim-leader:layout n)
+      (dim-leader:run))
+    (princ (strcat "\n布局编号需在 0-" (itoa (1- (length dim-leader:*layout-names*))) " 之间。"))))
+
+(defun dim-leader:menu-items (/ lst i)
+  "构造圆心引线标注的菜单项表，每项对应一种布局。返回 ((项名 命令) ...)。"
+  (setq lst nil i 0)
+  (foreach nm dim-leader:*layout-names*
+    ;; 命令以列表形式交给 @:add-menu，由其转成 "(dim-leader:run-layout i)"
+    (setq lst (cons (list nm (list 'dim-leader:run-layout i)) lst))
+    (setq i (1+ i)))
+  (reverse lst))
+
+(defun dim-leader:add-menu (/ lst)
+  "注册菜单项到 圆心引线标注 分类：9 种布局 + 分隔线 + 参数设置。返回布局项数。"
+  (setq lst (dim-leader:menu-items))
+  (@:add-menus
+    (list
+      (cons "圆心引线标注"
+            (append lst
+                    (list (list "--" "--")
+                          (list "参数设置…" "(@::edit-config-dialog)"))))))
+  (length lst))
+
+(dim-leader:add-menu)

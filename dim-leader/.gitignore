@@ -1,0 +1,27 @@
+# 本包的实验产物不入库（PLAN.md I15）。
+# 保留：高程点图_局部.dwg / test.dwg（真实输入数据）、*.lsp / *.py（源码与工具）
+
+# 各布局的试跑结果、另存图
+dim-leader-*.dwg
+dim-leader-*.bak
+test-L*.dwg
+Drawing*.dwg
+backup-*.dwg
+
+# CAD 锁文件与保存临时文件
+*.dwl
+*.dwl2
+save*.tmp
+tst-*.result
+
+# 基准测试中间产物（可用 bench_src.py / bench_data.py / test_run.py 重新生成）
+bench_src.json
+data.json
+data_est.json
+lisp_bench.json
+result_dump.json
+*.dxf
+
+# Python 缓存
+__pycache__/
+*.pyc

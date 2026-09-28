@@ -16,8 +16,7 @@ tst-*.result
 
 # 基准测试中间产物（可用 bench_src.py / bench_data.py / test_run.py 重新生成）
 bench_src.json
-data.json
-data_est.json
+data*.json
 lisp_bench.json
 result_dump.json
 *.dxf

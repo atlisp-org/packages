@@ -10,4 +10,4 @@
         (:FREE . T)
         (:DESCRIPTION . "对共圆心两个半圆弧的中心点，用多折线引线标注其旁的文本，并自动分层避免文字重叠")
         (:URL . "http://atlisp.cn")
-        (:FILES "dim-leader")))
+        (:FILES "dim-leader" "chip" "channels")))

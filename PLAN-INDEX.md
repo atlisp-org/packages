@@ -51,34 +51,35 @@
 | 44 | cmd-ext | 3/0 | ⬜ | | |
 | 45 | composing | 4/7 | ⬜ | | |
 | 46 | dev-tools ⚠子模块 | 23/158 | ⬜ | | |
-| 47 | doslib | 2/2 | ⬜ | | |
-| 48 | everything | 3/1 | ⬜ | | |
-| 49 | flange | 3/2 | ⬜ | | |
-| 50 | fonts | 3/11 | ⬜ | | |
-| 51 | game-wzq | 2/1 | ⬜ | | |
-| 52 | gis-tools (无pkg.lsp) | 0/py | ⬜ | | |
-| 53 | helloworld | 2/1 | ⬜ | | |
-| 54 | landscape-plants | 2/1 | ⬜ | | |
-| 55 | list-rec-wxh | 2/5 | ⬜ | | |
-| 56 | lpsidemenu | 3/4 | ⬜ | | |
-| 57 | mark-order | 3/4 | ⬜ | | |
-| 58 | networkx | 5/3 | ⬜ | | |
-| 59 | ocr | 3/1 | ⬜ | | |
-| 60 | ole | 2/10 | ⬜ | | |
-| 61 | opendcl | 3/2 | ⬜ | | |
-| 62 | pdftk | 3/16 | ⬜ | | |
-| 63 | prefabricated-building | 7/17 | ⬜ | | |
-| 64 | psk-tools | 31/561 | ⬜ | | |
-| 65 | qrencode | 2/3 | ⬜ | | |
-| 66 | quadrilateral | 3/3 | ⬜ | | |
-| 67 | road-cross | 3/75 | ⬜ | | |
-| 68 | route-of-hole2shape | 2/12 | ⬜ | | |
-| 69 | saw-blade | 3/7 | ⬜ | | |
-| 70 | sidebar | 2/4 | ⬜ | | |
-| 71 | structure-tools | 3/2 | ⬜ | | |
-| 72 | svg2dxf | 3/3 | ⬜ | | |
-| 73 | xgjmtxcx | 3/1 | ⬜ | | |
-| 74 | youyun-plot | 2/1 | ⬜ | | |
+| 47 | dim-leader | 3/75 | 🔄 | 写图安全(*error*/回滚/图层)；text-box 按 TBOX2 重算 72/73；布局 5/7/8 接 obstacles；选择范围+试运行 | ≈43h |
+| 48 | doslib | 2/2 | ⬜ | | |
+| 49 | everything | 3/1 | ⬜ | | |
+| 50 | flange | 3/2 | ⬜ | | |
+| 51 | fonts | 3/11 | ⬜ | | |
+| 52 | game-wzq | 2/1 | ⬜ | | |
+| 53 | gis-tools (无pkg.lsp) | 0/py | ⬜ | | |
+| 54 | helloworld | 2/1 | ⬜ | | |
+| 55 | landscape-plants | 2/1 | ⬜ | | |
+| 56 | list-rec-wxh | 2/5 | ⬜ | | |
+| 57 | lpsidemenu | 3/4 | ⬜ | | |
+| 58 | mark-order | 3/4 | ⬜ | | |
+| 59 | networkx | 5/3 | ⬜ | | |
+| 60 | ocr | 3/1 | ⬜ | | |
+| 61 | ole | 2/10 | ⬜ | | |
+| 62 | opendcl | 3/2 | ⬜ | | |
+| 63 | pdftk | 3/16 | ⬜ | | |
+| 64 | prefabricated-building | 7/17 | ⬜ | | |
+| 65 | psk-tools | 31/561 | ⬜ | | |
+| 66 | qrencode | 2/3 | ⬜ | | |
+| 67 | quadrilateral | 3/3 | ⬜ | | |
+| 68 | road-cross | 3/75 | ⬜ | | |
+| 69 | route-of-hole2shape | 2/12 | ⬜ | | |
+| 70 | saw-blade | 3/7 | ⬜ | | |
+| 71 | sidebar | 2/4 | ⬜ | | |
+| 72 | structure-tools | 3/2 | ⬜ | | |
+| 73 | svg2dxf | 3/3 | ⬜ | | |
+| 74 | xgjmtxcx | 3/1 | ⬜ | | |
+| 75 | youyun-plot | 2/1 | ⬜ | | |
 
 ## 跨包主题（B10 收尾时统一复核）
 - [ ] lib 协同：各包 PLAN 第 6 节候选函数汇总 → `lib/src/<ns>/<fn>.lsp`

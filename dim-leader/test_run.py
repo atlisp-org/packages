@@ -65,8 +65,19 @@ BODIES = {
 
 
 def open_drawing(name):
+    """打开图纸；若 CAD 已经开着它就直接复用（重复 open_dwg 会报"不是有效的图形文件"）。"""
     p = mcp_client.host_path(name)
-    print("open:", mcp_client.call("open_dwg", {"filePath": p}, timeout=300)[:80])
+    want = os.path.basename(name).lower()
+    cur = ""
+    try:
+        cur = mcp_client.eval_lisp('(getvar "DWGNAME")', timeout=60).strip().lower()
+    except Exception:
+        pass
+    if cur == want:
+        print("open: 已在当前文档", name)
+    else:
+        print("open:", mcp_client.call("open_dwg", {"filePath": p},
+                                       timeout=300)[:80])
     mcp_client.ensure_package(HERE, force=True)
     print("pkg reloaded | dwg =",
           mcp_client.eval_lisp('(getvar "DWGNAME")', timeout=120).strip())

@@ -142,9 +142,21 @@ def require_scene(expected=507, tries=6):
 
 
 def main():
-    out_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "data.json")
+    argv = [x for x in sys.argv[1:] if not x.startswith("--")]
+    out_path = argv[0] if argv else os.path.join(HERE, "data.json")
     size = int(os.environ.get("BENCH_CHUNK", "150"))
-    require_scene()
+    if "--current" in sys.argv:
+        # 直接用 CAD 当前打开的图纸（不切到基准场景）
+        dwg = mcp_client.eval_lisp('(getvar "DWGNAME")', timeout=60).strip()
+        n_arc = mcp_client.eval_lisp(
+            '(if (ssget "_X" (quote ((0 . "ARC")))) '
+            '(itoa (sslength (ssget "_X" (quote ((0 . "ARC")))))) "0")',
+            timeout=120).strip()
+        print(f"current dwg: {dwg} (arcs={n_arc})")
+        if int(n_arc) < 10:
+            raise SystemExit("当前文档没有 ARC，请先打开目标图纸")
+    else:
+        require_scene()
 
     prep = mcp_client.eval_lisp(PREP, timeout=1200).strip()
     n_m = int(mcp_client.eval_lisp("(itoa (length *bm*))", timeout=300).strip())

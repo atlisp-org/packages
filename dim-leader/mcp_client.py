@@ -162,7 +162,6 @@ def lisp_check(code):
 
 
 def eval_lisp(code, encoding="utf-8", timeout=300):
-    code, _ = lisp_balance(code)
     lisp_check(code)
     return call("eval_lisp_with_result",
                 {"code": code, "encoding": encoding}, timeout=timeout)

@@ -19,6 +19,9 @@ bench_src.json
 data*.json
 lisp_bench.json
 result_dump.json
+result_L*.json
+result_*.txt
+vltmp-*.dwg
 *.dxf
 
 # Python 缓存

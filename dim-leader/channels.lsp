@@ -14,7 +14,7 @@
 (@:define-config 'dim-leader:lane-gap 1.0 "布局8: 相邻平行引线的通道间距")
 (@:define-config 'dim-leader:channels-lines 0 "布局8: 每带行/列数(0=按点群范围自动, >0 手动指定以压缩布局)")
 (@:define-config 'dim-leader:channels-columns 1 "布局8: 列位算法 1=最小位移保序(引线更短) 0=等距")
-(@:define-config 'dim-leader:channels-blocks 10 "布局8: 文本带分块数(0/1=单带; >=2 块间留贯穿缝隙, 长引线穿缝, 减少穿越文字盒)")
+(@:define-config 'dim-leader:channels-blocks 0 "布局8: 文本带分块数(0/1=不分块, 推荐; >=2 块间留贯穿缝隙。分块会把网格拉宽约2.5倍, 反而多出大量引线交叉)")
 
 ;; 向上取整除法
 (defun dim-leader:ch-ceil (a b)
@@ -284,7 +284,7 @@
 ;; 返回记录表。g 为 (圆心 图元 宽 高) 列表。
 (defun dim-leader:ch-band-h (g above gap lane maxh minX maxX minY maxY lines cols
                              / gs pitch per line n us spans le assign nt depth
-                               lo hi span mid cursor k z cx cy w h u ly textb textt res)
+                               lo hi span mid cursor k z cx cy w h u ly textb textt res xl xh)
   "水平带(上/下)不分块布线, 返回 8 元素布局记录表。"
   (if g
     (progn
@@ -303,8 +303,20 @@
       (foreach line (dim-leader:ch-chunks gs per)
         (setq n (length line))
         (if (and (= cols 1) (= lines 0))
-          (setq us (dim-leader:ch-isotonic
-                     (mapcar (function (lambda (z) (car (nth 0 z)))) line) pitch))
+          (progn
+            (setq us (dim-leader:ch-isotonic
+                       (mapcar (function (lambda (z) (car (nth 0 z)))) line) pitch))
+            ;; 同 ch-band-v: 夹到本行自己的 x 范围, 避免标签被摊到整条带上
+            ;; (原来这里完全没有夹取, PAVA 结果可能整体飘到远离本行的位置)
+            (setq xl 1.0e30 xh -1.0e30)
+            (foreach z line
+              (setq cx (car (nth 0 z)))
+              (if (< cx xl) (setq xl cx))
+              (if (> cx xh) (setq xh cx)))
+            (if (< (car us) xl)
+              (setq us (mapcar (function (lambda (v) (+ v (- xl (car us))))) us)))
+            (if (> (last us) xh)
+              (setq us (mapcar (function (lambda (v) (+ v (- xh (last us))))) us))))
           (setq us (dim-leader:ch-spread n lo hi)))
         (setq spans nil k 0)
         (foreach z line
@@ -339,7 +351,7 @@
 ;; 竖直带(右/左): 文字水平, 沿 y 排布, right=t 在右侧否则在左侧。
 (defun dim-leader:ch-band-v (g right gap lane maxh minX maxX minY maxY lines cols
                              / gs pitch per line n us spans le assign nt depth
-                               lo hi span mid cursor k z cx cy w h u lx textl textr res)
+                               lo hi span mid cursor k z cx cy w h u lx textl textr res yl yh)
   "竖直带(左/右)不分块布线, 返回 8 元素布局记录表。"
   (if g
     (progn
@@ -361,10 +373,19 @@
           (progn
             (setq us (dim-leader:ch-isotonic
                        (mapcar (function (lambda (z) (cadr (nth 0 z)))) line) pitch))
-            (if (< (car us) minY)
-              (setq us (mapcar (function (lambda (v) (+ v (- minY (car us))))) us)))
-            (if (> (last us) maxY)
-              (setq us (mapcar (function (lambda (v) (+ v (- maxY (last us))))) us))))
+            ;; 夹到"本行自己的" y 范围, 而不是整条带的 minY/maxY。
+            ;; 整带夹取会把一行 44 个点的标签摊到全带 176 单位上(PAVA 最小跨度 172 > 本行跨度 39),
+            ;; 于是这行标签的引线要纵穿 130+ 单位, 横切其余各行的泳道 —— 这是引线交叉的主因。
+            ;; 夹取是整体平移, 不破坏 PAVA 的保序性与最小行距。
+            (setq yl 1.0e30 yh -1.0e30)
+            (foreach z line
+              (setq cy (cadr (nth 0 z)))
+              (if (< cy yl) (setq yl cy))
+              (if (> cy yh) (setq yh cy)))
+            (if (< (car us) yl)
+              (setq us (mapcar (function (lambda (v) (+ v (- yl (car us))))) us)))
+            (if (> (last us) yh)
+              (setq us (mapcar (function (lambda (v) (+ v (- yh (last us))))) us))))
           (setq us (dim-leader:ch-spread n lo hi)))
         (setq spans nil k 0)
         (foreach z line

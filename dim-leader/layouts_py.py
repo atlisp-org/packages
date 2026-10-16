@@ -109,6 +109,68 @@ def seg_rect_hit(x1, y1, x2, y2, bl, br, bb, bt):
             or seg_seg_hit(x1, y1, x2, y2, bl, bt, bl, bb))
 
 
+def grid_clamp(v, lo, hi):
+    return lo if v < lo else (hi if v > hi else v)
+
+
+def make_grid(items, cw, ch):
+    """用盒表 items 建 cw x ch 的均匀网格索引。
+
+    返回 (gminx, gminy, nx, ny, cw, ch, rows, all)；rows 是 ny 行 x nx 列的桶，
+    all 是全部盒的平表(越界重建时用)。范围按 items 包围盒外扩 50%(等比增长)。
+    """
+    cw = max(1.0e-6, cw)
+    ch = max(1.0e-6, ch)
+    if not items:
+        gminx, gminy, nx, ny = 0.0, 0.0, 2, 2
+    else:
+        gminx = min(b[0] for b in items)
+        gminy = min(b[2] for b in items)
+        maxx = max(b[1] for b in items)
+        maxy = max(b[3] for b in items)
+        spanx, spany = (maxx - gminx) + cw, (maxy - gminy) + ch
+        gminx, maxx = gminx - 0.5 * spanx, maxx + 0.5 * spanx
+        gminy, maxy = gminy - 0.5 * spany, maxy + 0.5 * spany
+        nx = max(2, 2 + fix((maxx - gminx) / cw))
+        ny = max(2, 2 + fix((maxy - gminy) / ch))
+    rows = [[[] for _ in range(nx)] for _ in range(ny)]
+    g = [gminx, gminy, nx, ny, cw, ch, rows, list(items)]
+    for b in items:
+        g = grid_add(g, b)
+    return g
+
+
+def grid_add(g, b):
+    gminx, gminy, nx, ny, cw, ch, rows, all = g
+    if (b[0] < gminx or b[1] > gminx + nx * cw
+            or b[2] < gminy or b[3] > gminy + ny * ch):
+        return make_grid(all + [b], cw, ch)
+    i0 = grid_clamp(fix((b[0] - gminx) / cw), 0, nx - 1)
+    i1 = grid_clamp(fix((b[1] - gminx) / cw), 0, nx - 1)
+    j0 = grid_clamp(fix((b[2] - gminy) / ch), 0, ny - 1)
+    j1 = grid_clamp(fix((b[3] - gminy) / ch), 0, ny - 1)
+    for j in range(j0, j1 + 1):
+        for i in range(i0, i1 + 1):
+            rows[j][i].append(b)
+    g[7] = all + [b]
+    return g
+
+
+def box_hit_grid(g, bl, br, bb, bt):
+    gminx, gminy, nx, ny, cw, ch, rows = g[0], g[1], g[2], g[3], g[4], g[5], g[6]
+    i0 = grid_clamp(fix((bl - gminx) / cw), 0, nx - 1)
+    i1 = grid_clamp(fix((br - gminx) / cw), 0, nx - 1)
+    j0 = grid_clamp(fix((bb - gminy) / ch), 0, ny - 1)
+    j1 = grid_clamp(fix((bt - gminy) / ch), 0, ny - 1)
+    for j in range(j0, j1 + 1):
+        r = rows[j]
+        for i in range(i0, i1 + 1):
+            for p in r[i]:
+                if p[1] > bl and p[0] < br and p[3] > bb and p[2] < bt:
+                    return True
+    return False
+
+
 def mk_placed(bl, br, bb, bt, s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2):
     xs = (bl, s1x1, s1x2, s2x1, s2x2)
     return [bl, br, bb, bt, s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2,
@@ -327,18 +389,20 @@ def layout0(inp, state=None):
         klist += [k, -k]
 
     placed = inp.obstacles_placed()
+    gbox = [[p[0], p[1], p[2], p[3]] for p in placed]
+    grid = make_grid(gbox, maxw + gap, maxh + gap)
     res = []
     for it in items:
         ctr, base_x, base_y, w, h = it[0], it[2], it[3], it[4], it[5]
         cx, cy = ctr[0], ctr[1]
         bl, br, bb, bt = base_x, base_x + w, base_y - h / 2.0, base_y + h / 2.0
-        best = bestcost = None
+        best, bestcost = None, None
         if avoid:
             hit, cross = eval_place(placed, bl, br, bb, bt,
                                     cx, cy, cx, base_y, cx, base_y,
                                     base_x, base_y)
         else:
-            hit, cross = box_hit_p(placed, bl, br, bb, bt), 0
+            hit, cross = box_hit_grid(grid, bl, br, bb, bt), 0
         if not hit and cross == 0:
             best = [0, base_x, base_y, bl, br, bb, bt,
                     cx, cy, cx, base_y, cx, base_y, base_x, base_y]
@@ -347,7 +411,7 @@ def layout0(inp, state=None):
                 step = (w + gap) if rot == 90 else levelH
                 for k in klist:
                     ax = base_x + k * (pitch90 if rot == 90 else pitch0)
-                    found, o, oo = False, 0, None
+                    found, o, oo, free = False, 0, None, False
                     while not found:
                         for oo2 in ([0] if o == 0 else [o, -o]):
                             if not found:
@@ -359,8 +423,8 @@ def layout0(inp, state=None):
                                 else:
                                     bl, br = ax - h / 2.0, ax + h / 2.0
                                     bb, bt = ay - w / 2.0, ay + w / 2.0
-                                if not box_hit_p(placed, bl, br, bb, bt):
-                                    found = True
+                                if not box_hit_grid(grid, bl, br, bb, bt):
+                                    found = free = True
                         o += 1
                         if o > 400:
                             found = True
@@ -381,13 +445,19 @@ def layout0(inp, state=None):
                                      + cross0 * 8.0)
                     else:
                         cand_cost = None
-                    if oo is not None and (bestcost is None
-                                           or cand_cost < bestcost):
+                    if oo is not None and free and (bestcost is None
+                                                    or cand_cost < bestcost):
                         bestcost = cand_cost
                         # 与 LISP 的 best 同构：15 元素
                         best = [rot, ax, ay, bl, br, bb, bt]
                         best += [cx, cy, cx, ay, cx, ay, ax, ay] if rot == 0 \
                             else [cx, cy, cx, ay, cx, ay, ax - h / 2.0, ay]
+        # 附近没有可用空位：保留原位不动，计数上报（不再静默压字）
+        if best is None:
+            state["unplaced"] = state.get("unplaced", 0) + 1
+            best = [0, base_x, base_y,
+                    base_x, base_x + w, base_y - h / 2.0, base_y + h / 2.0,
+                    cx, cy, cx, base_y, cx, base_y, base_x, base_y]
         rot, ax, ay = best[0], best[1], best[2]
         bl, br, bb, bt = best[3], best[4], best[5], best[6]
         if rot == 0:
@@ -398,6 +468,7 @@ def layout0(inp, state=None):
         placed = placed + [mk_placed(bl, br, bb, bt, best[7], best[8],
                                      best[9], best[10], best[11], best[12],
                                      best[13], best[14])]
+        grid = grid_add(grid, placed[-1])
         res.append([ctr, anchor_x, anchor_y, rot, elbow_x, attach_y])
 
     # 绕行走廊后处理：5 个竖向走廊 x 中取穿越文本最少者
@@ -627,6 +698,7 @@ def layout4(inp, state=None):
     Cy = sum(m[0][1] for m in items) / n
     items = vl_sort(items, lambda a, b: a[0][1] < b[0][1])
     placed = [list(o) for o in inp.obstacles]
+    grid = make_grid([list(o) for o in inp.obstacles], maxw + gap, maxh + gap)
     res = []
     for m in items:
         ctr = m[0]
@@ -661,12 +733,13 @@ def layout4(inp, state=None):
                     bl, br = cx - w / 2.0, cx + w / 2.0
                     bb, bt = cy - off - h, cy - off
                     ax, ay, hj, vj = cx, cy - off, 1, 3
-                if not box_hit_p(placed, bl, br, bb, bt):
+                if not box_hit_grid(grid, bl, br, bb, bt):
                     best = [bl, br, bb, bt, ax, ay, hj, vj]
             off += levelH
         if best is None:
             best = [bl, br, bb, bt, cx, cy, 0, 2]
         placed = placed + [best[0:4]]
+        grid = grid_add(grid, placed[-1])
         res.append([ctr, best[4], best[5], 0, best[6], best[7],
                     dedupe_pts([(cx, cy), (best[4], best[5])])])
     return res[::-1]
@@ -1005,16 +1078,21 @@ def ch_sort_order(idx, lst):
 
 
 def ch_isotonic(p, pitch):
-    """PAVA 保序回归：等间距(pitch)约束下最贴近 p 的列位表。"""
+    """PAVA 保序回归：等间距(pitch)约束下最贴近 p 的列位表。
+
+    与 channels.lsp 的 ch-isotonic 逐句对应：v_k = p_k - k*pitch，
+    逐个 append 块并与前一块比均值，违反则合并（可向左连级合并）。
+    注意不能先建好全部块再回头扫——那样合并只会发生在末尾两块，
+    中间的违例永远不会被发现，输出间距会小于 pitch。
+    """
     v = [x - k * pitch for k, x in enumerate(p)]
-    blocks = [[x, 1] for x in v]
+    blocks = []
     for x in v:
-        while len(blocks) >= 2:
+        blocks.append([x, 1])
+        while (len(blocks) >= 2
+               and blocks[-2][0] / blocks[-2][1] > blocks[-1][0] / blocks[-1][1]):
             a, b = blocks[-2], blocks[-1]
-            if a[0] / a[1] > b[0] / b[1]:
-                blocks = blocks[:-2] + [[a[0] + b[0], a[1] + b[1]]]
-            else:
-                break
+            blocks = blocks[:-2] + [[a[0] + b[0], a[1] + b[1]]]
     res, k = [], 0
     for b in blocks:
         vk = b[0] / b[1]
@@ -1210,8 +1288,17 @@ def ch_band_h(g, above, gap, lane, maxh, minX, maxX, minY, maxY, lines, cols):
     res = []
     for line in ch_chunks(gs, per):
         n = len(line)
-        us = (ch_isotonic([z[0][0] for z in line], pitch)
-              if (cols == 1 and lines == 0) else ch_spread(n, lo, hi))
+        if cols == 1 and lines == 0:
+            us = ch_isotonic([z[0][0] for z in line], pitch)
+            # 夹到"本行自己的" x 范围（同 ch_band_v，见那里的说明）
+            _xs = [z[0][0] for z in line]
+            _lo, _hi = min(_xs), max(_xs)
+            if us[0] < _lo:
+                us = [v + (_lo - us[0]) for v in us]
+            if us[-1] > _hi:
+                us = [v + (_hi - us[-1]) for v in us]
+        else:
+            us = ch_spread(n, lo, hi)
         spans = [[min(z[0][0], us[k]), max(z[0][0], us[k])]
                  for k, z in enumerate(line)]
         assign, nt = ch_left_edge(spans)
@@ -1256,10 +1343,13 @@ def ch_band_v(g, right, gap, lane, maxh, minX, maxX, minY, maxY, lines, cols):
         n = len(line)
         if cols == 1 and lines == 0:
             us = ch_isotonic([z[0][1] for z in line], pitch)
-            if us[0] < minY:
-                us = [v + (minY - us[0]) for v in us]
-            if us[-1] > maxY:
-                us = [v + (maxY - us[-1]) for v in us]
+            # 夹到"本行自己的" y 范围，而不是整条带的 minY/maxY（同 ch_band_h）
+            _ys = [z[0][1] for z in line]
+            _lo, _hi = min(_ys), max(_ys)
+            if us[0] < _lo:
+                us = [v + (_lo - us[0]) for v in us]
+            if us[-1] > _hi:
+                us = [v + (_hi - us[-1]) for v in us]
         else:
             us = ch_spread(n, lo, hi)
         spans = [[min(z[0][1], us[k]), max(z[0][1], us[k])]

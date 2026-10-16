@@ -54,12 +54,123 @@
     (append dat (list (cons code val)))))
 
 ;; 矩形碰撞检测：box=(bl br bb bt)，检查是否与已放置的任一矩形相交
+;; 说明：这是全表线性扫描，布局 0/4 的"找空位"循环会调它上万次，是 O(n³) 的主因。
+;;      已由 dim-leader:box-hit-grid 走网格索引取代，本函数保留给只扫一遍的场合。
 (defun dim-leader:box-hit-p (placed bl br bb bt / found)
   (setq found nil)
   (foreach p placed
     (if (null found)
       (if (and (> (nth 1 p) bl) (< (nth 0 p) br) (> (nth 3 p) bb) (< (nth 2 p) bt))
         (setq found t))))
+  found)
+
+;; ---------------------------------------------------------------------------
+;; 均匀网格索引：把"已放置的盒"按 cw x ch 分桶，查询只看候选格。
+;; 格宽取"最大文字宽+gap"、格高取"字高+gap"，使一个盒基本只落 1~2 个格，
+;; 一次查询的候选数与总图元数无关。
+;; 索引 = (gminx gminy nx ny cw ch rows all)
+;;   rows 是 ny 行 x nx 列的桶表(桶为盒表)，all 是全部盒的平表(重建网格时用)。
+;;   网格范围按 items 的包围盒外扩 50%(等比增长，插入越界只重建 O(log) 次)。
+;; ---------------------------------------------------------------------------
+
+(defun dim-leader:grid-clamp (v lo hi)
+  "把 v 钳到 [lo, hi]，返回钳后的值（网格下标越界保护）。"
+  (if (< v lo) (setq v lo))
+  (if (> v hi) (setq v hi))
+  v)
+
+(defun dim-leader:lst-set (lst i val / out k)
+  "按下标 i 把 lst 的第 i 项换成 val，返回新表。
+不能用 subst：空桶都是 nil，subst 按值匹配会打到错误的位置。"
+  (setq out nil k (1- (length lst)))
+  (while (>= k 0)
+    (setq out (cons (if (= k i) val (nth k lst)) out))
+    (setq k (1- k)))
+  out)
+
+(defun dim-leader:make-grid (items cw ch / gminx gminy maxx maxy spanx spany nx ny rows j i b g row)
+  "用盒表 items 建 cw x ch 的均匀网格索引，返回 (gminx gminy nx ny cw ch rows all)。
+items 会被装入桶中(all 即 items)，之后新增的盒用 dim-leader:grid-add 插入。"
+  (setq cw (max 1.0e-6 cw) ch (max 1.0e-6 ch))
+  (if (null items)
+    (setq gminx 0.0 gminy 0.0 nx 2 ny 2)
+    (progn
+      (setq gminx 1.0e30 gminy 1.0e30 maxx -1.0e30 maxy -1.0e30)
+      (foreach b items
+        (if (< (nth 0 b) gminx) (setq gminx (nth 0 b)))
+        (if (> (nth 1 b) maxx) (setq maxx (nth 1 b)))
+        (if (< (nth 2 b) gminy) (setq gminy (nth 2 b)))
+        (if (> (nth 3 b) maxy) (setq maxy (nth 3 b))))
+      ;; 两侧各留 50% 余量，使后续插入多数不必重建
+      (setq spanx (+ (- maxx gminx) cw)
+            spany (+ (- maxy gminy) ch)
+            gminx (- gminx (* 0.5 spanx))
+            maxx (+ maxx (* 0.5 spanx))
+            gminy (- gminy (* 0.5 spany))
+            maxy (+ maxy (* 0.5 spany))
+            nx (max 2 (+ 2 (fix (/ (- maxx gminx) cw))))
+            ny (max 2 (+ 2 (fix (/ (- maxy gminy) ch)))))))
+  (setq rows nil j 0)
+  (while (< j ny)
+    (setq i 0 row nil)
+    (while (< i nx) (setq row (cons nil row)) (setq i (1+ i)))
+    (setq rows (cons (reverse row) rows))
+    (setq j (1+ j)))
+  (setq g (list gminx gminy nx ny cw ch (reverse rows) nil))
+  ;; 直接把 items 塞进桶（不走 grid-add，免得 all 里留下重复项）
+  (foreach b items
+    (setq g (dim-leader:grid-put g b)))
+  (setq g (dim-leader:lst-set g 7 items))
+  g)
+
+(defun dim-leader:grid-put (g b / cw ch i0 i1 j0 j1 i j rows newrow)
+  "把盒 b 插入索引 g 的桶中（假定 b 在范围内），返回新索引。不维护 all。"
+  (setq cw (nth 4 g) ch (nth 5 g) rows (nth 6 g)
+        i0 (dim-leader:grid-clamp (fix (/ (- (nth 0 b) (nth 0 g)) cw)) 0 (1- (nth 2 g)))
+        i1 (dim-leader:grid-clamp (fix (/ (- (nth 1 b) (nth 0 g)) cw)) 0 (1- (nth 2 g)))
+        j0 (dim-leader:grid-clamp (fix (/ (- (nth 2 b) (nth 1 g)) ch)) 0 (1- (nth 3 g)))
+        j1 (dim-leader:grid-clamp (fix (/ (- (nth 3 b) (nth 1 g)) ch)) 0 (1- (nth 3 g)))
+        j j0)
+  (while (<= j j1)
+    (setq newrow (nth j rows)
+          i i0)
+    (while (<= i i1)
+      (setq newrow (dim-leader:lst-set newrow i (cons b (nth i newrow))))
+      (setq i (1+ i)))
+    (setq rows (dim-leader:lst-set rows j newrow))
+    (setq j (1+ j)))
+  (list (nth 0 g) (nth 1 g) (nth 2 g) (nth 3 g) cw ch rows (nth 7 g)))
+
+(defun dim-leader:grid-add (g b)
+  "把盒 b 插入索引 g；超出网格范围时按新范围重建（等比增长，只重建 O(log) 次）。
+b 越界的判据是它超出了 [gminx, gminx+nx*cw] x [gminy, gminy+ny*ch]。
+不越界时必须走 grid-put 真的塞进桶里，只 append 到 all 是不够的——
+那样后续 box-hit-grid 查不到新盒，会误判成空位，布局 0/4 就会让每个标签原地落位。"
+  (if (or (< (nth 0 b) (nth 0 g))
+          (> (nth 1 b) (+ (nth 0 g) (* (nth 2 g) (nth 4 g))))
+          (< (nth 2 b) (nth 1 g))
+          (> (nth 3 b) (+ (nth 1 g) (* (nth 3 g) (nth 5 g)))))
+    (dim-leader:make-grid (append (nth 7 g) (list b)) (nth 4 g) (nth 5 g))
+    (dim-leader:lst-set (dim-leader:grid-put g b) 7 (cons b (nth 7 g)))))
+
+(defun dim-leader:box-hit-grid (g bl br bb bt / i0 i1 j0 j1 i j p found)
+  "网格版碰撞检测：只查 [bl,br] x [bb,bt] 覆盖到的格。返回 t/nil。"
+  (setq found nil
+        i0 (dim-leader:grid-clamp (fix (/ (- bl (nth 0 g)) (nth 4 g))) 0 (1- (nth 2 g)))
+        i1 (dim-leader:grid-clamp (fix (/ (- br (nth 0 g)) (nth 4 g))) 0 (1- (nth 2 g)))
+        j0 (dim-leader:grid-clamp (fix (/ (- bb (nth 1 g)) (nth 5 g))) 0 (1- (nth 3 g)))
+        j1 (dim-leader:grid-clamp (fix (/ (- bt (nth 1 g)) (nth 5 g))) 0 (1- (nth 3 g)))
+        i i0)
+  (while (and (not found) (<= i i1))
+    (setq j j0)
+    (while (and (not found) (<= j j1))
+      (foreach p (nth i (nth j (nth 6 g)))
+        (if (and (null found)
+                 (> (nth 1 p) bl) (< (nth 0 p) br)
+                 (> (nth 3 p) bb) (< (nth 2 p) bt))
+          (setq found t)))
+      (setq j (1+ j)))
+    (setq i (1+ i)))
   found)
 
 ;; 点在矩形内（含边界）
@@ -615,7 +726,8 @@
                           base_x base_y rot k step ax found o oo oo2 ay bl br bb bt best bestcost
                           cand-cost by elbow_x attach_y anchor_x anchor_y cx cy ev cross0 avoid
                           s1x1 s1y1 s1x2 s1y2 s2x1 s2y1 s2x2 s2y2
-                          boxes newres xms xm pl nx bestnx ex)
+                          boxes newres xms xm pl nx bestnx ex
+                          grid gbox free)
   (setq gap (@:get-config 'dim-leader:gap)
         rotallow (= 1 (@:get-config 'dim-leader:rotate))
         avoid (= 1 (@:get-config 'dim-leader:avoid-leader))
@@ -656,7 +768,10 @@
   (while (<= k cols)
     (setq klist (append klist (list k (- k))))
     (setq k (1+ k)))
-  (setq placed obstacles res nil)
+  (setq placed obstacles res nil
+        gbox (mapcar (function (lambda (p) (list (nth 0 p) (nth 1 p) (nth 2 p) (nth 3 p))))
+                     placed)
+        grid (dim-leader:make-grid gbox (+ maxw gap) (+ maxh gap)))
   (foreach it items
     (setq ctr (nth 0 it) ent (nth 1 it)
           base_x (nth 2 it) base_y (nth 3 it)
@@ -669,7 +784,7 @@
           best nil bestcost nil)
     (setq ev (if avoid
                (dim-leader:eval-place placed bl br bb bt s1x1 s1y1 s1x2 s1y2 s2x1 s2y1 s2x2 s2y2)
-               (list (dim-leader:box-hit-p placed bl br bb bt) 0)))
+               (list (dim-leader:box-hit-grid grid bl br bb bt) 0)))
     (if (and (not (car ev)) (zerop (cadr ev)))
       (setq best (list 0 base_x base_y bl br bb bt s1x1 s1y1 s1x2 s1y2 s2x1 s2y1 s2x2 s2y2)))
     (if (null best)
@@ -678,7 +793,7 @@
           (setq step (if (= rot 90) (+ w gap) levelH))
           (foreach k klist
             (setq ax (+ base_x (* k (if (= rot 90) pitch90 pitch0))))
-            (setq found nil o 0 oo nil cross0 0)
+            (setq found nil o 0 oo nil cross0 0 free nil)
             (while (not found)
               (foreach oo2 (if (zerop o) (list 0) (list o (- o)))
                 (if (not found)
@@ -688,8 +803,8 @@
                     (if (= rot 0)
                       (setq bl ax br (+ ax w) bb (- ay (/ h 2.0)) bt (+ ay (/ h 2.0)))
                       (setq bl (- ax (/ h 2.0)) br (+ ax (/ h 2.0)) bb (- ay (/ w 2.0)) bt (+ ay (/ w 2.0))))
-                    (if (not (dim-leader:box-hit-p placed bl br bb bt))
-                      (setq found t)))))
+                    (if (not (dim-leader:box-hit-grid grid bl br bb bt))
+                      (setq found t free t)))))
               (setq o (1+ o))
               (if (> o 400) (setq found t)))
             (if oo
@@ -708,9 +823,17 @@
                                    (if (= rot 90) 3.0 0.0)
                                    (* cross0 8.0))))
               (setq cand-cost nil))
-            (if (and oo (or (null bestcost) (< cand-cost bestcost)))
+            ;; 只让"验证过为空位"的候选参与竞争；否则更便宜但压字的候选会顶掉它
+            (if (and oo free (or (null bestcost) (< cand-cost bestcost)))
               (setq bestcost cand-cost
                     best (list rot ax ay bl br bb bt s1x1 s1y1 s1x2 s1y2 s2x1 s2y1 s2x2 s2y2)))))))
+    ;; 附近没有可用空位：保留原位不动，计数上报（不再静默压字）
+    (if (null best)
+      (progn
+        (setq dim-leader:*unplaced* (1+ dim-leader:*unplaced*))
+        (setq best (list 0 base_x base_y
+                           base_x (+ base_x w) (- base_y (/ h 2.0)) (+ base_y (/ h 2.0))
+                           cx cy cx base_y cx base_y base_x base_y))))
     (setq rot (nth 0 best) ax (nth 1 best) by (nth 2 best)
           bl (nth 3 best) br (nth 4 best) bb (nth 5 best) bt (nth 6 best)
           s1x1 (nth 7 best) s1y1 (nth 8 best) s1x2 (nth 9 best) s1y2 (nth 10 best)
@@ -723,6 +846,7 @@
             attach_y by
             anchor_y (- by (/ w 2.0))))
     (setq placed (cons (dim-leader:mk-placed bl br bb bt s1x1 s1y1 s1x2 s1y2 s2x1 s2y1 s2x2 s2y2) placed))
+    (setq grid (dim-leader:grid-add grid (car placed)))
     (setq res (cons (list ctr ent anchor_x anchor_y rot elbow_x attach_y) res)))
   ;; 绕行走廊后处理：为每条引线在若干竖向走廊 x 中，取穿越文本最少者(允许 3 段折线)
   (setq boxes (mapcar (function (lambda (p) (list (nth 0 p) (nth 1 p) (nth 2 p) (nth 3 p)))) placed))
@@ -868,7 +992,7 @@
                                  / gap maxw maxh colPitch rowPitch items m ctr ent dat ref h wf style txt w tb
                                  boxlist b minX maxX minY maxY nx ny grid i j row
                                  zx0 zy0 zoneW zoneH labList nLab tabRows tabCols
-                                 i0 j0 i1 j1 best bestd ii jj ok c k rr cc lx ly gy route res cx cy z cxz cyz ci1 ci2 jc kk allLab)
+                                 i0 j0 i1 j1 best bestd ii jj ok c k rr cc lx ly gy route res cx cy z cxz cyz ci1 ci2 jc kk allLab d)
   (setq gap (@:get-config 'dim-leader:gap) maxw 0.0 maxh 0.0 items nil boxlist nil)
   (foreach m matched
     (setq ctr (nth 0 m) ent (nth 1 m) dat (entget ent))
@@ -1003,7 +1127,8 @@
 ;;     返回 (圆心 图元 锚点X 锚点Y 旋转 水平对齐 垂直对齐 折线点表)
 ;; ---------------------------------------------------------------------------
 (defun dim-leader:layout-4dir (matched obstacles / gap levelH maxw maxh items m ctr ent dat ref h wf style txt w tb
-                               placed res cx cy off d d0 bl br bb bt best ax ay hj vj route Cx Cy n dlist)
+                               placed res cx cy off d d0 bl br bb bt best ax ay hj vj route Cx Cy n dlist
+                               grid gbox)
   (setq gap (@:get-config 'dim-leader:gap) maxw 0.0 maxh 0.0 items nil)
   (foreach m matched
     (setq ctr (nth 0 m) ent (nth 1 m) dat (entget ent))
@@ -1024,7 +1149,10 @@
     (setq Cx (+ Cx (car (nth 0 m))) Cy (+ Cy (cadr (nth 0 m))) n (1+ n)))
   (setq Cx (/ Cx n) Cy (/ Cy n))
   (setq items (vl-sort items (function (lambda (a b) (< (cadr (nth 0 a)) (cadr (nth 0 b)))))))
-  (setq placed obstacles res nil)
+  (setq placed obstacles res nil
+        gbox (mapcar (function (lambda (p) (list (nth 0 p) (nth 1 p) (nth 2 p) (nth 3 p))))
+                     placed)
+        grid (dim-leader:make-grid gbox (+ maxw gap) (+ maxh gap)))
   (foreach m items
     (setq ctr (nth 0 m) ent (nth 1 m) cx (car ctr) cy (cadr ctr) w (nth 4 m) h (nth 5 m))
     ;; 主方向：按相对重心的方位
@@ -1043,13 +1171,14 @@
               ((= d 2) (setq bl (- cx off w) br (- cx off) bb (- cy (/ h 2.0)) bt (+ cy (/ h 2.0)) ax (- cx off) ay cy hj 2 vj 2))
               ((= d 3) (setq bl (- cx (/ w 2.0)) br (+ cx (/ w 2.0)) bb (+ cy off) bt (+ cy off h) ax cx ay (+ cy off) hj 1 vj 0))
               (t       (setq bl (- cx (/ w 2.0)) br (+ cx (/ w 2.0)) bb (- cy off h) bt (- cy off) ax cx ay (- cy off) hj 1 vj 3)))
-            (if (not (dim-leader:box-hit-p placed bl br bb bt))
+            (if (not (dim-leader:box-hit-grid grid bl br bb bt))
               (setq best (list bl br bb bt ax ay hj vj))))))
       (setq off (+ off levelH)))
     (if (null best) (setq best (list bl br bb bt cx cy 0 2)))
     (setq bl (nth 0 best) br (nth 1 best) bb (nth 2 best) bt (nth 3 best)
           ax (nth 4 best) ay (nth 5 best) hj (nth 6 best) vj (nth 7 best))
     (setq placed (cons (list bl br bb bt) placed))
+    (setq grid (dim-leader:grid-add grid (car placed)))
     (setq route (dim-leader:dedupe-pts (list (list cx cy) (list ax ay))))
     (setq res (cons (list ctr ent ax ay 0 hj vj route) res)))
   (reverse res))
@@ -1228,15 +1357,19 @@
                      ((= 8 (@:get-config 'dim-leader:layout))
                       (dim-leader:layout-channels matched obstacles))
                      (t (dim-leader:layout matched obstacles)))
-             layer (@:get-config 'dim-leader:layer)
-             lw (@:get-config 'dim-leader:leader-width)
-             pal (dim-leader:parse-colors (@:get-config 'dim-leader:leader-colors))
-             nlead 0)
+              layer (@:get-config 'dim-leader:layer)
+              lw (@:get-config 'dim-leader:leader-width)
+              pal (dim-leader:parse-colors (@:get-config 'dim-leader:leader-colors))
+              nlead 0
+              dim-leader:*unplaced* nil)
       (if (and (= 6 (@:get-config 'dim-leader:layout)) (null laid))
         (princ (strcat "\n芯片式布局: "
                        (if dim-leader:*chip-error*
                          dim-leader:*chip-error*
                          "生成失败，未修改图形"))))
+      (if dim-leader:*unplaced*
+        (princ (strcat "\n提示: " (itoa dim-leader:*unplaced*)
+                       " 个标签附近无可用空位，已保留原位(未移动)。")))
      (foreach r laid
        (setq ctr (nth 0 r)
              ent (nth 1 r)

@@ -1,12 +1,14 @@
-;; 图框及加长1 1/4,1/2,3/4,1 1.25 1.5 的宽高比
-(setq @plot:ratio-of-w/h
-      '(1.41429 1.76786 2.12143 2.4750 2.82857 3.18214 3.53571))
-(setq @plot:frame-type2
-      '("" "+1/4" "+1/2" "+3/4" "+1" "+5/4" "+3/2"))
-;; 横幅图框高度 A4~A0
-(setq @plot:height-of-frame
-      '(210 297 420 594 841))
-(setq @plot:frame-type '("A4" "A3" "A2" "A1" "A0"))
+;; 图框标准表（短边高度 / 图幅名 / 加长宽高比 / 加长标记）**唯一来源是 lib 的 frame: 命名空间**
+;; （lib/src/frame/，见 frame:heights/names/ratios/elongations）。保留 @plot: 变量名只是为了兼容
+;; 既有消费者（train.lsp 用到 @plot:height-of-frame 与 @plot:frame-type）。
+;; 不要再在本包内写一份字面量表——lib / 本包 / mcp-server 曾各写一份，改一处必漏两处。
+(require 'frame:*)
+(setq @plot:ratio-of-w/h (frame:ratios))
+(setq @plot:frame-type2 (frame:elongations))
+(setq @plot:height-of-frame (frame:heights))
+(setq @plot:frame-type (frame:names))
+;; 基准快照：@plot:load-config 每次从基准重建，避免反复 append 让列表无限增长
+(setq @plot:*base-ratio* @plot:ratio-of-w/h)
 
 (setq @plot:*frames* '()) ; 图框识别结果数据
 (@:add-menu "通用打印" "配置" "(@plot:setup)")
@@ -23,14 +25,36 @@
   )
 
 (@:add-menu "通用打印" "AI识别图框" "(@plot:frame-recognition)")
+(defun @plot:pts->box (pts / xs ys)
+  "四点表 → 规范化外框 (xmin ymin xmax ymax)"
+  (setq xs (mapcar 'car pts) ys (mapcar 'cadr pts))
+  (list (apply 'min xs) (apply 'min ys) (apply 'max xs) (apply 'max ys)))
+(defun @plot:frames-dedupe (/ boxes kept before)
+  "去掉被其它图框包含的内框（外框优先），返回去除条数。
+一个图框通常有内外两道矩形，两者都满足「4 点闭合」→ 旧实现会当成两张图框。
+判定下沉到 lib 的 frame:bbox-dedupe（与 mcp-server 侧同一套语义）。"
+  (setq before (length @plot:*frames*))
+  (setq boxes (mapcar '(lambda (x) (@plot:pts->box (car x))) @plot:*frames*))
+  (setq kept (frame:bbox-dedupe boxes))
+  (setq @plot:*frames*
+	(vl-remove-if-not
+	 '(lambda (x)
+	    (vl-some '(lambda (k) (equal (@plot:pts->box (car x)) k 1e-6)) kept))
+	 @plot:*frames*))
+  (- before (length @plot:*frames*)))
 (defun @plot:frame-recognition ()
   (@plot:delete-mark)
   (@plot:frame-recognition-by-polyline)
   ;; (@plot:frame-recognition-by-line)
+  (setq deduped (@plot:frames-dedupe))
   (@plot:mark-frames)
   (@:prompt (strcat "AI 共识别了 "
 		 (itoa (length @plot:*frames*))
-		 " 个图框。\n"))
+		 " 个图框"
+		 (if (> deduped 0)
+		     (strcat "（已去除 " (itoa deduped) " 个被包含的内框）")
+		   "")
+		 "。\n"))
   (princ)
   )
 (defun @plot:get-frame-type (w h)
@@ -79,6 +103,10 @@
 		     (mapcar 'read 
 			     (string:to-lst (@:get-file-contents (strcat @:*prefix-config* "frames-scale.db")) "\n")))))
     )
+  ;; 先回到基准再合并文件内容：旧实现直接往 @plot:ratio-of-w/h 上 append，
+  ;; 而本函数在 @plot:frame-length? 与 @plot:framep 里每次都被调用 → 同一份
+  ;; frames-ratio.db 被反复叠加，会话跑久了比例表会膨胀到影响判定性能。
+  (setq @plot:ratio-of-w/h @plot:*base-ratio*)
   (if (findfile (strcat @:*prefix-config* "frames-ratio.db"))
       (setq @plot:ratio-of-w/h
 	    (append @plot:ratio-of-w/h

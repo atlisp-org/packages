@@ -463,9 +463,14 @@
 	  (setq fi (frame:ref-p ref @plot:scale-of-frame nil nil))
 	  ;; 过滤误判：小尺寸块要求带属性（图框块通常有图签属性；
 	  ;; 2000 单位以上的大块基本只可能是图框/图幅类块）
+	  ;; 过滤误判：三个信号任一成立即认作块图框
+	  ;;   ① 短边 >=2000（基本只可能是图框/图幅类块）
+	  ;;   ② 带属性（图框块通常有图签属性）
+	  ;;   ③ 块内有图签类文字（frame:title-block-p，sd1t 的文字指纹思路）
 	  (if (and fi
 		   (or (>= (min (cdr (assoc "width" fi)) (cdr (assoc "height" fi))) 2000)
-		       (block:get-attributes ref)))
+		       (block:get-attributes ref)
+		       (frame:title-block-p ref nil)))
 	      (progn
 		(setq box (cdr (assoc "box" fi)))
 		(setq pts (apply 'point:rec-2pt->4pt box))

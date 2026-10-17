@@ -22,6 +22,8 @@
 					    @:*config.db* (@:load-config))))))
   (foreach res% res
    	   (@:set-config (read (car res%)) (cdr res%)))
+  ;; 配置变了 → 表缓存失效，下次调用重新加载
+  (setq @plot:*tables-loaded* nil)
   )
 
 (@:add-menu "通用打印" "AI识别图框" "(@plot:frame-recognition)")
@@ -93,34 +95,55 @@
   (setq h (float h))
   (if (/= 0 (min w h))
       (/ (max w h)(min w h))))
+;; 表加载缓存（性能关键）
+;; 直线识别对**每条 LINE** 调用一次 @plot:frame-length?，旧实现每次都在里面读配置 +
+;; @plot:load-config（= 两次文件读取）。本图 8419 条 LINE → 1.6 万次文件 I/O，
+;; 实测这就是「识别直线框」慢的主因。配置与 frames-*.db 在会话内不会变，故首次读取后缓存；
+;; 改过配置/DB 后调用 (@plot:reload-config) 刷新。
+(setq @plot:*tables-loaded* nil)
+(setq @plot:*load-config-count* 0)	;诊断：实际读文件的次数（正常应为 1）
+
+(defun @plot:reload-config ()
+  "强制重新读取配置与 frames-scale.db / frames-ratio.db（改过配置或 DB 后调用）"
+  (setq @plot:*tables-loaded* nil)
+  (@plot:ensure-tables)
+  (princ))
+
 (defun @plot:load-config ()
-    ;; 加载本地配置
-  (if (findfile (strcat @:*prefix-config* "frames-scale.db"))
-      (setq @plot:scale-of-frame
-	    (append @plot:scale-of-frame
-		    (vl-remove
-		     nil
-		     (mapcar 'read 
-			     (string:to-lst (@:get-file-contents (strcat @:*prefix-config* "frames-scale.db")) "\n")))))
-    )
-  ;; 先回到基准再合并文件内容：旧实现直接往 @plot:ratio-of-w/h 上 append，
-  ;; 而本函数在 @plot:frame-length? 与 @plot:framep 里每次都被调用 → 同一份
-  ;; frames-ratio.db 被反复叠加，会话跑久了比例表会膨胀到影响判定性能。
-  (setq @plot:ratio-of-w/h @plot:*base-ratio*)
-  (if (findfile (strcat @:*prefix-config* "frames-ratio.db"))
-      (setq @plot:ratio-of-w/h
-	    (append @plot:ratio-of-w/h
-		    (vl-remove nil
-			       (mapcar 'read 
-				       (string:to-lst (@:get-file-contents (strcat @:*prefix-config* "frames-ratio.db")) "\n")))))
-    ))
+  "加载本地配置（缓存版，等价于 (@plot:ensure-tables)）"
+  (@plot:ensure-tables))
+
+(defun @plot:ensure-tables ()
+  "确保图幅表就绪：配置里的比例 + frames-scale.db + frames-ratio.db（只读一次文件）"
+  (if (not @plot:*tables-loaded*)
+      (progn
+	(setq @plot:*load-config-count* (1+ @plot:*load-config-count*))
+	;; 1) 配置项里的比例表
+	(setq @plot:scale-of-frame
+	      (mapcar 'atof
+		      (string:parse-by-lst (@:get-config '@plot:scale-of-frame) '("," " "))))
+	;; 2) frames-scale.db 追加比例
+	(if (findfile (strcat @:*prefix-config* "frames-scale.db"))
+	    (setq @plot:scale-of-frame
+		  (append @plot:scale-of-frame
+			  (vl-remove
+			   nil
+			   (mapcar 'read
+				   (string:to-lst (@:get-file-contents (strcat @:*prefix-config* "frames-scale.db")) "\n"))))))
+	;; 3) 宽高比表从基准重建，再合并 frames-ratio.db（避免反复 append 膨胀）
+	(setq @plot:ratio-of-w/h @plot:*base-ratio*)
+	(if (findfile (strcat @:*prefix-config* "frames-ratio.db"))
+	    (setq @plot:ratio-of-w/h
+		  (append @plot:ratio-of-w/h
+			  (vl-remove nil
+				     (mapcar 'read
+					     (string:to-lst (@:get-file-contents (strcat @:*prefix-config* "frames-ratio.db")) "\n"))))))
+	(setq @plot:*tables-loaded* T)))
+  @plot:*tables-loaded*)
 (defun @plot:frame-length? (len / i j k scale ratio flag-hit)
   "测试长度是否符合图框要求"
-  (setq @plot:scale-of-frame
-	(mapcar 'atof
-		(string:parse-by-lst (@:get-config '@plot:scale-of-frame) '("," " "))))
-  ;; 加载本地配置
-  (@plot:load-config)
+  ;; 逐线调用：表必须走缓存，不能在这里读配置/文件（见 @plot:ensure-tables 注释）
+  (@plot:ensure-tables)
   (setq flag-hit nil)
   (setq i 0)
   ;;最小最大判断
@@ -161,10 +184,7 @@
   "测试是否多段线图框，依据矩形高度和宽高比，"
   (if (>= (length frame-pts) 4)
       (progn
-	(setq @plot:scale-of-frame
-	      (mapcar 'atof
-		      (string:parse-by-lst (@:get-config '@plot:scale-of-frame) '("," " "))))
-	(@plot:load-config)
+	(@plot:ensure-tables)
 	(setq frame-pts
 	      (vl-sort
 	       frame-pts
@@ -304,8 +324,17 @@
 (defun @plot:frame-recognition-by-line
     (/ frames segments frame-length?
        seg-v seg-h ent-first frame got-tk
-       total frame-pts
+       total frame-pts seg-h-y y0 dy-max
        )
+  ;; 线性图框识别：seg-h 已按 y 升序。上下边的 y 距离 dy 要么是短边（横版），
+  ;; 要么是长边（竖版/加长，最长 3.53×短边），故保守上界为
+  ;;   max(高) × max(比例) × max(加长比)
+  ;; 超过上界的配对不可能成立 → 内层直接跳出（把 N² 压成「每个下边只看一个窗口」）。
+  ;; 只用「短边上界」会漏掉竖版/加长图框（@plot:framep 取的是 min(宽,高)）。
+  (@plot:ensure-tables)
+  (setq dy-max (* (apply 'max @plot:height-of-frame)
+		  (apply 'max @plot:scale-of-frame)
+		  (apply 'max @plot:ratio-of-w/h)))
   "识别由4个线段组成的矩形图框"
   ;; 识别多段线
   (@:log "INFO" "选择并排除杂线...")
@@ -345,10 +374,14 @@
   ;; 		 '(lambda (ent1 ent2) (< (car (entity:getdxf ent1 10))
   ;; 				       (car (entity:getdxf ent2 10))))))
   (@:log "INFO" "从直线图元中识别矩形框。\n")
+  ;; 预取各水平线的 y，避免配对循环里对同一图元反复 entget
+  (setq seg-h-y (mapcar '(lambda (x) (cadr (entity:getdxf x 10))) seg-h))
   (setq bm% 0)(setq got-tk nil)
   (while  (< bm% (- (length seg-h) 1))
     (setq tp% (1+ bm%))
-    (while  (< tp% (length seg-h))
+    (setq y0 (nth bm% seg-h-y))
+    (while  (and (< tp% (length seg-h))
+		 (<= (- (nth tp% seg-h-y) y0) dy-max))
       ;; 从 seg-v 中取相应图元并从表中移除
       ;; 检测 bm% tp% 两个线是否符合图框要求
       (if (@plot:framep
@@ -401,7 +434,10 @@
   (@:prompt (strcat "识别了 "
 		    (itoa (-(length @plot:*frames*)
 			    total))
-		    " 个直线图框。"))
+		    " 个直线图框"
+		    ;; 诊断：表只应加载 1 次（旧实现是「每条线一次」）。
+		    ;; 若这个数字随重跑次数一直涨，说明缓存被意外失效了。
+		    "（图幅表加载 " (itoa @plot:*load-config-count*) " 次）"))
   (std:timer-end)
   (princ)
   )

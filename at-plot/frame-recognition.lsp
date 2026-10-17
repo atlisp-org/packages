@@ -447,42 +447,62 @@
 
 (@:add-menu "通用打印" "识别块图框" "(@plot:frame-recognition-by-block)")
 
-(defun @plot:frame-recognition-by-block (/ ss i ref fi box pts layout n)
-  "识别**块图框**并把结果并入 @plot:*frames*（与多段线/直线模式同构）。
-核心判定在 lib：`frame:ref-p` 取块参照的世界包围盒并按标准图幅判定（与 frame:box 同一套表与容差），
-本函数只负责"过滤 + 记录 + 报数"。
-说明：旧实现只把候选块参照用 sssetfirst 选中——既不写入 @plot:*frames*、也不标记、也不报数，
-所以用户会以为「块图框没被识别」；它还依赖 at-pm 的 @pm:frame-p（未装 at-pm 即失效）。"
+(defun @plot:frame-recognition-by-block (/ ss i ref fi bname seen hits rs j n box pts layout)
+  "识别**块图框**并把结果并入 @plot:*frames*。
+核心判定在 lib 的 `frame:ref-p`（块参照世界包围盒 → 标准图幅匹配），本函数只负责：
+1. **按块名去重**后判定：块参照可能有几千个，但唯一块名通常只有几十个——
+   逐个参照重算是把 CAD 拖死的主因（实测 800 个参照即触发 stalled）；
+2. 过滤误判：短边 >=2000 / 带属性 / 块内有图签文字（`frame:title-block-p`）；
+3. 记录 `(4角点 . 布局)` 到 @plot:*frames* 并报数。
+说明：旧实现只 `sssetfirst` 选中，不记录、不标记、不报数，且依赖 at-pm 的 @pm:frame-p。"
   (@plot:ensure-tables)
-  (setq n 0)
+  (setq n 0
+	seen nil
+	hits nil)
+  ;; 第一遍：每个**块名**只判定一次
   (if (setq ss (ssget "_X" '((0 . "INSERT"))))
       (progn
 	(setq i 0)
 	(repeat (sslength ss)
-	  (setq ref (ssname ss i))
-	  (setq fi (frame:ref-p ref @plot:scale-of-frame nil nil))
-	  ;; 过滤误判：小尺寸块要求带属性（图框块通常有图签属性；
-	  ;; 2000 单位以上的大块基本只可能是图框/图幅类块）
-	  ;; 过滤误判：三个信号任一成立即认作块图框
-	  ;;   ① 短边 >=2000（基本只可能是图框/图幅类块）
-	  ;;   ② 带属性（图框块通常有图签属性）
-	  ;;   ③ 块内有图签类文字（frame:title-block-p，sd1t 的文字指纹思路）
-	  (if (and fi
-		   (or (>= (min (cdr (assoc "width" fi)) (cdr (assoc "height" fi))) 2000)
-		       (block:get-attributes ref)
-		       (frame:title-block-p ref nil)))
+	  (setq ref (ssname ss i)
+		bname (cdr (assoc 2 (entget ref))))
+	  ;; 跳过匿名块（*U 动态块/*D 标注块等）与已判过的块名
+	  (if (and (not (member bname seen))
+		   (not (wcmatch bname "`**")))
 	      (progn
-		(setq box (cdr (assoc "box" fi)))
-		(setq pts (apply 'point:rec-2pt->4pt box))
-		(setq layout (cdr (assoc 410 (entget ref))))
-		(setq @plot:*frames* (append @plot:*frames* (list (cons pts layout))))
-		(setq n (1+ n))
-	      )
-	  )
-	  (setq i (1+ i))
+		(setq seen (cons bname seen))
+		(if (frame:ref-p ref @plot:scale-of-frame nil nil)
+		    (setq hits (cons bname hits)))))
+	  (setq i (1+ i)))
 	)
-      )
-  )
-  (@:prompt (strcat "识别了 " (itoa n) " 个块图框。"))
+    )
+  ;; 第二遍：只处理命中块名的所有参照（此时数量很小）
+  (foreach bname (reverse hits)
+    (if (setq rs (ssget "_X" (list (cons 0 "INSERT") (cons 2 bname))))
+	(progn
+	  (setq j 0)
+	  (repeat (sslength rs)
+	    (setq ref (ssname rs j))
+	    (setq fi (frame:ref-p ref @plot:scale-of-frame nil nil))
+	    (if (and fi
+		     (or (>= (min (cdr (assoc "width" fi)) (cdr (assoc "height" fi))) 2000)
+			 (block:get-attributes ref)
+			 (frame:title-block-p ref nil)))
+		(progn
+		  (setq box (cdr (assoc "box" fi))
+			pts (apply 'point:rec-2pt->4pt box)
+			layout (cdr (assoc 410 (entget ref))))
+		  (setq @plot:*frames* (append @plot:*frames* (list (cons pts layout))))
+		  (setq n (1+ n))
+		  )
+		)
+	    (setq j (1+ j))
+	    )
+	  )
+	)
+    )
+  (@:prompt (strcat "识别了 "
+		    (itoa n)
+		    " 个块图框（检查了 " (itoa (length seen)) " 种块名）。"))
   (princ)
-)
+  )

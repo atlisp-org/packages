@@ -454,55 +454,62 @@
    逐个参照重算是把 CAD 拖死的主因（实测 800 个参照即触发 stalled）；
 2. 过滤误判：短边 >=2000 / 带属性 / 块内有图签文字（`frame:title-block-p`）；
 3. 记录 `(4角点 . 布局)` 到 @plot:*frames* 并报数。
-说明：旧实现只 `sssetfirst` 选中，不记录、不标记、不报数，且依赖 at-pm 的 @pm:frame-p。"
+说明：旧实现只 `sssetfirst` 选中，不记录、不标记、不报数，且依赖 at-pm 的 @pm:frame-p。
+注意：本函数依赖 lib 的 `frame:ref-p`（与 lib 版本耦合），缺失时提示先更新 lib。"
   (@plot:ensure-tables)
-  (setq n 0
-	seen nil
-	hits nil)
-  ;; 第一遍：每个**块名**只判定一次
-  (if (setq ss (ssget "_X" '((0 . "INSERT"))))
-      (progn
-	(setq i 0)
-	(repeat (sslength ss)
-	  (setq ref (ssname ss i)
-		bname (cdr (assoc 2 (entget ref))))
-	  ;; 跳过匿名块（*U 动态块/*D 标注块等）与已判过的块名
-	  (if (and (not (member bname seen))
-		   (not (wcmatch bname "`**")))
-	      (progn
-		(setq seen (cons bname seen))
-		(if (frame:ref-p ref @plot:scale-of-frame nil nil)
-		    (setq hits (cons bname hits)))))
-	  (setq i (1+ i)))
-	)
-    )
-  ;; 第二遍：只处理命中块名的所有参照（此时数量很小）
-  (foreach bname (reverse hits)
-    (if (setq rs (ssget "_X" (list (cons 0 "INSERT") (cons 2 bname))))
-	(progn
-	  (setq j 0)
-	  (repeat (sslength rs)
-	    (setq ref (ssname rs j))
-	    (setq fi (frame:ref-p ref @plot:scale-of-frame nil nil))
-	    (if (and fi
-		     (or (>= (min (cdr (assoc "width" fi)) (cdr (assoc "height" fi))) 2000)
-			 (block:get-attributes ref)
-			 (frame:title-block-p ref nil)))
-		(progn
-		  (setq box (cdr (assoc "box" fi))
-			pts (apply 'point:rec-2pt->4pt box)
-			layout (cdr (assoc 410 (entget ref))))
-		  (setq @plot:*frames* (append @plot:*frames* (list (cons pts layout))))
-		  (setq n (1+ n))
-		  )
-		)
-	    (setq j (1+ j))
+  ;; 版本耦合守卫：atoms-family 的 format=1 返回**字符串**，必须按字符串比对
+  (if (not (member "FRAME:REF-P" (atoms-family 1)))
+      (@:alert "本功能需要 lib 的 frame:ref-p。请先更新函数库：@i lib")
+    (progn
+      (setq n 0
+	    seen nil
+	    hits nil)
+      ;; 第一遍：每个**块名**只判定一次
+      (if (setq ss (ssget "_X" '((0 . "INSERT"))))
+	  (progn
+	    (setq i 0)
+	    (repeat (sslength ss)
+	      (setq ref (ssname ss i)
+		    bname (cdr (assoc 2 (entget ref))))
+	      ;; 跳过匿名块（*U 动态块/*D 标注块等）与已判过的块名
+	      (if (and (not (member bname seen))
+		       (not (wcmatch bname "`**")))
+		  (progn
+		    (setq seen (cons bname seen))
+		    (if (frame:ref-p ref @plot:scale-of-frame nil nil)
+			(setq hits (cons bname hits)))))
+	      (setq i (1+ i)))
 	    )
-	  )
 	)
+      ;; 第二遍：只处理命中块名的所有参照（此时数量很小）
+      (foreach bname (reverse hits)
+	(if (setq rs (ssget "_X" (list (cons 0 "INSERT") (cons 2 bname))))
+	    (progn
+	      (setq j 0)
+	      (repeat (sslength rs)
+		(setq ref (ssname rs j))
+		(setq fi (frame:ref-p ref @plot:scale-of-frame nil nil))
+		(if (and fi
+			 (or (>= (min (cdr (assoc "width" fi)) (cdr (assoc "height" fi))) 2000)
+			     (block:get-attributes ref)
+			     (frame:title-block-p ref nil)))
+		    (progn
+		      (setq box (cdr (assoc "box" fi))
+			    pts (apply 'point:rec-2pt->4pt box)
+			    layout (cdr (assoc 410 (entget ref))))
+		      (setq @plot:*frames* (append @plot:*frames* (list (cons pts layout))))
+		      (setq n (1+ n))
+		      )
+		    )
+		(setq j (1+ j))
+		)
+	      )
+	    )
+	)
+      (@:prompt (strcat "识别了 "
+			(itoa n)
+			" 个块图框（检查了 " (itoa (length seen)) " 种块名）。"))
+      )
     )
-  (@:prompt (strcat "识别了 "
-		    (itoa n)
-		    " 个块图框（检查了 " (itoa (length seen)) " 种块名）。"))
   (princ)
   )

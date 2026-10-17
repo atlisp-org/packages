@@ -447,11 +447,12 @@
 
 (@:add-menu "通用打印" "识别块图框" "(@plot:frame-recognition-by-block)")
 
-(defun @plot:frame-recognition-by-block (/ ss i ref box w h mbox pts layout n)
+(defun @plot:frame-recognition-by-block (/ ss i ref fi box pts layout n)
   "识别**块图框**并把结果并入 @plot:*frames*（与多段线/直线模式同构）。
-判定：块参照的世界包围盒短边与宽高比符合标准图幅（复用 lib 的 frame:box，与另两种模式同一套表与容差）。
+核心判定在 lib：`frame:ref-p` 取块参照的世界包围盒并按标准图幅判定（与 frame:box 同一套表与容差），
+本函数只负责"过滤 + 记录 + 报数"。
 说明：旧实现只把候选块参照用 sssetfirst 选中——既不写入 @plot:*frames*、也不标记、也不报数，
-所以用户会以为「块图框没被识别」；它还依赖 at-pm 的 @pm:frame-p（未装 at-pm 即失效）。此处改为自包含。"
+所以用户会以为「块图框没被识别」；它还依赖 at-pm 的 @pm:frame-p（未装 at-pm 即失效）。"
   (@plot:ensure-tables)
   (setq n 0)
   (if (setq ss (ssget "_X" '((0 . "INSERT"))))
@@ -459,26 +460,18 @@
 	(setq i 0)
 	(repeat (sslength ss)
 	  (setq ref (ssname ss i))
-	  (setq box (entity:getbox ref 0))
-	  (if box
+	  (setq fi (frame:ref-p ref @plot:scale-of-frame nil nil))
+	  ;; 过滤误判：小尺寸块要求带属性（图框块通常有图签属性；
+	  ;; 2000 单位以上的大块基本只可能是图框/图幅类块）
+	  (if (and fi
+		   (or (>= (min (cdr (assoc "width" fi)) (cdr (assoc "height" fi))) 2000)
+		       (block:get-attributes ref)))
 	      (progn
-		(setq w (abs (- (car (cadr box)) (car (car box)))))
-		(setq h (abs (- (cadr (cadr box)) (cadr (car box)))))
-		(setq mbox nil)
-		(if (> (min w h) 0)
-		    ;; frame:box 可选位传 nil = 用默认容差与比例表
-		    (setq mbox (frame:box w h @plot:scale-of-frame nil nil))
-		)
-		;; 过滤误判：小尺寸块要求带属性（图框块通常有图签属性；
-		;; 2000 单位以上的大块基本只可能是图框/图幅类块）
-		(if (and mbox (or (>= (min w h) 2000) (block:get-attributes ref)))
-		    (progn
-		      (setq pts (apply 'point:rec-2pt->4pt box))
-		      (setq layout (cdr (assoc 410 (entget ref))))
-		      (setq @plot:*frames* (append @plot:*frames* (list (cons pts layout))))
-		      (setq n (1+ n))
-		    )
-		)
+		(setq box (cdr (assoc "box" fi)))
+		(setq pts (apply 'point:rec-2pt->4pt box))
+		(setq layout (cdr (assoc 410 (entget ref))))
+		(setq @plot:*frames* (append @plot:*frames* (list (cons pts layout))))
+		(setq n (1+ n))
 	      )
 	  )
 	  (setq i (1+ i))

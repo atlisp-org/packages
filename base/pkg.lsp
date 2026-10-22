@@ -1,6 +1,6 @@
 (@::def-pkg '((:NAME . "base")
         (:FULL-NAME . "@lisp support env")
-        (:VERSION . "1.5.57")
+        (:VERSION . "1.5.59")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
         (:DESCRIPTION . "Base package, support @lisp package to run.")

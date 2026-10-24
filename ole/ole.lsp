@@ -226,16 +226,17 @@
 	  ))
       )))
 
-(defun ole:adjust-raster-ole ()
+(defun ole:adjust-raster-ole ( / info ole-pt-ins width height ole)
   "调整OLE对象位置和大小，使其与原光栅图像一致"
   (if (and *ole:raster-info* 
 	   (>= *ole:raster-index* 0)
 	   (< *ole:raster-index* (length *ole:raster-info*)))
-      (let* ((info (nth *ole:raster-index* *ole:raster-info*))
-             (ole-pt-ins (cadr info))
-             (width (caddr info))
-             (height (cadddr info))
-             (ole (e2o (entlast))))
+      (progn
+	(setq info (nth *ole:raster-index* *ole:raster-info*)
+	      ole-pt-ins (cadr info)
+	      width (caddr info)
+	      height (cadddr info)
+	      ole (e2o (entlast)))
 	(if ole
 	    (progn
 	      ;; 禁用宽高比锁定，以便独立设置宽度和高度

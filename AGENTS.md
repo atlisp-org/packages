@@ -24,6 +24,33 @@
   - 本目录：`./validate-all.sh [包名]`（lint 包内全部 .lsp，有错误则退出码 1）
 - CAD 实测（新功能/逻辑改动必做）：CAD 命令行 `@I <包名>` 安装，或执行 `(@:package-install "包名")` 后再调用包函数（也可走 atlisp-mcp 的 init_atlisp → at_command 流程）。`base/test.lsp` 里有 `push-var`/`pop-var` 保存恢复系统变量的测试写法可参考。
 
+## AI 调用约定（agent 通过 MCP eval_lisp 调用）
+
+包代码不只服务交互用户，也会被 AI agent 直接调用。凡是有 agent 可能用到的能力，
+请提供一个**无交互入口**：
+
+- 命名：`<ns>:ai-<动作>`（首选，表述清楚）或沿用已有的 `<ns>:xxx-backend`；
+  不要指望 agent 调 `C:` 命令或 `ui:dyndraw` / `grread` / `dcl` 那类入口——它们
+  会等鼠标/键盘输入，MCP 调用会一直挂到超时。
+- 参数：要画的点、图幅、比例、数量等全部走形参；缺省值在函数内补，不要 `getpoint`。
+- 返回：成功返回实体/结果（ename、列表），失败返回 nil；**不要弹 `@::alert`
+  模态框**，提示信息用 `princ` 输出即可。
+- 依赖资源（DWG/DCL 等）先 `findfile` 检查，缺了就返回 nil 并 `princ` 原因，
+  不要在后台偷偷下载 + `sleep`。
+- 文档：函数 docstring 里写清「参数含义 + 示例调用」，并补一行到 README 的
+  `## AI 调用` 表；`atlisp-lint` 0 error 是底线。
+- 已经装好的包可以由 agent 自动安装（`install_package` → `@::package-install`），
+  所以入口函数不要假设用户手工配置过什么；缺配置时给可用的默认值。
+
+示例（at-pm）：
+
+```lisp
+(defun @pm:ai-insert-tukuang (mapsheet pt scale / ...)
+  "AI 调用入口：插入标准图框，返回 ename，失败 nil。
+示例: (@pm:ai-insert-tukuang \"A3\" '(0 0 0) 1.0)"
+  ...)
+```
+
 ## 提交与发布
 - 包目录**不是**独立 git 仓库（仅 `dev-tools/`、`at-pm/` 是子模块）：直接在 packages 仓库内 commit/push。根 `AGENTS.md` 中"每个包是独立仓库 / 用 push-pkg.sh 提交"的说法已过时（push-pkg.sh 会对任意包报"不是git仓库"）。
 - `.gitignore` 已忽略编译产物 `.fas`、`.zelx`、`*-whole.lsp`、`*.shx` 及 `lib/`，不要手动提交它们。

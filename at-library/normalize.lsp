@@ -54,54 +54,56 @@
 		      any t))))))
   (if any (list x0 y0 x1 y1) nil))
 
-(defun at-library:normalize-file (dwg outdir units / newfile dbx ms box cx cy w h)
-  "把一个 dwg 归一化后写到 outdir：基点回到几何中心、补齐单位、清理无用数据。
+(defun at-library:normalize-file (dwg outdir units / dbx ms box cx cy w h out c
+				       @nf:o)
+  "把一个 dwg 归一化后写到 outdir：几何中心移到原点（等价于基点在中心）。
 
 参数：
   dwg    源文件
-  outdir 输出目录（不存在会创建）
-  units  $INSUNITS 值，nil 表示按 4(mm) 处理
+  outdir 输出目录（不存在会创建，原图不动）
+  units  预留（ObjectDBX 无法改 $INSUNITS，传 nil 即可）
 返回：新文件路径；失败返回 nil
-示例：(at-library:normalize-file \"C:/lib/a.dwg\" \"C:/lib/normalized\" 4)"
+示例：(at-library:normalize-file \"C:/lib/a.dwg\" \"C:/lib/normalized\" nil)
+
+说明：AxDbDocument **不支持** vla-SetVariable/GetVariable，所以不能改
+INSBASE；这里改为平移全部实体，让几何中心落在原点——插入效果等价，
+且不会动到有意的基点（本函数只用于 insbase_far 那批意外偏移的符号）。
+保存只能用 vla-SaveAs（vla-Save 在 AxDbDocument 上会报 Automation 错误）。"
   (cond
    ((not (findfile dwg))
     (@::@log "WARN" (strcat "文件不存在: " dwg)) nil)
    (t
     (if (not (findfile outdir))
-	(@::mkdir (if (listp outdir) outdir (@::path (strcat @::path-os outdir "/")))))
-    (setq newfile (strcat (@::path-os (vl-string-right-trim "\\/" outdir)) "/"
-			  (vl-filename-base dwg) ".dwg"))
-    (if (findfile newfile) (vl-file-delete newfile))
-    (if (null (vl-file-copy dwg newfile))
-	(progn (@::@log "ERROR" (strcat "复制失败: " dwg)) nil)
-      (progn
-      (setq dbx (at-library:--dbx-open newfile))
-      (cond
-       ((null dbx)
-	(@::@log "WARN" (strcat "ObjectDBX 打不开: " newfile))
-	(vl-file-delete newfile)
-	nil)
-       (t
-	(setq ms (vla-get-modelspace dbx))
-	(setq box (at-library:--dbx-bbox ms))
-	(if box
-	    (progn
-	      (setq cx (/ (+ (car box) (caddr box)) 2.0)
-		    cy (/ (+ (cadr box) (cadddr box)) 2.0)
-		    w (- (caddr box) (car box))
-		    h (- (cadddr box) (cadr box)))
-	      ;; 偏差超过符号尺寸的 5% 才改基点，避免动本来正确的文件
-	      (if (> (sqrt (+ (* cx cx) (* cy cy)))
-		     (* 0.05 (max w h 1e-6)))
+	(@::mkdir (if (listp outdir) outdir (@::path (strcat (@::path-os outdir) "/")))))
+    (setq out (strcat (@::path-os (vl-string-right-trim "\\/" outdir)) "/"
+		      (vl-filename-base dwg) ".dwg"))
+    (if (findfile out) (vl-file-delete out))
+    (setq dbx (at-library:--dbx-open dwg))
+    (cond
+     ((null dbx)
+      (@::@log "WARN" (strcat "ObjectDBX 打不开: " dwg))
+      nil)
+     (t
+      (setq ms (vla-get-modelspace dbx))
+      (setq box (at-library:--dbx-bbox ms))
+      (if box
+	  (progn
+	    (setq cx (/ (+ (car box) (caddr box)) 2.0)
+		  cy (/ (+ (cadr box) (cadddr box)) 2.0)
+		  w (- (caddr box) (car box))
+		  h (- (cadddr box) (cadr box)))
+	    ;; 偏差超过符号尺寸的 5% 才平移，避免动本来正确的符号
+	    (if (> (sqrt (+ (* cx cx) (* cy cy)))
+		   (* 0.05 (max w h 1e-6)))
+		(vlax-for @nf:o ms
 		  (vl-catch-all-apply
-		   'vla-SetVariable
-		   (list dbx "INSBASE" (vlax-3d-point cx cy 0.0))))))
-	(vl-catch-all-apply 'vla-SetVariable
-			    (list dbx "INSUNITS" (if units units 4)))
-	(vl-catch-all-apply 'vla-PurgeAll (list dbx))
-	(vl-catch-all-apply 'vla-Save (list dbx))
-	(at-library:--dbx-close dbx)
-	newfile)))))))
+		   'vla-move
+		   (list @nf:o
+			 (vlax-3d-point (list 0.0 0.0 0.0))
+			 (vlax-3d-point (list (- cx) (- cy) 0.0))))))))
+      (vl-catch-all-apply 'vla-SaveAs (list dbx out))
+      (at-library:--dbx-close dbx)
+      (if (findfile out) out nil))))))
 
 (defun at-library:normalize-dir (src outdir units / files n ok)
   "批量归一化一个目录下的所有 dwg（不递归）。

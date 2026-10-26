@@ -132,7 +132,7 @@
 	       (t 0)
 	       )
 	 )
-       ;;定义顺时针方向的夹角为正值，反之为负
+       ;;实际约定：逆时针方向为正值，顺时针为负（sign 为反转约定）
        (defun ang (p1 p2 p3 / x)
 	 (setq x (abs (- (angle p1 p3) (angle p1 p2))))
 	 (if (equal p3 p1 1e-8)
@@ -218,8 +218,8 @@
 	   )
   )
 (defun-q geometry:turn-right-p (pt1 pt2 pt3 / det2 det x)
-  "判断三点的转角方向。"
-  "顺时针方向的夹角为正值，反之为负, 0为直线。"
+  "求三点转角（以 pt1 为顶点、由 pt2 方向转向 pt3 方向）。"
+  "number: 逆时针方向为正值，顺时针为负，0 为直线。"
   (defun det2 (p1 p2)
     "矢量叉积"
     (- (* (car p1) (cadr p2)) (* (car p2) (cadr p1)))
@@ -245,8 +245,8 @@
     )
   )
 (defun-q geometry:turn-left-p (pt1 pt2 pt3 / det2 det x)
-  "判断三点的转角方向。"
-  "顺时针方向的夹角为正值，反之为负, 0为直线。"
+  "求三点转角（以 pt1 为顶点、由 pt2 方向转向 pt3 方向）。"
+  "number: 逆时针方向为正值，顺时针为负，0 为直线。"
   (defun det2 (p1 p2)
     "矢量叉积"
     (- (* (car p1) (cadr p2)) (* (car p2) (cadr p1)))

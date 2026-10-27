@@ -8,7 +8,7 @@
 |------|-----|
 | 包名 | `at-arch` |
 | 全名 | @建筑 |
-| 版本 | 0.1.0 |
+| 版本 | 0.1.1 |
 | 作者 | VitalGG |
 | 邮箱 | vitalgg@gmail.com |
 | 分类 | 建筑工程 |
@@ -47,7 +47,34 @@
 | 插入车位 | `(at-arch:insert-parking)` | 插入标准车位图块 |
 | 插入无障碍车位 | `(at-arch:insert-accparking)` | 插入无障碍车位图块 |
 | 插入机械车位 | `(at-arch:insert-machineparking)` | 插入机械车位图块 |
-| 车位编号 | `(at-arch:parking-numbering)` | 按顺序给框选车位编号 |
+| 选择车位 | `(at-arch:parking-select)` | 按规则选中全部车位，并打印普通/无障碍/机械车位数量 |
+| 车位编号 | `(at-arch:parking-numbering)` | 框选车位后按蛇形顺序连续编号（不选=全图） |
+
+### 车位的识别与编号
+
+**识别（不依赖块名）**：`at-arch:parking-p` 判定一个块是不是车位——块名命中 `@arch:parking-blk`，
+**或者** 图层命中 `@arch:parking-layer` 且外形尺寸落在 `@arch:parking-size` 范围内。
+这样命名不规范的车位块（如 `ded`）也能识别，而同图层上的挡车器、图框等不会被误判。
+
+| 函数 | 说明 |
+|------|------|
+| `at-arch:parking-p` | 是车位返回 T（名称规则 或 图层+尺寸规则） |
+| `at-arch:parking-name-p` | 仅按块名规则判断 |
+| `at-arch:parking-layer-p` | 仅按图层规则判断 |
+| `at-arch:parking-geom-p` | 仅按外形尺寸判断（短边=宽，长边=深） |
+| `at-arch:parking-type` | 返回「机械车位 / 无障碍车位 / 普通车位」 |
+| `at-arch:parking-number-att` | 取车位块的编号属性名（先精确 `NUMBER`，再按 `@arch:parking-number-att` 通配） |
+| `at-arch:parking-list` | 从选择集/列表/全图中筛出车位块，返回 `(车位列表 . 非车位数)` |
+
+**编号**：`at-arch:parking-number (sel start)` 无交互核心，按 `@arch:parking-number-order`
+（`snake` 蛇形 / 或 `xyXY` 组合）排序后写入编号属性；没有编号属性的车位会跳过并提示，且不占号。
+
+AI 调用入口：
+
+```lisp
+(at-arch:ai-parking-number 1 nil)      ; 全图，从 1 开始
+(at-arch:ai-parking-number 101 (ssget)) ; 限定选择集
+```
 
 ### @门窗统计
 | 菜单项 | 命令 | 说明 |
@@ -58,8 +85,13 @@
 
 | 配置键 | 默认值 | 说明 |
 |--------|--------|------|
-| `@arch:parking-blk` | `车位*,机械车位*` | 车位图块名过滤模式 |
-| `@arch:parking-number-order` | `Yx` | 车位编号排序方式 |
+| `@arch:parking-blk` | `车位*,*车位*,机械车位*,*机械停车*,停车位*` | 车位块名规则（支持通配符，逗号分隔多规则） |
+| `@arch:parking-layer` | `*停车位*,*车位*` | 车位所在图层规则（配合尺寸识别命名不规范的块） |
+| `@arch:parking-size` | `2200,3700,4600,6200` | 车位识别尺寸范围：最小宽,最大宽,最小深,最大深 |
+| `@arch:parking-number-order` | `snake` | 编号排序：`snake` 蛇形，或 `xyXY` 组合（如 `Yx`） |
+| `@arch:parking-number-att` | `*NUMBER*,*编号*,*车位号*` | 编号属性名规则（支持通配符） |
+| `@arch:parking-row-tol` | `1200` | 蛇形排序：同一排的 y 容差 |
+| `@arch:parking-min-row` | `5` | 蛇形排序：一行数量达到该值才换向 |
 
 ## 窗地比限值规则
 

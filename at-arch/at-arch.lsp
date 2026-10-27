@@ -2,8 +2,13 @@
 ;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 定义配置项 'at-arch:first 用于 应用包 at-arch 的 第一个配置项 first 
-(@:define-config '@arch:parking-blk "车位*,机械车位*" "车位图块名")
-(@:define-config '@arch:parking-number-order "Yx" "编号排序方式")
+(@:define-config '@arch:parking-blk "车位*,*车位*,机械车位*,*机械停车*,停车位*" "车位图块名(支持通配符，多个用逗号分隔)")
+(@:define-config '@arch:parking-layer "*停车位*,*车位*" "车位所在图层(支持通配符，多个用逗号分隔)；用于识别命名不规范的块")
+(@:define-config '@arch:parking-size "2200,3700,4600,6200" "车位识别尺寸范围：最小宽,最大宽,最小深,最大深(单位同图纸)")
+(@:define-config '@arch:parking-number-order "snake" "车位编号排序：snake=按行蛇形(推荐)；也可填 xyXY 两两组合，如 Yx")
+(@:define-config '@arch:parking-number-att "*NUMBER*,*编号*,*车位号*" "车位块内用于编号的属性名(支持通配符，逗号分隔多规则)")
+(@:define-config '@arch:parking-row-tol 1200 "蛇形排序：同一排的 y 容差")
+(@:define-config '@arch:parking-min-row 5 "蛇形排序：一行数量达到该值才换向")
 
 ;; (@:get-config 'at-arch:first) ;; 获取配置顶的值
 ;; (@:set-config 'at-arch:first  "新设的值") ;; 设置配置顶的值
@@ -31,6 +36,7 @@
     ("插入车位" "(at-arch:insert-parking)" )
     ("插入无障碍车位" "(at-arch:insert-accparking)" )
     ("插入机械车位" "(at-arch:insert-machineparking)" )
+    ("选择车位" "(at-arch:parking-select)" )
     ("车位编号" "(at-arch:parking-numbering)" )
     )
    ("@门窗统计"
@@ -75,36 +81,254 @@
      '(0 0 0))))
 
   
-(defun at-arch:parking-numbering (/ parkings inputint atts)
-  ;; 以下部分为你为实现某一功能所编写的代码。
-  (@::prompt "请框选要进行编号的车位")
-  (setq parkings
-	(pickset:sort
-	 (pickset:to-list  (block:ssget  nil (@::get-config '@arch:parking-blk) nil))
-	 (@::get-config '@arch:parking-number-order) 
-	 (mapcar '@::scale '(8 8))))
-
-  ;; 编号
-
-  (if (null parking-curr-number)
-      (setq parking-curr-number 0))
-  (if (setq inputint  (getint (strcat "请输入起始号<"(itoa (1+ parking-curr-number))">:")))
-      (setq parking-curr-number (1- inputint)))
-  
-  (foreach park% parkings
-	   (setq atts (list:sort (block:get-attributes park%)
-				 '(lambda (x y)
-				    (< (car x)(car y)))))
-	   (foreach att atts
-		    (if (wcmatch (car att) "NUMBER*")
-			(block:set-attributes
-			 park%
-			 (list
-			  (cons
-			   (car att)
-			   (itoa (setq parking-curr-number (1+ parking-curr-number)))))))))
-  (princ)
-  )
+(defun at-arch:string-join (lst sep / s)
+  "把字符串列表用 sep 连接。"
+  (if lst
+      (progn
+        (setq s (car lst))
+        (foreach x (cdr lst) (setq s (strcat s sep x)))
+        s)
+      ""))
+(defun at-arch:parking-name-p (ent)
+  "块名是否符合车位命名规则(@arch:parking-blk)。
+  ent: 图元名。
+  return: 符合 T，否则 nil。
+  示例: (at-arch:parking-name-p (car (entsel)))"
+  (and (= 'ename (type ent))
+       (= "INSERT" (entity:getdxf ent 0))
+       (wcmatch (strcase (block:get-effectivename ent))
+                (strcase (@::get-config '@arch:parking-blk)))))
+(defun at-arch:parking-layer-p (ent / pat)
+  "块所在图层是否符合车位图层规则(@arch:parking-layer)。
+  ent: 图元名。
+  return: 符合 T，否则 nil。
+  示例: (at-arch:parking-layer-p (car (entsel)))"
+  (setq pat (@::get-config '@arch:parking-layer))
+  (and (= 'ename (type ent))
+       (= "INSERT" (entity:getdxf ent 0))
+       (= 'str (type pat))
+       (/= "" pat)
+       (wcmatch (strcase (entity:getdxf ent 8)) (strcase pat))))
+(defun at-arch:parking-geom-p (ent / b w h sw sh sz)
+  "块的外形尺寸是否在车位尺寸范围内(@arch:parking-size)。
+  ent: 图元名。
+  return: 符合 T，否则 nil。
+  说明: 用包围盒的短边当车位宽、长边当车位深，识别命名不规范的车位块。
+  示例: (at-arch:parking-geom-p (car (entsel)))"
+  (setq b (vl-catch-all-apply 'entity:getbox (list ent 0)))
+  (if (and b (listp b) (cadr b))
+      (progn
+        (setq w (- (car (cadr b)) (car (car b)))
+              h (- (cadr (cadr b)) (cadr (car b))))
+        (setq sw (min w h)
+              sh (max w h))
+        (setq sz (mapcar 'atof (string:to-list (@::get-config '@arch:parking-size) ",")))
+        (and (= 4 (length sz))
+             (>= sw (car sz)) (<= sw (cadr sz))
+             (>= sh (caddr sz)) (<= sh (cadddr sz))))))
+(defun at-arch:parking-p (ent)
+  "判断图元是否为车位块。
+  ent: 图元名。
+  return: 是车位 T，否则 nil。
+  规则: 块名匹配 @arch:parking-blk；
+        或 图层匹配 @arch:parking-layer 且外形尺寸在 @arch:parking-size 范围内。
+  示例: (at-arch:parking-p (car (entsel)))"
+  (and (= 'ename (type ent))
+       (= "INSERT" (entity:getdxf ent 0))
+       (or (at-arch:parking-name-p ent)
+           (and (at-arch:parking-layer-p ent)
+                (at-arch:parking-geom-p ent)))))
+(defun at-arch:parking-type (ent / nm b w h)
+  "识别车位类型：机械车位 / 无障碍车位 / 普通车位。
+  ent: 车位块图元名。
+  return: 类型字符串；不是车位返回 nil。
+  说明: 先按块名关键字判断，再按宽度判断(宽 >= 3300 视为无障碍车位)。
+  示例: (at-arch:parking-type (car (entsel))) => \"普通车位\""
+  (if (at-arch:parking-p ent)
+      (progn
+        (setq nm (strcase (block:get-effectivename ent)))
+        (cond
+         ((wcmatch nm "*机械*") "机械车位")
+         ((wcmatch nm "*无障碍*") "无障碍车位")
+         (t
+          (setq b (entity:getbox ent 0))
+          (setq w (if b (min (- (car (cadr b)) (car (car b)))
+                             (- (cadr (cadr b)) (cadr (car b)))) 0))
+          (if (>= w 3300.0) "无障碍车位" "普通车位"))))))
+(defun at-arch:parking-number-att (ent / atts hit)
+  "取车位块的编号属性名。
+  ent: 车位块图元名。
+  return: 属性名(字符串)；没有编号属性返回 nil。
+  说明: 先精确匹配 NUMBER，再按 @arch:parking-number-att 通配符查找。
+  示例: (at-arch:parking-number-att (car (entsel))) => \"NUMBER\""
+  (setq atts (block:get-attributes ent))
+  (if atts
+      (progn
+        (setq hit (vl-remove-if-not '(lambda (a) (= "NUMBER" (strcase (car a)))) atts))
+        (if (null hit)
+            (setq hit (vl-remove-if-not
+                       '(lambda (a) (wcmatch (strcase (car a))
+                                             (strcase (@::get-config '@arch:parking-number-att))))
+                       atts)))
+        (if hit (car (car hit))))))
+(defun at-arch:parking-list (sel / all pk)
+  "从选择集/图元列表/全图中筛出车位块。
+  sel: 选择集 / 图元列表 / nil(全图)。
+  return: (车位块列表 . 非车位块数)
+  示例: (at-arch:parking-list nil)"
+  (setq all (cond ((null sel) (pickset:to-list (ssget "x" '((0 . "INSERT")))))
+                  ((p:picksetp sel) (pickset:to-list sel))
+                  ((listp sel) sel)
+                  (t (list sel))))
+  (setq all (vl-remove-if-not '(lambda (e) (= "INSERT" (entity:getdxf e 0))) all))
+  (setq pk (vl-remove-if-not 'at-arch:parking-p all))
+  (cons pk (- (length all) (length pk))))
+(defun at-arch:parking-select (/ pl pk types nm hit)
+  "选择图纸中所有车位块，并打印按类型的数量统计。
+  return: 车位块列表；没有车位返回 nil。
+  示例: (at-arch:parking-select)"
+  (@::prompt "选择全部车位")
+  (setq pl (at-arch:parking-list nil))
+  (setq pk (car pl))
+  (if pk
+      (progn
+        (setq types nil)
+        (foreach e pk
+                 (setq nm (at-arch:parking-type e))
+                 (setq hit (assoc nm types))
+                 (if hit
+                     (setq types (subst (cons nm (1+ (cdr hit))) hit types))
+                     (setq types (cons (cons nm 1) types))))
+        (sssetfirst nil (pickset:from-list pk))
+        (princ (strcat "\n共 " (itoa (length pk)) " 个车位："
+                       (at-arch:string-join
+                        (mapcar '(lambda (x) (strcat (car x) " " (itoa (cdr x))))
+                                (reverse types))
+                        "、")))
+        pk)
+      (princ (strcat "\n未找到车位块。块名规则见配置 @arch:parking-blk："
+                     (@::get-config '@arch:parking-blk)))))
+(defun at-arch:parking-sort-by-row (blks rowtol minrow / items rows cur cury main loose tmp dir res)
+  "按行列蛇形排序车位块（本包自带实现，不依赖库函数）。
+  blks: 车位块 ename 列表；rowtol: 同一排 y 容差；minrow: 成排阈值。
+  return: 排序后的 ename 列表。
+  说明: 按包围盒中心分行，成排的行内按 x 排序，整排后换向形成蛇形；
+        零星车位排在最后，按 x 分列从左到右、列内自上而下。
+  示例: (at-arch:parking-sort-by-row blks 1200 5)"
+  (setq rowtol (if (numberp rowtol) rowtol 1200.0)
+        minrow (if (numberp minrow) minrow 5))
+  (setq items
+        (mapcar
+         '(lambda (x / bx p)
+            (setq bx (vl-catch-all-apply 'entity:getbox (list x 0)))
+            (if (and bx (listp bx) (cadr bx))
+                (list x (/ (+ (car (car bx)) (car (cadr bx))) 2.0)
+                      (/ (+ (cadr (car bx)) (cadr (cadr bx))) 2.0))
+                (progn
+                  (setq p (entity:getdxf x 10))
+                  (list x (car p) (cadr p)))))
+         blks))
+  (setq items (vl-sort items '(lambda (a b) (> (caddr a) (caddr b)))))
+  (setq rows nil cur nil cury nil)
+  (foreach it items
+           (if (and cur (<= (abs (- cury (caddr it))) rowtol))
+               (setq cur (cons it cur))
+               (progn
+                 (if cur (setq rows (cons (cons cury (reverse cur)) rows)))
+                 (setq cur (list it)
+                       cury (caddr it)))))
+  (if cur (setq rows (cons (cons cury (reverse cur)) rows)))
+  (setq rows (reverse rows))
+  (setq main nil
+        loose nil)
+  (foreach r rows
+           (if (>= (length (cdr r)) minrow)
+               (setq main (cons r main))
+               (setq loose (append loose (cdr r)))))
+  (setq main (vl-sort main '(lambda (a b) (> (car a) (car b)))))
+  (setq dir 1
+        res nil)
+  (foreach r main
+           (setq cur (vl-sort (cdr r) '(lambda (a b) (< (cadr a) (cadr b)))))
+           (if (= dir -1) (setq cur (reverse cur)))
+           (setq res (append res (mapcar 'car cur)))
+           (setq dir (- dir)))
+  (setq tmp nil)
+  (foreach it loose
+           (setq tmp (cons (list (fix (/ (+ (cadr it) 50.0) 100.0))
+                                 (- (caddr it))
+                                 (car it))
+                           tmp)))
+  (setq tmp (vl-sort tmp
+                     '(lambda (a b)
+                        (if (= (car a) (car b))
+                            (< (cadr a) (cadr b))
+                            (< (car a) (car b))))))
+  (append res (mapcar 'caddr tmp)))
+(defun at-arch:parking-number (sel start / pl blks miss atts order n res pat)
+  "给车位块按配置顺序写编号（无交互、不弹窗）。
+  sel: 选择集 / 图元列表 / nil(全图)；start: 起始号(缺省 1)。
+  说明: 排序按 @arch:parking-number-order（snake=按行蛇形，或 xyXY 组合）；
+        没有编号属性的车位会被跳过并提示，且不占用号码。
+  return: 实际编号的车位块列表(按编号顺序)。
+  示例: (at-arch:parking-number nil 1)"
+  (setq pl (at-arch:parking-list sel))
+  (setq blks (car pl))
+  (setq pat (@::get-config '@arch:parking-number-att))
+  (setq miss (vl-remove-if 'at-arch:parking-number-att blks))
+  (if miss
+      (princ (strcat "\n[车位编号] 已跳过 " (itoa (length miss))
+                     " 个没有编号属性(" pat ")的车位块。")))
+  (setq blks (vl-remove-if '(lambda (e) (null (at-arch:parking-number-att e))) blks))
+  (setq order (@::get-config '@arch:parking-number-order))
+  (setq blks (if (member (strcase order) '("SNAKE" "S" "蛇形"))
+                 (at-arch:parking-sort-by-row blks
+                                             (@::get-config '@arch:parking-row-tol)
+                                             (@::get-config '@arch:parking-min-row))
+                 (pickset:sort-by-box blks order (mapcar '@::scale '(8 8)))))
+  (setq n (if start start 1)
+        res nil)
+  (foreach e blks
+           (setq atts (vl-remove-if-not
+                       '(lambda (a) (wcmatch (strcase (car a)) (strcase pat)))
+                       (block:get-attributes e)))
+           (foreach a atts
+                    (block:set-attributes e (list (cons (car a) (itoa n)))))
+           (setq res (cons e res))
+           (setq n (1+ n)))
+  (reverse res))
+(defun at-arch:ai-parking-number (start sel)
+  "AI 调用入口：车位块按蛇形顺序连续编号，无交互、不弹窗。
+  start: 起始号(缺省 1)。
+  sel: 选择集 / 图元列表；**全图传 nil**（AutoLISP 实参不可省略）。
+  return: 编号后的车位块列表(按编号顺序)；未找到车位返回 nil。
+  说明: 块名规则见 @arch:parking-blk，编号属性见 @arch:parking-number-att，
+        排序见 @arch:parking-number-order（默认 snake）。
+  示例: (at-arch:ai-parking-number 1 nil)
+        (at-arch:ai-parking-number 101 (ssget))"
+  (at-arch:parking-number sel start))
+(defun at-arch:parking-numbering (/ sel pl start res end)
+  "车位编号：框选车位后按蛇形顺序连续编号（不选则全图）。"
+  (@::prompt "车位编号：框选车位（不选则全图）")
+  (setq sel (ssget '((0 . "INSERT"))))
+  (setq pl (at-arch:parking-list sel))
+  (cond
+   ((null (car pl))
+    (princ (strcat "\n未找到车位块。块名规则见配置 @arch:parking-blk："
+                   (@::get-config '@arch:parking-blk))))
+   (t
+    (if (null *at-arch:parking-curr*) (setq *at-arch:parking-curr* 0))
+    (setq start (getint (strcat "请输入起始号<" (itoa (1+ *at-arch:parking-curr*)) ">:")))
+    (if (null start) (setq start (1+ *at-arch:parking-curr*)))
+    (setq res (at-arch:parking-number (car pl) start))
+    (if res
+        (progn
+          (setq end (+ start (1- (length res))))
+          (setq *at-arch:parking-curr* end)
+          (sssetfirst nil (pickset:from-list res))
+          (princ (strcat "\n已编号 " (itoa (length res)) " 个车位：" (itoa start) "–" (itoa end))))
+        (princ "\n没有可编号的车位（缺少编号属性）。"))))
+  (princ))
 (defun at-arch:locate-unnamed-space (/ spaces)
   (if (setq spaces (ssget "x" '((0 . "TCH_SPACE")(1 . "房间"))))
       (if(setq corner (entity:getbox (ssname spaces 0) 100))

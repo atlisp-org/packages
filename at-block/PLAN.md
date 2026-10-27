@@ -1,9 +1,9 @@
 # at-block 功能扩展计划
 
-> @lisp 图块工具集（核心包 v1.1.9）。块编号、块替换、块爆炸（含可炸标志/循环爆炸）、重叠块定位/块视图、基点变换、xref 管理、跨块/跨图纸复制、分堆建块、按线转块等 15 个功能文件。
+> @lisp 图块工具集（核心包 v1.1.12）。块编号、块替换、块爆炸（含可炸标志/循环爆炸）、重叠块定位/块视图、基点变换、xref 管理、跨块/跨图纸复制、分堆建块、按线转块等 15 个功能文件。
 
 ## 1. 概览
-- 版本 1.1.9 / 分类 图块相关 / 依赖 base / 自研
+- 版本 1.1.12 / 分类 图块相关 / 依赖 base / 自研
 - 规模：18 个 .lsp 共约 3100 行 95 个函数；配置 11 项（block-name/attribute-name/prefix/suffix/overlay-index/xref-layer/sort-order "xY"/sort-fuzz/size/overlap-tol/lib）
 - 菜单两块：`_Block`（14 项）+ `_Block2`（11 项）
 
@@ -31,6 +31,7 @@
 | 其余小文件 | insert-all / minsert2insert / tchpr2insert / block-cluster / set-clustergap / clip-to-blk / copy-by-blk / rotate-blk-by-line / write-file / match-att-style | 全图块插入 / 多重转普通 / 保护转块 / 分堆建块 / 设间隙 / 按块裁剪 / 块间复制 / 按线旋转 / 写块到库 / 属性样式刷 |
 
 ## 2.5 已修复
+- **加载时打印冗余横幅（v1.1.12）**：`auto-block-break.lsp` / `copy-to-drawings.lsp` 文件尾部有顶层 `(princ (strcat ...))` 版权横幅（Lee Mac AutoBlockBreak / Copy2Drawings），`@` 加载全部应用包时在命令行夹带 4 行 `::` 输出。删除横幅，保留 `(vl-load-com)` 与末尾 `(princ)`（抑制加载返回值打印），加载时零输出。
 - **按路线编号漏选/报错（P0，已修复 v1.1.11）**：`@block:numbering-by-route` 用 `curve:get-points`（只返回端点/控制点）作 `ssget "F"` 围栏，带弧段的多段线/圆弧/圆/样条会退化成弦，沿弧的块漏选；圆路线只返回 1 个点直接报错。改为按曲线长度等距采样（`@block:curve-fence-points`，16~2000 点）。排序改为预计算投影距离 + 稳定次序键（原实现每次比较都在比较函数里 `defun` 重算，慢且污染全局）。未找到块时改为 `princ` 提示，不再弹 `alert`/误触发编号配置。编号串统一走 `@block:number-string`（支持前后缀与 `overlay-index`）。新增 AI 入口 `@block:ai-number-by-route` / `@block:find-on-curve`。
 - **多块名编号（v1.1.11）**：`@block:block-name` 支持逗号/分号/空格分隔多个块名（如 `车位,车位-无障碍`）。新增 `@block:name-list` / `@block:block-names` / `@block:block-filter`，`set-number` 与按路线编号共用整套过滤器与编号串生成；多块名在同一次操作中共用一条连续编号（实测 52 块：车位 51 + 车位-无障碍 1，无障碍块按路径位置排到 21）。
 - **蛇形排序（v1.1.11）**：新增 `@block:sort-by-snake`，`@block:sort-order` 填 `snake`/`S`/`蛇形` 即启用。按包围盒中心分行（`snake-row-tol`，默认 1200），整排（≥`snake-min-row`，默认 5）后换向，成 S 形；零星车位（墙边单列）排在最后，按列从左到右、列内自上而下。实测地库 140 个车位：主排蛇形 + 墙边列收尾，平均相邻步距 6.6m（原 `xY` 排序为跳跃式）。

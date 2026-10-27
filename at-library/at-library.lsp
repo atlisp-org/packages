@@ -63,10 +63,14 @@
   (if (and n (> n 0) (<= n (length res)))
       (nth (1- n) res)))
 
-(defun at-library:insert (kw / res item pt)
-  "搜索图库并插入：输入关键字（支持拼音首字母）→ 选序号 → 点插入点。"
+(defun at-library:insert (/ kw res item pt)
+  "交互式搜索并插入：输入关键字（支持拼音首字母）→ 选序号 → 点插入点。
+
+无参数（AutoLISP 不支持可选参数，少传实参会报「参数太少」）。
+程序化调用请用 (at-library:insert-by-name kw pt)。
+示例：(at-library:insert)"
   (setq kw (getstring T "\n图库关键字（名称/拼音首字母）: "))
-  (if (= kw "")
+  (if (or (null kw) (= kw ""))
       (princ "\n未输入关键字。")
     (progn
       (setq res (at-library:--print (library:search kw 30 nil)))
@@ -78,17 +82,27 @@
        ((library:insert (cdr (assoc "id" item)) pt 1 0 nil) (princ "\n已插入。"))
        (t (princ "\n插入失败。"))))))
 
-(defun at-library:browse (category / res item pt)
-  "按专业/目录浏览图库（空关键字 + 目录过滤），选中后插入。
+(defun at-library:browse (/ category)
+  "交互式按专业/目录浏览图库：先输目录，再选序号，最后点插入点。
 
-示例：(at-library:browse \"电气/元件库\")"
-  (setq category (if (and category (/= category ""))
-		     category
-		   (getstring T "\n专业或目录（如 电气 或 电气/元件库，空=全部）: ")))
+无参数（AutoLISP 不支持可选参数）。目录已知时用 (at-library:browse-dir category)。
+示例：(at-library:browse)"
+  (setq category (getstring T "\n专业或目录（如 电气 或 电气/元件库，空=全部）: "))
+  (at-library:browse-dir category))
+
+(defun at-library:browse-dir (category / res item pt)
+  "按目录浏览图库并插入（不再提示目录，只提示序号和插入点）。
+
+参数：category 专业或二级目录，如 \"电气\" / \"电气/元件库\"；nil 或空串 = 全部
+返回：块参照图元名；取消或失败返回 nil
+示例：(at-library:browse-dir \"电气/元件库\")
+      (at-library:browse-dir nil)"
   (setq res (at-library:--print (library:search "" 40 category)))
-  (if (setq item (at-library:--pick res))
-      (if (setq pt (getpoint "\n插入点: "))
-	  (library:insert (cdr (assoc "id" item)) pt 1 0 nil))))
+  (cond
+   ((null res) (princ "\n没有找到符号。") nil)
+   ((null (setq item (at-library:--pick res))) (princ "\n已取消。") nil)
+   ((null (setq pt (getpoint "\n插入点: "))) (princ "\n已取消。") nil)
+   (t (library:insert (cdr (assoc "id" item)) pt 1 0 nil))))
 
 (defun at-library:insert-by-name (kw pt / res)
   "按关键字取第一条命中的符号并插入到 pt（给其他程序调用）。
@@ -110,7 +124,7 @@
 	((= k "A4") '(297.0 210.0))
 	(t nil)))
 
-(defun at-library:frame (size orient pt / dir res best target w h sw sh d bd)
+(defun at-library:frame (size orient pt / dir res best target sw sh d bd)
   "插入标准图框（图库「图框库」：A0–A4 横竖 + 标题栏 + 会签栏）。
 
 参数：
@@ -120,32 +134,38 @@
 返回：块参照图元名；图库没有该图幅时打印可选项并返回 nil
 示例：(at-library:frame \"A2\" \"横\" '(0 0))
       (at-library:frame \"A3\" \"竖\" (getpoint))"
-  (require 'library:*)
-  (setq dir (if (and orient (= orient "竖")) "竖栏图框" "横栏图框"))
-  (setq res (library:search (strcat "图框库/" dir "/" size) 12 (strcat "图框库/" dir)))
-  ;; 同一图幅可能有多个变体（图库里 A2 横栏就有 420x594 和 594x420 两个），
-  ;; 按标准图幅尺寸挑最接近的：横放 594x420，竖放 420x594。
-  (setq target (at-library:--std-size size))
-  (if (and target (= dir "竖栏图框"))
-      (setq target (list (cadr target) (car target))))
-  (if (and target res)
-      (progn
-	(setq bd nil best nil)
-	(foreach x res
-	  (setq sw (car (cdr (assoc "size" x)))
-		sh (cadr (cdr (assoc "size" x))))
-	  (setq d (+ (abs (- sw (car target))) (abs (- sh (cadr target)))))
-	  (if (or (null bd) (< d bd))
-	      (setq bd d best x)))
-	(setq res (if best (list best) res))))
   (cond
-   ((null res)
-    ;; 图库的图幅并不齐全（横栏只有 A1/A2，A3/A4 只在竖栏里），把可用的列出来
-    (princ (strcat "\n图库没有「" size " "
-		   (if (= dir "横栏图框") "横" "竖") "」，可用的有："))
-    (foreach x (library:search "" 24 "图框库")
-      (princ (strcat " " (cdr (assoc "name" x)))))
-    (@::@log "WARN" (strcat "图库没有这个图框: " size dir))
+   ;; 菜单入口传的是 (getstring)/(getpoint) 的结果，用户按 Esc 会得到 nil
+   ((or (null size) (= size "") (null pt))
+    (princ "\n已取消：需要图幅（A0-A4）和插入点。")
     nil)
    (t
-    (library:insert (cdr (assoc "id" (car res))) pt 1 0 "bl"))))
+    (require 'library:*)
+    (setq dir (if (and orient (= orient "竖")) "竖栏图框" "横栏图框"))
+    (setq res (library:search (strcat "图框库/" dir "/" size) 12 (strcat "图框库/" dir)))
+    ;; 同一图幅可能有多个变体（图库里 A2 横栏就有 420x594 和 594x420 两个），
+    ;; 按标准图幅尺寸挑最接近的：横放 594x420，竖放 420x594。
+    (setq target (at-library:--std-size size))
+    (if (and target (= dir "竖栏图框"))
+        (setq target (list (cadr target) (car target))))
+    (if (and target res)
+        (progn
+          (setq bd nil best nil)
+          (foreach x res
+            (setq sw (cadr (assoc "size" x))
+                  sh (caddr (assoc "size" x)))
+            (setq d (+ (abs (- sw (car target))) (abs (- sh (cadr target)))))
+            (if (or (null bd) (< d bd))
+                (setq bd d best x)))
+          (setq res (if best (list best) res))))
+    (cond
+     ((null res)
+      ;; 图库的图幅并不齐全（横栏只有 A1/A2，A3/A4 只在竖栏里），把可用的列出来
+      (princ (strcat "\n图库没有「" size " "
+                     (if (= dir "横栏图框") "横" "竖") "」，可用的有："))
+      (foreach x (library:search "" 24 "图框库")
+        (princ (strcat " " (cdr (assoc "name" x)))))
+      (@::@log "WARN" (strcat "图库没有这个图框: " size dir))
+      nil)
+     (t
+      (library:insert (cdr (assoc "id" (car res))) pt 1 0 "bl"))))))

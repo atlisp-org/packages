@@ -10,12 +10,20 @@
 | 菜单 | 函数 | 说明 |
 |---|---|---|
 | 搜索并插入 | `(at-library:insert)` | 关键字 → 序号 → 插入点 |
-| 按目录浏览 | `(at-library:browse "电气/元件库")` | 目录内挑选 |
+| 按目录浏览 | `(at-library:browse)` | 输目录 → 序号 → 插入点 |
+| 按目录浏览（目录已知） | `(at-library:browse-dir "电气/元件库")` | 目录内挑选 |
 | 插入标准图框 | `(at-library:frame "A2" "横" pt)` | 图库「图框库」，左下角对齐 |
 | 生成图例 | `(at-library:legend pt)` | 扫当前布局用到的块 → 符号 + 名称 |
 | 标准件明细表 | `(at-library:bom pt)` | 名称/规格/标准号/数量 |
 | 更新图库索引 | `(at-library:update)` | 强制刷新本地索引 |
 | 图库体检/统计 | `(at-library:stats)` | 符号数 / 索引时间 |
+
+## AI 调用（无交互）
+
+| 函数 | 说明 |
+|---|---|
+| `(at-library:insert-by-name "银杏" '(0 0 0))` | 关键字取第一条命中的符号插入到指定点，返回块参照 ename，失败 nil |
+| `(library:search "门" 5 nil)` | 检索图库，返回 alist（id/name/size/units/…） |
 
 ## 依赖
 

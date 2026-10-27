@@ -134,6 +134,7 @@
   (if (null pt) (setq pt (getpoint "\n明细表位置: ")))
   (setq rows (at-library:--bom-rows))
   (cond
+   ((null pt) (princ "\n已取消。") 0)
    ((null rows) (princ "\n当前布局没有块参照。") 0)
    (t
     (if (not (tblsearch "LAYER" *at-library:bom-layer*))

@@ -45,6 +45,7 @@
   (if (null pt) (setq pt (getpoint "\n图例左上角: ")))
   (setq names (at-library:--used-blocks))
   (cond
+   ((null pt) (princ "\n已取消。") 0)
    ((null names) (princ "\n当前布局没有块参照。") 0)
    (t
     (if (not (tblsearch "LAYER" *at-library:legend-layer*))

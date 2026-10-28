@@ -539,13 +539,6 @@
 
 
 (vl-load-com)
-(princ
-    (strcat
-        "\n:: auto-block-break.lsp | 重构自 AutoBlockBreak v1.9 | "
-        "Copyright (c) 2010 Lee Mac www.lee-mac.com ::"
-        "\n:: AUTO-BLOCK-BREAK - 插入并修剪 | AUTO-BLOCK-BREAK-EXPLODE/AUTO-BLOCK-BREAK-SELECT - 修剪已有块 ::"
-    )
-)
 (princ)
 
 ;;; -----------------------------------------------------------------------

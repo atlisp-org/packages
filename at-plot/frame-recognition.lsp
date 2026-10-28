@@ -211,7 +211,7 @@
 		(if (equal (@plot:get-ratio (@plot:get-height frame-pts)
 					    (@plot:get-width frame-pts))
 			   (nth i @plot:ratio-of-w/h)
-			   0.002)
+			   0.0035)
 		    (setq test-ratio T))
 		(setq i (1+ i)))))
 	;; 测试高度

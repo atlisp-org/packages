@@ -2,15 +2,18 @@
 ;; 这是使用开发工具 dev-tools 自动创建的程序源文件 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 定义配置项 'at-arch:first 用于 应用包 at-arch 的 第一个配置项 first 
-(@:define-config '@block:block-name "块名" "用于排号的块名称。")
+(@:define-config '@block:block-name "块名" "用于排号的块名称。可填多个，用逗号/分号/空格分隔，如 \"车位,车位-无障碍\"，多块名统一连续编号。")
 (@:define-config '@block:attribute-name "属性名" "用于排号的块内属性的名称。")
 (@:define-config '@block:attribute-prefix "" "用于排号的块内属性值前缀。")
 (@:define-config '@block:attribute-suffix "" "用于排号的块内属性值后缀。")
 (@::define-config '@block:overlay-index 0 "覆盖用于排号的块内属性原值,0全覆盖;n,替换原内容的以-分隔的第n部分。") 
 (@:define-config '@block:xref-layer "xref-lock" "用于放置外部参照的图层名。")
-(@:define-config '@block:sort-order "xY" "排序规则。xyXY任意两两组合,例如yX,y在前表示y坐标优先，大X表示从右到左排序。")
+(@:define-config '@block:sort-order "xY" "排序规则。xyXY任意两两组合,例如yX,y在前表示y坐标优先，大X表示从右到左排序。填 snake(或 S/蛇形) 则按行蛇形排序。")
 (@:define-config '@block:sort-fuzz "10,10" "按位置排序时，坐标的容差。逗号用于分隔不同轴的容差。")
+(@:define-config '@block:snake-row-tol 1200 "蛇形排序(snake)：同一排的 y 容差，取车位深度的一半左右。")
+(@:define-config '@block:snake-min-row 5 "蛇形排序(snake)：一行数量达到该值才换向；墙边单列等零星车位不换向。")
 (@:define-config '@block:size 1000 "用于检测块重叠时，块的最大尺寸。")
+(@:define-config '@block:overlap-tol 0.1 "重叠检测容差：两个块包围盒的重叠量小于等于该值视为不重叠，用于排除并排块(边线相接)的误判。")
 (@:define-config '@block:lib "D:/Design/standard/lib/" "以块方式管理的图库路径。")
 ;; (@:get-config 'at-arch:first) ;; 获取配置顶的值
 ;; (@:set-config 'at-arch:first  "新设的值") ;; 设置配置顶的值
@@ -91,59 +94,207 @@
   
 	    ))
 
-(defun @block:set-number (/ num1 start ss-list ss1 fuzz)
+(defun @block:name-list (x / lst res)
+  "把块名(字符串或列表)规范化为去重的块名列表。
+  x: 字符串(逗号/分号/空格分隔多个块名)或块名列表。
+  return: 块名列表；空值返回 nil。
+  示例: (@block:name-list \"车位,车位-无障碍\") => (\"车位\" \"车位-无障碍\")"
+  (setq lst (cond ((null x) nil)
+                  ((listp x) x)
+                  ((= 'str (type x))
+                   (string:to-list (vl-string-translate "; \t" ",,," (vl-string-trim " \t" x)) ","))
+                  (t nil)))
+  (setq res nil)
+  (foreach s lst
+           (setq s (vl-string-trim " \t" s))
+           (if (and (/= "" s) (not (member s res)))
+               (setq res (cons s res))))
+  (reverse res))
+(defun @block:block-names ()
+  "当前编号配置的块名列表(@block:block-name，多个块名用逗号/分号/空格分隔)。
+  return: 块名列表；未配置返回 nil。"
+  (@block:name-list (@:get-config '@block:block-name)))
+(defun @block:block-filter (names / lst)
+  "构造编号用的 ssget 过滤器：属性块且块名属于 names，另含匿名块(用于动态块)。
+  names: 块名列表，如 (\"车位\" \"车位-无障碍\")。
+  return: ssget 过滤器列表。
+  示例: (ssget (@block:block-filter '(\"车位\" \"车位-无障碍\")))"
+  (setq lst (list '(0 . "insert") '(66 . 1) '(-4 . "<or")))
+  (foreach n names
+           (setq lst (append lst (list (cons 2 n)))))
+  (append lst (list (cons 2 "`**") '(-4 . "or>"))))
+(defun @block:has-attribute-p (blk attname / atts)
+  "块参照是否含有指定属性(标签不区分大小写)。
+  blk: 块参照 ename；attname: 属性名。
+  return: 有 T，无 nil。
+  示例: (@block:has-attribute-p blkref \"NUMBER\")"
+  (and (setq atts (block:get-attributes blk))
+       (member (strcase attname)
+               (mapcar '(lambda (a) (strcase (car a))) atts))))
+(defun @block:missing-attribute-hint (blks attname / names s)
+  "对缺少指定属性的块打印提示(princ，不弹窗)，并把提示存到 @block:last-hint 供 AI/脚本读取。
+  blks: 缺少属性的块 ename 列表；attname: 属性名。
+  return: 跳过的块数。
+  示例: (@block:missing-attribute-hint blks \"NUMBER\")"
+  (setq names nil)
+  (foreach e blks
+           (setq s (block:get-effectivename e))
+           (if (not (member s names)) (setq names (cons s names))))
+  (setq s nil)
+  (foreach n (reverse names)
+           (setq s (cons (strcat n " "
+                                 (itoa (length (vl-remove-if-not
+                                                '(lambda (e) (= (block:get-effectivename e) n))
+                                                blks))))
+                         s)))
+  (setq @block:last-hint
+        (strcat "已跳过 " (itoa (length blks)) " 个没有属性 \"" attname "\" 的块（"
+                (string:from-list (reverse s) "、")
+                "）：这类块无法写属性编号，需要时请改用文字编号。"))
+  (princ (strcat "\n[编号] " @block:last-hint))
+  (length blks))
+(defun @block:number-string (blk n attname / raw idx num)
+  "按编号配置生成块 blk 的编号字符串。
+  n: 序号(数字)；attname: 属性名。
+  return: 前后缀+编号字符串；@block:overlay-index 非 0 时按原值 \"-\" 分段只替换该段。
+  示例: (@block:number-string blkref 3 \"NUMBER\") => \"03\""
+  (setq num (string:number-format (itoa n) 2 0 "0")
+	idx (@:get-config '@block:overlay-index))
+  (strcat (@:get-config '@block:attribute-prefix)
+	  (if (and idx (/= 0 idx)
+		   (setq raw (string:to-list
+			      (cdr (assoc attname (block:get-attributes blk)))
+			      "-")))
+	      (string:from-list
+	       (list:replace-index raw
+				   (if (>= (length raw) idx)
+				       (1- idx)
+				       (1- (length raw)))
+				   num)
+	       "-")
+	      num)
+	  (@:get-config '@block:attribute-suffix)))
+(defun @block:sort-by-snake (blks rowtol minrow / items rows cur cury main loose tmp dir res)
+  "按行列蛇形排序，适合车位/桩位等成排布置的对象。
+  blks: 块参照 ename 列表。
+  rowtol: 同一排的 y 容差(默认 1200)，取车位深度的一半左右。
+  minrow: 一行数量达到该值才算“成排”(默认 5)并参与换向。
+  return: 排序后的 ename 列表。
+  说明: 用包围盒中心分行(有些块插入点不在块上)，成排的行内按 x 排序，
+        第 1 排从左到右、整排后换向，形成蛇形；
+        不足 minrow 的零星块(墙边单列等)排在最后，按 x 分列从左到右、列内自上而下。
+  示例: (@block:sort-by-snake blks 1200 5)"
+  (setq rowtol (if (numberp rowtol) rowtol 1200.0)
+        minrow (if (numberp minrow) minrow 5))
+  (setq items
+        (mapcar
+         '(lambda (x / bx p)
+            (setq bx (vl-catch-all-apply 'entity:getbox (list x 0)))
+            (if (and bx (listp bx) (cadr bx))
+                (list x (/ (+ (car (car bx)) (car (cadr bx))) 2.0)
+                      (/ (+ (cadr (car bx)) (cadr (cadr bx))) 2.0))
+                (progn
+                  (setq p (entity:getdxf x 10))
+                  (list x (car p) (cadr p)))))
+         blks))
+  ;; 按 y 从大到小分行(每行以行首 y 为参考，同一行 y 差不超过 rowtol)
+  (setq items (vl-sort items '(lambda (a b) (> (caddr a) (caddr b)))))
+  (setq rows nil cur nil cury nil)
+  (foreach it items
+           (if (and cur (<= (abs (- cury (caddr it))) rowtol))
+               (setq cur (cons it cur))
+               (progn
+                 (if cur (setq rows (cons (cons cury (reverse cur)) rows)))
+                 (setq cur (list it)
+                       cury (caddr it)))))
+  (if cur (setq rows (cons (cons cury (reverse cur)) rows)))
+  (setq rows (reverse rows))
+  ;; 成排走蛇形；零星块(墙边单列)放最后按列排
+  (setq main nil
+        loose nil)
+  (foreach r rows
+           (if (>= (length (cdr r)) minrow)
+               (setq main (cons r main))
+               (setq loose (append loose (cdr r)))))
+  (setq main (vl-sort main '(lambda (a b) (> (car a) (car b)))))
+  (setq dir 1
+        res nil)
+  (foreach r main
+           (setq cur (vl-sort (cdr r) '(lambda (a b) (< (cadr a) (cadr b)))))
+           (if (= dir -1) (setq cur (reverse cur)))
+           (setq res (append res (mapcar 'car cur)))
+           (setq dir (- dir)))
+  (setq tmp nil)
+  (foreach it loose
+           (setq tmp (cons (list (fix (/ (+ (cadr it) 50.0) 100.0))
+                                 (- (caddr it))
+                                 (car it))
+                           tmp)))
+  (setq tmp (vl-sort tmp
+                     '(lambda (a b)
+                        (if (= (car a) (car b))
+                            (< (cadr a) (cadr b))
+                            (< (car a) (car b))))))
+  (append res (mapcar 'caddr tmp)))
+(defun @block:set-number (/ start ss-list ss1 fuzz names)
   
-  (if (= "" (@:get-config '@block:block-name))
+  (if (null (setq names (@block:block-names)))
       (@block:setup))
   (if (progn
-	(setq ss1 (ssget (list '(0 . "insert")'(66 . 1)
-			       '(-4 . "<or")
-			       (cons 2 (@:get-config '@block:block-name))
-			       (cons 2 "`**")
-			       '(-4 . "or>"))
-			 ))
+	(setq ss1 (ssget (@block:block-filter names)))
 	(setq ss-list
 	      (vl-remove-if-not
 	       '(lambda(x)
-		  (= (block:get-effectivename x)
-		     (@:get-config '@block:block-name)))
+		  (member (block:get-effectivename x) names))
 	       (pickset:to-list ss1))))
       (progn
 	;; 排序
 	(sssetfirst nil (pickset:from-list ss-list))
 	(setq fuzz (mapcar 'atof (string:to-list (@:get-config '@block:sort-fuzz)",")))
-	(setq ss-list (pickset:sort ss-list (@:get-config '@block:sort-order) fuzz))
+	;; 排序：snake/S/蛇形 走行列蛇形，否则按 sort-order 的 xyXY 组合排序
+	(setq ss-list
+	      (if (member (strcase (@:get-config '@block:sort-order))
+			  '("SNAKE" "S" "蛇形"))
+		  (@block:sort-by-snake ss-list
+					(@:get-config '@block:snake-row-tol)
+					(@:get-config '@block:snake-min-row))
+		  (pickset:sort ss-list (@:get-config '@block:sort-order) fuzz)))
 	(setq start (getint "请输入块起始编号<1>:"))
 	(if (null start) (setq start 1))
-	(setq num1 0)
-	(foreach en0 ss-list
-		 (block:set-attributes
-		  en0
-		  (list (cons (@:get-config '@block:attribute-name)
-			      (strcat
-			       (@:get-config '@block:attribute-prefix)
-			       (if (= 0 (@::get-config '@block:overlay-index))
-			       	   (string:number-format (itoa (+ num1 start)) 2 0 "0")
-				   ;;,智能替换原内容
-				   (if (setq raw (string:to-list(cdr  (assoc (@:get-config '@block:attribute-name) (block:get-attributes en0)))"-"))
-				       (string:from-list  (list:replace-index
-							   raw
-							   (if (>= (length raw) (@::get-config '@block:overlay-index))
-							       (1- (@::get-config '@block:overlay-index))
-							       (1- (length raw)))
-							   (string:number-format (itoa (+ num1 start)) 2 0 "0"))
-							  "-")
-				       (string:number-format (itoa (+ num1 start)) 2 0 "0")
-				       )
-				   )
-			       (@:get-config '@block:attribute-suffix)
-			       ))))
-		 (setq num1 (1+ num1))
-		 ))
+	(@block:number-blocks ss-list (@:get-config '@block:attribute-name) start))
       (progn
 	(alert "未选中设置的图块。请设置要进行操作的图块。")
 	(@block:setup))))
 
+(defun @block:ai-number-by-snake (blkname attname start ss / names blks)
+  "AI 调用入口：按行列蛇形顺序给指定属性块连续编号，无交互、不弹窗。
+  blkname: 块名或块名列表(可用逗号/分号/空格分隔，如 \"车位,车位-无障碍\")。
+  attname: 块内属性名。
+  start: 起始编号(缺省 1)。
+  ss: 限定范围(选择集或 ename 列表)；**全图传 nil**（AutoLISP 实参不可省略，少传会报“参数太少”）。
+  return: 按编号顺序的块 ename 列表；未找到匹配块或参数不合法返回 nil。
+  说明: 排序规则同 @block:sort-by-snake（成排蛇形，零星车位按列排在最后），
+        行容差取 @block:snake-row-tol，成排阈值取 @block:snake-min-row；
+        编号串按编号配置生成（前后缀、@block:overlay-index）。
+  示例: (@block:ai-number-by-snake "车位" "NUMBER" 1 nil)
+        (@block:ai-number-by-snake "车位,车位-无障碍" "NUMBER" 101 nil)
+        (@block:ai-number-by-snake "车位" "NUMBER" 1 (ssget))"
+  (setq names (@block:name-list blkname))
+  (setq blks (cond ((null ss) (pickset:to-list (ssget "x" '((0 . "INSERT")))))
+                   ((= 'pickset (type ss)) (pickset:to-list ss))
+                   ((listp ss) ss)
+                   (t (list ss))))
+  (setq blks (vl-remove-if-not
+              '(lambda (x)
+                (and (= "INSERT" (entity:getdxf x 0))
+                     (member (block:get-effectivename x) names)))
+              blks))
+  (if (and blks attname)
+      (@block:number-blocks
+       (@block:sort-by-snake blks
+                             (@:get-config '@block:snake-row-tol)
+                             (@:get-config '@block:snake-min-row))
+       attname start)))
 (defun @block:set-any-block-number (/ num1 start ss-list ss1 )
   (@::prompt "任意块编号，含有给定属性的任意块编号。")
   (if (= "" (@:get-config '@block:block-name))

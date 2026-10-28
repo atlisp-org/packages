@@ -1,17 +1,17 @@
 # at-block 功能扩展计划
 
-> @lisp 图块工具集（核心包 v1.1.9）。块编号、块替换、块爆炸（含可炸标志/循环爆炸）、重叠块定位/块视图、基点变换、xref 管理、跨块/跨图纸复制、分堆建块、按线转块等 15 个功能文件。
+> @lisp 图块工具集（核心包 v1.1.12）。块编号、块替换、块爆炸（含可炸标志/循环爆炸）、重叠块定位/块视图、基点变换、xref 管理、跨块/跨图纸复制、分堆建块、按线转块等 15 个功能文件。
 
 ## 1. 概览
-- 版本 1.1.9 / 分类 图块相关 / 依赖 base / 自研
-- 规模：18 个 .lsp 共约 3100 行 95 个函数；配置 10 项（block-name/attribute-name/prefix/suffix/overlay-index/xref-layer/sort-order "xY"/sort-fuzz/size/lib）
+- 版本 1.1.12 / 分类 图块相关 / 依赖 base / 自研
+- 规模：18 个 .lsp 共约 3100 行 95 个函数；配置 11 项（block-name/attribute-name/prefix/suffix/overlay-index/xref-layer/sort-order "xY"/sort-fuzz/size/overlap-tol/lib）
 - 菜单两块：`_Block`（14 项）+ `_Block2`（11 项）
 
 ## 2. 现状功能清单（按文件）
 | 文件 | 函数 | 功能 |
 |---|---|---|
 | at-block.lsp (575) | @block:config/setup | 编号配置对话框（块名+属性名+前后缀+覆盖策略） |
-| | @block:set-number | 核心编号：ssget 同名块 → sort-order(xY)+fuzz 排序 → 属性递增，overlay-index 覆盖策略 |
+| | @block:set-number | 核心编号：ssget 同名块 → sort-order(xY)+fuzz 排序 → 属性递增，overlay-index 覆盖策略（支持多块名，连续编号） |
 | | @block:set-any-block-number | 任意块编号（不限配置块名） |
 | | @block:subst | 块替换（不支持动态块） |
 | | @block:explodable / explode-disable | 块可炸标志（xdata 标记）设置/取消 |
@@ -22,13 +22,22 @@
 | | @block:menu-inserts | 连续插块 |
 | | @block:explode-all / explode-chain / explode-loop | 一炸到底 / 链式 / 循环爆炸 |
 | | @block:count-inblk / count-nested | 块内统计 / 嵌套块统计 |
-| numbering-by-route.lsp | @block:numbering-by-route | 沿多段线路径编号 |
+| numbering-by-route.lsp | @block:numbering-by-route / find-on-curve / sort-by-curve / curve-fence-points / number-blocks / ai-number-by-route | 沿曲线路径编号；按距离采样围栏(支持弧段/圆/样条)、按投影距离排序、无交互 AI 入口 |
 | auto-block-break.lsp (552) | c:auto-block-break 等 17 函数 | 第三方"自动断块"（mxv/trp/mxm 矩阵 + VLA） |
 | copy-to-drawings.lsp (637) | c:copy-to-drawings 等 19 函数 | 跨图纸复制（DCL 文件浏览器，browseforfolder COM） |
 | xref.lsp (207) | @block:xref-layer / xref-to-insert / help-xref-hk | xref 转插块 / xref 层管理 |
-| overkill.lsp | @block:overblocks / overblocks2 | 重叠块定位（size 阈值）/任意重叠 |
+| overkill.lsp | @block:overblocks / overblocks2 / box-overlap? / overlap-pairs | 重叠块定位（size 阈值）/任意重叠；包围盒正面积重叠判定（overlap-tol 容差，并排块边线相接不算重叠） |
 | explode.lsp | @block:explode-cliped | 炸剪裁块（按外框裁剪后炸） |
 | 其余小文件 | insert-all / minsert2insert / tchpr2insert / block-cluster / set-clustergap / clip-to-blk / copy-by-blk / rotate-blk-by-line / write-file / match-att-style | 全图块插入 / 多重转普通 / 保护转块 / 分堆建块 / 设间隙 / 按块裁剪 / 块间复制 / 按线旋转 / 写块到库 / 属性样式刷 |
+
+## 2.5 已修复
+- **加载时打印冗余横幅（v1.1.12）**：`auto-block-break.lsp` / `copy-to-drawings.lsp` 文件尾部有顶层 `(princ (strcat ...))` 版权横幅（Lee Mac AutoBlockBreak / Copy2Drawings），`@` 加载全部应用包时在命令行夹带 4 行 `::` 输出。删除横幅，保留 `(vl-load-com)` 与末尾 `(princ)`（抑制加载返回值打印），加载时零输出。
+- **按路线编号漏选/报错（P0，已修复 v1.1.11）**：`@block:numbering-by-route` 用 `curve:get-points`（只返回端点/控制点）作 `ssget "F"` 围栏，带弧段的多段线/圆弧/圆/样条会退化成弦，沿弧的块漏选；圆路线只返回 1 个点直接报错。改为按曲线长度等距采样（`@block:curve-fence-points`，16~2000 点）。排序改为预计算投影距离 + 稳定次序键（原实现每次比较都在比较函数里 `defun` 重算，慢且污染全局）。未找到块时改为 `princ` 提示，不再弹 `alert`/误触发编号配置。编号串统一走 `@block:number-string`（支持前后缀与 `overlay-index`）。新增 AI 入口 `@block:ai-number-by-route` / `@block:find-on-curve`。
+- **多块名编号（v1.1.11）**：`@block:block-name` 支持逗号/分号/空格分隔多个块名（如 `车位,车位-无障碍`）。新增 `@block:name-list` / `@block:block-names` / `@block:block-filter`，`set-number` 与按路线编号共用整套过滤器与编号串生成；多块名在同一次操作中共用一条连续编号（实测 52 块：车位 51 + 车位-无障碍 1，无障碍块按路径位置排到 21）。
+- **蛇形排序（v1.1.11）**：新增 `@block:sort-by-snake`，`@block:sort-order` 填 `snake`/`S`/`蛇形` 即启用。按包围盒中心分行（`snake-row-tol`，默认 1200），整排（≥`snake-min-row`，默认 5）后换向，成 S 形；零星车位（墙边单列）排在最后，按列从左到右、列内自上而下。实测地库 140 个车位：主排蛇形 + 墙边列收尾，平均相邻步距 6.6m（原 `xY` 排序为跳跃式）。
+- **AI 入口 `@block:ai-number-by-snake`（v1.1.11）**：无交互蛇形编号（`blkname`/`attname`/`start`/可选选择集，全图传 `nil`），自动全图筛选指定块名、按蛇形排序并写属性，返回按编号顺序的块列表。实测顶排 19 个车位：一次调用 203 ms 写入 01–19，写后已还原。
+- **缺属性提示（v1.1.11）**：编号统一走 `@block:number-blocks`，对缺少目标属性的同名块（如 `ADFHADGHSA` 无 `CAR-NUMBER`）自动跳过并提示（`princ` + `@block:last-hint`），跳过不占号、编号连续。实测全图 `ded,ADFHADGHSA`：127 个 ded 编号 01–127、13 个无属性块被跳过并提示，0 空号；只编 ded 时无提示。
+- **重叠块定位误判（P0，已修复 v1.1.10）**：overblocks/overblocks2 原用 `ssget "c"`（交叉窗口，含边界上的点）按块包围盒探测重叠，并排块边线重合（如两个车位块）会被误判为重叠。改为包围盒正面积重叠判定：X、Y 两方向重叠量均需大于 `@block:overlap-tol`（缺省 0.1），仅边线/角相接不算重叠。新增 `@block:box-overlap?` / `@block:overlap-pairs`（按 x 最小值排序的扫描，O(n·k) 比较）。
 
 ## 3. 新功能（NEW）
 - **F1 动态块替换（P1）**：描述自述"不支持动态块"；subst 对动态块按"同名替换保留动作"或"退化为普通块替换"两策略，解决最大痛点。

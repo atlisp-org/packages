@@ -13,7 +13,12 @@
 | at-arch:setup | at-arch.lsp:41 | 配置对话框（tmp-search-str "@arch"） |
 | at-arch:insert-parking / -accparking / -machineparking | :45/:58/:67 | 下载+dyndraw 插入车位类 dwg（三函数结构重复） |
 | at-arch:insert-block | lib.lsp:2 | 通用图块模板下载+插入（公建/住宅/防水/绿建专篇） |
-| at-arch:parking-numbering | :78 | 框选车位 → pickset:sort（顺序+8 倍容差）→ 属性 NUMBER* 递增编号，parking-curr-number 记忆 |
+| at-arch:parking-numbering | :205 | 框选车位（不选=全图）→ 识别车位 → 蛇形/坐标排序 → 编号属性递增，`*at-arch:parking-curr*` 续号记忆 |
+| at-arch:parking-p / -name-p / -layer-p / -geom-p | :82+ | 车位识别：块名规则 或 图层+尺寸规则（命名不规范也能认） |
+| at-arch:parking-type | :99+ | 车位类型：机械/无障碍/普通（名称关键字 + 宽度>=3300 判无障碍） |
+| at-arch:parking-number-att | :110+ | 取编号属性名（先精确 NUMBER，再按 `*NUMBER*,*编号*,*车位号*`） |
+| at-arch:parking-list / -select | :126+ | 筛选车位块（返回 车位列表.非车位数）/ 选中全部车位并分类型统计 |
+| at-arch:parking-number / ai-parking-number | :163+ | 无交互编号核心 / AI 入口 |
 | at-arch:locate-unnamed-space | :108 | 定位未命名房间（TCH_SPACE 组码 1="房间"）zoom w |
 | at-arch:locate-space / menu-locate-space | :114/:135 | 按编号（数字）或名称（*通配）定位房间，显示总净面积并选集 |
 | at-arch:w/space | :139 | 窗地比检查：TCH_SPACE 层 SPACE → VLA 读 ExtWinArea/useArea → 按 at-arch:w/ua 表（卧室1/7 办公1/5 走廊1/10…）判定，不合规标红(12)/合规无色 |
@@ -25,6 +30,12 @@
 | at-arch:make-table | :297 | 纯 text 手画表格（序号/型号/数量/总计），未用 table:make |
 | at-arch:export-space-csv | :346 | 房间 CSV 导出（编号/名称/面积） |
 | at-arch:area-summary | :375 | 按名称分类汇总建筑面积 |
+
+## 2.5 已修复 / 已增强
+- **车位编号重做（P0，v0.1.1）**：原实现 `(@::prompt "请框选")` 后却用 `block:ssget nil` 取全图（框选无效）、只认 `NUMBER*` 属性（`CAR-NUMBER` 漏掉）、无车位识别、无缺属性提示、`parking-curr-number` 裸全局。
+  现在：`at-arch:parking-p` 三重规则识别车位（块名 / 图层+尺寸），`parking-list` 过滤并统计非车位数，`parking-number` 支持蛇形排序（`pickset:sort-by-row`）与 `xyXY` 两种，缺编号属性的车位跳过并提示（不占号），`*at-arch:parking-curr*` 记忆续号，新增 AI 入口 `at-arch:ai-parking-number`。
+- **车位识别（新增）**：`@arch:parking-layer` + `@arch:parking-size` 解决"块名是 ded/ADFHADGHSA 这类乱名"的场景——实测该地库 127 个 `ded`（2.4×5.1，层`地面停车位`）识别为车位；同层 0.7×1.7 的 `ADFHADGHSA`（挡车器）与图框块（层不符）正确排除。
+- **lib 复用**：蛇形排序提取为 `pickset:sort-by-row`（lib/src/pickset/sort-by-row.lsp），at-block 的 `@block:sort-by-snake` 改为调用它。
 
 ## 3. 新功能（NEW）
 - **F1 房间批量命名（P1）**：按规则（前缀+序号/层号-房间号）批量改 TCH_SPACE 组码 1/2，配合 locate-space 形成"命名→定位"闭环。

@@ -6,7 +6,7 @@
 |------|-----|
 | 包名 | `at-block` |
 | 全名 | @lisp Block |
-| 版本 | 1.1.8 |
+| 版本 | 1.1.11 |
 | 作者 | VitalGG |
 | 邮箱 | vitalgg@gmail.com |
 | 分类 | 图块相关 |
@@ -38,15 +38,18 @@
 
 | 配置键 | 默认值 | 说明 |
 |--------|--------|------|
-| `@block:block-name` | 块名 | 用于排号的块名称 |
+| `@block:block-name` | 块名 | 用于排号的块名称；可填多个，用逗号/分号/空格分隔（如 `车位,车位-无障碍`），多个块名共用一条连续编号 |
 | `@block:attribute-name` | 属性名 | 用于排号的块内属性的名称 |
 | `@block:attribute-prefix` | `""` | 用于排号的块内属性值前缀 |
 | `@block:attribute-suffix` | `""` | 用于排号的块内属性值后缀 |
 | `@block:overlay-index` | `0` | 覆盖用于排号的块内属性原值；0=全覆盖；n=替换原内容以-分隔的第n部分 |
 | `@block:xref-layer` | `xref-lock` | 用于放置外部参照的图层名 |
-| `@block:sort-order` | `xY` | 排序规则；xyXY任意两两组合，y在前表示y坐标优先，大X表示从右到左排序 |
+| `@block:sort-order` | `xY` | 排序规则；xyXY任意两两组合，y在前表示y坐标优先，大X表示从右到左排序；填 `snake`（或 `S`/`蛇形`）按行蛇形排序 |
 | `@block:sort-fuzz` | `10,10` | 按位置排序时坐标的容差，逗号分隔不同轴容差 |
+| `@block:snake-row-tol` | `1200` | 蛇形排序：同一排的 y 容差（取车位深度的一半左右） |
+| `@block:snake-min-row` | `5` | 蛇形排序：一排数量达到该值才参与换向；不足的零星车位（墙边单列等）排在最后 |
 | `@block:size` | `1000` | 用于检测块重叠时块的最大尺寸（对角线长度） |
+| `@block:overlap-tol` | `0.1` | 重叠检测容差；两块包围盒重叠量小于等于该值视为不重叠（排除并排块边线相接的误判） |
 | `@block:lib` | `D:/Design/standard/lib/` | 以块方式管理的图库路径 |
 
 ## 菜单
@@ -58,7 +61,7 @@
 | Block Config | `@block:config` | 打开块配置对话框 |
 | Block Replace | `@block:subst` | 将目标块替换成源块 |
 | block auto numbering | `@block:set-number` | 块自动编号 |
-| Numbering by route | `@block:numbering-by-route` | 按曲线路线顺序对块递增编号 |
+| Numbering by route | `@block:numbering-by-route` | 按曲线路线顺序对块递增编号（支持直线/多段线/弧段/圆/样条） |
 | Anyblock numbering | `@block:set-any-block-number` | 对任意含指定属性的块编号 |
 | Block numbering Config | `@block:setup` | 设置要进行编号的图块和属性 |
 | Set as decomposable | `@block:explodable` | 将块设置为可分解 |
@@ -113,8 +116,26 @@
 3. 输入起始编号，自动为所有匹配块填写连续编号
 4. 支持前缀、后缀、覆盖模式等多种编号格式
 
+> 块名可配置多个（逗号/分号/空格分隔，如 `车位,车位-无障碍`），多个块名在同一次编号中连续排号。
+
+**蛇形排序（`@block:sort-order` = `snake`）**：适合车位、桩位等成排布置的对象。
+
+- 按包围盒中心分行（`snake-row-tol`），第 1 排从左到右，整排（数量 ≥ `snake-min-row`）后换向，形成 S 形；
+- 不足 `snake-min-row` 的零星车位（墙边单列等）排在最后：按列从左到右、列内自上而下；
+- 比 `xY` 更符合"沿车道一路编下去"的直觉，找位不用来回折返。
+
+**没有属性的块**：编号时若发现同名的块缺少目标属性（如 `ADFHADGHSA` 没有 `CAR-NUMBER`），
+会自动跳过并提示（命令行 `princ`，同时写入 `@block:last-hint` 供 AI/脚本读取），
+跳过的块不占用号，编号保持连续无空号。这类块只能改用文字编号。
+
 ### 按曲线路线编号
-选择一条曲线（LINE/LWPOLYLINE/MLINE），程序沿曲线方向对相交的块进行递增编号。
+选择一条曲线（LINE/LWPOLYLINE/POLYLINE/ARC/CIRCLE/SPLINE），程序沿曲线方向对相交的块进行递增编号。
+
+- 围栏按曲线等距采样（每 50 图形单位一点），带弧段的多段线、圆弧、圆、样条也按真实路径选块，不会退化成弦漏选。
+- 编号顺序按块插入点沿曲线的投影距离排序，距离相同保持原选择顺序。
+- `@block:block-name` 可配置多个块名（逗号/分号/空格分隔，如 `车位,车位-无障碍`），多个块名**共用一条连续编号序列**，一次跑完。
+- 编号格式与“块自动编号”一致：支持前缀/后缀，`@block:overlay-index` 非 0 时按原属性值的 `-` 分段替换。
+- 沿路线未找到块时给出提示，不再弹出模态框、也不会误触发“块编号配置”。
 
 ### 嵌套块统计
 递归统计指定块名的总参照个数，支持多级嵌套。例如块B内嵌2个A、块C内嵌3个A，可正确计算总数。
@@ -137,6 +158,22 @@
 
 ### 天正保护转块
 解除天正软件的 TCH_PR 保护块，使其可正常分解（需要以修复形式打开被加密文件）。
+
+### 重叠块定位
+按包围盒正面积重叠判定（重叠量需超过 `@block:overlap-tol` 容差），仅边线/角相接的并排块（如车位块边线重合）不算重叠。
+
+## AI 调用
+
+| 函数 | 说明 | 示例 |
+|------|------|------|
+| `@block:box-overlap?` | 判断两个包围盒是否有超过容差的正面积重叠（并排相接返回 nil） | `(@block:box-overlap? '((0 0 0) (3000 6000 0)) '((3000 0 0) (6000 6000 0)))` => nil |
+| `@block:overlap-pairs` | 从 块-包围盒 列表找出所有重叠块对，返回 `((blk1 blk2) ...)` | `(@block:overlap-pairs '((e1 ((0 0 0) (3000 6000 0))) (e2 ((2900 0 0) (5900 6000 0)))) 0.1)` => `((e1 e2))` |
+| `@block:ai-number-by-route` | 沿曲线按路径顺序给属性块编号，无交互、返回按顺序的块列表；块名可用 `车位,车位-无障碍` 传多个，统一连续编号 | `(@block:ai-number-by-route (car (entsel)) "车位,车位-无障碍" "NUMBER" 1)` |
+| `@block:find-on-curve` | 沿曲线按路径顺序查找指定块名的块（不写属性） | `(@block:find-on-curve (car (entsel)) "车位")` |
+| `@block:sort-by-snake` | 按行列蛇形排序块（成排的走 S 形，零星车位按列排最后），返回排好的 ename 列表 | `(@block:sort-by-snake blks 1200 5)` |
+| `@block:ai-number-by-snake` | 按蛇形顺序给属性块连续编号（可全图或限定选择集），无交互、返回按编号顺序的块列表；全图时第 4 参数传 `nil`；没有属性的块会被跳过并提示（`princ` + 写入 `@block:last-hint`） | `(@block:ai-number-by-snake "车位" "NUMBER" 1 nil)`<br>`(@block:ai-number-by-snake "车位,车位-无障碍" "NUMBER" 101 ss)` |
+| `@block:has-attribute-p` | 判断块是否含指定属性（标签不区分大小写） | `(@block:has-attribute-p blkref "NUMBER")` |
+| `@block:missing-attribute-hint` | 对缺少属性的块打印提示并写入 `@block:last-hint`，返回跳过数量 | `(@block:missing-attribute-hint blks "NUMBER")` |
 
 ## 源文件
 

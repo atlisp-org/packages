@@ -623,14 +623,6 @@
 ;;----------------------------------------------------------------------;;
 
 (vl-load-com)
-(princ
-    (strcat
-        "\n:: copy-to-drawings.lsp | 基于 Copy2Drawings v1.3 | \\U+00A9 Lee Mac "
-        (menucmd "m=$(edtime,0,yyyy)")
-        " www.lee-mac.com ::"
-        "\n:: 命令: copy-to-drawings ::"
-    )
-)
 (princ)
 
 ;;----------------------------------------------------------------------;;

@@ -24,6 +24,13 @@
   - 本目录：`./validate-all.sh [包名]`（lint 包内全部 .lsp，有错误则退出码 1）
 - CAD 实测（新功能/逻辑改动必做）：CAD 命令行 `@I <包名>` 安装，或执行 `(@:package-install "包名")` 后再调用包函数（也可走 atlisp-mcp 的 init_atlisp → at_command 流程）。`base/test.lsp` 里有 `push-var`/`pop-var` 保存恢复系统变量的测试写法可参考。
 
+## 命名约定（2026-10 起）
+
+iMini 复现工作产生的 `mini-*` 包已全部并入 `at-*` 包（`docs/imini-reproduce-plan.md`），
+仓库中**不应再出现 `mini-*` 目录**。需要新增同类功能时，直接加到对应 `at-*` 包：
+并入现有包沿用该包已有命名空间前缀（如 `@text:`、`@block:`、`@layout:`），
+新建包才用 `<包名>:`。
+
 ## 方言限制（实测，写代码前必看）
 
 本仓库的 AutoLISP 方言**不是** Common Lisp，以下写法会直接在 CAD 里报错：

@@ -87,4 +87,6 @@
 
 说明：
 - 截图优先 `vla-GetImage`，不可用时返回 nil 并 princ 原因（不同 CAD 版本能力不同）。
+- 视图窗口取自 `(getvar "view")`；部分 CAD（如 ZWCAD LMS Tech 24.x）该变量为 nil
+  且无 VLA ViewCenter，此时退回整幅范围 `extmin/extmax`。
 - 布局拆图会新建临时文档逐个布局另存，源文档不变；文件名自动避开非法字符。

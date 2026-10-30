@@ -11,6 +11,8 @@
 | ole图像 | 插入图像 | `(ole:insert-img)` | 插入单张图像 |
 | ole图像 | 配置环境 | `(ole:install)` | 运行安装脚本 |
 | ole图像 | 批量光栅 | `(ole:multi-rasteriamge)` | 批量插入光栅图像 |
+| ole图像 | 图片转OLE | `(ole:image2ole)` | 单张图片转 OLE/图像插入 |
+| ole图像 | 裁剪图像 | `(ole:ole-crop)` | 按矩形边界裁剪图像/OLE |
 
 ## 函数列表
 
@@ -26,6 +28,8 @@
 | `ole:osmode-off` | 无 | 关闭对象捕捉 |
 | `ole:osmode-on` | 无 | 恢复对象捕捉 |
 | `ole:multi-rasteriamge` | 无 | 批量插入光栅图像 |
+| `ole:image2ole` | 无 | 单张图片转 OLE/图像插入 |
+| `ole:ole-crop` | 无 | 按矩形边界裁剪图像/OLE |
 
 ## 配置项
 
@@ -49,11 +53,22 @@
 (@:package-install "ole")
 ```
 
+## AI 调用
+
+以下入口**无交互**（不弹窗、不取点），可由 MCP `eval_lisp` 直接调用；
+成功返回图元 ename，失败返回 `nil` 并用 `princ` 说明原因。
+
+| 函数 | 参数 | 说明 / 示例 |
+|---|---|---|
+| `ole:ai-image2ole` | `img-file pt scale` | 图片转 OLE/图像插入。OLE 不可用时降级光栅图像。`(ole:ai-image2ole "C:/img/1.png" '(0 0 0) 1.0)` |
+| `ole:ai-ole-crop` | `ent corner1 corner2` | 按矩形边界裁剪 IMAGE（ClipBoundary）；OLE 不支持裁剪，改为按矩形调整大小。`(ole:ai-ole-crop (car (entsel)) '(0 0 0) '(100 100 0))` |
+
 ## 源文件
 
 | 文件 | 说明 |
 |------|------|
 | `ole.lsp` | 主程序源码 |
+| `image2ole.lsp` | 图片转 OLE / 裁剪图像 |
 | `install.ps1` | PowerShell 安装脚本 |
 | `pkg.lsp` | 包清单 |
 
@@ -61,6 +76,6 @@
 
 - **作者**: VitalGG
 - **邮箱**: vitalgg@gmail.com
-- **版本**: 0.1.7
+- **版本**: 0.2.0
 - **分类**: Common
 - **网站**: http://atlisp.cn

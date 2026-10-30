@@ -24,4 +24,11 @@
             "translate"
             "curve-text"
             "mask"
-            "numinc")))
+            "numinc"
+            "text-tools"
+            "text-edit"
+            "font-ext"
+            "att-ext"
+            "misc-ext"
+            "floor.txt"
+            "room.txt")))

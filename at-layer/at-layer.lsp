@@ -13,6 +13,22 @@
 	       ("图层漫游" "laywalk")
 	       ("选图进层" "(@layer:ent-to-clayer)")
 
+	       ("保存图层状态" "(@layer:save-state)")
+	       ("恢复图层状态" "(@layer:restore-state)")
+	       ("状态列表" "(@layer:state-list)")
+	       ("隐藏实体" "(@layer:hide-ents)")
+	       ("显示已隐藏" "(@layer:show-hidden)")
+	       ("独立显示" "(@layer:isolate)")
+	       ("取消独立显示" "(@layer:un-isolate)")
+	       ("锁定实体" "(@layer:lock-ents)")
+	       ("解锁实体" "(@layer:unlock-ents)")
+	       ("解锁全部实体" "(@layer:unlock-ents-all)")
+	       ("清理双$图层" "(@layer:kill-dollar)")
+	       ("层名大小写" "(@layer:strcase)")
+	       ("按颜色分层" "(@layer:by-color)")
+	       ("图层调整顺序" "(@layer:ldorder)")
+	       ("图层提取器" "(@layer:extract)")
+
 	       ))
 ;; (@:add-menu "图层" "常用命令" "(@layer:ent-to-clayer)")
 

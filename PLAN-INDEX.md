@@ -55,7 +55,7 @@
 | 48 | doslib | 2/2 | ⬜ | | |
 | 49 | everything | 3/1 | ⬜ | | |
 | 50 | flange | 3/2 | ⬜ | | |
-| 51 | fonts | 3/11 | ⬜ | | |
+| 51 | fonts | 4/27 | ✅ | iMini style_any/hz/khz + font_list 复现 | ≈5h |
 | 52 | game-wzq | 2/1 | ⬜ | | |
 | 53 | gis-tools (无pkg.lsp) | 0/py | ⬜ | | |
 | 54 | helloworld | 2/1 | ⬜ | | |
@@ -65,7 +65,7 @@
 | 58 | mark-order | 3/4 | ⬜ | | |
 | 59 | networkx | 5/3 | ⬜ | | |
 | 60 | ocr | 3/1 | ⬜ | | |
-| 61 | ole | 2/10 | ⬜ | | |
+| 61 | ole | 2/20 | ✅ | iMini image2ole + oleimage_crop 复现 | ≈4h |
 | 62 | opendcl | 3/2 | ⬜ | | |
 | 63 | pdftk | 3/16 | ⬜ | | |
 | 64 | prefabricated-building | 7/17 | ⬜ | | |
@@ -86,3 +86,35 @@
 - [ ] 跨包重叠：at-stat / list-rec-wxh / at-math(统计) / at-block(numbering) 等
 - [ ] 编码治理：at-layout / at-elec / prefabricated-building 的 pkg.lsp 乱码
 - [ ] 第三方署名包（需原作者确认）：agan-cal、agan-vport-syn、align-all、align-array、block-view、youyun-plot、lpsidemenu、list-rec-wxh、cmd-ext、ole、pdftk、doslib、everything、autohotkey、alt-run、acmecad2021、landscape-plants、structure-tools、game-wzq
+
+## iMini 功能复现（2026-10）
+
+> 总计划：`docs/imini-reproduce-plan.md`（iMini V8.7.1 的 410 个自定义命令 → 目标包映射）。
+> 命名规则：一律 `at-` 前缀；已有同名 `at-*` 包则合并功能，沿用该包已有命名空间前缀。
+
+| 包 | 类型 | 规模 | 状态 | 说明 |
+|---|---|---|---|---|
+| at-edit | 新建 | 3 lsp / 30 命令 | ✅ | 变换增强 14 + 多段线/转换/布尔/块 16；变换类 CAD 实测 14/14 |
+| at-arch | 合并 | +6 lsp / 18 AI | ✅ | 轴网、墙、柱、梁、门窗（`at-arch:` 前缀） |
+| at-block | 合并 | +2 lsp / 12 命令 | ✅ | 块重命名/插入点/替换/布块/缩放/统计；翻转与 Xref（`@block:`） |
+| at-layer | 合并 | +1 lsp / 9 类命令 | ✅ | 图层状态、隐藏/隔离、实体锁定、清理 `$$` 层、层名大小写、按色分层、绘图顺序、提取器 |
+| at-layout | 合并 | +4 lsp / 21 AI | ✅ | 布局改名/合并/分图/取图、视口比例/同步/外框/锁定/图层状态/变灰、布图（`@layout:`） |
+| at-stat | 合并 | +4 lsp / 13 AI | ✅ | 块/文字/形状/长度/面积统计、分摊表、文字计算、Excel 输出 |
+| at-text | 合并 | +4 lsp / 15 AI | ✅ | 全能编辑、批量改字、排版、连接、字体替换、属性互转、词库（`@text:`） |
+| at-linetype | 合并 | +4 lsp / 9 AI | ✅ | 批量改线型、局部虚线、反转、线型树、形文件（mkshape 仅 .shp 文本） |
+| at-dim | 合并 | +2 lsp / 14 命令 | ✅ | 标注移动/归位/对齐/合并/总标/检查/恢复、尺寸链、房间标注、多重引线；CAD 实测 14/14 |
+| at-landscape | 新建 | 5 lsp / 10 命令 | ✅ | 灌木边缘、立面草、苗木标注与统计、面积、搭桥/挖路、里程、界址点；CAD 实测 5/5 |
+| at-interior | 新建 | 6 lsp / 22 AI | ✅ | 柜类平面剖面、天花角线、灯具、板材截面、焊缝管线 |
+| at-hatch | 新建 | 4 lsp / 12 命令 + 12 AI | ✅ | 快捷/超级填充、填充改参/移动、边界生成、批量分离、面域布尔裁切、SOLID 互转、图案提取/自定义、修复不显示（`at-hatch:` 前缀）；CAD 实测 12/12 |
+| at-select / at-purge / at-color | 合并 | 🔄 | 🔄 | 链式/触碰选择、一键清理、全能变色（子代理进行中） |
+| at-pm / at-plot / ole / fonts / composing / at-math / at-number | 合并 | 🔄 | 🔄 | 图框合并、截图拆图、图片转 OLE、字形设置、矩形嵌套、文字计算、全能编号（子代理进行中） |
+
+### 方言坑（已写入 AGENTS.md「方言限制」）
+`let`/`let*` 不存在、无全局 `tan`、局部表不能绑 `t`/`nil`/`type`、`entity:make-lwpline` 不存在、
+`(last '(1 2 3))` 返回 3、`entmakex` 不能含 nil、`and`/`or` 只返回 T/nil、`member` 不适用于字符串、
+DIMENSION 的 11/70 组码需 `vla-put-TextPosition`。
+
+### 自查工具（本轮新增，可复制进仓库）
+- `check-lisp-pitfalls.py`：扫方言坑
+- `fix-let.py`：`let` → `setq` 并自动补局部变量表
+- `lisp-balance.py`：定位括号不平衡的具体函数

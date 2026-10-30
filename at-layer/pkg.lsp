@@ -9,4 +9,5 @@
         (:OPEN-SOURCE . 0)
         (:FREE . T)
         (:REQUIRED . "base")
-        (:FILES "at-layer")))
+        (:FILES "at-layer"
+            "layers-ext")))

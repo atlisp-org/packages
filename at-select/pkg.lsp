@@ -15,4 +15,5 @@
             "cluster-box"
             "object-align"
             "chain-sel"
+            "quick-sel"
             "menus")))

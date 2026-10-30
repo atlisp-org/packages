@@ -10,4 +10,8 @@
         (:DESCRIPTION . "统计图元，并绘制表格。")
         (:URL . "http://atlisp.cn")
         (:FILES "at-stat"
-            "menus")))
+            "menus"
+            "stat-tools"
+            "count"
+            "area"
+            "misc")))

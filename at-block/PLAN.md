@@ -80,3 +80,30 @@
 | R2 排序入 lib | P2 | 1.5h | 跨包 |
 | F4/F5/F6 | P2 | 各 2-3h | — |
 | I5/R3 | P2 | 1.5h | 需作者确认 |
+
+## 8. iMini 复现补充（blk-manage.lsp / xref-tools.lsp）
+
+| iMini 命令 | 本包函数 | 状态 |
+|---|---|---|
+| mini_blk_rename | `@block:blk-rename` / `ai-blk-rename` / `ai-blk-rename-pattern` | ✅ |
+| mini_blk_Insertion | `@block:blk-insertion` / `ai-blk-insertion` | ✅ |
+| mini_blk_replace | `@block:blk-replace` / `ai-blk-replace`（`@block:subst` 增强版） | ✅ |
+| mini_blk_along_line | `@block:blk-along-line` / `ai-blk-along-line` | ✅ |
+| mini_dksf | `@block:multi-scale` / `ai-multi-scale` | ✅ |
+| mini_dtbl | `@block:dtbl` / `ai-dtbl` | ✅ |
+| mini_blocksee | `@block:block-see` / `ai-block-see` | ✅ |
+| mini_block_flipm | `@block:block-flipm` / `ai-block-flipm` / `ai-block-flipm-line` | ✅ |
+| mini_block_flips | `@block:block-flips` / `ai-block-flips` | ✅ |
+| mini_xdlj | `@block:xref-repath` / `ai-xref-repath` | ✅ |
+| mini_xref2blk | `@block:xref2blk` / `ai-xref2blk`（包装 `@block:xref-to-insert`） | ✅ |
+| mini_batch_xref | `@block:batch-xref` / `ai-batch-xref` | ✅ |
+
+### 待办
+- P1 `blocksee_set`（慧眼识块设置：图库预览缩略图与检索条件）——需 DCL + 缩略图生成，未实现
+- P1 `blk-set-base`（entmod BLOCK 记录组码 10）与 `move-ent`（块定义内 `vla-move`）需在 CAD 实测确认
+- P2 动态块替换（`@block:blk-replace` 目前按块名替换，动态块参数不迁移）
+
+### 已知问题
+- 加载 `blk-manage.lsp` 时曾导致共享 CAD 实例 stall（未确证是本文件所致），CAD 恢复后需按
+  `ai-block-see` → `ai-multi-scale` → `ai-blk-rename` → `ai-blk-insertion` → `ai-blk-along-line`
+  顺序冒烟。

@@ -11,6 +11,7 @@
 | 数学2 → 框选标数 | `(@math:mark-in-w)` | 框选区域标注数字 |
 | 数学2 → 提物理量 | `(@math:unit-number)` | 提取带单位的物理量数值 |
 | 数学2 → 代数运算 | `(@m:cal-text-post)` | 对文本中的数字进行代数运算 |
+| 数学 → 全能计算 | `(at-math:cale-txt)` | 选中数字/算式文字，求和、求积或逐项求值 |
 
 ## 主要功能模块
 
@@ -48,6 +49,20 @@
 
 交互式计算器功能。
 
+### 全能文字计算 (cale-txt.lsp)
+
+| 函数 | 说明 |
+|------|------|
+| `at-math:cale-txt` | 交互命令：选中数字/算式文字，求和、求积或逐项求值 |
+| `at-math:ai-cale` | AI 入口：无交互计算，返回结果值与文字 ename |
+| `@math:cale-eval` | 内置四则表达式解析器（+ - * / 括号、小数、一元正负号，不使用 eval） |
+
+## AI 调用
+
+| 函数 | 说明 | 示例 |
+|------|------|------|
+| `at-math:ai-cale` | 对选中文字求和/求积/逐项求值，无交互、不弹窗；sum/prod 返回 `(结果值 文字ename)`，eval 返回 `((值 . 文字ename) ...)` | `(at-math:ai-cale (ssget '((0 . "*text"))) "sum" (getpoint))`<br>`(at-math:ai-cale ents "eval" nil)` |
+
 ## 依赖
 
 - `base`
@@ -81,6 +96,7 @@
 | `mark-in-zone.lsp` | 区域标数 |
 | `unit-number.lsp` | 单位换算 |
 | `cal.lsp` | 计算器 |
+| `cale-txt.lsp` | 全能文字计算 |
 | `menu.lsp` | 菜单定义 |
 
 ## 作者

@@ -24,6 +24,32 @@
   - 本目录：`./validate-all.sh [包名]`（lint 包内全部 .lsp，有错误则退出码 1）
 - CAD 实测（新功能/逻辑改动必做）：CAD 命令行 `@I <包名>` 安装，或执行 `(@:package-install "包名")` 后再调用包函数（也可走 atlisp-mcp 的 init_atlisp → at_command 流程）。`base/test.lsp` 里有 `push-var`/`pop-var` 保存恢复系统变量的测试写法可参考。
 
+## 方言限制（实测，写代码前必看）
+
+本仓库的 AutoLISP 方言**不是** Common Lisp，以下写法会直接在 CAD 里报错：
+
+- **没有 `let` / `let*`** —— 报 `no function definition`。局部绑定一律用 `setq` +
+  函数形参/局部变量表（`(defun f (a / b c) ...)`）。
+- **没有全局 `tan`** —— 需自备 `(defun ns:tan (x) (/ (sin x) (cos x)))`。
+- 局部变量表**不能**绑定保护符号 `t` / `nil`（`(defun f (/ t) ...)` 直接报
+  “要绑定的对象不正确: T”），也不要绑定内置函数名 `type`（动态作用域会让
+  `entity:getdxf`、`(type x)` 等全部失效）。
+- `entity:make-lwpline` 不存在，用 `entity:make-lwpolyline`。
+- `(last '(1 2 3))` 在本运行时返回 `3` 而非 `(3)`，取末元素请用
+  `(car (reverse lst))`。
+- `entmakex` 的 dxf 列表里不能有 `nil` 元素（报 `DXF 组不正确: nil`），
+  用 `(entmakex (vl-remove nil dxf))`。
+- **`and` / `or` 只返回 `T` / `nil`**（AutoLISP 语义，不是 Common Lisp 的「返回最后一个值」）。
+  需要取值的写法必须用 `if` 或 `(cond (测试 值) (t 默认))`，例如
+  `(setq x (and a b))` 拿到的是 `T` 而不是 `b` 的值。
+- `member` 只用于表；判断字符是否在字符串里用 `vl-string-search`。
+- DIMENSION 的 11（文字位置）/ 70 组码用 `entmod` 常静默失效，改文字位置用
+  `vla-put-TextPosition`；旋转标注（70=32）的 50 组码必须写在
+  `AcDbAlignedDimension` 段内。
+
+静态自查脚本（本机 `/tmp/opencode/check-lisp-pitfalls.py`，可复制进仓库复用）能扫出
+上述问题。
+
 ## AI 调用约定（agent 通过 MCP eval_lisp 调用）
 
 包代码不只服务交互用户，也会被 AI agent 直接调用。凡是有 agent 可能用到的能力，

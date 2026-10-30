@@ -25,4 +25,6 @@
             "clip-to-blk"
             "rotate-blk-by-line"
             "auto-block-break"
-            "copy-to-drawings")))
+            "copy-to-drawings"
+            "blk-manage"
+            "xref-tools")))

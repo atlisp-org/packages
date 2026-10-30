@@ -60,3 +60,24 @@
 ## 许可证
 
 请查看源码获取许可信息
+
+## 快速截图 / 布局拆图（iMini 复现）
+
+| 命令 | AI 入口 | 说明 |
+|---|---|---|
+| `@plot:screenshot` | `@plot:ai-screenshot out-file [region]` | 当前视图或指定窗口截图存图；region 为 `(左下点 右上点)` 模型坐标 |
+| `@plot:split-layout` | `@plot:ai-split-by-layout out-dir [print]` | 按布局把当前图拆成多个 dwg；print=T 时同时整幅打印 PDF |
+
+示例：
+
+```lisp
+;; 截当前视图
+(@plot:ai-screenshot "D:/shot.png" nil)
+
+;; 按布局拆图并打印
+(@plot:ai-split-by-layout "D:/layouts" T)
+```
+
+说明：
+- 截图优先 `vla-GetImage`，不可用时返回 nil 并 princ 原因（不同 CAD 版本能力不同）。
+- 布局拆图会新建临时文档逐个布局另存，源文档不变；文件名自动避开非法字符。

@@ -139,3 +139,41 @@ AI 调用入口：
 ```
 (@:package-install "at-arch")
 ```
+
+## 建筑绘图补充（iMini 复现，2026-10）
+
+菜单「建筑绘图」，共 18 个 AI 入口。交互入口同名去掉 `ai-` 前缀。
+
+| 命令 | AI 入口 | 说明 |
+|---|---|---|
+| 直线轴网 | `at-arch:ai-axis-line origin x-spacings y-spacings [layer]` | 生成正交轴线 + 轴号圈 + 编号 |
+| 轴线编号 | `at-arch:ai-axis-text axis-ents` | 对已有轴线重编轴号 |
+| 修改轴线编号 | `at-arch:ai-axis-update axis-texts [start] [prefix]` | 轴号重排 |
+| 画墙 | `at-arch:ai-wall pts thickness [layer]` | 多段线路径生成双线墙 |
+| 单线变墙 | `at-arch:ai-line2wall ents thickness [both] [del]` | 折线两侧偏移成墙 |
+| 批量改墙宽 | `at-arch:ai-wall-width ents tnew` | 按新墙厚重画墙双线 |
+| 墙体完成面 | `at-arch:ai-wall-cover ents d` | 向外偏移完成面线 |
+| 删除墙柱门窗 | `at-arch:ai-erase-wall ents / layers` | 按图层关键字批量删除 |
+| 画柱 | `at-arch:ai-column pt shape w h [label]` | r/o/c/l/t 五种柱形 |
+| 多段线变柱 | `at-arch:ai-pline2column ents` | 矩形/圆→柱 |
+| 画梁 | `at-arch:ai-beam p1 p2 width [layer]` | 中心线 + 梁宽双线 |
+| 单线变梁 | `at-arch:ai-line2beam ents width` | 折线生成梁 |
+| 批量改梁宽 | `at-arch:ai-beam-width ents w` |  |
+| 两点画门 | `at-arch:ai-door p1 p2 thickness side leaves` | 门框 + 门扇 + 开启弧 |
+| 两点画窗 | `at-arch:ai-win p1 p2 thickness` | 三线窗符号 |
+| 墙上开门 | `at-arch:ai-hole-door ents pt width side leaves` | 墙体断开 + 门 |
+| 门窗编号 | `at-arch:ai-win-text ents label` | 中心编号文字 |
+| 门窗表 | `at-arch:ai-win-list ents` | 返回门窗统计表数据 |
+
+示例：
+
+```lisp
+;; 3.6m+3.6m 开间、4.2m+4.5m 进深的轴网
+(at-arch:ai-axis-line '(0 0 0) '(3600 3600) '(4200 4500) "AXIS")
+
+;; 300x600 方柱
+(at-arch:ai-column '(0 0 0) "r" 300 600 "KZ1")
+
+;; 沿墙线生成 240 厚墙
+(at-arch:ai-line2wall (list (car (entsel))) 240 T nil)
+```

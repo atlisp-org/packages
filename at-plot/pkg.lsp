@@ -13,4 +13,6 @@
             "frame-recognition"
             "mark-frame"
             "export"
-            "train")))
+            "train"
+            "screenshot"
+            "split-layout")))

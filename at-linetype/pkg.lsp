@@ -13,4 +13,8 @@
         (:FILES "at-linetype"
             "@lisp.lin"
             "equip.lin"
-            "@lisp.shp")))
+            "@lisp.shp"
+            "ltype-tools"
+            "ltype-ext"
+            "shape-ext"
+            "tree-ext")))

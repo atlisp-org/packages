@@ -1,5 +1,6 @@
 ;;; 全能编号：选中点/文字/块插入点，按顺序批量编号。
 ;;; 支持前缀/后缀/起始号/步长，可横向、纵向或蛇形排序。
+;;; 注：部分 CAD（如 ZWCAD）无 startundo/endundo，统一用 UNDO Begin/End 命令实现。
 (@:define-config '@number:prefix "" "编号前缀")
 (@:define-config '@number:suffix "" "编号后缀")
 (@:define-config '@number:offset 300
@@ -133,7 +134,7 @@
                          (t (at-number:sort-by-x ents))))
         (setq i 0
               res nil)
-        (startundo)
+        (command "_.UNDO" "Begin")
         (foreach e ents
           (setq num (+ start (* i step)))
           (setq en (entity:make-text
@@ -146,7 +147,7 @@
           (entity:putdxf en 8 (@::get-config '@number:layer))
           (setq res (cons en res)
                 i (1+ i)))
-        (endundo)
+        (command "_.UNDO" "End")
         (princ (strcat "\n[编号] 已生成 " (itoa (length res)) " 个编号。"))))
   (princ))
 
@@ -180,7 +181,7 @@
                         (t (at-number:sort-by-x lst))))
         (setq i 0
               res nil)
-        (startundo)
+        (command "_.UNDO" "Begin")
         (foreach e lst
           (setq num (+ start (* i step)))
           (setq en (entity:make-text
@@ -193,5 +194,5 @@
           (entity:putdxf en 8 (@::get-config '@number:layer))
           (setq res (cons en res)
                 i (1+ i)))
-        (endundo)
+        (command "_.UNDO" "End")
         (reverse res))))

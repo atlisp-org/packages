@@ -1,5 +1,6 @@
 ;;; 全能文字计算：选中数字/算式文字，求和、求积或逐项求值。
 ;;; 内置简易表达式解析器(支持 + - * / 括号与小数)，不使用 eval。
+;;; 注：部分 CAD（如 ZWCAD）无 startundo/endundo，统一用 UNDO Begin/End 命令实现。
 (@:define-config '@math:cale-layer "cale"
                  "全能计算结果文字所在图层")
 (@:define-config '@math:cale-fontsize 3.5
@@ -176,7 +177,7 @@
             (progn
               (setq res nil
                     miss 0)
-              (startundo)
+              (command "_.UNDO" "Begin")
               (foreach ent ents
                 (setq total (@math:cale-txt-value ent))
                 (if (numberp total)
@@ -185,7 +186,7 @@
                                 total (@math:cale-side-point ent))
                                res))
                     (setq miss (1+ miss))))
-              (endundo)
+              (command "_.UNDO" "End")
               (if res
                   (princ (strcat "\n[计算] 已写 " (itoa (length res))
                                  " 个结果，跳过 " (itoa miss) " 个。"))
@@ -202,9 +203,9 @@
                           (getpoint "\n指定结果文字插入点(回车仅显示): "))
                     (if result-pt
                         (progn
-                          (startundo)
+                          (command "_.UNDO" "Begin")
                           (setq en (@math:cale-make-text total result-pt))
-                          (endundo))
+                          (command "_.UNDO" "End"))
                         nil)
                     (princ (strcat "\n[计算] 结果: "
                                    (@math:cale-format total)))))))))
@@ -230,7 +231,7 @@
         (cond
           ((= "EVAL" op)
            (setq res nil)
-           (startundo)
+           (command "_.UNDO" "Begin")
            (foreach ent lst
              (setq total (@math:cale-txt-value ent))
              (if (numberp total)
@@ -239,7 +240,7 @@
                                         total
                                         (@math:cale-side-point ent)))
                                  res))))
-           (endundo)
+           (command "_.UNDO" "End")
            (reverse res))
           (t
            (setq vals (vl-remove nil (mapcar '@math:cale-txt-value lst)))
@@ -251,8 +252,8 @@
                                  (apply '+ vals)))
                  (if (and result-pt (listp result-pt))
                      (progn
-                       (startundo)
+                       (command "_.UNDO" "Begin")
                        (setq en (@math:cale-make-text total result-pt))
-                       (endundo)
+                       (command "_.UNDO" "End")
                        (list total en))
                      (list total nil)))))))))

@@ -65,9 +65,9 @@ t: 墙厚。side: 1 朝方向左侧开启 / -1 右侧。leaves: 1 单扇 2 双�
 (defun at-arch:ai-door (p1 p2 th side leaves / layer res)
   "AI 入口：两点画门（门框+门扇+开启弧）。
 p1/p2: 门洞两端点。
-t: 墙厚（默认 240）。
-side: 1 朝 p1→p2 方向左侧开启 / -1 右侧（默认 1）。
-leaves: 1 单扇 / 2 双扇（默认 1）。
+t: 墙厚（nil 取 240）。
+side: 1 朝 p1→p2 方向左侧开启 / -1 右侧（nil 取 1）。
+leaves: 1 单扇 / 2 双扇（nil 取 1）。
 return: 图元 ename 列表；参数非法返回 nil。
 示例: (at-arch:ai-door '(0 0) '(900 0) 240 1 1)"
   (if (or (null p1) (null p2) (< (distance p1 p2) 10))
@@ -125,7 +125,7 @@ return: 图元 ename 列表；参数非法返回 nil。
 
 (defun at-arch:ai-win (p1 p2 th / layer res)
   "AI 入口：两点画窗（窗框+中线，三线窗符号）。
-p1/p2: 窗洞两端点。t: 墙厚（默认 240）。
+p1/p2: 窗洞两端点。t: 墙厚（nil 取 240）。
 return: 图元 ename 列表；参数非法返回 nil。
 示例: (at-arch:ai-win '(0 0) '(1500 0) 240)"
   (if (or (null p1) (null p2) (< (distance p1 p2) 10))
@@ -162,8 +162,8 @@ return: 图元 ename 列表；参数非法返回 nil。
   "AI 入口：墙上开门（在双线墙上切出洞口并画门）。
 ents: 墙线（LINE/LWPOLYLINE，双线墙）ename 列表或选择集。
 pt: 墙上靠近开门中心的一点。
-width: 门宽（默认 900）。t: 墙厚（默认 240）。
-side: 开启方向 1/-1（默认 1）。leaves: 1 单扇 2 双扇（默认 1）。
+width: 门宽（nil 取 900）。t: 墙厚（nil 取 240）。
+side: 开启方向 1/-1（nil 取 1）。leaves: 1 单扇 2 双扇（nil 取 1）。
 return: 图元 ename 列表（新墙线+门）；无有效墙线返回 nil。
 示例: (at-arch:ai-hole-door (ssget) '(1800 1200) 900 240 1 1)"
   (if (or (null ents) (null pt))
@@ -274,7 +274,7 @@ return: 图元 ename 列表（新墙线+门）；无有效墙线返回 nil。
   (princ))
 
 (defun at-arch:ai-win-text (ents label / tt res i e bb center layer s
-                                       prefix cnt)
+                                       prefix cnt n)
   "AI 入口：门窗编号。在每个选中门窗实体的中心放置编号文字。
 ents: ename 列表或选择集（门窗实体）。
 label: 编号字符串（如 \"M1\"）；nil 时按图层自动编号：
@@ -307,14 +307,14 @@ return: 文字 ename 列表；未选择实体返回 nil。
                                   (wcmatch s "*窗*"))
                               (setq prefix "C")
                               (setq prefix "N")))
-                      (setq cnt (if (member (list prefix 0) cnt)
+                      (setq cnt (if (assoc prefix cnt)
                                     cnt
                                     (cons (list prefix 0) cnt)))
                       (setq n (assoc prefix cnt))
-                      (setq n (list (car n) (1+ (cadr n))))
-                      (setq cnt (at-arch:setn cnt
-                                 (position n cnt) n))
-                      (setq label (strcat prefix (itoa (cadr n)))))
+                      (setq cnt (at-arch:setn cnt (position n cnt)
+                                 (list (car n) (1+ (cadr n)))))
+                      (setq label (strcat prefix
+                                 (itoa (cadr (assoc prefix cnt))))))
                 (if (setq tt (at-arch:text label center
                           (at-arch:ts 250) 0 "M" layer))
                     (setq res (cons tt res))))))

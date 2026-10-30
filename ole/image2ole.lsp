@@ -1,5 +1,6 @@
 ;; 图片转 OLE / 裁剪 OLE 图像
 ;; iMini 功能复现：image2ole（图片转 OLE 插入）、oleimage_crop（裁剪 OLE/图像）
+;; 注：部分 CAD（如 ZWCAD）无 startundo/endundo，统一用 UNDO Begin/End 命令实现。
 
 (@:add-menu "ole图像" "图片转OLE" "(ole:image2ole)")
 (@:add-menu "ole图像" "裁剪图像" "(ole:ole-crop)")
@@ -59,9 +60,9 @@ img-file: png/jpg 等图片文件路径。pt: 插入点（默认 0,0,0）。scal
         (if (null pt) (setq pt '(0 0 0)))
         (setq scale (getreal "\n缩放比例<1.0>:"))
         (if (null scale) (setq scale 1.0))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res (ole:ai-image2ole img-file pt scale))
-        (endundo)
+        (command "_.UNDO" "End")
         res))
   (princ))
 
@@ -126,7 +127,7 @@ ent: IMAGE 或 OLE 对象 ename。corner1/corner2: 裁剪矩形对角点。"
           (cond
             ((= name "AcDbRasterImage")
              (ole:clip-raster obj corner1 corner2))
-            ((wcmatch name "AcDbOle*")
+            ((vl-string-search "AcDbOle" name)
              (princ "ole-crop: OLE 对象不支持裁剪，已按矩形区域调整位置与大小。")
              (ole:fit-ole obj corner1 corner2))
             (t
@@ -144,9 +145,9 @@ ent: IMAGE 或 OLE 对象 ename。corner1/corner2: 裁剪矩形对角点。"
             (setq p2 (getcorner p1 "\n裁剪范围对角点:")))
         (if (and p1 p2)
             (progn
-              (startundo)
+              (command "_.UNDO" "Begin")
               (setq res (ole:ai-ole-crop ent p1 p2))
-              (endundo)
+              (command "_.UNDO" "End")
               res)
           (princ "ole-crop: 未指定裁剪范围。"))))
   (princ))

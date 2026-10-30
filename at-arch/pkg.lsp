@@ -16,6 +16,8 @@
             "column"
             "wall"
             "win"
+            "stair"
+            "symbol"
             "lib"
             "车位.dwg"
             "窗地比.org"

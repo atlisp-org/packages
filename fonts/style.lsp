@@ -1,5 +1,6 @@
 ;; 文字样式管理
 ;; iMini 功能复现：style_any（字形快速设置）、style_hz / style_khz（HZ/KHZ 系列字形）
+;; 注：部分 CAD（如 ZWCAD）无 startundo/endundo，统一用 UNDO Begin/End 命令实现。
 
 (@:add-menu "@lisp字体库" "字形快速设置" "(fonts:style-any)")
 (@:add-menu "@lisp字体库" "HZ字体系列" "(fonts:style-hz)")
@@ -73,9 +74,9 @@ height/width/oblique: 数值，nil 保持默认，oblique 单位为度。"
         (if (null width) (setq width 1.0))
         (setq oblique (getreal "\n倾斜角(度)<0>:"))
         (if (null oblique) (setq oblique 0))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res (fonts:ai-style name shx ttf height width oblique))
-        (endundo)
+        (command "_.UNDO" "End")
         res))
   (princ))
 
@@ -132,16 +133,16 @@ height/width/oblique: 数值，nil 保持默认，oblique 单位为度。"
   "批量设置 HZ 系列文字样式（hztxt/hzdbt/hztr）。"
   "样式名列表；失败 nil"
   "示例: 运行 fonts:style-hz 一键设置"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (fonts:ai-style-hz))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 (defun fonts:style-khz (/ res)
   "批量设置 KHZ 系列文字样式（kht/kdb/khtz）。"
   "样式名列表；失败 nil"
   "示例: 运行 fonts:style-khz 一键设置"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (fonts:ai-style-khz))
-  (endundo)
+  (command "_.UNDO" "End")
   res)

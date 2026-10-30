@@ -205,13 +205,18 @@
 ;; ==================== 实体读取与创建 ====================
 
 (defun at-arch:ent-list (ss / n i res)
-  "选择集/图元转 ename 列表（nil 返回空表）。"
+  "选择集/ename 列表/vlax 对象 统一转 ename 列表（nil 返回空表）。"
   "list"
-  "(at-arch:ent-list (ssget))"
+  "(at-arch:ent-list (ssget '((0 . \"LINE\"))))"
   (cond
     ((null ss) nil)
     ((= 'vlax (type ss)) (list (vlax-vla-object->ename ss)))
     ((= 'ename (type ss)) (list ss))
+    ((= 'list (type ss))
+     (mapcar
+      (function (lambda (x)
+         (if (= 'vlax (type x)) (vlax-vla-object->ename x) x)))
+      ss))
     (t
      (setq n (sslength ss))
      (setq i 0)

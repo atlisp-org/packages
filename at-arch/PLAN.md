@@ -77,7 +77,7 @@
 | I5/I6 | P2 | 1h | — |
 | R2 | P2 | 1h | — |
 
-## 8. iMini 建筑命令复现（arch-draw / axis / beam / column / wall / win）
+## 8. iMini 建筑命令复现（arch-draw / axis / beam / column / wall / win / stair / symbol）
 
 | iMini 命令 | 本包函数 | 状态 |
 |---|---|---|
@@ -88,9 +88,9 @@
 | mini_door / win / hole_door / win_text / win_list | `ai-door` / `ai-win` / `ai-hole-door` / `ai-win-text` / `ai-win-list` | ✅ |
 | mini_Fix_Wall / fix_beam / modify_win / match_win / coner_win | — | ⬜ P1 |
 | mini_win_direction1/2（内外/左右翻转） | — | ⬜ P1 |
-| mini_stair_plan / arc_stair / auto_stair / elevator / stair_section / analyzeview | — | ⬜ P1 |
-| mini_bg / ztbg / gcbg / 3dzb / zb（标高坐标） | — | ⬜ P1 |
-| mini_break_line / dot_line / arrow_line* / indexnum* / index_sec* / index_mirror / index_north | — | ⬜ P1 |
+| mini_stair_plan / elevator | `ai-stair-plan` / `ai-elevator`（stair.lsp） | ✅（arc_stair / auto_stair / stair_section / analyzeview 未做） |
+| mini_bg / zb（标高坐标） | `ai-elev` / `ai-arch-coord`（symbol.lsp） | ✅（ztbg / gcbg / 3dzb 未做） |
+| mini_break_line / index_sec* / index_north | `ai-break-line` / `ai-sec-symbol` / `ai-north`（symbol.lsp） | ✅（dot_line / arrow_line* / indexnum* / index_mirror 未做） |
 | mini_dline / line_to_dline / middle_line / ygpx | — | ⬜ P2 |
 | mini_winelev / elev_arcwin / winelev2 / kqx / mqblpm / door_elev / win_text_elev（门窗立面） | — | ⬜ P2 |
 | mini_tamped_soil / nature_soil / air_brick / face_brick / batting_fill / cement_mortarsec / Reinforced_Consec / cement_Consec | — | ⬜ P2 |

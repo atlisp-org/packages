@@ -23,8 +23,8 @@ region: 截图窗口 (左下点 右上点) 模型坐标；nil 用当前视图
       (progn (princ "\n[at-plot] 截图：未指定输出文件。") nil))
   (setq ext (strcase (vl-filename-extension out-file)))
   (setq fmt (cond
-              ((wcmatch ext ".JPG,.JPEG") "JPG")
-              ((wcmatch ext ".BMP") "BMP")
+              ((or (= ext ".JPG") (= ext ".JPEG")) "JPG")
+              ((= ext ".BMP") "BMP")
               (t "PNG")))
   (setq doc (vla-get-activedocument (vlax-get-acad-object)))
   (if (null region)

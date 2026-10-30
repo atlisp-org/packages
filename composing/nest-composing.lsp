@@ -1,6 +1,7 @@
 ;;; nest-composing.lsp — 全能材料排版（矩形嵌套）
 ;;; FFD（First-Fit Decreasing）算法：把一组矩形件排入多张板材，输出每件摆放坐标。
 ;;; 复现 iMini 的 mini_unest 核心功能（本包为纯 LISP 实现，iMini 为 C++ exe）。
+;;; 注：部分 CAD（如 ZWCAD）无 startundo/endundo，统一用 UNDO Begin/End 命令实现。
 
 (defun composing:str->nums (s / i len ch cur nums)
   "从字符串中提取所有数字（支持小数、负号），返回数字列表。"
@@ -140,7 +141,8 @@
 
 (defun composing:ai-nest (items sheet-w sheet-h gap rotate)
   "AI 调用入口：FFD 矩形嵌套排版，无交互，失败返回 nil。
-参数: items ((宽 高 数量)...)、sheet-w/sheet-h 板尺寸、gap 件间距、rotate 允许旋转。
+参数: items ((宽 高 数量)...)、sheet-w/sheet-h 板尺寸、gap 件间距、
+      rotate T 允许旋转 90° / nil 不允许。
 示例: (composing:ai-nest '((400 300 5) (600 200 3)) 1220 2440 10 T)"
   (if (not (and (listp items)
                 (numberp sheet-w)
@@ -153,8 +155,6 @@
     (progn
       (if (or (not (numberp gap)) (< gap 0))
           (setq gap 0))
-      (if (null rotate)
-          (setq rotate T))
       (composing:nest-rects items sheet-w sheet-h gap rotate))))
 
 (defun composing:sheet-box (sheet gap / item x y w h maxx maxy)
@@ -259,9 +259,9 @@
         (progn
           (setq result
                 (composing:nest-rects items sheet-w sheet-h gap rotate))
-          (startundo)
+          (command "_.UNDO" "Begin")
           (composing:ai-nest-draw result gap)
-          (endundo)
+          (command "_.UNDO" "End")
           (princ (strcat "\n排版完成：共 " (itoa (length result))
                          " 张板材，已绘制到模型空间原点。"))
           result)))))

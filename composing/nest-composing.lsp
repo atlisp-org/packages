@@ -259,6 +259,9 @@
         (progn
           (setq result
                 (composing:nest-rects items sheet-w sheet-h gap rotate))
+          (startundo)
+          (composing:ai-nest-draw result gap)
+          (endundo)
           (princ (strcat "\n排版完成：共 " (itoa (length result))
-                         " 张板材。"))
+                         " 张板材，已绘制到模型空间原点。"))
           result)))))

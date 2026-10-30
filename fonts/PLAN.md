@@ -40,4 +40,5 @@
 - `oblique` 参数统一按「度」输入，内部 `(* pi (/ oblique 180.0))` 转弧度。
 - 本方言 `and`/`or` 只返回 `T`/`nil`；`(strcat nil ...)` 会报错，字体为空时已用空串兜底
   （`fonts:style-line`、`fonts:collect-styles` 的组码 3/4 可能为 nil）。
-- 本包无菜单组（历史原因），新增命令未挂菜单，仅提供命令入口。
+- 本包原无菜单组；本轮新增「@lisp字体库」菜单组（`style.lsp`/`font-list.lsp` 内联
+  `@:add-menu`：字形快速设置/HZ字体系列/KHZ字体系列/字体库清单）。

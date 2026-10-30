@@ -17,7 +17,7 @@
 | 10 | at-arch | 5/19 | ✅ | at-arch:hello 占位菜单(P0)；面积汇总表出图；房间批量命名 | ≈15h |
 | 11 | at-block | 18/95 | ✅ | set-number 重复定义(P0)；动态块替换；备份文件残留(P0) | ≈25h |
 | 12 | at-cnc | 4/14 | ✅ | vl-sort 比较函数恒真(P1)；多遍加工；刀具库 | ≈23h |
-| 13 | at-color | 2/33 | ✅ | 改色按钮映射错乱(P0)；(exit)终止运行时(P0)；真彩→索引转换 | ≈21h |
+| 13 | at-color | 2/38 | ✅ | 改色按钮映射错乱(P0)；(exit)终止运行时(P0)；真彩→索引转换 | ≈21h |
 | 14 | at-curve | 14/26 | ✅ | 悬空检查崩溃/漏检LINE(P0/P1)；spline2lwpl exit+顶点数(P0/P1)；fillet 三段去重 | ≈32h |
 | 15 | at-dim | 11/21 | ✅ | true-value 置空非复原(P1)；cutting-symbol 三处拼写bug(P1)；尺寸链/批量对齐 | ≈32h |
 | 16 | at-documents | 2/17 | ✅ | 22个.libdoc全部缺失(P0)；文档覆盖 lib/src(58 ns)；(exit)修复(P0) | ≈22h |
@@ -33,8 +33,8 @@
 | 26 | at-planning | 3/14 | ⬜ | | |
 | 27 | at-plot | 6/23 | ⬜ | | |
 | 28 | at-pm ⚠子模块 | 19/93 | ⬜ | | |
-| 29 | at-purge | 3/57 | ⬜ | | |
-| 30 | at-select | 7/39 | ⬜ | | |
+| 29 | at-purge | 3/61 | ✅ | 不同属性合并重线 mini_line_union2(P2)；空选忽略属性合并(P2)；打断并删除短线 mini_break_erase(P2) | ≈11h |
+| 30 | at-select | 7/58 | ✅ | fastsel 沿线触碰/范围选项(P2)；链式支持 DIMENSION/SOLID/3DFACE(P2)；过滤引擎扩展(P2) | ≈10h |
 | 31 | at-session | 3/14 | ⬜ | | |
 | 32 | at-sidebar | 3/9 | ⬜ | | |
 | 33 | at-stat | 3/3 | ⬜ | | |
@@ -106,7 +106,7 @@
 | at-landscape | 新建 | 5 lsp / 10 命令 | ✅ | 灌木边缘、立面草、苗木标注与统计、面积、搭桥/挖路、里程、界址点；CAD 实测 5/5 |
 | at-interior | 新建 | 6 lsp / 22 AI | ✅ | 柜类平面剖面、天花角线、灯具、板材截面、焊缝管线 |
 | at-hatch | 新建 | 4 lsp / 12 命令 + 12 AI | ✅ | 快捷/超级填充、填充改参/移动、边界生成、批量分离、面域布尔裁切、SOLID 互转、图案提取/自定义、修复不显示（`at-hatch:` 前缀）；CAD 实测 12/12 |
-| at-select / at-purge / at-color | 合并 | 🔄 | 🔄 | 链式/触碰选择、一键清理、全能变色（子代理进行中） |
+| at-select / at-purge / at-color | 合并 | +3 lsp / 10 命令 | ✅ | 快速选择/获得选择集/链式/触碰选择，一键清理/清理短线/词典/合并重线，全能变色/按层变色 |
 | at-pm / at-plot / ole / fonts / composing / at-math / at-number | 合并 | 🔄 | 🔄 | 图框合并、截图拆图、图片转 OLE、字形设置、矩形嵌套、文字计算、全能编号（子代理进行中） |
 
 ### 方言坑（已写入 AGENTS.md「方言限制」）

@@ -258,6 +258,8 @@
 
 (defun c:purge-quick (/ what res)
   "一键清理：purge 未引用的图层/块/文字样式/线型，清理空块，合并重复块"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:purge-quick)"
   (setq what (getkword "\n清理类型 [全部/图层/块/样式/线型] <全部>："))
   (if what
       (setq what (cond
@@ -398,13 +400,15 @@
 
 (defun c:clean-lines (/ min-len ss res)
   "清理短线、孤立点、空文字：删除短于阈值的线/多段线边、所有点、空文字"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:clean-lines)"
   (setq min-len (getreal "\n短线阈值（回车默认 10.0）："))
   (if (or (null min-len) (< min-len 0))
       (setq min-len 10.0))
   (princ "\n选择要清理的图元（回车清理全图）：")
   (setq ss (ssget))
   (if (setq res (at-purge:ai-clean-lines min-len ss))
-      (princ (strcat "\n已清理：" (princ res))))
+      (princ (strcat "\n已清理：" (vl-princ-to-string res))))
   (princ))
 
 ;;--------------------------=={ 删除常规词典 }==-----------------------------;;
@@ -450,6 +454,8 @@
 
 (defun c:del-dicts (/ names res)
   "删除图中常规词典（默认 ACAD_MTRANS/ACAD_LAYER_STATES/ACAD_MLEADERSTYLE；输入 ACAD_GROUP 会同时删除组）"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:del-dicts)"
   (princ "\n输入词典名（逗号分隔，回车用默认）：")
   (if (setq names (getstring t "词典名（逗号分隔）："))
       (setq names (vl-string-split (vl-string-subst "，" "," names) ",")))
@@ -492,14 +498,14 @@
 
 ;; 点到过 p0 方向为 d（单位向量）的直线距离
 
-(defun @purge:pt-line-dist (pt d p0 / t)
+(defun @purge:pt-line-dist (pt d p0 / tt)
   "点到过 p0、方向为 d（单位向量）的直线的距离"
   "实数"
   "(@purge:pt-line-dist '(0.5 1 0) '(1 0) '(0 0 0)) => 1.0"
-  (setq t (- (* (car d) (- (car pt) (car p0)))
-             (* (cadr d) (- (cadr pt) (cadr p0)))))
-  (distance pt (list (+ (car p0) (* t (car d)))
-                     (+ (cadr p0) (* t (cadr d)))
+  (setq tt (- (* (car d) (- (car pt) (car p0)))
+              (* (cadr d) (- (cadr pt) (cadr p0)))))
+  (distance pt (list (+ (car p0) (* tt (car d)))
+                     (+ (cadr p0) (* tt (cadr d)))
                      0.0)))
 
 ;; 两线段是否在同一直线上（共线且偏移 < tol）
@@ -642,7 +648,8 @@
 
 ;; AI 入口：合并重线
 
-(defun at-purge:ai-union-lines (ss / tol i en d r lines key group rv first-ent fd del n-merged n-verts n-del)
+(defun at-purge:ai-union-lines
+  (ss / tol i en d r lines key group rv first-ent fd del n-merged n-verts n-del)
   "AI 入口：合并重线：重叠共线的线段合并为一条 + 多段线删除冗余共线顶点
    ss：选择集或图元列表，nil=全图；tol：容差（nil 用 0.001）
    \"((:merged n) (:verts n) (:deleted n))，失败返回 nil\"
@@ -712,3 +719,15 @@
         (list (cons '(:merged) n-merged)
               (cons '(:verts) n-verts)
               (cons '(:deleted) n-del)))))
+
+;; 交互命令：合并重线
+
+(defun c:union-lines (/ ss res)
+  "合并重线：重叠/相接共线线段合并为一条 + 多段线删除冗余共线顶点"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:union-lines)"
+  (prompt "\n选择要合并的线段（回车=全图）：")
+  (setq ss (ssget))
+  (if (setq res (at-purge:ai-union-lines ss))
+      (princ (strcat "\n合并完成：" (vl-princ-to-string res))))
+  (princ))

@@ -64,7 +64,8 @@
   "AI 入口：全能变色（对应 iMini 一键变色）
    ents：选择集或 ename 列表，nil=全图
    mode：\"color\"=变指定颜色 / \"map\"=按映射变色 / \"bylayer\"=变随层
-   param：mode=color 时颜色数（0~255，>255 真彩色，-1 随层）；mode=map 时映射表 ((原色 . 新色) ...)，如 ((1 . 2) (3 . 4))；mode=bylayer 传 nil
+   param：mode=color 时颜色数（0~255，>255 真彩色，-1 随层）；
+   mode=map 时映射表 ((原色 . 新色) ...)，如 ((1 . 2) (3 . 4))；mode=bylayer 传 nil
    \"改动的图元数，失败返回 nil\"
    \"(at-color:ai-change nil \"color\" 1)\""
   (if (p:picksetp ents)
@@ -150,6 +151,8 @@
 
 (defun c:color-change (/ what color ss map res)
   "全能变色：所选实体 变指定颜色/颜色映射/变随层（对应 iMini 一键变色）"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:color-change)"
   (princ "\n选择要变色的图元（回车=全图）：")
   (setq ss (ssget))
   (setq what (getkword "\n变色方式 [指定/映射/随层] <指定>："))
@@ -172,6 +175,8 @@
 
 (defun c:color-by-layer (/ layer color n)
   "按层变色：指定图层的全部实体批量变色（颜色回车=随层）"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:color-by-layer)"
   (princ "\n输入图层名（支持通配符，如 WALL*，回车取消）：")
   (if (setq layer (getstring t "图层名："))
       (progn

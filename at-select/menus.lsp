@@ -1,4 +1,4 @@
-(@:add-menus 
+(@:add-menus
   '("@lisp选择"
     ("选择设置" "(@select:setup)")
     ("填充选块" "(at-select:select-blk-by-hatch)")
@@ -18,7 +18,7 @@
     ("ss5" "(c:ss5)")
     ("分堆加框" "(at-select:cluster-box)")
     ))
-(@:add-menus 
+(@:add-menus
   '("@lisp选择1"
     ("选择同类型" (at-select:select-sametype))
     ("选择同层" (at-select:select-samelayer))

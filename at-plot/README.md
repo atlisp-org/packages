@@ -42,11 +42,13 @@
 
 | 文件 | 说明 |
 |------|------|
-| `at-plot.lsp` | |
-| `frame-recognition.lsp` | |
-| `mark-frame.lsp` | |
-| `export.lsp` | |
-| `train.lsp` | |
+| `at-plot.lsp` | 包入口 |
+| `frame-recognition.lsp` | AI 识别图框（PL 图框/直线框/块图框） |
+| `mark-frame.lsp` | 图框标记与删除 |
+| `export.lsp` | 批量打印输出 |
+| `train.lsp` | 识别训练学习 |
+| `screenshot.lsp` | 视图截图（`@plot:ai-screenshot`，GetImage 方法） |
+| `split-layout.lsp` | 按布局拆分为独立 dwg，可选打印 PDF（`@plot:ai-split-by-layout`） |
 
 ## 作者
 
@@ -62,6 +64,11 @@
 请查看源码获取许可信息
 
 ## 快速截图 / 布局拆图（iMini 复现）
+
+- `@plot:screenshot`：把当前视图保存为 PNG/JPG 图片。
+- `@plot:split-layout`：为每个布局生成独立 dwg，可选同时打印 PDF。
+
+## AI 调用
 
 | 命令 | AI 入口 | 说明 |
 |---|---|---|

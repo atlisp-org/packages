@@ -147,6 +147,8 @@
 
 (defun c:quick-sel (/ filter ss res)
   "快速选择：输入过滤表达式（图层=墙,块=门*,颜色=1）选择匹配图元"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:quick-sel)"
   (prompt "\n输入过滤表达式（图层=墙,块=门*,颜色=1）：")
   (if (setq filter (getstring t "过滤表达式："))
       (progn
@@ -164,6 +166,8 @@
 
 (defun c:getsel (/ filter ss res)
   "获得选择集：按过滤表达式获得选择集（支持 类型=LINE）"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:getsel)"
   (prompt "\n输入过滤表达式（图层=墙,块=门*,颜色=1,类型=LINE）：")
   (if (setq filter (getstring t "过滤表达式："))
       (progn
@@ -415,6 +419,8 @@
 
 (defun c:touch-sel (/ ent tol res)
   "触碰选择：点选一个实体，自动选中与其相交或端点相接的所有实体"
+  "无返回值（交互命令，结果输出到命令行）"
+  "(c:touch-sel)"
   (if (setq ent (entsel "\n请选择一个实体："))
       (progn
         (setq tol (getreal "\n触碰容差（回车默认 0.001）："))

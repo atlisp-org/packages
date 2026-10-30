@@ -1,6 +1,10 @@
 ;; 文字样式管理
 ;; iMini 功能复现：style_any（字形快速设置）、style_hz / style_khz（HZ/KHZ 系列字形）
 
+(@:add-menu "@lisp字体库" "字形快速设置" "(fonts:style-any)")
+(@:add-menu "@lisp字体库" "HZ字体系列" "(fonts:style-hz)")
+(@:add-menu "@lisp字体库" "KHZ字体系列" "(fonts:style-khz)")
+
 (defun fonts:make-style (name shx ttf height width oblique / doc textstyles obj main big)
   "创建或修改文字样式。ttf 优先；shx 支持 \"主.shx,大.shx\" 组合。
 name: 样式名。shx: SHX 主字体（可带大字体）。ttf: TTF 字体名。

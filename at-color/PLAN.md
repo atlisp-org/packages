@@ -71,3 +71,15 @@
 | R3/R4/I6-I8 | P2 | 2h | — |
 
 合计 ≈21h
+
+## 8. 已完成（2026-10，iMini 复现）
+- **color-change.lsp 新增**（对应 iMini 一键变色 mini_yjbh / 全能改色）：
+  - `c:color-change` 全能变色：所选/全图实体 变指定颜色（acad_colordlg）/ 颜色映射（1=2,3=4）/ 变随层
+  - `c:color-by-layer` 按层变色：指定图层（通配符）全部实体批量变色（nil=随层）
+  - `@color:set-ent-color`：62/420/67 三码一致写入（0~255 ACI 写 62 删 420 置 67=0；-1 随层 -2 随块；>255 真彩色整数写 420+62=256+67=1）
+  - AI 入口：`at-color:ai-change`（ents mode param）、`at-color:ai-by-layer-color`（layer color），无交互，startundo/endundo 包裹
+  - 菜单：Color → 全能变色 / 按层变色
+- 与计划条目的关系：
+  - 覆盖了 I4 的"67 标志同步写入"意图（新入口 `@color:set-ent-color` 均同步写 67），但既有 one-color/del-rgb 未改动，I4 本身仍待处理
+  - F2（颜色统计）未做；"改色前预览确认"（F5）在 ai-change 中未加（AI 入口按约定不做交互确认）
+- 遗留 P0（I1 按钮映射错乱、I2 (exit)）未动，优先处理

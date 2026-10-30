@@ -1,6 +1,8 @@
 ;; 字体库清单
 ;; iMini 功能复现：font_list（列出可用 SHX 字体文件与当前图文字样式）
 
+(@:add-menu "@lisp字体库" "字体库清单" "(fonts:font-list)")
+
 (defun fonts:support-paths (/ acad)
   "返回 CAD 支持搜索路径列表（拆分 ACAD 环境变量）。"
   "路径字符串列表"

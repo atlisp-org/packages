@@ -73,39 +73,41 @@
 
 ;; ---------- 几何辅助 ----------
 
-(defun at-stat:pline-verts (ent / res pt b)
+(defun at-stat:pline-verts (ent / res pt b d p)
   "取多段线（LWPOLYLINE/POLYLINE）顶点：((x y) . 凸度) 列表。"
   "顶点列表"
   "示例: (at-stat:pline-verts (car (entsel)))"
   (cond
    ((= "LWPOLYLINE" (entity:getdxf ent 0))
     (progn
-      (setq res nil pt nil b 0.0)
+      (setq res nil
+            pt nil
+            b 0.0)
       (foreach x (entget ent)
         (cond
          ((= 10 (car x))
           (if pt
-              (progn
-                (setq res (cons (cons (list (car pt) (cadr pt)) b) res))
-                (setq b 0.0))
-              (setq pt (cdr x)))))
+              (setq res (cons (cons (list (car pt) (cadr pt)) b) res)))
+          (setq pt (cdr x)
+                b 0.0))
          ((= 42 (car x))
-          (setq b (cdr x))))
+          (setq b (cdr x)))))
       (if pt
           (setq res (cons (cons (list (car pt) (cadr pt)) b) res)))
-      (reverse res)))
+      (reverse res))
    ((= "POLYLINE" (entity:getdxf ent 0))
     (progn
-      (setq res nil)
-      (setq ent (entnext ent))
+      (setq res nil
+            ent (entnext ent))
       (while (and ent (= "VERTEX" (cdr (assoc 0 (entget ent)))))
-        (setq res (cons (cons (list (car (cdr (assoc 10 (entget ent))))
-                                   (cadr (cdr (assoc 10 (entget ent)))))
-                             (if (cdr (assoc 42 (entget ent))) (cdr (assoc 42 (entget ent))) 0.0))
-                        res))
+        (setq d (entget ent))
+        (setq p (cdr (assoc 10 d)))
+        (setq b (cdr (assoc 42 d)))
+        (if (null b) (setq b 0.0))
+        (setq res (cons (cons (list (car p) (cadr p)) b) res))
         (setq ent (entnext ent)))
-      (reverse res)))
-   (t nil)))
+      (reverse res))
+   (t nil)))))
 
 (defun at-stat:closed-p (ent / typ)
   "判断实体是否为封闭区域（闭合多段线/填充/实体/面域/闭合样条/整椭圆）。"

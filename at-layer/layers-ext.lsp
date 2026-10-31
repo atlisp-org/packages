@@ -379,7 +379,7 @@
   (command "_.UNDO" "End")
   res)
 
-(defun @layer:unlock-one (en / ed xd rest)
+(defun @layer:unlock-one (en / ed xd)
   "移除单个实体的 LAYERLOCK 标记"
   "t 或 nil"
   "(@layer:unlock-one (car (entsel)))"
@@ -388,12 +388,9 @@
   (if (null xd)
       nil
       (progn
-        (setq rest (vl-remove-if
-                    (function (lambda (p) (= (car p) "LAYERLOCK")))
-                    (cdr xd)))
-        (if rest
-            (entmod (subst (cons -3 rest) xd ed))
-            (entmod (vl-remove xd ed)))
+        ;; 本平台 entmod 不删除 xdata，改为把该应用的数据置空
+        (entmod (list (cons -1 en)
+                      (list -3 (list "LAYERLOCK"))))
         t)))
 
 (defun @layer:ai-unlock (ents / res en)

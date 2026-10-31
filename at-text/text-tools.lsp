@@ -91,8 +91,8 @@
                (cons 'pt (cdr (assoc 10 dx)))
                (cons 'angle (if (cdr (assoc 50 dx)) (cdr (assoc 50 dx)) 0.0))
                (cons 'layer (cdr (assoc 8 dx)))
-               (cons 'type etype))))))
-  nil)
+               (cons 'type etype)))))
+  nil))
 
 (defun @text:get-text-ents (ss / res i n e info)
   "从选择集收集文字信息（TEXT/MTEXT/ATTRIB，含块属性）。

@@ -586,13 +586,13 @@ lines: ((ename pts) ...)。return: ((e1 pts1 e2 pts2) ...)，未配对的线不�
     (setq i (1+ i)))
   (reverse res))
 
-(defun at-arch:draw-wall (pts t layer / s1 s2 e1 e2 o1 o2)
+(defun at-arch:draw-wall (pts th layer / s1 s2 e1 e2 o1 o2)
   "由中心线点表与墙厚画双线墙（两端封口），返回 4 个图元 ename 列表。"
   "list"
   (if (< (length pts) 2) nil
       (progn
-        (setq o1 (at-arch:offset-poly pts (/ t 2.0)))
-        (setq o2 (at-arch:offset-poly pts (- (/ t 2.0))))
+        (setq o1 (at-arch:offset-poly pts (/ th 2.0)))
+        (setq o2 (at-arch:offset-poly pts (- (/ th 2.0))))
         (setq s1 (at-arch:pline o1 0 layer))
         (setq s2 (at-arch:pline o2 0 layer))
         (setq e1 (at-arch:line (car o1) (car o2) layer 0))

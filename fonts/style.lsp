@@ -6,6 +6,21 @@
 (@:add-menu "@lisp字体库" "HZ字体系列" "(fonts:style-hz)")
 (@:add-menu "@lisp字体库" "KHZ字体系列" "(fonts:style-khz)")
 
+;;; 直接重写文字样式的组码 4(主字体)/3(大字体)。
+;;; 实测发现（ZWCAD 24.1s LMS Tech）：VLA 的 FontFile/BigFontFile 属性与
+;;; DXF 组码映射互换——(vla-put-fontfile obj X) 实际把 X 写入组码 3（大字体
+;;; 槽位），导致主/大字体写反。entmod 直写组码符合 DXF 标准（4=主字体、
+;;; 3=大字体），在 AutoCAD 与各国产 CAD 上均正确。
+(defun fonts:set-fonts (obj main big / en dxf)
+  "直接重写文字样式的主字体(组码4)/大字体(组码3)，绕开 VLA 字体属性互换问题。"
+  "entmod 返回的新 dxf 列表；失败 nil"
+  "示例: (fonts:set-fonts obj \"tssdeng.shx\" \"hztxt.shx\")"
+  (setq en (vlax-vla-object->ename obj)
+        dxf (entget en))
+  (if big
+      (entmod (append dxf (list (cons 4 main) (cons 3 big))))
+    (entmod (append dxf (list (cons 4 main))))))
+
 (defun fonts:make-style (name shx ttf height width oblique / doc textstyles obj main big)
   "创建或修改文字样式。ttf 优先；shx 支持 \"主.shx,大.shx\" 组合。
 name: 样式名。shx: SHX 主字体（可带大字体）。ttf: TTF 字体名。
@@ -34,10 +49,9 @@ height/width/oblique: 字高/宽度系数/倾斜角(度)，nil 或 0 保持默�
                  (progn
                    (setq main (substr shx 1 (vl-string-search "," shx))
                          big (substr shx (+ (vl-string-search "," shx) 2)))
-                   (vla-put-fontfile obj main)
-                   (vla-put-bigfontfile obj big))
+                   (fonts:set-fonts obj main big))
                (if shx
-                   (vla-put-fontfile obj shx)))))
+                   (fonts:set-fonts obj shx nil)))))
           (if (and height (> height 0))
               (vla-put-height obj height))
           (if (and width (> width 0))

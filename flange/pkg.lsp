@@ -10,5 +10,4 @@
         (:DESCRIPTION . "法兰绘图工具。")
         (:URL . "http://atlisp.cn")
         (:FILES "flange"
-            "data.lst"
-            "menus")))
+            "data.lst")))

@@ -19,6 +19,10 @@
       (or side (setq side 0))
       (or thk (setq thk 200.0))
       (setq pts (mi-pline-pts pline-ent))
+      ;; 闭合折线末顶点重复首顶点，去掉
+      (if (and (> (length pts) 1)
+          (equal (car pts) (car (reverse pts))))
+        (setq pts (cdr pts)))
       (if (< (length pts) 3)
         (progn (princ "\n折线顶点不足") nil)
         (progn
@@ -31,11 +35,11 @@
             (setq a (nth i pts)
                   b (nth (if (= i (1- (length pts))) 0 (1+ i)) pts)
                   s 0)
-            (if (= side 0)
-              ;; 外扩：质心在边左侧时取右侧
-              (setq s (if (> (mi-dot (mi-perp (mi-vec a b) 0)
-                      (mi-vec (mi-mid a b) c))
-                    0.0) 1 0)))
+            ;; 质心在边左侧时外侧为右；side=1 内收取反侧
+            (setq s (if (> (mi-dot (mi-perp (mi-vec a b) 0)
+                    (mi-vec (mi-mid a b) c))
+                  0.0) 1 0))
+            (if (= 1 side) (setq s (1- s)))
             (setq ents (append ents (list (mi-rect a b height s))))
             (setq i (1+ i)))
           (foreach v (mapcar (function (lambda (p) (list (car p) (cadr p)))) pts)

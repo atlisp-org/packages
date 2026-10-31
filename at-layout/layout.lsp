@@ -65,7 +65,7 @@
           (setq i (1+ i)))
         (setq pairs (reverse pairs))
         (if (/= (length (mapcar 'cdr pairs))
-                (length (vl-remove-duplicates (mapcar 'cdr pairs))))
+                (length (@layout:uniq (mapcar 'cdr pairs))))
             (progn
               (princ "\n错误: 生成的新布局名存在重复")
               (setq ok nil)))
@@ -460,4 +460,13 @@ layout-name 为布局名（nil=自动 局部图N）。
         (setq cur (strcat cur c)))
     (setq i (1+ i)))
   (if (/= cur "") (setq res (append res (list cur))))
+  res)
+
+(defun @layout:uniq (lst / res x)
+  "列表去重（保持首次出现顺序）"
+  "新列表"
+  "(@layout:uniq '(1 2 1 3))"
+  (setq res '())
+  (foreach x lst
+    (if (not (member x res)) (setq res (append res (list x)))))
   res)

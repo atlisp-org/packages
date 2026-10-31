@@ -410,7 +410,7 @@ vport 为视口 ename，layers-state 为 (图层名 . 状态) 对列表，
               (repeat (sslength ss)
                 (setq e (ssname ss (1- (sslength ss))))
                 (setq layers (cons (cdr (assoc 8 (entget e))) layers)))
-              (vl-remove-duplicates layers))
+              (@layout:uniq layers))
             nil))))
 
 (defun @layout:ai-vport-grey (vport layers gray / names nm en color ok)
@@ -547,4 +547,13 @@ layers 为图层名列表；nil = 还原所有带 MINILAYOUT-GRAY 标记的图�
         (setq cur (strcat cur c)))
     (setq i (1+ i)))
   (if (/= cur "") (setq res (append res (list cur))))
+  res)
+
+(defun @layout:uniq (lst / res x)
+  "列表去重（保持首次出现顺序）"
+  "新列表"
+  "(@layout:uniq '(1 2 1 3))"
+  (setq res '())
+  (foreach x lst
+    (if (not (member x res)) (setq res (append res (list x)))))
   res)

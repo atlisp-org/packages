@@ -283,7 +283,7 @@
   "(@purge:blank-p \"  \") => T"
   (if (null s)
       t
-      (= 0 (length (vl-string-trim " \t\n" s)))))
+      (= 0 (strlen (vl-string-trim " \t\n" s)))))
 
 ;; 多段线总长度
 
@@ -692,7 +692,7 @@
                                        (cdr (assoc 11 d))
                                        en))
                            lines))))
-        (foreach key (vl-remove-duplicates (mapcar 'car lines))
+        (foreach key (at-purge:uniq (mapcar 'car lines))
           (setq group (vl-remove-if-not '(lambda (x) (equal (car x) key)) lines))
           (foreach rv (@purge:union-line-group (mapcar 'cdr group) tol)
             (if (caddr rv)
@@ -746,4 +746,13 @@
         (setq cur (strcat cur c)))
     (setq i (1+ i)))
   (if (/= cur "") (setq res (append res (list cur))))
+  res)
+
+(defun at-purge:uniq (lst / res x)
+  "列表去重（保持首次出现顺序）"
+  "新列表"
+  "(at-purge:uniq '(1 2 1 3))"
+  (setq res '())
+  (foreach x lst
+    (if (not (member x res)) (setq res (append res (list x)))))
   res)

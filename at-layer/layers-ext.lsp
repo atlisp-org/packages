@@ -326,29 +326,20 @@
 ;; 4. 锁定实体(xdata 标记 LAYERLOCK)
 ;; ============================================================
 
-(defun @layer:ensure-app (name / db xdo found)
-  "注册 xdata 应用名(不存在时自动添加)"
+(defun @layer:ensure-app (name / r)
+  "注册 xdata 应用名(已存在时静默通过)"
   "t"
   "(@layer:ensure-app \"LAYERLOCK\")"
-  (setq db (vla-get-database (vlax-get-acad-object)))
-  (setq found nil)
-  (vlax-for xdo (vla-get-xdataobjects db)
-    (if (= (strcase (vla-get-name xdo)) (strcase name))
-        (setq found t)))
-  (if (not found)
-      (vlax-invoke (vla-get-xdataobjects db) 'Add name))
+  (setq r (vl-catch-all-apply 'regapp (list name)))
   t)
 
 (defun @layer:is-locked? (ent)
   "判断实体是否带有 LAYERLOCK 锁定标记"
   "t 或 nil"
   "(@layer:is-locked? (car (entsel)))"
-  (and ent
-       (vl-some
-        (lambda (x) (= (car x) 1000))
-        (entget ent))))
+  (if (and ent (assoc -3 (entget ent (list "LAYERLOCK")))) t nil))
 
-(defun @layer:ai-lock (ents / res en)
+(defun @layer:ai-lock (ents / res en ed xd)
   "AI 入口：给选中实体打 LAYERLOCK xdata 标记(锁定实体标识)"
   "被标记的实体名列表，失败返回 nil"
   "(@layer:ai-lock (list (car (entsel))))"
@@ -362,8 +353,17 @@
         (foreach en ents
           (if (not (@layer:is-locked? en))
               (progn
-                (entmod (append (entget en)
-                                (list (cons 1000 "LAYERLOCK"))))
+                (setq ed (entget en)
+                      xd (assoc -3 ed))
+                (if xd
+                    (entmod (subst (append xd
+                                           (list (list "LAYERLOCK"
+                                                       (cons 1000 "1"))))
+                                   xd ed))
+                    (entmod (append ed
+                                    (list (list -3
+                                                (list "LAYERLOCK"
+                                                      (cons 1000 "1")))))))
                 (setq res (cons en res)))))
         (princ (strcat "锁定 " (itoa (length res)) " 个实体"))
         (reverse res))))
@@ -379,6 +379,23 @@
   (command "_.UNDO" "End")
   res)
 
+(defun @layer:unlock-one (en / ed xd rest)
+  "移除单个实体的 LAYERLOCK 标记"
+  "t 或 nil"
+  "(@layer:unlock-one (car (entsel)))"
+  (setq ed (entget en)
+        xd (assoc -3 ed))
+  (if (null xd)
+      nil
+      (progn
+        (setq rest (vl-remove-if
+                    (function (lambda (p) (= (car p) "LAYERLOCK")))
+                    (cdr xd)))
+        (if rest
+            (entmod (subst (cons -3 rest) xd ed))
+            (entmod (vl-remove xd ed)))
+        t)))
+
 (defun @layer:ai-unlock (ents / res en)
   "AI 入口：移除选中实体的 LAYERLOCK 标记"
   "被移除标记的实体名列表，失败返回 nil"
@@ -390,12 +407,8 @@
       (progn
         (setq res nil)
         (foreach en ents
-          (if (@layer:is-locked? en)
-              (progn
-                (entmod (vl-remove-if
-                         (lambda (x) (= (car x) 1000))
-                         (entget en)))
-                (setq res (cons en res)))))
+          (if (@layer:unlock-one en)
+              (setq res (cons en res))))
         (princ (strcat "解锁 " (itoa (length res)) " 个实体"))
         (reverse res))))
 
@@ -414,7 +427,7 @@
   "获取图中全部带 LAYERLOCK 锁定标记的实体"
   "ename 列表"
   "(@layer:locked-list)"
-  (if (setq ss (ssget "_X" (list (cons 1000 "LAYERLOCK"))))
+  (if (setq ss (ssget "_X" (list (cons -3 (list "LAYERLOCK")))))
       (pickset:to-list ss)
       nil))
 
@@ -422,13 +435,11 @@
   "AI 入口：移除图中所有实体的 LAYERLOCK 标记"
   "被移除标记的实体数量"
   "(@layer:ai-unlock-all)"
-  (if (setq ss (ssget "_X" (list (cons 1000 "LAYERLOCK"))))
+  (if (setq ss (ssget "_X" (list (cons -3 (list "LAYERLOCK")))))
       (progn
         (setq res (pickset:to-list ss))
         (foreach en res
-          (entmod (vl-remove-if
-                   (lambda (x) (= (car x) 1000))
-                   (entget en))))
+          (@layer:unlock-one en))
         (princ (strcat "全部解锁: " (itoa (length res)) " 个实体"))
         (length res))
       0))
@@ -683,9 +694,9 @@
         (princ "图层名,颜色,线型,线宽,打开,冻结,锁定,实体数\n" f)
         (while (setq rec (tblnext "LAYER" (null rec)))
           (setq name (cdr (assoc 2 rec)))
-          (setq color (abs (or (cdr (assoc 62 rec)) 7)))
+          (setq color (abs (if (cdr (assoc 62 rec)) (cdr (assoc 62 rec)) 7)))
           (setq flag (if (cdr (assoc 70 rec)) (cdr (assoc 70 rec)) 0))
-          (setq onp (>= (or (cdr (assoc 62 rec)) 7) 1))
+          (setq onp (>= (if (cdr (assoc 62 rec)) (cdr (assoc 62 rec)) 7) 1))
           (setq frp (/= (rem flag 2) 0))
           (setq lkp (= (rem (lsh flag -2) 2) 1))
           (setq lt (if (cdr (assoc 6 rec)) (cdr (assoc 6 rec)) "Continuous"))

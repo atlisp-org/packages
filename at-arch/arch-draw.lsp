@@ -45,23 +45,23 @@
 
 ;; 出图比例系数：标注文字/符号尺寸 = 基准值 × 本值
 ;; 1:50/1:100 建筑图（mm 单位）保持 1.0 即可；小比例图可改小
-(defvar *at-arch:scale* 1.0
+(defvar '*at-arch:scale* 1.0
   "迷你建筑绘图：标注与符号尺寸比例系数")
 
 ;; 常用图层名
-(defvar *at-arch:layer-axis* "AXIS")
-(defvar *at-arch:layer-wall* "WALL")
-(defvar *at-arch:layer-column* "COLUMN")
-(defvar *at-arch:layer-beam* "BEAM")
-(defvar *at-arch:layer-door* "DOOR")
-(defvar *at-arch:layer-window* "WINDOW")
-(defvar *at-arch:layer-elev* "ELEV")
-(defvar *at-arch:layer-coord* "COORD")
-(defvar *at-arch:layer-stair* "STAIR")
-(defvar *at-arch:layer-elevator* "ELEVATOR")
-(defvar *at-arch:layer-symbol* "SYMBOL")
-(defvar *at-arch:layer-hatch* "HATCH")
-(defvar *at-arch:layer-cover* "COVER")
+(defvar '*at-arch:layer-axis* "AXIS")
+(defvar '*at-arch:layer-wall* "WALL")
+(defvar '*at-arch:layer-column* "COLUMN")
+(defvar '*at-arch:layer-beam* "BEAM")
+(defvar '*at-arch:layer-door* "DOOR")
+(defvar '*at-arch:layer-window* "WINDOW")
+(defvar '*at-arch:layer-elev* "ELEV")
+(defvar '*at-arch:layer-coord* "COORD")
+(defvar '*at-arch:layer-stair* "STAIR")
+(defvar '*at-arch:layer-elevator* "ELEVATOR")
+(defvar '*at-arch:layer-symbol* "SYMBOL")
+(defvar '*at-arch:layer-hatch* "HATCH")
+(defvar '*at-arch:layer-cover* "COVER")
 
 ;; ==================== 通用辅助函数 ====================
 
@@ -368,9 +368,11 @@
                    (nth i pts)
                    (if (= i (1- n)) (nth (1- n) pts) (nth (1+ i) pts))))
           (if (= i 0)
-              (setq m b)
+              (setq m b
+                    lm 1.0)
               (if (= i (1- n))
-                  (setq m a)
+                  (setq m a
+                        lm 1.0)
                   (progn
                     (setq m (list (+ (car a) (car b))
                              (+ (cadr a) (cadr b))))

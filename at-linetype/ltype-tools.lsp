@@ -92,10 +92,10 @@
   (cond
    ((and sel (= "SELSET" (type sel)))
     (pickset:to-list sel))
-   ((vlax-ename-p sel)
+   ((= 'ename (type sel))
     (list sel))
    ((listp sel)
-    (vl-remove-if-not 'vlax-ename-p sel))
+    (vl-remove-if-not (function (lambda (x) (= 'ename (type x)))) sel))
    (layers
     (if (ssget "_X" (list (cons 8 layers)))
         (pickset:to-list (ssget "_X" (list (cons 8 layers))))

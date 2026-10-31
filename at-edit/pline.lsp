@@ -176,7 +176,7 @@
           found t)
     (while (and found pool)
       (setq found nil
-            endp (cadr (car (last cur)))
+            endp (cadr (car (reverse cur)))
             i 0)
       (while (and (not found) (< i (length pool)))
         (setq s (nth i pool))
@@ -253,7 +253,7 @@
     (progn
       (setq closed (and (>= (length segs) 3)
                         (at-edit:pl-near (car (car segs))
-                                         (cadr (car (last segs))) tol)))
+                                         (cadr (car (reverse segs))) tol)))
       (setq data (at-edit:pl-segs2data segs closed))
       (at-edit:make-pl (car data) (cadr data) nil nil gw closed
                         (if layer layer "0") nil 0.0))
@@ -854,7 +854,7 @@
                   (if closed (append pts (list (car pts))) pts)
                   bulges))
       (foreach s segs
-        (setq last-s (car (last res)))
+        (setq last-s (car (reverse res)))
         (if (and last-s (zerop (caddr s)) (zerop (caddr last-s))
                  (at-edit:pl-collinear-p (car last-s) (cadr last-s)
                                          (cadr s) tol))
@@ -955,8 +955,8 @@
                     st (at-edit:pl-emit st (cadr c) (caddr c))))
            ((not (at-edit:pl-near cur (car pts) 1e-9))
             (setq st (at-edit:pl-emit st (car pts) 0.0)))))
-        ((not (at-edit:pl-near cur (car (last pts)) 1e-9))
-         (setq st (at-edit:pl-emit st (car (last pts)) 0.0))))
+        ((not (at-edit:pl-near cur (car (reverse pts)) 1e-9))
+         (setq st (at-edit:pl-emit st (car (reverse pts)) 0.0))))
       (setq out-pts (car st))
       (if closed
         (setq out-pts (reverse (cdr (reverse out-pts)))))
@@ -1418,7 +1418,7 @@
      (foreach e ents2
        (setq segs (append segs (at-edit:pl-segs-of e))))
      (foreach c (at-edit:pl-chain segs 1e-4)
-       (if (at-edit:pl-near (car (car c)) (cadr (car (last c))) 1e-4)
+       (if (at-edit:pl-near (car (car c)) (cadr (car (reverse c))) 1e-4)
          (progn
            (setq pl (at-edit:pl-segs2pl c 1e-4 nil lay))
            (if pl (setq res (append res (list pl)))))))

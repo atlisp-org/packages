@@ -38,11 +38,11 @@ region: 截图窗口 (左下点 右上点) 模型坐标；nil 用当前视图
   (setq ph (max 1.0 (round (* pw (/ h w)))))
   (setq win (vlax-make-variant
              (vlax-safearray-fill
-              (vlax-make-safearray vlax-vbDouble '(0 . 1))
+              (vlax-make-safearray vlax-vbDouble '(0 . 3))
               (list (car (car region)) (cadr (car region))
                     (car (cadr region)) (cadr (cadr region))))))
   (setq res (vl-catch-all-apply
-             'vla-invoke
+             'vlax-invoke
              (list doc 'GetImage out-file fmt (fix pw) (fix ph) win)))
   (if (vl-catch-all-error-p res)
       (progn

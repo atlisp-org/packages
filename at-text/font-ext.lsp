@@ -54,7 +54,7 @@
   返回 (样式名 . 旧字体) 列表（空列表表示无缺失），失败返回 nil。"
   "list 或 nil"
   (progn
-    (setq res (@text:fix-fonts-impl (or repl-font "simplex.shx") "" dry-run))
+    (setq res (@text:fix-fonts-impl (if repl-font repl-font "simplex.shx") "" dry-run))
     (if (null res)
         (princ "\n未发现缺失字库。")
         (princ (strcat "\n" (if dry-run "发现（未修改） " "已替换 ")

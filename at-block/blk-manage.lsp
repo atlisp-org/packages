@@ -641,13 +641,13 @@
       (foreach e (@block:blk-refs blks)
         (if (= "INSERT" (entity:getdxf e 0))
             (progn
-              (entity:putdxf e 41 (* (or (entity:getdxf e 41) 1.0) factor))
-              (entity:putdxf e 42 (* (or (entity:getdxf e 42) 1.0) factor))
-              (entity:putdxf e 43 (* (or (entity:getdxf e 43) 1.0) factor))
+              (entity:putdxf e 41 (* (if (entity:getdxf e 41) (entity:getdxf e 41) 1.0) factor))
+              (entity:putdxf e 42 (* (if (entity:getdxf e 42) (entity:getdxf e 42) 1.0) factor))
+              (entity:putdxf e 43 (* (if (entity:getdxf e 43) (entity:getdxf e 43) 1.0) factor))
               (setq res (1+ res))))))
      (t
       (foreach e (@block:hatch-ents names)
-        (entity:putdxf e 41 (* (or (entity:getdxf e 41) 1.0) factor))
+        (entity:putdxf e 41 (* (if (entity:getdxf e 41) (entity:getdxf e 41) 1.0) factor))
         (setq res (1+ res)))))
     (princ (strcat "\n已调整 " (itoa res) " 个对象的比例"))
     res)))

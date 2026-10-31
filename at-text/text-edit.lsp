@@ -76,7 +76,7 @@
     (progn
       (setq o (strcase  (@text:str opt)))
       (cond
-        ((not (wcmatch o "PREFIX,SUFFIX,REPLACE,UC,LC,DEL,DEL-LAST"))
+        ((not (member o (list "PREFIX" "SUFFIX" "REPLACE" "UC" "LC" "DEL" "DEL-LAST")))
          (princ (strcat "@text:ai-sedit: 未知操作 " o))
          nil)
         ((or (= o "PREFIX") (= o "SUFFIX"))
@@ -87,7 +87,7 @@
          (if (and arg1 (/= ""  (@text:str arg1)))
              (@text:sedit-apply (@text:ents-to-infos ents) o arg1 arg2)
              (progn (princ "@text:ai-sedit: 替换旧串不能为空") nil)))
-        ((wcmatch o "DEL,DEL-LAST")
+        ((member o (list "DEL" "DEL-LAST"))
          (if arg1
              (@text:sedit-apply (@text:ents-to-infos ents) o arg1 nil)
              (progn (princ "@text:ai-sedit: 缺少删除字符数") nil)))
@@ -408,7 +408,7 @@
   (if (or (null ent) (null pt))
     (progn (princ "@text:ai-exp-text: 缺少参数") nil)
     (if (and (setq dx (entget ent))
-             (wcmatch (cdr (assoc 0 dx)) "TEXT,MTEXT"))
+             (member (cdr (assoc 0 dx)) (list "TEXT" "MTEXT")))
       (progn
         (command "_.UNDO" "Begin")
         (cond
@@ -499,7 +499,7 @@
   返回 nil。"
   "nil"
   (if (setq e (car (entsel "\n选择要打断的文字: ")))
-    (if (wcmatch (cdr (assoc 0 (entget e))) "TEXT,MTEXT")
+    (if (member (cdr (assoc 0 (entget e))) (list "TEXT" "MTEXT"))
         (if (setq pt (getpoint "\n打断点: "))
             (@text:ai-exp-text e pt)
             (princ "\n取消。"))
@@ -598,7 +598,7 @@
   返回成功 t，失败 nil。"
   "t 或 nil"
   (if (and (setq dx (entget box-ent))
-           (wcmatch (cdr (assoc 0 dx)) "LWPOLYLINE,POLYLINE")
+           (member (cdr (assoc 0 dx)) (list "LWPOLYLINE" "POLYLINE"))
            (assoc 1001 dx)
            (assoc 1002 dx)
            (setq e (handent (@text:xdata-get dx "MINI-TEXT" "TBOX")))

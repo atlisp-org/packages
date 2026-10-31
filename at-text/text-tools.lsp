@@ -40,9 +40,9 @@
   "string"
   (cond
     ((null x) "")
-    ((= "STR" (type x)) x)
-    ((= "INT" (type x)) (itoa x))
-    ((= "REAL" (type x))
+    ((eq (quote STR) (type x)) x)
+    ((eq (quote INT) (type x)) (itoa x))
+    ((eq (quote REAL) (type x))
      (if (= x (fix x)) (itoa (fix x)) (rtos x 2 6)))
     (t (rtos (float x) 2 6))))
 
@@ -70,7 +70,7 @@
     (progn
       (setq etype (cdr (assoc 0 dx)))
       (cond
-        ((wcmatch etype "TEXT,ATTRIB")
+        ((member etype (list "TEXT" "ATTRIB"))
          (append
           (list (cons 'ent e)
                 (cons 'content (cdr (assoc 1 dx)))
@@ -106,7 +106,7 @@
       (while (< i n)
         (setq e (ssname ss i))
         (cond
-          ((wcmatch (cdr (assoc 0 (entget e))) "TEXT,MTEXT,ATTRIB")
+          ((member (cdr (assoc 0 (entget e))) (list "TEXT" "MTEXT" "ATTRIB"))
            (if (setq info (@text:text-info e))
                (setq res (cons info res))))
           ((= "INSERT" (cdr (assoc 0 (entget e))))
@@ -236,7 +236,7 @@
   "取插入块（INSERT）的属性实体列表。
   返回 ATTRIB ename 列表，无属性或无效块返回 nil。"
   "list 或 nil"
-  (if (and (wcmatch (cdr (assoc 0 (entget block-e))) "INSERT")
+  (if (and (= "INSERT" (cdr (assoc 0 (entget block-e))))
            (= 1 (cdr (assoc 66 (entget block-e)))))
     (progn
       (setq e (entnext block-e))
@@ -255,7 +255,7 @@
     (cond
       ((= "MTEXT" (cdr (assoc 0 dx)))
        (text:get-mtext e))
-      ((wcmatch (cdr (assoc 0 dx)) "TEXT,ATTRIB")
+      ((member (cdr (assoc 0 dx)) (list "TEXT" "ATTRIB"))
        (cdr (assoc 1 dx)))))
   nil)
 

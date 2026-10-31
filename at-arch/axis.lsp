@@ -116,8 +116,9 @@
                       (setq all-same nil)))
                 (if all-same
                     (setq vs (cons (list e x0
-                             (apply (function max)
-                                  (mapcar (function cadr) pts)))
+                             (list x0
+                                   (apply (function max)
+                                          (mapcar (function cadr) pts))))
                         vs)))))
         (setq hs (vl-sort hs
                (function (lambda (a b) (< (cadr a) (cadr b))))))

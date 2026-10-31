@@ -116,10 +116,10 @@
         (setq typ (entity:getdxf ent 0))
         (cond
          ((member typ '("LWPOLYLINE" "POLYLINE" "SPLINE"))
-          (= 1 (logand (or (entity:getdxf ent 70) 0) 1)))
+          (= 1 (logand (if (entity:getdxf ent 70) (entity:getdxf ent 70) 0) 1)))
          ((member typ '("HATCH" "SOLID" "3DFACE" "REGION")) t)
          ((= typ "ELLIPSE")
-          (< (abs (- (or (entity:getdxf ent 42) 0.0)
+          (< (abs (- (if (entity:getdxf ent 42) (entity:getdxf ent 42) 0.0)
                      (* 2.0 pi))) 0.001))
          (t nil)))
       nil))

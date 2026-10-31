@@ -64,7 +64,7 @@
           (if (vl-string-search "=" tok)
               (progn
                 (setq key (vl-string-trim " \t" (substr tok 1 (vl-string-search "=" tok)))
-                      val (vl-string-trim " \t" (substr tok (+ (vl-string-search "=" tok) 1)))
+                      val (vl-string-trim " \t" (substr tok (+ (vl-string-search "=" tok) 2)))
                       code (@select:filter-code key))
                 (if code
                     (progn
@@ -220,7 +220,7 @@
           (if new-ents
               (progn
                 (setq res (append res new-ents)
-                      frontier (vl-remove-duplicates next))
+                      frontier (at-select:uniq next))
               )
               (setq frontier nil)))
         res)
@@ -449,4 +449,13 @@
         (setq cur (strcat cur c)))
     (setq i (1+ i)))
   (if (/= cur "") (setq res (append res (list cur))))
+  res)
+
+(defun at-select:uniq (lst / res x)
+  "列表去重（保持首次出现顺序）"
+  "新列表"
+  "(at-select:uniq '(1 2 1 3))"
+  (setq res '())
+  (foreach x lst
+    (if (not (member x res)) (setq res (append res (list x)))))
   res)

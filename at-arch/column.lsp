@@ -10,7 +10,8 @@ shape: \"r\"矩形 / \"o\"圆 / \"c\"十字 / \"l\"L型 / \"t\"T型。
   "list/nil"
   "(at-arch:col-shape-pts '(0 0) \"r\" 400 600)"
   (setq a (max 50.0 (min (/ w 3.0) (/ h 3.0))))
-  (cond
+  (setq res
+   (cond
     ((eq shape "r")
      (list (list (- (car pt) (/ w 2.0)) (- (cadr pt) (/ h 2.0)))
            (list (+ (car pt) (/ w 2.0)) (- (cadr pt) (/ h 2.0)))
@@ -44,7 +45,7 @@ shape: \"r\"矩形 / \"o\"圆 / \"c\"十字 / \"l\"L型 / \"t\"T型。
            (list (- (car pt) (- (/ w 4.0) (/ a 2.0))) (+ (cadr pt) (/ h 2.0)))
            (list (- (car pt) (- (/ w 4.0) (/ a 2.0)))
                  (+ (cadr pt) (- a (/ h 2.0))))
-           (list (- (car pt) (/ w 2.0)) (+ (cadr pt) (- a (/ h 2.0)))))))
+           (list (- (car pt) (/ w 2.0)) (+ (cadr pt) (- a (/ h 2.0))))))))
   (if (eq shape "o") nil res))
 
 (defun at-arch:ai-column (pt shape w h label / layer res e c tt)

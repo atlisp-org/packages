@@ -32,7 +32,7 @@
              (if (cdr (assoc 50 dx)) (cdr (assoc 50 dx)) 0.0)
              (if (cdr (assoc 41 dx)) (cdr (assoc 41 dx)) 0.8)
              0
-             (@text:att-align (or (cdr (assoc 72 dx)) 0)
+             (@text:att-align (if (cdr (assoc 72 dx)) (cdr (assoc 72 dx)) 0)
                                   (if (cdr (assoc 73 dx)) (cdr (assoc 73 dx)) 1))))
   (entmod (append (entget ent)
                   (list (cons 8 (cdr (assoc 8 dx)))
@@ -114,7 +114,7 @@
       (setq res nil)
       (foreach e ents
         (if (and (setq dx (entget e))
-                 (wcmatch (cdr (assoc 0 dx)) "TEXT,MTEXT,ATTRIB")
+                 (member (cdr (assoc 0 dx)) (list "TEXT" "MTEXT" "ATTRIB"))
                  (not (member (cons 1001 "MINI-TEXT") dx)))
             (progn
               (setq tag (@text:make-tag (cdr (assoc 1 dx))))

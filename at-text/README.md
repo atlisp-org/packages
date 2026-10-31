@@ -148,3 +148,42 @@
 ## 版本
 
 1.1.6
+
+## iMini 复现命令（文字增强，2026-10）
+
+菜单「文字工具」。所有 `ai-` 入口无交互、不弹窗，成功返回 ename 或列表，失败返回 `nil`。
+
+| 命令 | AI 入口 | 说明 |
+|---|---|---|
+| 全能文字编辑 | `@text:ai-sedit ents op arg1 arg2` | op = prefix/suffix/replace/uc/lc |
+| 文字批量更改 | `@text:ai-cht ents find replace [style] [height]` | 查找替换内容，可同时改样式/字高 |
+| 文字重排版 | `@text:ai-text-order ents [cols] [row-gap] [x-gap]` | 按行/列重新排列 |
+| 连接多行文字 | `@text:ai-join-text ents [height]` | 多个文字合并为一个 MTEXT |
+| 一组文字变多重文字 | `@text:ai-text2mtext ents` | 逐行写入一个 MTEXT |
+| 文字打断 | `@text:ai-exp-text ent pt` | 在指定位置把文字断成两段 |
+| 文字加外框 | `@text:ai-tbox ents [padding]` | 每个文字外套矩形框 |
+| 刷新外框 | `@text:ai-tbox-refresh ent` / `@text:ai-tbox-refresh-all ents` | 文字改动后更新框大小 |
+| 输出到剪贴板 | `@text:ai-text2clipboard ents [sep]` | 文字内容写入系统剪贴板 |
+| 词库输入 | `@text:ai-text-lib word pt [style] [height]` | 从词库取词插入为文字 |
+| 多文件查找替换 | `@text:ai-find find replace [files]` | 在打开的多个 dwg 中查找替换 |
+| 替换缺失字库 | `@text:ai-fix-fonts [repl-font] [dry-run]` | 字体文件缺失的样式改为替代字体 |
+| 全部用我的字库 | `@text:ai-use-myfonts font` | 所有文字样式字体统一替换 |
+| 块属性转文字 | `@text:ai-att2text blocks [del-block]` | ATTRIB → 独立 TEXT |
+| 文字变块属性 | `@text:ai-text2att ents blk-name` | 文字转为块属性 |
+| 刷块属性 | `@text:ai-match-att src targets [attrs]` | 同名块属性值批量刷写 |
+| 块属性统计表 | `@text:ai-att-list blk-name [out-file]` | 属性值分组计数，返回数据列表 |
+
+示例：
+
+```lisp
+;; 选中的文字全部加前缀 "【终】"
+(@text:ai-sedit (pickset:to-list (ssget)) "prefix" "【终】" nil)
+
+;; 把图中所有 "旧名" 改成 "新名"
+(@text:ai-cht (pickset:to-list (ssget "_X" '((0 . "TEXT,MTEXT")))) "旧名" "新名")
+
+;; 文字内容复制到剪贴板
+(@text:ai-text2clipboard (pickset:to-list (ssget)) "\n")
+```
+
+词库文件位于包根目录：`floor.txt`（楼层名）、`room.txt`（房间名）。`ai-text-lib` 的 `word` 参数可直接给词条，也可给 `文件名:行号` 形式按词库取词。

@@ -219,6 +219,7 @@
 |---|---|---|
 | `@block:block-flipm` | `@block:ai-block-flipm blks axis strategy` | 批量翻转块；strategy=auto 时含文字块改用旋转 180° |
 | `@block:block-flips` | `@block:ai-block-flips ents p1 p2 keep-src` | 实体自由翻转，文字保持可读 |
+| — | `@block:ai-block-flipm-line blks p1 p2 strategy` | 按任意镜像线批量翻转块 |
 | `@block:xref-repath` | `@block:ai-xref-repath xrefs base-dir` | 外部参照改相对路径 |
 | `@block:xref2blk` | `@block:ai-xref2blk xref blk-name` | Xref 复制为块 |
 | `@block:batch-xref` | `@block:ai-batch-xref filter out-dir prefix` | 按条件批量做 Xref 条件图 |

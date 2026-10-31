@@ -73,9 +73,9 @@
         (if (null dist) (setq dist 100.0))
         (setq amp (getdist "\n波幅 <30>:"))
         (if (null amp) (setq amp 30.0))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res (at-landscape:do-shrub-edge ent dist amp))
-        (endundo)
+        (command "_.UNDO" "End")
         (if res
             (princ "\n已生成灌木边缘线。")
             (princ "\n灌木边缘线生成失败。")))
@@ -150,9 +150,9 @@
             (if (null n) (setq n 15))
             (setq h (getdist "\n草高 <300>:"))
             (if (null h) (setq h 300.0))
-            (startundo)
+            (command "_.UNDO" "Begin")
             (setq res (at-landscape:do-grass p1 p2 n h))
-            (endundo)
+            (command "_.UNDO" "End")
             (if res
                 (princ (strcat "\n已画 " (itoa (length res)) " 根草叶。"))
                 (princ "\n画草失败（起点与终点重合）。")))
@@ -236,10 +236,10 @@
         (if (null mode) (setq mode "COUNT"))
         (if (= mode "AREA")
             (setq ty (getstring "\n灌木种类（可留空）: ")))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res (at-landscape:do-plant-text
                    (pickset:to-list ss) mode ty))
-        (endundo)
+        (command "_.UNDO" "End")
         (if res
             (princ (strcat "\n生成 " (itoa (length res)) " 处标注。"))
             (princ "\n没有可标注的图元。")))
@@ -321,10 +321,10 @@
                     (if (= group-by "NAME") "name" "layer")))
         (if (setq pt (getpoint "\n请指定表格位置:"))
             (progn
-              (startundo)
+              (command "_.UNDO" "Begin")
               (setq res (at-landscape:make-mm-table
                          data pt "苗木统计表"))
-              (endundo)
+              (command "_.UNDO" "End")
               (if res
                   (princ (strcat "\n共统计 " (itoa (length data))
                                  " 类苗木。"))
@@ -344,7 +344,7 @@
   (if (stringp blk-names)
       (setq names (vl-remove-if
                    '(lambda (x) (= "" x))
-                   (vl-string-split blk-names " ,;\t"))))
+                   (at-landscape:split-str blk-names " ,;\t"))))
   (setq ents (pickset:to-list (ssget "x" '((0 . "INSERT")))))
   (if names
       (setq ents (vl-remove-if-not
@@ -406,9 +406,9 @@
         (if (null dist) (setq dist 500.0))
         (setq r (getdist "\n树冠半径 <100>:"))
         (if (null r) (setq r 100.0))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res (at-landscape:do-tree-line ent dist r))
-        (endundo)
+        (command "_.UNDO" "End")
         (if res
             (princ (strcat "\n共布 " (itoa (/ (length res) 2))
                            " 棵树。"))
@@ -425,4 +425,20 @@
            (wcmatch (entity:getdxf pline-ent 0) "LWPOLYLINE,POLYLINE,SPLINE,LINE,ARC"))
       (setq res (at-landscape:do-tree-line pline-ent dist r))
       (princ "at-landscape:ai-tree-line pline-ent 必须是线状图元"))
+  res)
+
+(defun at-landscape:split-str (str seps / res cur i n c)
+  "按分隔符集合拆分字符串（seps 中任一字符都算分隔符），忽略空段"
+  "字符串列表"
+  "(at-landscape:split-str \"a,b;c\" \",;\")"
+  (setq res '() cur "" i 1 n (strlen str))
+  (while (<= i n)
+    (setq c (substr str i 1))
+    (if (vl-string-search c seps)
+        (progn
+          (if (/= cur "") (setq res (append res (list cur))))
+          (setq cur ""))
+        (setq cur (strcat cur c)))
+    (setq i (1+ i)))
+  (if (/= cur "") (setq res (append res (list cur))))
   res)

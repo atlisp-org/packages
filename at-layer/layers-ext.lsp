@@ -161,9 +161,9 @@
         (princ (strcat "未保存的图层状态: " name))
         nil)
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res (@layer:ai-restore-state name))
-        (endundo)
+        (command "_.UNDO" "End")
         res)))
 
 (defun @layer:ai-state-list ()
@@ -222,9 +222,9 @@
   "(@layer:hide-ents)"
   (if (null ss)
       (setq ss (ssget)))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-hide (if ss (pickset:to-list ss) nil)))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 (defun @layer:ai-show-hidden ()
@@ -247,9 +247,9 @@
   "恢复 *layer-hidden* 中记录的图层并清空列表"
   "被恢复的图层名列表"
   "(@layer:show-hidden)"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-show-hidden))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 ;; ============================================================
@@ -292,9 +292,9 @@
   "(@layer:isolate)"
   (if (null ss)
       (setq ss (ssget)))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-isolate (if ss (pickset:to-list ss) nil)))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 (defun @layer:ai-un-isolate ()
@@ -317,9 +317,9 @@
   "取消独立显示：恢复被独立显示关闭的图层"
   "被恢复的图层名列表"
   "(@layer:un-isolate)"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-un-isolate))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 ;; ============================================================
@@ -374,9 +374,9 @@
   "(@layer:lock-ents)"
   (if (null ss)
       (setq ss (ssget)))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-lock (if ss (pickset:to-list ss) nil)))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 (defun @layer:ai-unlock (ents / res en)
@@ -405,9 +405,9 @@
   "(@layer:unlock-ents)"
   (if (null ss)
       (setq ss (ssget)))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-unlock (if ss (pickset:to-list ss) nil)))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 (defun @layer:locked-list (/ ss)
@@ -437,9 +437,9 @@
   "移除图中所有实体的 LAYERLOCK 标记"
   "被移除标记的实体数量"
   "(@layer:unlock-ents-all)"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-unlock-all))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 ;; ============================================================
@@ -482,9 +482,9 @@
       (if (= "1" (getkword "层上实体保留 [保留(1)/删除(0)] <删除>: "))
           (setq keep 1)
           (setq keep 0)))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-kill-dollar keep))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 ;; ============================================================
@@ -506,7 +506,7 @@
         nil)))
   (if (and layers (= (type layers) 'STR))
       (setq layers (list layers)))
-  (if (null (setq layers (or layers (layer:list))))
+  (if (null (setq layers (if layers layers (layer:list))))
       (progn
         (princ "无图层可处理")
         nil)
@@ -549,9 +549,9 @@
       (if (= "uc" (getkword "转大写 [大写(uc)/小写(lc)] <大写>: "))
           (setq mode "uc")
           (setq mode "lc")))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-strcase mode layers))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 ;; ============================================================
@@ -573,7 +573,7 @@
         (setq skipped 0)
         (foreach en ents
           (setq e (entget en))
-          (setq color (or (cdr (assoc 62 e)) (cdr (assoc 63 e))))
+          (setq color (if (cdr (assoc 62 e)) (cdr (assoc 62 e)) (cdr (assoc 63 e))))
           (if (or (null color)
                   (member color '(256 0 255)))
               (setq skipped (1+ skipped))
@@ -601,9 +601,9 @@
       (progn
         (setq prefix (getstring "层名前缀 <颜色>: "))
         (or prefix (setq prefix "颜色"))))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-by-color (if ss (pickset:to-list ss) nil) prefix))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 ;; ============================================================
@@ -625,7 +625,7 @@
         nil)))
   (if (and layers (= (type layers) 'STR))
       (setq layers (list layers)))
-  (foreach lay (or layers (layer:list))
+  (foreach lay (if layers layers (layer:list))
     (if (setq ss (ssget "_X" (list (cons 8 lay))))
         (progn
           (setq fail 0)
@@ -656,9 +656,9 @@
              (getkword "绘图顺序 [前置(front)/后置(back)] <前置>: "))
           (setq order "front")
           (setq order "back")))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq res (@layer:ai-ldorder layers order))
-  (endundo)
+  (command "_.UNDO" "End")
   res)
 
 ;; ============================================================
@@ -684,12 +684,12 @@
         (while (setq rec (tblnext "LAYER" (null rec)))
           (setq name (cdr (assoc 2 rec)))
           (setq color (abs (or (cdr (assoc 62 rec)) 7)))
-          (setq flag (or (cdr (assoc 70 rec)) 0))
+          (setq flag (if (cdr (assoc 70 rec)) (cdr (assoc 70 rec)) 0))
           (setq onp (>= (or (cdr (assoc 62 rec)) 7) 1))
           (setq frp (/= (rem flag 2) 0))
           (setq lkp (= (rem (lsh flag -2) 2) 1))
-          (setq lt (or (cdr (assoc 6 rec)) "Continuous"))
-          (setq lw (or (cdr (assoc 370 rec)) -1))
+          (setq lt (if (cdr (assoc 6 rec)) (cdr (assoc 6 rec)) "Continuous"))
+          (setq lw (if (cdr (assoc 370 rec)) (cdr (assoc 370 rec)) -1))
           (setq cnt (if (setq ss (ssget "_X"
                                          (list (cons 8 name))))
                         (sslength ss)

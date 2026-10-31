@@ -210,7 +210,7 @@
       (setq what (symbol-name what)))
   (if what
       (setq what (strcase (vl-string-trim " \t" what))))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (setq pre (list (@purge:table-names "layer")
                   (@purge:blk-names)
                   (@purge:table-names "style")
@@ -221,7 +221,7 @@
     ((= what "LAYER")
      (@purge:purge-tbl "layer" (@purge:used-attrs)
                        '(lambda (nm)
-                          (or (wcmatch nm "0") (= nm (getvar "clayer"))))))
+                          (if (wcmatch nm "0") (wcmatch nm "0") (= nm (getvar "clayer"))))))
     ((= what "BLK")
      (@purge:purge-tbl "block" (@purge:used-attrs)
                        '(lambda (nm) (wcmatch nm "*_*,ACAD_*"))))
@@ -235,13 +235,13 @@
                           (wcmatch nm "BYLAYER,BYBLOCK,Continuous,连续"))))
     (t
      (princ (strcat "at-purge:ai-quick: 未知类型 " what))
-     (endundo)
+     (command "_.UNDO" "End")
      nil))
   (if (or (null what) (= what "BLK"))
       (progn
         (setq empt (at-purge:clean-empty-blks))
         (setq dups (at-purge:merge-dup-blks))))
-  (endundo)
+  (command "_.UNDO" "End")
   (setq post (list (@purge:table-names "layer")
                    (@purge:blk-names)
                    (@purge:table-names "style")
@@ -362,7 +362,7 @@
       (progn
         (setq res (list (cons '(:lines) 0) (cons '(:polylines) 0)
                         (cons '(:points) 0) (cons '(:texts) 0)))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (repeat (setq i (sslength ss))
           (setq i (1- i))
           (if (and (setq en (ssname ss i))
@@ -393,7 +393,7 @@
                        (entdel en)
                        (setq res (subst (cons '(:texts) (1+ (cdr (assoc '(:texts) res))))
                                         (assoc '(:texts) res) res))))))))
-        (endundo)
+        (command "_.UNDO" "End")
         res)))
 
 ;; 交互命令：清理短线点空字
@@ -436,7 +436,7 @@
   (if (null names)
       (setq names (list "ACAD_MTRANS" "ACAD_LAYER_STATES" "ACAD_MLEADERSTYLE")))
   (if (p:stringp names)
-      (setq names (vl-string-split (vl-string-subst "，" "," names) ",")))
+      (setq names (at-purge:split-str (vl-string-subst "，" "," names) ",")))
   (if (and (listp names) (vl-every 'p:stringp names))
       (progn
         (setq deleted nil)
@@ -458,7 +458,7 @@
   "(c:del-dicts)"
   (princ "\n输入词典名（逗号分隔，回车用默认）：")
   (if (setq names (getstring t "词典名（逗号分隔）："))
-      (setq names (vl-string-split (vl-string-subst "，" "," names) ",")))
+      (setq names (at-purge:split-str (vl-string-subst "，" "," names) ",")))
   (if (setq res (at-purge:ai-del-dicts names))
       (if res
           (princ (strcat "\n已删除词典：" (princ res)))
@@ -665,7 +665,7 @@
         (princ "at-purge:ai-union-lines: 无图元")
         nil)
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq n-merged 0 n-verts 0 n-del 0)
         ;; 1. 多段线删除冗余共线顶点
         (repeat (setq i (sslength ss))
@@ -715,7 +715,7 @@
                                              (assoc 48 fd)
                                              (assoc 49 fd))))
                   (setq n-merged (1+ n-merged))))))
-        (endundo)
+        (command "_.UNDO" "End")
         (list (cons '(:merged) n-merged)
               (cons '(:verts) n-verts)
               (cons '(:deleted) n-del)))))
@@ -731,3 +731,19 @@
   (if (setq res (at-purge:ai-union-lines ss))
       (princ (strcat "\n合并完成：" (vl-princ-to-string res))))
   (princ))
+
+(defun at-purge:split-str (str seps / res cur i n c)
+  "按分隔符集合拆分字符串（seps 中任一字符都算分隔符），忽略空段"
+  "字符串列表"
+  "(at-purge:split-str \"a,b;c\" \",;\")"
+  (setq res '() cur "" i 1 n (strlen str))
+  (while (<= i n)
+    (setq c (substr str i 1))
+    (if (vl-string-search c seps)
+        (progn
+          (if (/= cur "") (setq res (append res (list cur))))
+          (setq cur ""))
+        (setq cur (strcat cur c)))
+    (setq i (1+ i)))
+  (if (/= cur "") (setq res (append res (list cur))))
+  res)

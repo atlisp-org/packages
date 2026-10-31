@@ -31,9 +31,9 @@
             (progn
               (setq th (getint "\n墙厚<240>:"))
               (if (null th) (setq th 240))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (at-arch:ai-wall pts th)
-              (endundo))
+              (command "_.UNDO" "End"))
             (princ "\n至少需要 2 个点。")))
   (princ)))
 
@@ -82,9 +82,9 @@
         (if (eq both "S") (setq both nil))
         (setq del (getkword "\n删除原线[Y/N]<N>:"))
         (if (eq del "Y") (setq del t))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-line2wall ss th both del)
-        (endundo))
+        (command "_.UNDO" "End"))
   (princ)))
 
 (defun at-arch:ai-wall-width (ents tnew / layer data pairs res)
@@ -121,9 +121,9 @@
       (progn
         (setq th (getint "\n新墙厚<240>:"))
         (if (null th) (setq th 240))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-wall-width ss th)
-        (endundo))
+        (command "_.UNDO" "End"))
   (princ)))
 
 (defun at-arch:ai-wall-cover (ents d / layer data pairs res pr c s1 s2
@@ -177,9 +177,9 @@
       (progn
         (setq d (getint "\n偏距<20>:"))
         (if (null d) (setq d 20))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-wall-cover ss d)
-        (endundo))
+        (command "_.UNDO" "End"))
   (princ)))
 
 (defun at-arch:type-pats (types / res)
@@ -233,7 +233,7 @@
       (progn
         (setq kw (getkword "\n类型: 全部[A]/墙[W]/柱[C]/门[D]/窗[N]<A>:"))
         (if (null kw) (setq kw "A"))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-erase-wall ss
           (list
            (cond ((= kw "W") "wall")
@@ -241,5 +241,5 @@
                  ((= kw "D") "door")
                  ((= kw "N") "window")
                  (t "all"))))
-        (endundo))
+        (command "_.UNDO" "End"))
   (princ)))

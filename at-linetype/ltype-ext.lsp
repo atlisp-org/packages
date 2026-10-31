@@ -15,13 +15,13 @@
       (setq name (getvar "celtype")))
   (if (at-linetype:check-ltype name nil)
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq entlist (at-linetype:collect-ents (ssget) nil))
         (if entlist
             (progn
               (at-linetype:apply-ltype entlist name)
               (princ (strcat "\n共 " (itoa (length entlist)) " 个实体改为 " name))))
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 (defun at-linetype:ai-ltype (ltype-name ents layers lin-file / enlist)
@@ -114,7 +114,7 @@
         (if (zerop (length (vl-remove 0 marks)))
             nil
             (progn
-              (startundo)
+              (command "_.UNDO" "Begin")
               (if all-dash
                   (progn
                     (setq en (at-linetype:make-lwpl (mapcar 'car verts)
@@ -167,7 +167,7 @@
                       )
                     (entdel ent)
                     (if enames enames nil)))
-              (endundo))))))
+              (command "_.UNDO" "End"))))))
 
 (defun at-linetype:jb-vd (/ ent str edges ltype enames)
   "局部变虚线：把多段线指定段改为虚线线型（段号从 1 开始）。
@@ -293,14 +293,14 @@
   (setq ss (ssget '((0 . "LINE,LWPOLYLINE,POLYLINE,ARC,SPLINE"))))
   (if ss
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq n 0)
         (setq ok 0)
         (foreach en (pickset:to-list ss)
           (if (at-linetype:reverse-entity en)
               (setq ok (1+ ok)))
           (setq n (1+ n)))
-        (endundo)
+        (command "_.UNDO" "End")
         (princ (strcat "\n共反转 " (itoa ok) "/" (itoa n) " 个实体"))))
   (princ))
 
@@ -312,12 +312,12 @@
   (setq lst (at-linetype:collect-ents ents nil))
   (if lst
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq ok nil)
         (foreach en lst
           (if (at-linetype:reverse-entity en)
               (setq ok (append ok (list en)))))
-        (endundo)
+        (command "_.UNDO" "End")
         (if ok ok nil))
       nil))
 

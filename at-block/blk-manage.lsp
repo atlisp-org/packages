@@ -319,15 +319,15 @@
     (princ (strcat "\n图块不存在: " blk-name)) nil)
    (t
     (setq blkrec (tblobjname "block" blk-name))
-    (setq oldbase (or (entity:getdxf blkrec 10) '(0.0 0.0 0.0)))
+    (setq oldbase (if (entity:getdxf blkrec 10) (entity:getdxf blkrec 10) '(0.0 0.0 0.0)))
     ;; new-basept 按世界坐标给出，用参照换算到块坐标系
-    (setq ref (or ref (car (@block:blk-refs (list blk-name)))))
+    (setq ref (if ref ref (car (@block:blk-refs (list blk-name)))))
     (setq newbase
           (if (and ref (= "INSERT" (entity:getdxf ref 0)))
               (block:wcs2bcs new-basept oldbase
                              (entity:getdxf ref 10)
-                             (or (entity:getdxf ref 50) 0.0)
-                             (or (entity:getdxf ref 41) 1.0))
+                             (if (entity:getdxf ref 50) (entity:getdxf ref 50) 0.0)
+                             (if (entity:getdxf ref 41) (entity:getdxf ref 41) 1.0))
               (list (float (car new-basept))
                     (float (cadr new-basept))
                     (if (caddr new-basept) (float (caddr new-basept)) 0.0))))
@@ -402,10 +402,10 @@
   "新参照 ename，失败返回 nil"
   "(@block:recreate-ref (car (entsel)) \"门\" nil)"
   (setq pt (entity:getdxf ref 10)
-        ang (or (entity:getdxf ref 50) 0.0)
-        sx (or (entity:getdxf ref 41) 1.0)
-        sy (or (entity:getdxf ref 42) sx)
-        sz (or (entity:getdxf ref 43) sx)
+        ang (if (entity:getdxf ref 50) (entity:getdxf ref 50) 0.0)
+        sx (if (entity:getdxf ref 41) (entity:getdxf ref 41) 1.0)
+        sy (if (entity:getdxf ref 42) (entity:getdxf ref 42) sx)
+        sz (if (entity:getdxf ref 43) (entity:getdxf ref 43) sx)
         lay (entity:getdxf ref 8))
   (if (setq ne (@block:insert-ref dst-blk pt ang sx sy sz))
       (progn
@@ -433,10 +433,10 @@
       (if (equal (@block:blk-name-of a) src-blk)
           (setq refs (cons a refs))))
     (foreach a (reverse refs)
-      (setq atts (if (and map-attrs (= 1 (or (entity:getdxf a 66) 0)))
+      (setq atts (if (and map-attrs (= 1 (if (entity:getdxf a 66) (entity:getdxf a 66) 0)))
                      (block:get-attributes a)
                      nil))
-      (if (and tags (not (= 1 (or (entity:getdxf a 66) 0))))
+      (if (and tags (not (= 1 (if (entity:getdxf a 66) (entity:getdxf a 66) 0))))
           ;; 新块带属性而原参照无属性：重建参照才能生成属性
           (setq res (cons (@block:recreate-ref a dst-blk atts) res))
           (progn
@@ -575,9 +575,9 @@
     (foreach e (@block:blk-refs blks)
       (if (= "INSERT" (entity:getdxf e 0))
           (progn
-            (setq sx (or (entity:getdxf e 41) 1.0))
-            (setq sy (or (entity:getdxf e 42) sx))
-            (setq sz (or (entity:getdxf e 43) sx))
+            (setq sx (if (entity:getdxf e 41) (entity:getdxf e 41) 1.0))
+            (setq sy (if (entity:getdxf e 42) (entity:getdxf e 42) sx))
+            (setq sz (if (entity:getdxf e 43) (entity:getdxf e 43) sx))
             (entity:putdxf e 41 (* sx factor))
             (entity:putdxf e 42 (* sy factor))
             (entity:putdxf e 43 (* sz factor))
@@ -719,7 +719,7 @@
           (setq box (@block:blk-def-box name))
           (setq w (if box (- (car (cadr box)) (car (car box))) 0.0))
           (setq h (if box (- (cadr (cadr box)) (cadr (car box))) 0.0))
-          (setq data (cons (list name ents (or (cdr (assoc name uses)) 0) w h)
+          (setq data (cons (list name ents (if (cdr (assoc name uses)) (cdr (assoc name uses)) 0) w h)
                            data)))))
   (setq data (vl-sort data '(lambda (a b) (> (caddr a) (caddr b)))))
   (if (and (numberp top-n) (> top-n 0) (> (length data) top-n))

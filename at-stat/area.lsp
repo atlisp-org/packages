@@ -92,7 +92,7 @@
         (setq layer (getstring t "\n文字图层<当前>: "))
         (if (null std:startundo) (require 'std:*))
         (std:startundo *doc*)
-        (at-stat:mark-areas ents (or factor 0.0001)
+        (at-stat:mark-areas ents (if factor factor 0.0001)
                               (if (> (strlen layer) 0) layer nil))
         (std:endundo *doc*)))
   (princ))
@@ -141,7 +141,7 @@
         (setq layer (getstring t "\n文字图层<当前>: "))
         (if (null std:startundo) (require 'std:*))
         (std:startundo *doc*)
-        (at-stat:mark-point-areas (reverse pts) (or factor 0.0001) layer)
+        (at-stat:mark-point-areas (reverse pts) (if factor factor 0.0001) layer)
         (std:endundo *doc*)))
   (princ))
 
@@ -212,7 +212,7 @@
                  (ssget "\n选择洞口(门窗/线段, Esc跳过): "
                        '((0 . "LINE,LWPOLYLINE,POLYLINE,ARC,CIRCLE,SPLINE,ELLIPSE,INSERT"))))
             (setq openings (at-stat:ss-ents openings)))
-        (setq data (at-stat:wall-area-data rooms (or height 3000.0) openings))
+        (setq data (at-stat:wall-area-data rooms (if height height 3000.0) openings))
         (if (and data (setq pt (getpoint "\n指定表格插入点: ")))
             (at-stat:make-table "房间墙面面积统计表"
                                   '("房间" "面积" "墙面面积")
@@ -274,7 +274,7 @@
   (if pts
       (progn
         (setq shared (getreal "\n需分摊的面积合计(0=无)<0>: "))
-        (setq data (at-stat:area-analyze-data (reverse pts) (or shared 0.0)))
+        (setq data (at-stat:area-analyze-data (reverse pts) (if shared shared 0.0)))
         (if (and data (setq pt (getpoint "\n指定表格插入点: ")))
             (at-stat:make-table "标准层面积分摊表"
                                   '("区域" "面积" "分摊面积")

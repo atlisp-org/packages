@@ -127,12 +127,12 @@
 
 (defun mi-pline (pts closed)
   "LWPOLYLINE，closed=1 闭合，返回图元名"
-  (entity:make-lwpolyline pts 0 0 closed 0)
+  (entity:make-lwpolyline pts nil 0 closed 0)
 )
 
 (defun mi-lwp (pts width closed)
   "带宽度 LWPOLYLINE，返回图元名"
-  (entity:make-lwpolyline pts 0 width closed 0)
+  (entity:make-lwpolyline pts nil width closed 0)
 )
 
 (defun mi-circle (cen rad)
@@ -158,7 +158,7 @@
 (defun mi-rect (p1 p2 dist side / n)
   "以 p1→p2 为底边、向 side 侧偏移 dist 的四边形，返回图元名"
   (setq n (mi-scale (mi-perp (mi-vec p1 p2) side) dist))
-  (entity:make-lwpolyline (list p1 (mi-off p1 n) (mi-off p2 n) p2) 0 0 1 0)
+  (entity:make-lwpolyline (list p1 (mi-off p1 n) (mi-off p2 n) p2) nil 0 1 0)
 )
 
 (defun mi-rect-pts (p1 p2)
@@ -171,7 +171,7 @@
 
 (defun mi-axis-rect (p1 p2)
   "轴对齐矩形（p1 p2 为对角点），返回图元名"
-  (entity:make-lwpolyline (mi-rect-pts p1 p2) 0 0 1 0)
+  (entity:make-lwpolyline (mi-rect-pts p1 p2) nil 0 1 0)
 )
 
 ;; ==================== 通用工具：填充/图层 ====================
@@ -314,7 +314,7 @@
                                                         (/ (+ x0 (car r)) w)))
                                           (mi-scale n (cadr r)))))
                     rel))
-  (entity:make-lwpolyline pts 0 0 1 0)
+  (entity:make-lwpolyline pts nil 0 1 0)
 )
 
 (defun mi-pline-offset (pts r side / i n1 n m d pts2)

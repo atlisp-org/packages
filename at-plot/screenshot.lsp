@@ -20,7 +20,8 @@ out-file: 输出图片完整路径（.png/.jpg/.bmp）
 region: 截图窗口 (左下点 右上点) 模型坐标；nil 用当前视图
 示例: (@plot:ai-screenshot \"D:/shot.png\" nil)"
   (if (null out-file)
-      (progn (princ "\n[at-plot] 截图：未指定输出文件。") nil))
+      (progn (princ "\n[at-plot] 截图：未指定输出文件。") nil)
+      (progn
   (setq ext (strcase (vl-filename-extension out-file)))
   (setq fmt (cond
               ((or (= ext ".JPG") (= ext ".JPEG")) "JPG")
@@ -48,7 +49,7 @@ region: 截图窗口 (左下点 右上点) 模型坐标；nil 用当前视图
         (princ (strcat "\n[at-plot] 截图失败（此 CAD 可能不支持 GetImage 方法）: "
                        (vl-catch-all-error-message res)))
         nil)
-    t))
+    t))))
 
 (defun @plot:screenshot (/ file)
   "交互：把当前视图保存为图片。"

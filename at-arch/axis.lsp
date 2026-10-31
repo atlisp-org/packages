@@ -73,9 +73,9 @@
                     "\nY 向轴线间距表(横轴间距,如 3300,3900,3300): ")))
         (if (or xs ys)
             (progn
-              (startundo)
+              (command "_.UNDO" "Begin")
               (at-arch:ai-axis-line origin xs ys)
-              (endundo))
+              (command "_.UNDO" "End"))
             (princ "\n至少需要输入一个方向的间距。")))
   (princ)))
 
@@ -157,9 +157,9 @@
   "示例: 运行命令后框选轴线"
   (if (setq ss (ssget '((0 . "LINE LWPOLYLINE"))))
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-axis-text ss)
-        (endundo))
+        (command "_.UNDO" "End"))
   (princ)))
 
 (defun at-arch:ai-axis-update (texts start / is-letter n i e s
@@ -230,7 +230,7 @@
       (progn
         (setq start (getstring T "\n输入起始编号(数字或字母,如 3 或 C):"))
         (if (null start) (setq start "1"))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-axis-update ss start)
-        (endundo))
+        (command "_.UNDO" "End"))
   (princ)))

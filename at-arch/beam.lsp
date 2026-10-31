@@ -57,9 +57,9 @@ return: 梁图元 ename 列表；参数非法返回 nil。
             (progn
               (setq w (getint "\n梁宽<300>:"))
               (if (null w) (setq w 300))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (at-arch:beam-path pts w)
-              (endundo))
+              (command "_.UNDO" "End"))
             (princ "\n至少需要 2 个点。"))))
   (princ))
 
@@ -100,9 +100,9 @@ return: 新梁图元 ename 列表；无有效线返回 nil。
         (if (null w) (setq w 300))
         (setq del (getkword "\n删除原线[Y/N]<N>:"))
         (if (eq del "Y") (setq del t))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-line2beam ss w del)
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 (defun at-arch:ai-beam-width (ents wnew / layer data pairs res)
@@ -139,7 +139,7 @@ return: 新梁图元 ename 列表；没有可配对的线返回 nil。
       (progn
         (setq w (getint "\n新梁宽<300>:"))
         (if (null w) (setq w 300))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-beam-width ss w)
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))

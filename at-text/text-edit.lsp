@@ -151,7 +151,7 @@
       (if (null infos)
           (progn (princ "@text:ai-cht: 无有效文字") nil)
         (progn
-          (startundo)
+          (command "_.UNDO" "Begin")
           (setq res nil)
           (foreach info infos
             (setq content (cdr (assoc 'content info)))
@@ -177,7 +177,7 @@
                   (if height
                       (@text:set-height (cdr (assoc 'ent info)) height))
                   (setq res (cons (cdr (assoc 'ent info)) res)))))
-          (endundo)
+          (command "_.UNDO" "End")
           (princ (strcat "\n已处理 " (itoa (length res)) " 个文字"))
           (reverse res))))))
 
@@ -251,7 +251,7 @@
                (setq row (cons info row) xw (+ xw x-gap w)))))
           (if row (setq rows (cons (reverse row) rows)))
           (setq rows (reverse rows))
-          (startundo)
+          (command "_.UNDO" "Begin")
           (setq res nil)
           (setq i 0)
           (foreach row rows
@@ -264,7 +264,7 @@
               (setq xw (+ xw x-gap (@text:width (cdr (assoc 'ent info)))))
               (setq res (cons (cdr (assoc 'ent info)) res)))
             (setq i (1+ i)))
-          (endundo)
+          (command "_.UNDO" "End")
           (princ (strcat "\n已重排 " (itoa (length res)) " 个文字，共 "
                          (itoa (length rows)) " 行"))
           (reverse res))))))
@@ -325,13 +325,13 @@
                                 (mapcar (function (lambda (x)
                                                     (cadr (assoc 'pt x)))) infos))
                          0.0))
-          (startundo)
+          (command "_.UNDO" "Begin")
           (foreach info infos (entdel (cdr (assoc 'ent info))))
           (setq newent (@text:make-mtext content pt
                                              (if style style (cdr (assoc 'style (car infos))))
                                              (if height height (cdr (assoc 'height (car infos))))
                                              width))
-          (endundo)
+          (command "_.UNDO" "End")
           (princ (strcat "\n已生成 MTEXT"
                          (if wrap (strcat "，换行宽度 " (rtos width 2 2)) "")))
           newent)))))
@@ -410,19 +410,19 @@
     (if (and (setq dx (entget ent))
              (wcmatch (cdr (assoc 0 dx)) "TEXT,MTEXT"))
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (cond
           ((= "TEXT" (cdr (assoc 0 dx)))
            (setq content (cdr (assoc 1 dx)))
            (setq len (string:length content))
            (if (< len 2)
                (progn
-                 (endundo)
+                 (command "_.UNDO" "End")
                  (princ "\n文字太短，无法打断。")
                  nil)
              (progn
                (setq base (cdr (assoc 10 dx)))
-               (setq ang (or (cdr (assoc 50 dx)) 0.0))
+               (setq ang (if (cdr (assoc 50 dx)) (cdr (assoc 50 dx)) 0.0))
                (setq w (@text:width ent))
                (if (> w 0.0)
                  (progn
@@ -439,18 +439,18 @@
                                                   (polar base (* ratio w) ang)
                                                   (cdr (assoc 40 dx))
                                                   ang
-                                                  (or (cdr (assoc 41 dx)) 0.8)
+                                                  (if (cdr (assoc 41 dx)) (cdr (assoc 41 dx)) 0.8)
                                                   0
                                                   "LB"))
                    (entmod (append (entget newent)
                                    (list (cons 8 (cdr (assoc 8 dx)))
                                          (cons 7 (cdr (assoc 7 dx))))))
                    (entupd newent)
-                   (endundo)
+                   (command "_.UNDO" "End")
                    (princ "\n打断完成。")
                    (list ent newent))
                  (progn
-                   (endundo)
+                   (command "_.UNDO" "End")
                    (princ "\n无法计算文字宽度。")
                    nil))))))
           ((= "MTEXT" (cdr (assoc 0 dx)))
@@ -458,7 +458,7 @@
            (setq lines (string:to-list content "\\P"))
            (if (< (length lines) 2)
                (progn
-                 (endundo)
+                 (command "_.UNDO" "End")
                  (princ "\nMTEXT 只有一行，无法打断。")
                  nil)
              (progn
@@ -487,7 +487,7 @@
                                                   (@text:width ent)))
                (entmod (append (entget newent)
                                (list (cons 8 (cdr (assoc 8 dx))))))
-               (endundo)
+               (command "_.UNDO" "End")
                (princ "\n打断完成。")
                (list ent newent)))))
       (progn
@@ -569,24 +569,22 @@
       (if (null infos)
           (progn (princ "@text:ai-tbox: 无有效文字") nil)
         (progn
-          (startundo)
+          (command "_.UNDO" "Begin")
           (setq res nil)
           (foreach info infos
             (setq e (cdr (assoc 'ent info)))
             (if (setq box (textbox (entget e)))
               (progn
                 (setq rect (@text:make-tbox-rect box
-                                                     (or padding
-                                                         (* 0.5 (cdr (assoc 'height info))))
+                                                     (if padding padding (* 0.5 (cdr (assoc 'height info))))
                                                      (if layer layer (cdr (assoc 'layer info)))))
                 (entmod (append (entget rect)
                                 (list (cons 1001 "MINI-TEXT")
                                       (cons 1002 "TBOX")
                                       (cons 1 (cdr (assoc 5 e)))
-                                      (cons 40 (or padding
-                                                    (* 0.5 (cdr (assoc 'height info))))))))
+                                      (cons 40 (if padding padding (* 0.5 (cdr (assoc 'height info))))))))
                 (setq res (cons rect res)))))
-          (endundo)
+          (command "_.UNDO" "End")
           (if res
               (progn
                 (princ (strcat "\n已生成 " (itoa (length res)) " 个文字外框"))
@@ -605,7 +603,7 @@
            (assoc 1002 dx)
            (setq e (handent (@text:xdata-get dx "MINI-TEXT" "TBOX")))
            (setq box (textbox (entget e)))
-           (setq pad (or (cdr (assoc 40 dx)) 0.0)))
+           (setq pad (if (cdr (assoc 40 dx)) (cdr (assoc 40 dx)) 0.0)))
     (progn
       (@text:resize-rect box-ent box pad)
       (princ "\n外框已刷新。")

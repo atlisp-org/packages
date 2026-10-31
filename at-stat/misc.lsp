@@ -265,7 +265,7 @@
         (setq pt (getpoint "\n指定结果点(Esc跳过): "))
         (if (null std:startundo) (require 'std:*))
         (std:startundo *doc*)
-        (at-stat:cale-mark ents (or op "sum") pt nil)
+        (at-stat:cale-mark ents (if op op "sum") pt nil)
         (std:endundo *doc*)))
   (princ))
 

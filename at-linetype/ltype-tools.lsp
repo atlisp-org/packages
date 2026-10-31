@@ -122,8 +122,8 @@
           (setq lst (append lst
                        (list (list p
                                    (if (< i (length bul)) (nth i bul) 0.0)
-                                   (or (if (< i (length w0)) (nth i w0) nil) cw 0.0)
-                                   (or (if (< i (length w1)) (nth i w1) nil) cw 0.0))))
+                                   (if (if (< i (length w0)) (nth i w0) nil) (if (< i (length w0)) (nth i w0) nil) (if cw cw 0.0))
+                                   (if (if (< i (length w1)) (nth i w1) nil) (if (< i (length w1)) (nth i w1) nil) (if cw cw 0.0)))))
           (setq i (1+ i)))
         lst)
       (progn
@@ -136,9 +136,9 @@
                 (setq data (entget i))
                 (setq lst (append lst
                              (list (list (cdr (assoc 10 data))
-                                         (or (cdr (assoc 42 data)) 0.0)
-                                         (or (cdr (assoc 40 data)) 0.0)
-                                         (or (cdr (assoc 41 data)) 0.0)))))))
+                                         (if (cdr (assoc 42 data)) (cdr (assoc 42 data)) 0.0)
+                                         (if (cdr (assoc 40 data)) (cdr (assoc 40 data)) 0.0)
+                                         (if (cdr (assoc 41 data)) (cdr (assoc 41 data)) 0.0)))))))
           (setq i (entnext i))))
         lst)))
 

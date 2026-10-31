@@ -51,9 +51,9 @@ corner1/corner2 为模型空间两角点，dstpt 为图纸空间插入点
             (progn
               (@layout:switch-space "paper")
               (setq dst (getpoint "\n图纸空间插入点(回车=0,0): "))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (@layout:ai-ps-scale p1 p2 dst)
-              (endundo)))))
+              (command "_.UNDO" "End")))))
   (princ))
 
 ;; ===================== 2. 模型空间做块布图 ms-scale =====================
@@ -163,11 +163,11 @@ scale 为块插入比例（nil=自动，取主视口 1:N 的 N，放大后打印
   (setq s (getreal "\n布图比例(回车=按主视口1:N自动): "))
   (@layout:switch-space "model")
   (setq pt (getpoint "\n模型空间插入点(回车=0,0): "))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (@layout:ai-ms-scale (if (= "" lay) nil lay)
                            pt
                            (if s s nil))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ))
 
 ;; ===================== 3. 还原炸开布图块 ms-exp =====================
@@ -205,9 +205,9 @@ ents 为 INSERT ename 列表（或选择集）。
   (setq ss (ssget (list (cons 0 "INSERT"))))
   (if ss
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (@layout:ai-ms-exp (@layout:ss-to-list ss))
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 ;; ===================== 4. 快速局部重生成 regen =====================
@@ -258,9 +258,9 @@ corner1/corner2 为模型空间两角点。
         (setq p2 (getpoint p1 "\n第二角点: "))
         (if p2
             (progn
-              (startundo)
+              (command "_.UNDO" "Begin")
               (@layout:ai-regen p1 p2)
-              (endundo)))))
+              (command "_.UNDO" "End")))))
   (princ))
 
 (princ)

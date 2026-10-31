@@ -57,7 +57,7 @@
                     (setq obj (e2o ent))
                     (setq L (vlax-curve-getdistancet obj (vlax-curve-getendparam obj)))
                     (setq scale (* (getvar "ltscale")
-                                   (or (cdr (assoc 48 rec)) 1.0)))
+                                   (if (cdr (assoc 48 rec)) (cdr (assoc 48 rec)) 1.0)))
                     (setq lst nil)
                     (setq k 0)
                     (while (< (* k period) L)
@@ -95,13 +95,13 @@
   (if ss
       (progn
         (setq blk (getstring "\n输入块名（留空=用默认树）: "))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq n 0)
         (foreach en (pickset:to-list ss)
           (if (setq r (at-linetype:shp2blk-core en
                                         (if (null blk) nil blk)))
               (setq n (+ n (length r)))))
-        (endundo)
+        (command "_.UNDO" "End")
         (princ (strcat "\n共替换形元素 " (itoa n) " 处"))))
   (princ))
 
@@ -113,12 +113,12 @@
   (setq lst (at-linetype:collect-ents ents nil))
   (if lst
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res nil)
         (foreach en lst
           (if (setq rr (at-linetype:shp2blk-core en blk))
               (setq res (append res rr))))
-        (endundo)
+        (command "_.UNDO" "End")
         (if res res nil))
       nil))
 
@@ -142,7 +142,7 @@
         (if (vlax-curve-p obj)
             (progn
               (setq L (vlax-curve-getdistancet obj (vlax-curve-getendparam obj)))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (setq lst nil)
               (setq i 0)
               (while (<= (* i dist) L)
@@ -152,7 +152,7 @@
                     (setq lst (append lst tree)))
                 (setq i (1+ i)))
               (entdel ent)
-              (endundo)
+              (command "_.UNDO" "End")
               (if lst lst nil))
             (progn
               (princ "\n不是线性图元")
@@ -241,7 +241,7 @@
                             (setq y0 (min y0 (cadr p)))
                             (setq x1 (max x1 (car p)))
                             (setq y1 (max y1 (cadr p))))
-                          (startundo)
+                          (command "_.UNDO" "Begin")
                           (setq centers nil)
                           (setq lst nil)
                           (setq i 0)
@@ -260,7 +260,7 @@
                                         (setq centers (append centers (list pt)))
                                         (setq lst (append lst tree))
                                         (setq i (1+ i)))))))
-                          (endundo)
+                          (command "_.UNDO" "End")
                           (princ (strcat "\n目标 " (itoa n) " 棵，实际布 "
                                     (itoa i) " 棵"))
                           (if lst lst nil))))))))))

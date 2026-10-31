@@ -29,11 +29,11 @@
                  (cdr (assoc 11 dx))
                  (cdr (assoc 10 dx)))
              (cdr (assoc 40 dx))
-             (or (cdr (assoc 50 dx)) 0.0)
-             (or (cdr (assoc 41 dx)) 0.8)
+             (if (cdr (assoc 50 dx)) (cdr (assoc 50 dx)) 0.0)
+             (if (cdr (assoc 41 dx)) (cdr (assoc 41 dx)) 0.8)
              0
              (@text:att-align (or (cdr (assoc 72 dx)) 0)
-                                  (or (cdr (assoc 73 dx)) 1))))
+                                  (if (cdr (assoc 73 dx)) (cdr (assoc 73 dx)) 1))))
   (entmod (append (entget ent)
                   (list (cons 8 (cdr (assoc 8 dx)))
                         (cons 7 (cdr (assoc 7 dx))))))
@@ -49,7 +49,7 @@
   (if (null blocks)
     (progn (princ "@text:ai-att2text: blocks 为空") nil)
     (progn
-      (startundo)
+      (command "_.UNDO" "Begin")
       (setq res nil)
       (foreach e blocks
         (if (and (setq dx (entget e))
@@ -62,7 +62,7 @@
                       (vlax-invoke (vlax-ename->vla-object att) 'delete))))
               (if del-block
                   (entdel e)))))
-      (endundo)
+      (command "_.UNDO" "End")
       (if res
           (progn
             (princ (strcat "\n已转换 " (itoa (length res)) " 个属性"))
@@ -110,7 +110,7 @@
   (if (or (null ents) (null blk-name))
     (progn (princ "@text:ai-text2att: 缺少参数") nil)
     (progn
-      (startundo)
+      (command "_.UNDO" "Begin")
       (setq res nil)
       (foreach e ents
         (if (and (setq dx (entget e))
@@ -125,7 +125,7 @@
                                     (cons 2  (@text:str tag)))))
               (entupd e)
               (setq res (cons e res)))))
-      (endundo)
+      (command "_.UNDO" "End")
       (if res
           (progn
             (princ (strcat "\n已标记 " (itoa (length res)) " 个文字"))
@@ -192,12 +192,12 @@
       (if (null src-atts)
           (progn (princ "@text:ai-match-att: 源块没有属性") nil)
         (progn
-          (startundo)
+          (command "_.UNDO" "Begin")
           (setq res nil)
           (foreach e targets
             (if (@text:att-match-1 e src-atts attrs)
                 (setq res (cons e res))))
-          (endundo)
+          (command "_.UNDO" "End")
           (if res
               (progn
                 (princ (strcat "\n已刷新 " (itoa (length res)) " 个块"))
@@ -313,9 +313,9 @@
           (if out-file
               (@text:att-list-csv stats out-file)
               (progn
-                (startundo)
+                (command "_.UNDO" "Begin")
                 (setq res (@text:att-list-draw stats))
-                (endundo)
+                (command "_.UNDO" "End")
                 res)))))))
 
 (defun @text:att-list (/ blk out)

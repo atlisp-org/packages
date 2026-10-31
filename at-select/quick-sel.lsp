@@ -59,7 +59,7 @@
   "(@select:parse-filter \"图层=墙,颜色=1\") => ((8 . \"墙\") (62 . \"1\"))"
   (if (and str (vl-string-search "=" str))
       (progn
-        (setq lst (vl-string-split (vl-string-subst "，" "," str) ","))
+        (setq lst (at-select:split-str (vl-string-subst "，" "," str) ","))
         (foreach tok lst
           (if (vl-string-search "=" tok)
               (progn
@@ -207,7 +207,7 @@
             (setq matched
                   (vl-remove-if-not
                    '(lambda (x)
-                      (or (equal (car x) p tol) (equal (cadr x) p tol)))
+                      (if (equal (car x) p tol) (equal (car x) p tol) (equal (cadr x) p tol)))
                    cands))
             (foreach c matched
               (setq next (cons
@@ -434,3 +434,19 @@
   (princ))
 
 (princ)
+
+(defun at-select:split-str (str seps / res cur i n c)
+  "按分隔符集合拆分字符串（seps 中任一字符都算分隔符），忽略空段"
+  "字符串列表"
+  "(at-select:split-str \"a,b;c\" \",;\")"
+  (setq res '() cur "" i 1 n (strlen str))
+  (while (<= i n)
+    (setq c (substr str i 1))
+    (if (vl-string-search c seps)
+        (progn
+          (if (/= cur "") (setq res (append res (list cur))))
+          (setq cur ""))
+        (setq cur (strcat cur c)))
+    (setq i (1+ i)))
+  (if (/= cur "") (setq res (append res (list cur))))
+  res)

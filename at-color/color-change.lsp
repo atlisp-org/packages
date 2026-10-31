@@ -47,7 +47,7 @@
   (if (and str (vl-string-search "=" str))
       (progn
         (setq res nil bad nil)
-        (foreach item (vl-string-split (vl-string-subst "，" "," str) ",")
+        (foreach item (at-color:split-str (vl-string-subst "，" "," str) ",")
           (if (and (setq pos (vl-string-search "=" item))
                    (setq a (vl-string-trim " \t" (substr item 1 pos)))
                    (setq b (vl-string-trim " \t" (substr item (+ pos 1))))
@@ -86,7 +86,7 @@
                     (princ "at-color:ai-change: param 须为颜色数")
                     nil)
                   (progn
-                    (startundo)
+                    (command "_.UNDO" "Begin")
                     (setq n 0)
                     (foreach en ents
                       (if (cond
@@ -100,7 +100,7 @@
                             (t
                              (@color:set-ent-color en -1)))
                           (setq n (1+ n))))
-                    (endundo)
+                    (command "_.UNDO" "End")
                     n)))
             (progn
               (princ (strcat "at-color:ai-change: 未知模式 " mode))
@@ -133,12 +133,12 @@
         (if found
             (if (setq ss (ssget "_X" (list (cons 8 (vl-string-trim " \t" layer)))))
                 (progn
-                  (startundo)
+                  (command "_.UNDO" "Begin")
                   (setq n 0)
                   (foreach en (pickset:to-list ss)
                     (if (@color:set-ent-color en color)
                         (setq n (1+ n))))
-                  (endundo)
+                  (command "_.UNDO" "End")
                   n)
                 (progn
                   (princ (strcat "at-color:ai-by-layer-color: 图层 " layer " 上没有图元"))
@@ -187,3 +187,19 @@
   (princ))
 
 (princ)
+
+(defun at-color:split-str (str seps / res cur i n c)
+  "按分隔符集合拆分字符串（seps 中任一字符都算分隔符），忽略空段"
+  "字符串列表"
+  "(at-color:split-str \"a,b;c\" \",;\")"
+  (setq res '() cur "" i 1 n (strlen str))
+  (while (<= i n)
+    (setq c (substr str i 1))
+    (if (vl-string-search c seps)
+        (progn
+          (if (/= cur "") (setq res (append res (list cur))))
+          (setq cur ""))
+        (setq cur (strcat cur c)))
+    (setq i (1+ i)))
+  (if (/= cur "") (setq res (append res (list cur))))
+  res)

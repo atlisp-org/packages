@@ -177,7 +177,7 @@
          (function numberp)
          (mapcar (function (lambda (x)
                     (vl-catch-all-apply 'read (list x))))
-                 (vl-string-split s ";"))))))
+                 (at-arch:split-str s ";"))))))
 
 (defun at-arch:letter (n / res i)
   "数字（从 1 起）转轴号字母：1=>A，26=>Z，27=>AA。"
@@ -790,3 +790,19 @@ lines: ((ename pts) ...)。return: ((e1 pts1 e2 pts2) ...)，未配对的线不�
   (setq c (at-arch:circle pt r layer))
   (setq th (at-arch:text label pt (at-arch:ts 150) 0 "M" layer))
   (list c th))
+
+(defun at-arch:split-str (str seps / res cur i n c)
+  "按分隔符集合拆分字符串（seps 中任一字符都算分隔符），忽略空段"
+  "字符串列表"
+  "(at-arch:split-str \"a,b;c\" \",;\")"
+  (setq res '() cur "" i 1 n (strlen str))
+  (while (<= i n)
+    (setq c (substr str i 1))
+    (if (vl-string-search c seps)
+        (progn
+          (if (/= cur "") (setq res (append res (list cur))))
+          (setq cur ""))
+        (setq cur (strcat cur c)))
+    (setq i (1+ i)))
+  (if (/= cur "") (setq res (append res (list cur))))
+  res)

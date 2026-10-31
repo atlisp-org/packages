@@ -75,9 +75,9 @@
         (if (null factor) (setq factor 1e-6))
         (setq colors
               (if (= "No" (getkword "\n随机色填充 [Yes/No] <Yes>:")) nil t))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res (at-landscape:do-area ents factor colors))
-        (endundo)
+        (command "_.UNDO" "End")
         (if res
             (princ (strcat "\n已标注 " (itoa (length res)) " 个封闭区域。"))
             (princ "\n未找到可标注的封闭区域。")))

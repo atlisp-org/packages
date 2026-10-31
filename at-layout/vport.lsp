@@ -44,10 +44,10 @@ vports 为视口 ename 列表（或选择集），scale 为比例 N。
         n (getreal 1 "\n视口比例 1:<100>: "))
   (if ss
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (@layout:ai-vp-scale (@layout:ss-to-list ss)
                                  (if n n 100.0))
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 ;; ===================== 2. 同步对齐视口 vp-sync =====================
@@ -110,12 +110,12 @@ rows/cols 为 0 或 nil 表示自动(cols=上取整 sqrt(n))，gap 缺省 500。
         gap (getreal "\n视口间距 <500>: "))
   (if ss
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (@layout:ai-vp-sync (@layout:ss-to-list ss)
                                 0
                                 (if cols (fix cols) 0)
                                 (if gap gap 500.0))
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 ;; ===================== 3. 模型空间绘制视口外框 vp-outline =====================
@@ -192,10 +192,10 @@ layout 为 nil 时取当前布局，layer 为 nil 时用 \"ML_OUTLINE\"。
   (setq lay (getstring 1
                        (strcat "\n布局名 <当前 " (getvar "ctab") ">: ")))
   (setq lname (getstring 1 "\n外框图层 <ML_OUTLINE>: "))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (@layout:ai-vp-outline (if (= "" lay) nil lay)
                              (if (= "" lname) nil lname))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ))
 
 ;; ===================== 4. 视口锁定或解锁 vport-lock =====================
@@ -242,10 +242,10 @@ vports 为视口 ename 列表（或选择集）。
         opt (getkword "\n锁定(L)或解锁(U) [L]: L"))
   (if ss
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (@layout:ai-vport-lock (@layout:ss-to-list ss)
                                    (= opt "L"))
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 ;; ===================== 5. 视口图层状态编辑 vplayer =====================
@@ -264,10 +264,10 @@ vports 为视口 ename 列表（或选择集）。
   "对列表"
   "示例: (@layout:vplayer-parse \"A=off|B=freeze|\")"
   (setq res nil)
-  (foreach x (vl-string-split (vl-string-trim "|" str) "|")
+  (foreach x (@layout:split-str (vl-string-trim "|" str) "|")
     (if (vl-string-search "=" x)
         (progn
-          (setq x (vl-string-split x "="))
+          (setq x (@layout:split-str x "="))
           (setq res (cons (cons (vl-string-trim " " (car x))
                                 (vl-string-trim " " (cadr x)))
                           res)))))
@@ -374,7 +374,7 @@ vport 为视口 ename，layers-state 为 (图层名 . 状态) 对列表，
         n (if ss (sslength ss) 0))
   (if ss
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (while (< i n)
           (setq e (ssname ss i))
           (setq str (getstring 1
@@ -384,7 +384,7 @@ vport 为视口 ename，layers-state 为 (图层名 . 状态) 对列表，
           (if (/= "" str)
               (@layout:ai-vplayer e (@layout:vplayer-parse str)))
           (setq i (1+ i)))
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 ;; ===================== 6. 视口选层变灰 vport-grey =====================
@@ -462,13 +462,13 @@ layers 为图层名列表（nil=自动），gray 为灰色号（缺省 8）。
       (progn
         (setq str (getstring 1 "\n图层名,逗号分隔,回车=视口内全部: "))
         (setq color (getint "\n灰色号 <8>: "))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (@layout:ai-vport-grey (car sel)
                                    (if (= "" str)
                                        nil
                                        (@layout:sanitize-lst str))
                                    (if color color 8))
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 ;; ===================== 7. 还原视口颜色 vport-ungrey =====================
@@ -524,11 +524,27 @@ layers 为图层名列表；nil = 还原所有带 MINILAYOUT-GRAY 标记的图�
   "t"
   "示例: (@layout:vport-ungrey)"
   (setq str (getstring 1 "\n图层名,逗号分隔,回车=全部已置灰图层: "))
-  (startundo)
+  (command "_.UNDO" "Begin")
   (@layout:ai-vport-ungrey (if (= "" str)
                                    nil
                                    (@layout:sanitize-lst str)))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ))
 
 (princ)
+
+(defun @layout:split-str (str seps / res cur i n c)
+  "按分隔符集合拆分字符串（seps 中任一字符都算分隔符），忽略空段"
+  "字符串列表"
+  "(@layout:split-str \"a,b;c\" \",;\")"
+  (setq res '() cur "" i 1 n (strlen str))
+  (while (<= i n)
+    (setq c (substr str i 1))
+    (if (vl-string-search c seps)
+        (progn
+          (if (/= cur "") (setq res (append res (list cur))))
+          (setq cur ""))
+        (setq cur (strcat cur c)))
+    (setq i (1+ i)))
+  (if (/= cur "") (setq res (append res (list cur))))
+  res)

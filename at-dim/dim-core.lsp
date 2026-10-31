@@ -496,8 +496,7 @@
   (setq a1 (angle p1 p2)
         a2 (angle p1 p3)
         d  (abs (- a1 a2)))
-  (or (< d 0.05)
-    (< (abs (- d pi)) 0.05)))
+  (if (< d 0.05) (< d 0.05) (< (abs (- d pi)) 0.05)))
 
 (defun at-dim:dim-param (dd p0 dir)
   "标注 13 点沿 dir 方向从 p0 的投影参数。"
@@ -513,7 +512,7 @@
   "t 或 nil"
   "(at-dim:undo-begin)"
   (if (member 'startundo (atoms-family 0))
-    (progn (startundo) t)
+    (progn (command "_.UNDO" "Begin") t)
     (if *DOC*
       (not (vl-catch-all-error-p
           (vl-catch-all-apply 'vla-StartUndoMark (list *DOC*)))))))
@@ -523,7 +522,7 @@
   "t 或 nil"
   "(at-dim:undo-end)"
   (if (member 'endundo (atoms-family 0))
-    (progn (endundo) t)
+    (progn (command "_.UNDO" "End") t)
     (if *DOC*
       (not (vl-catch-all-error-p
           (vl-catch-all-apply 'vla-EndUndoMark (list *DOC*)))))))

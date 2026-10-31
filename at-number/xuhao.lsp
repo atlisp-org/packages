@@ -7,6 +7,13 @@
                  "编号文字距对象的偏移量(绘图单位，实际值乘以绘图比例)")
 (@:add-menu "编号工具" "全能编号" "(at-number:xuhao)")
 
+(defun at-number:cfg (key default / v)
+  "安全读取配置：配置缺失或读取失败时返回 default。"
+  "配置值或默认值"
+  "(at-number:cfg '@number:suffix \"\")"
+  (setq v (vl-catch-all-apply '@::get-config (list key)))
+  (if (or (vl-catch-all-error-p v) (null v)) default v))
+
 (defun at-number:number-string (n)
   "把编号数值格式化为字符串：整数取整，实数保留 2 位。
    n: 数值。
@@ -56,7 +63,7 @@
    ents: 对象 ename 列表。
    return: 排序后的 ename 列表。
    示例: (at-number:sort-by-snake (pickset:to-list (ssget)))"
-  (setq rowtol (@::scale (max 1.0 (@::get-config '@number:fontsize))))
+  (setq rowtol (@::scale (max 1.0 (at-number:cfg '@number:fontsize 3.5))))
   (setq items
         (mapcar '(lambda (e / p)
                    (setq p (at-number:insertion-point e))
@@ -88,7 +95,7 @@
   "返回编号文字的默认偏移点(向右偏移，距离取配置 @number:offset)。
    return: 点。
    示例: (at-number:default-offset)"
-  (list (@::scale (@::get-config '@number:offset)) 0.0 0.0))
+  (list (@::scale (at-number:cfg '@number:offset 300)) 0.0 0.0))
 
 (defun at-number:xuhao (/ ents prefix suffix start step order offset pos res i en num)
   "交互命令：选中点/文字/块，按顺序批量编号。
@@ -96,8 +103,8 @@
    示例: 在命令行执行 (at-number:xuhao)"
   (@::prompt '("全能编号：选中点/文字/块，按顺序批量编号。"
                "支持前缀、后缀、起始号、步长，可横向/纵向/蛇形排序。"))
-  (if (null (tblsearch "layer" (@::get-config '@number:layer)))
-      (layer:make (@::get-config '@number:layer) 1 nil nil))
+  (if (null (tblsearch "layer" (at-number:cfg '@number:layer "编号")))
+      (layer:make (at-number:cfg '@number:layer "编号") 1 nil nil))
   (if (null (setq ents (cadr (ssgetfirst))))
       (setq ents (ssget '((0 . "POINT,TEXT,MTEXT,INSERT")))))
   (if (null ents)
@@ -110,22 +117,22 @@
         (if (null order) (setq order "X"))
         (setq prefix (getstring t
                                 (strcat "编号前缀 <"
-                                        (@::get-config '@number:prefix) ">: ")))
-        (if (= "" prefix) (setq prefix (@::get-config '@number:prefix)))
+                                        (at-number:cfg '@number:prefix "") ">: ")))
+        (if (= "" prefix) (setq prefix (at-number:cfg '@number:prefix "")))
         (setq suffix (getstring t
                                 (strcat "编号后缀 <"
-                                        (@::get-config '@number:suffix) ">: ")))
-        (if (= "" suffix) (setq suffix (@::get-config '@number:suffix)))
+                                        (at-number:cfg '@number:suffix "") ">: ")))
+        (if (= "" suffix) (setq suffix (at-number:cfg '@number:suffix "")))
         (setq start (getint "起始编号 <1>: "))
         (if (null start) (setq start 1))
         (setq step (getint "步长 <1>: "))
         (if (null step) (setq step 1))
         (setq offset (getdist
                       (strcat "文字偏移距离 <"
-                              (rtos (@::scale (@::get-config '@number:offset))
+                              (rtos (@::scale (at-number:cfg '@number:offset 300))
                                     2 1) ">: ")))
         (if (null offset)
-            (setq offset (@::scale (@::get-config '@number:offset))))
+            (setq offset (@::scale (at-number:cfg '@number:offset 300))))
         (setq pos (list offset 0.0 0.0))
         (setq ents (cond ((= "Y" (strcase order))
                           (at-number:sort-by-y ents))
@@ -142,9 +149,9 @@
                             (at-number:number-string num)
                             suffix)
                     (mapcar '+ (at-number:insertion-point e) pos)
-                    (@::scale (@::get-config '@number:fontsize))
+                    (@::scale (at-number:cfg '@number:fontsize 3.5))
                     0 0.72 0 "LM"))
-          (entity:putdxf en 8 (@::get-config '@number:layer))
+          (entity:putdxf en 8 (at-number:cfg '@number:layer "编号"))
           (setq res (cons en res)
                 i (1+ i)))
         (command "_.UNDO" "End")
@@ -174,8 +181,8 @@
                         (strcase order) "X")
               prefix (if (= 'str (type prefix)) prefix "")
               pos (if (and pos (listp pos)) pos (at-number:default-offset)))
-        (if (null (tblsearch "layer" (@::get-config '@number:layer)))
-            (layer:make (@::get-config '@number:layer) 1 nil nil))
+        (if (null (tblsearch "layer" (at-number:cfg '@number:layer "编号")))
+            (layer:make (at-number:cfg '@number:layer "编号") 1 nil nil))
         (setq lst (cond ((= "Y" order) (at-number:sort-by-y lst))
                         ((= "SNAKE" order) (at-number:sort-by-snake lst))
                         (t (at-number:sort-by-x lst))))
@@ -187,11 +194,11 @@
           (setq en (entity:make-text
                     (strcat prefix
                             (at-number:number-string num)
-                            (@::get-config '@number:suffix))
+                            (at-number:cfg '@number:suffix ""))
                     (mapcar '+ (at-number:insertion-point e) pos)
-                    (@::scale (@::get-config '@number:fontsize))
+                    (@::scale (at-number:cfg '@number:fontsize 3.5))
                     0 0.72 0 "LM"))
-          (entity:putdxf en 8 (@::get-config '@number:layer))
+          (entity:putdxf en 8 (at-number:cfg '@number:layer "编号"))
           (setq res (cons en res)
                 i (1+ i)))
         (command "_.UNDO" "End")

@@ -87,8 +87,8 @@
             x2 (max (car p1) (car p2))
             y1 (min (cadr p1) (cadr p2))
             y2 (max (cadr p1) (cadr p2)))
-      (if (and (> (- x2 x1) (* 2 offset 2.0))
-          (> (- y2 y1) (* 2 offset 2.0)))
+      (if (and (> (- x2 x1) (* 2 offset))
+          (> (- y2 y1) (* 2 offset)))
         (progn
           (setq o (+ offset 50.0)
                 c    (list (/ (+ x1 x2) 2.0) (/ (+ y1 y2) 2.0))

@@ -158,7 +158,7 @@
       (progn
         (setq cur-doc (vla-get-activedocument (vlax-get-acad-object)))
         (vla-activate doc)
-        (startundo)
+        (command "_.UNDO" "Begin")
         (setq res 0)
         (if (setq ss (ssget "X" '((0 . "TEXT,MTEXT,ATTRIB"))))
             (progn
@@ -175,7 +175,7 @@
                                                                    content))
                           (setq res (1+ res)))))
                 (setq i (1+ i)))
-        (endundo)
+        (command "_.UNDO" "End")
         (if cur-doc (vla-activate cur-doc))
         res)
             nil))

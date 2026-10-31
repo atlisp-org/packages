@@ -13,7 +13,7 @@
   "字符串列表"
   "示例: (@layout:sanitize-lst \"布局1,布局2\")"
   (setq res nil)
-  (foreach x (vl-string-split str ",，;； \t")
+  (foreach x (@layout:split-str str ",，;； \t")
     (setq x (vl-string-trim " \t" x))
     (if (/= "" x)
         (setq res (cons (@layout:sanitize-name x) res))))
@@ -161,29 +161,29 @@ mode \"order\"=倒序。成功返回新顺序布局名列表，失败返回 nil�
     (if (/= "" pattern)
         (progn
           (setq start (getint 1 "\n起始序号 <1>: "))
-          (startundo)
+          (command "_.UNDO" "Begin")
           (@layout:ai-tab-rename pattern (if start start 1))
-          (endundo))))
+          (command "_.UNDO" "End"))))
    ((= opt "A")
     (setq n (getint 1 "\n增加布局个数 <1>: "))
     (if n
         (progn
-          (startundo)
+          (command "_.UNDO" "Begin")
           (@layout:ai-tab-add n)
-          (endundo))))
+          (command "_.UNDO" "End"))))
    ((= opt "D")
     (setq n (getint 1 "\n删除布局个数 <1>: "))
     (if n
         (progn
-          (startundo)
+          (command "_.UNDO" "Begin")
           (@layout:ai-tab-del n)
-          (endundo))))
+          (command "_.UNDO" "End"))))
    ((= opt "S")
     (setq mode (getkword "\n排序方式 [按名(N)/倒序(O)]: N"))
     (progn
-      (startundo)
+      (command "_.UNDO" "Begin")
       (@layout:ai-tab-sort (if (= mode "O") "order" "name"))
-      (endundo))))
+      (command "_.UNDO" "End"))))
   (princ))
 
 ;; ===================== 2. 布局合并 layout-merge =====================
@@ -282,9 +282,9 @@ layouts 为布局名列表，target 为目标布局名（不存在则创建）�
                  (@layout:sanitize-lst src-str)))
   (if srcs
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (@layout:ai-layout-merge srcs target)
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 ;; ===================== 3. 布局分图 layout-isolate =====================
@@ -336,9 +336,9 @@ layouts 为布局名列表，target 为目标布局名（不存在则创建）�
                    (@layout:sanitize-name layout)))
   (if (@layout:layout-p layout)
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (@layout:ai-layout-isolate layout)
-        (endundo))
+        (command "_.UNDO" "End"))
       (princ (strcat "\n错误: 布局 [" layout "] 不存在")))
   (princ))
 
@@ -390,9 +390,9 @@ layouts 为布局名列表，target 为目标布局名（不存在则创建）�
         (setq s (@layout:text-of (car sel)))
         (if s
             (progn
-              (startundo)
+              (command "_.UNDO" "Begin")
               (@layout:ai-layout-rename (getvar "ctab") s)
-              (endundo))
+              (command "_.UNDO" "End"))
             (princ "\n所选实体不是文字"))))
   (princ))
 
@@ -437,11 +437,27 @@ layout-name 为布局名（nil=自动 局部图N）。
             (progn
               (setq n (getint 1 "\n出图比例 1:<50>: "))
               (setq name (getstring 1 "\n布局名(回车=自动): "))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (@layout:ai-jbqt p1 p2
                                    (if n (float n) 50.0)
                                    (if (= "" name) nil name))
-              (endundo))))))
+              (command "_.UNDO" "End"))))))
   (princ)
 
 (princ)
+
+(defun @layout:split-str (str seps / res cur i n c)
+  "按分隔符集合拆分字符串（seps 中任一字符都算分隔符），忽略空段"
+  "字符串列表"
+  "(@layout:split-str \"a,b;c\" \",;\")"
+  (setq res '() cur "" i 1 n (strlen str))
+  (while (<= i n)
+    (setq c (substr str i 1))
+    (if (vl-string-search c seps)
+        (progn
+          (if (/= cur "") (setq res (append res (list cur))))
+          (setq cur ""))
+        (setq cur (strcat cur c)))
+    (setq i (1+ i)))
+  (if (/= cur "") (setq res (append res (list cur))))
+  res)

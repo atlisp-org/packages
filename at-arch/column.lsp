@@ -100,10 +100,10 @@ return: 图元 ename 列表（截面+文字）；参数非法返回 nil。
   (if (setq pt (getpoint "\n柱中心:"))
       (progn
         (setq label (getstring T "\n柱编号(如 KZ1,回车跳过):"))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-column pt (strcase shape T) w h
           (if (eq label "") nil label))
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 (defun at-arch:ai-pline2column (ents hatch / layer res e n)
@@ -147,7 +147,7 @@ return: 被处理的 ename 列表；无有效实体返回 nil。
       (progn
         (setq hatch (getkword "\n填充[Y/N]<N>:"))
         (if (eq hatch "Y") (setq hatch t) (setq hatch nil))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-pline2column ss hatch)
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))

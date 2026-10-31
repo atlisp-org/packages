@@ -1425,7 +1425,7 @@
      (cond
        (res
         (if (> (length res) 1)
-          (setq res (or (at-edit:ai-pline-bool res "union" t) res)))
+          (setq res (if (at-edit:ai-pline-bool res "union" t) (at-edit:ai-pline-bool res "union" t) res)))
         (if layer (foreach pl res (at-edit:pl-put-layer pl layer)))
         res)
        (pt

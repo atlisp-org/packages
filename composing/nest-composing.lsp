@@ -72,8 +72,7 @@
                 (vl-sort pts
                          (function
                           (lambda (a b)
-                            (or (< (cadr a) (cadr b))
-                                (and (equal (cadr a) (cadr b) 1e-6)
+                            (if (< (cadr a) (cadr b)) (< (cadr a) (cadr b)) (and (equal (cadr a) (cadr b) 1e-6)
                                      (< (car a) (car b))))))))
           (foreach pt pts
             (if (null done)

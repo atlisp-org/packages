@@ -50,12 +50,12 @@
     (cond
      ((= "TEXT" (entity:getdxf ent 0))
       (setq content (at-stat:trim (entity:getdxf ent 1))
-            style (or (entity:getdxf ent 7) "Standard")
-            height (or (entity:getdxf ent 40) 0.0)))
+            style (if (entity:getdxf ent 7) (entity:getdxf ent 7) "Standard")
+            height (if (entity:getdxf ent 40) (entity:getdxf ent 40) 0.0)))
      ((= "MTEXT" (entity:getdxf ent 0))
       (setq content (at-stat:clean-text (text:get-mtext ent))
-            style (or (entity:getdxf ent 7) "Standard")
-            height (or (entity:getdxf ent 40) 0.0)))
+            style (if (entity:getdxf ent 7) (entity:getdxf ent 7) "Standard")
+            height (if (entity:getdxf ent 40) (entity:getdxf ent 40) 0.0)))
      (t nil))
     (if content
         (if (setq rec (assoc content res))
@@ -191,7 +191,7 @@
   (if ents
       (progn
         (setq tol (getreal "\n分组容差<0=精确>: "))
-        (setq data (at-stat:shape-data ents (or tol 0.0)))
+        (setq data (at-stat:shape-data ents (if tol tol 0.0)))
         (if (and data (setq pt (getpoint "\n指定表格插入点: ")))
             (at-stat:make-table "同形状统计表"
                                   '("类型" "尺寸" "数量")
@@ -218,7 +218,7 @@
   (if (setq layers (at-stat:pick-layers))
       (progn
         (setq factor (getreal "\n面积换算系数(0.0001=mm2→m2)<0.0001>: "))
-        (setq data (at-stat:area-by-layer layers (or factor 0.0001)))
+        (setq data (at-stat:area-by-layer layers (if factor factor 0.0001)))
         (if (and data (setq pt (getpoint "\n指定表格插入点: ")))
             (at-stat:make-table "面积分层统计表"
                                   '("图层" "面积")
@@ -267,7 +267,7 @@
   示例: (at-stat:ai-shape-list (ssget \"x\" '((0 . \"*\"))) 0.1)"
   (setq ents (at-stat:to-ents ss))
   (if ents
-      (at-stat:shape-data ents (or (and (numberp tol) tol) 0.0))
+      (at-stat:shape-data ents (if (and (numberp tol) tol) (and (numberp tol) tol) 0.0))
       nil))
 
 (defun at-stat:ai-total-length (layers out-file / data)

@@ -54,7 +54,7 @@
 
 (defun at-interior:elev-frame ()
   "天花轮廓框：选择闭合折线，输入偏出高度、方柱边长"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (progn
     (setq sel (entsel "\n选择闭合天花轮廓折线: "))
     (if sel
@@ -64,7 +64,7 @@
         (getint (strcat "方向 0=外扩/1=内收 <0>: "))
         (getreal (strcat "角部方柱边长 <200>: ")))
       (princ "\n未选择对象")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -105,13 +105,13 @@
 
 (defun at-interior:jianxian-plan ()
   "天花平面线：指定对角点、内缩距离、标高"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-jianxian-plan
     (getpoint "\n指定第一对角点: ")
     (getpoint "\n指定第二对角点: ")
     (getreal (strcat "内缩距离 <500>: "))
     (getreal (strcat "标高值 <3000>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -168,7 +168,7 @@
 
 (defun at-interior:jianxian-elev ()
   "天花线立面：指定地线、主顶标高、槽距、下吊高度"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-jianxian-elev
     (getpoint "\n指定地线起点: ")
     (getpoint "\n指定地线终点: ")
@@ -176,7 +176,7 @@
     (getreal (strcat "灯槽距墙距离 <300>: "))
     (getreal (strcat "下吊高度 <400>: "))
     (getreal (strcat "石膏板厚 <12>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -220,13 +220,13 @@
 
 (defun at-interior:gypsum-sec ()
   "石膏板剖面：指定板底线、下吊高度、吊杆间距"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-gypsum-sec
     (getpoint "\n指定板底线起点: ")
     (getpoint "\n指定板底线终点: ")
     (getreal (strcat "下吊高度 <150>: "))
     (getreal (strcat "吊杆间距 <1000>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -261,7 +261,7 @@
 
 (defun at-interior:elec-line (/ pts p)
   "电线平面：依次拾取电线点，再选择是否画开关"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (progn
     (setq pts nil
       p (getpoint "\n指定电线起点: "))
@@ -274,7 +274,7 @@
         (if (eq "Y" (getkword "\n画开关? [Y/N] <N>: "))
           (getpoint "\n指定开关位置: ")
           nil))))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -305,7 +305,7 @@
 
 (defun at-interior:light-plan ()
   "灯具平面：选择闭合曲线，输入间距和块名"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (progn
     (setq sel (entsel "\n选择闭合曲线: "))
     (if sel
@@ -314,6 +314,6 @@
         (getreal (strcat "灯具间距 <1000>: "))
         (getstring "\n灯具块名(回车=默认符号): "))
       (princ "\n未选择对象")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )

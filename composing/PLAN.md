@@ -15,4 +15,7 @@
 - **算法**：iMini 为 C++ exe，内置 7 种排版算法（含多种启发式与优化策略）；本包为纯 AutoLISP 的 FFD（First-Fit Decreasing）单算法。
 - **输出**：iMini 输出加工文件/刀路；本包输出每件的摆放坐标 `((版次 (件号 x y 宽 高 旋转) ...) ...)`，供 CAD 内直接绘制或二次处理。
 - **入口**：本包额外提供 AI 无交互入口 `composing:ai-nest` / `composing:ai-nest-draw`，供 MCP agent 直接调用。
+- **rotate 语义**（2026-10 明确）：`ai-nest` 的 `rotate` 参数为显式布尔——
+  `T` 允许件旋转 90°，`nil` 不允许（早期实现 `null → T` 导致「不旋转」
+  不可表达，已修复）。
 - **依赖**：本包仅依赖 `base`，无外部可执行文件。

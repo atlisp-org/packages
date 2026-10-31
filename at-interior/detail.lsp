@@ -49,15 +49,20 @@
       ents))
 )
 
-(defun at-interior:weld ()
-  "焊缝：指定焊缝线、类型、角焊缝高度"
-  (startundo)
-  (at-interior:ai-weld
-    (getpoint "\n指定焊缝线起点: ")
-    (getpoint "\n指定焊缝线终点: ")
-    (getkword "\n类型 [角焊缝/对接焊缝] <角焊缝>: ")
-    (getreal (strcat "角焊缝高度 <6>: ")))
-  (endundo)
+(defun at-interior:weld (/ kw)
+  "焊缝：指定焊缝线、类型、角焊缝高度（中文选项映射为内部代号）"
+  (command "_.UNDO" "Begin")
+  (progn
+    (setq kw (getkword "\n类型 [角焊缝/对接焊缝] <角焊缝>: "))
+    (if (eq "对接焊缝" kw)
+      (setq kw "butt")
+      (setq kw "fillet"))
+    (at-interior:ai-weld
+      (getpoint "\n指定焊缝线起点: ")
+      (getpoint "\n指定焊缝线终点: ")
+      kw
+      (getreal (strcat "角焊缝高度 <6>: "))))
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -94,12 +99,12 @@
 
 (defun at-interior:flex ()
   "软管：指定中心线、半径"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-flex
     (getpoint "\n指定中心线起点: ")
     (getpoint "\n指定中心线终点: ")
     (getreal (strcat "软管半径 <25>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -160,7 +165,7 @@
 
 (defun at-interior:tube (/ pts p)
   "管线：依次拾取折线点，再输入半径、管径、支管长"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (progn
     (setq pts nil
       p (getpoint "\n指定管线起点: "))
@@ -173,7 +178,7 @@
         (getreal (strcat "管半径 <50>: "))
         (getstring "\n管径标注(回车=按半径): ")
         (getreal (strcat "支管长度 <0=不画>: ")))))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -204,11 +209,11 @@
 
 (defun at-interior:back-holes ()
   "背板开孔：指定底边、孔间距"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-back-holes
     (getpoint "\n指定底边起点: ")
     (getpoint "\n指定底边终点: ")
     (getreal (strcat "孔间距 <300>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )

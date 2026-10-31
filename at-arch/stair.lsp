@@ -106,9 +106,9 @@ return: 创建实体 ename 列表；缺参或两点重合返回 nil。
               (if (null treads) (setq treads 10))
               (setq width (getreal "\n梯段宽度<1000>:"))
               (if (null width) (setq width 1000))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (at-arch:ai-stair-plan p1 p2 treads width)
-              (endundo)))))
+              (command "_.UNDO" "End")))))
   (princ))
 
 (defun at-arch:ai-elevator (p1 p2 label / layer c1 c2 c3 c4
@@ -178,7 +178,7 @@ return: 创建实体 ename 列表；缺参或两点重合返回 nil。
             (progn
               (setq label (getstring T "\n编号(回车不画):"))
               (if (eq label "") (setq label nil))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (at-arch:ai-elevator p1 p2 label)
-              (endundo)))))
+              (command "_.UNDO" "End")))))
   (princ))

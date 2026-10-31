@@ -202,6 +202,15 @@
     (setq s (if (> (strlen s) 1) (substr s 2) "")))
   res)
 
+(defun at-arch:str-contain-p (s sub)
+  "判断字符串 s 是否包含子串 sub（不依赖 wcmatch，其参数形式跨 CAD 不一致）。
+  命中位置为 0 时 vl-string-search 返回 0（布尔上下文中作 nil），需显式处理。"
+  "t/nil"
+  "(at-arch:str-contain-p \"WINDOW\" \"WIN\")"
+  (if (vl-string-search sub s)
+      t
+      (if (= (vl-string-search sub s) 0) t nil)))
+
 ;; ==================== 实体读取与创建 ====================
 
 (defun at-arch:ent-list (ss / n i res)

@@ -20,8 +20,8 @@
 | 3 | KHZ 字形设置 | `fonts:style-khz` | `fonts:ai-style-khz` | 批量设置 kht/kdb/khtz 样式（主字体+大字体） |
 | 4 | 字体库清单 | `fonts:font-list` | `fonts:ai-font-list` | 列出支持路径 SHX 文件 + 当前图文字样式 |
 
-新增底层函数：`fonts:make-style`、`fonts:apply-series`、`fonts:series-hz`、`fonts:series-khz`、
-`fonts:collect-shx`、`fonts:collect-styles`、`fonts:style-line`、`fonts:support-paths`。
+新增底层函数：`fonts:make-style`、`fonts:set-fonts`、`fonts:apply-series`、`fonts:series-hz`、
+`fonts:series-khz`、`fonts:collect-shx`、`fonts:collect-styles`、`fonts:style-line`、`fonts:support-paths`。
 
 ## 3. 未实现（backlog）
 
@@ -35,8 +35,11 @@
 
 ## 4. 已知限制
 
-- `fonts:make-style` 对 TTF 用 `vla-setfont`（charset 134/pitch 2，GB2312），对 SHX 用
-  `vla-put-fontfile`/`vla-put-bigfontfile`；设置 `FontFile` 前未校验字体文件是否存在于支持路径。
+- `fonts:make-style` 对 TTF 用 `vla-setfont`（charset 134/pitch 2，GB2312）；对 SHX 主/大字体
+  改用 `fonts:set-fonts`（`entmod` 直写组码 4/3）。**原因**：实测 ZWCAD 24.1s LMS Tech 的
+  VLA `FontFile`/`BigFontFile` 属性与 DXF 组码映射互换（`vla-put-fontfile` 把主字体写进了
+  组码 3 大字体槽位，主/大字体写反）；`entmod` 直写组码符合 DXF 标准（4=主、3=大），
+  AutoCAD 与各国产 CAD 均正确。设置 `FontFile` 前仍未校验字体文件是否存在于支持路径。
 - `oblique` 参数统一按「度」输入，内部 `(* pi (/ oblique 180.0))` 转弧度。
 - 本方言 `and`/`or` 只返回 `T`/`nil`；`(strcat nil ...)` 会报错，字体为空时已用空串兜底
   （`fonts:style-line`、`fonts:collect-styles` 的组码 3/4 可能为 nil）。

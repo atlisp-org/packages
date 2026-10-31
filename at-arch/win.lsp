@@ -98,9 +98,9 @@ return: 图元 ename 列表；参数非法返回 nil。
             (setq side (if (eq kw "R") -1 1))
             (setq kw (getkword "\n扇数: 单[S]/双[D]<S>:"))
             (setq leaves (if (eq kw "D") 2 1))
-            (startundo)
+            (command "_.UNDO" "Begin")
             (at-arch:ai-door p1 p2 th side leaves)
-            (endundo))))
+            (command "_.UNDO" "End"))))
   (princ))
 
 (defun at-arch:win-geo (p1 p2 th layer / dir res A1 A2 B1 B2 m1 m2)
@@ -150,9 +150,9 @@ return: 图元 ename 列表；参数非法返回 nil。
           (progn
             (setq th (getint "\n墙厚<240>:"))
             (if (null th) (setq th 240))
-            (startundo)
+            (command "_.UNDO" "Begin")
             (at-arch:ai-win p1 p2 th)
-            (endundo))))
+            (command "_.UNDO" "End"))))
   (princ))
 
 (defun at-arch:ai-hole-door (ents pt width th side leaves / layer data
@@ -268,13 +268,13 @@ return: 图元 ename 列表（新墙线+门）；无有效墙线返回 nil。
             (if (null th) (setq th 240))
             (setq kw (getkword "\n开启方向: 左[L]/右[R]<L>:"))
             (setq side (if (eq kw "R") -1 1))
-            (startundo)
+            (command "_.UNDO" "Begin")
             (at-arch:ai-hole-door ss pt w th side 1)
-            (endundo))))
+            (command "_.UNDO" "End"))))
   (princ))
 
 (defun at-arch:ai-win-text (ents label / tt res i e bb center layer s
-                                       prefix cnt n)
+                                       prefix cnt n nm)
   "AI 入口：门窗编号。在每个选中门窗实体的中心放置编号文字。
 ents: ename 列表或选择集（门窗实体）。
 label: 编号字符串（如 \"M1\"）；nil 时按图层自动编号：
@@ -300,11 +300,11 @@ return: 文字 ename 列表；未选择实体返回 nil。
                 (if (null label)
                     (progn
                       (setq s (strcase layer))
-                      (if (or (wcmatch s "*DOOR*")
-                              (wcmatch s "*门*"))
+                      (if (or (at-arch:str-contain-p s "DOOR")
+                              (at-arch:str-contain-p s "门"))
                           (setq prefix "M")
-                          (if (or (wcmatch s "*WINDOW*")
-                                  (wcmatch s "*窗*"))
+                          (if (or (at-arch:str-contain-p s "WINDOW")
+                                  (at-arch:str-contain-p s "窗"))
                               (setq prefix "C")
                               (setq prefix "N")))
                       (setq cnt (if (assoc prefix cnt)
@@ -313,9 +313,10 @@ return: 文字 ename 列表；未选择实体返回 nil。
                       (setq n (assoc prefix cnt))
                       (setq cnt (at-arch:setn cnt (position n cnt)
                                  (list (car n) (1+ (cadr n)))))
-                      (setq label (strcat prefix
-                                 (itoa (cadr (assoc prefix cnt))))))
-                (if (setq tt (at-arch:text label center
+                      (setq nm (strcat prefix
+                                 (itoa (cadr (assoc prefix cnt)))))
+                    (setq nm label))
+                (if (setq tt (at-arch:text nm center
                           (at-arch:ts 250) 0 "M" layer))
                     (setq res (cons tt res))))))
         (if res
@@ -331,13 +332,13 @@ return: 文字 ename 列表；未选择实体返回 nil。
   "门窗编号：逐个点选门窗实体并输入编号（回车自动编号）。"
   "无"
   "示例: 运行命令后点选实体"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (while (setq sel (entsel "\n选择门窗实体(回车结束):"))
     (setq s (getstring T "\n输入编号(如 M1,回车自动):"))
     (if (eq s "")
         (at-arch:ai-win-text (list (car sel)) nil)
         (at-arch:ai-win-text (list (car sel)) s)))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ))
 
 (defun at-arch:parse-win-code (s / s2 n)
@@ -345,7 +346,9 @@ return: 文字 ename 列表；未选择实体返回 nil。
   \"M0921-1\" 同理；C1524=>(1500 2400)。无法解析返回 nil。"
   "list/nil"
   "(at-arch:parse-win-code \"M0921\")"
-  (if (and s (wcmatch (strcase s) "[MC]####*"))
+  (if (and s (>= (strlen s) 5)
+           (or (equal (substr (strcase s) 1 1) "M")
+               (equal (substr (strcase s) 1 1) "C")))
       (progn
         (setq s2 (substr (strcase s) 2 4))
         (if (vl-every
@@ -435,7 +438,7 @@ return: ((编号 宽 高 数量) ...)；没有门窗编号返回 nil。
   (if (setq rows (at-arch:ai-win-list ss))
       (if (setq p (getpoint "\n门窗表放置位置(左下角):"))
           (progn
-            (startundo)
+            (command "_.UNDO" "Begin")
             (at-arch:draw-table
              p "门窗表"
              (list "编号" "宽" "高" "数量")
@@ -446,5 +449,5 @@ return: ((编号 宽 高 数量) ...)；没有门窗编号返回 nil。
                        (if (caddr r) (at-arch:str (caddr r)) "-")
                        (cadddr r))))
               rows)))
-            (endundo)))
+            (command "_.UNDO" "End")))
   (princ))

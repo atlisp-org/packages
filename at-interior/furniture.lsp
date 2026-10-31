@@ -34,14 +34,14 @@
 
 (defun at-interior:closet ()
   "衣柜平面：指定背边起终点、深度、门数"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-closet
     (getpoint "\n指定背边起点: ")
     (getpoint "\n指定背边终点: ")
     (getreal (strcat "衣柜深度 <600>: "))
     (getint (strcat "门扇数量 <2>: "))
     (mi-get-side))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -108,7 +108,7 @@
 
 (defun at-interior:cabinet ()
   "柜体平面：指定底边、深度、抽屉数、门数"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-cabinet
     (getpoint "\n指定底边起点: ")
     (getpoint "\n指定底边终点: ")
@@ -116,7 +116,7 @@
     (getint (strcat "抽屉数量 <0>: "))
     (getint (strcat "门扇数量 <0=开放格>: "))
     (mi-get-side))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -150,13 +150,13 @@
 
 (defun at-interior:cabinet-elev ()
   "柜体立面：指定底边、柜高、门数"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-cabinet-elev
     (getpoint "\n指定底边起点: ")
     (getpoint "\n指定底边终点: ")
     (getreal (strcat "柜体高度 <800>: "))
     (getint (strcat "门扇数量 <2>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -192,14 +192,14 @@
 
 (defun at-interior:cabinet-sec ()
   "柜体剖面：指定底边、柜高、搁板数、背板厚"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-cabinet-sec
     (getpoint "\n指定底边起点: ")
     (getpoint "\n指定底边终点: ")
     (getreal (strcat "柜体高度 <800>: "))
     (getint (strcat "搁板数量 <3>: "))
     (getreal (strcat "背板厚度 <9> (0=不画): ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -236,14 +236,14 @@
 
 (defun at-interior:curtain ()
   "窗帘盒：指定窗线、盒深、间隙、是否拉绳"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-curtain
     (getpoint "\n指定窗线起点: ")
     (getpoint "\n指定窗线终点: ")
     (getreal (strcat "窗帘盒深度 <200>: "))
     (getreal (strcat "窗帘间隙 <100>: "))
     (getint (strcat "画拉绳 <0>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -308,13 +308,13 @@
 
 (defun at-interior:glass-wall ()
   "玻璃隔断：指定隔墙线、厚度、门宽、门洞位置"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-glass-wall
     (getpoint "\n指定隔墙线起点: ")
     (getpoint "\n指定隔墙线终点: ")
     (getreal (strcat "隔断厚度 <100>: "))
     (getreal (strcat "门宽 <900> (0=无门): "))
     (getreal (strcat "门洞位置比例 0~1 <0.5>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )

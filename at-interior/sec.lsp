@@ -24,7 +24,7 @@
 
 (defun at-interior:sec-wood (/ kw)
   "木板截面：指定底边、板厚、材料（中文选项映射为内部代号）"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (progn
     (setq kw (getkword "\n材料 [实木/多层板/实心] <多层板>: "))
     (if (eq "实木" kw)
@@ -37,7 +37,7 @@
       (getpoint "\n指定底边终点: ")
       (getreal (strcat "板厚 <18>: "))
       kw))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -66,12 +66,12 @@
 
 (defun at-interior:sec-glass ()
   "玻璃截面：指定底边、类型(1单片/2双片)"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-sec-glass
     (getpoint "\n指定底边起点: ")
     (getpoint "\n指定底边终点: ")
     (getint (strcat "类型 1=单片/2=双片 <1>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -104,13 +104,13 @@
 
 (defun at-interior:sec-stone ()
   "石材截面：指定底边、石板厚、挂件间距"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-sec-stone
     (getpoint "\n指定底边起点: ")
     (getpoint "\n指定底边终点: ")
     (getreal (strcat "石板厚度 <20>: "))
     (getreal (strcat "挂件间距 <600>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -145,7 +145,7 @@
 
 (defun at-interior:sec-steel (/ kw)
   "型钢截面：指定底边、类型(中文选项映射)、尺寸"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (progn
     (setq kw (getkword "\n类型 [板/工字/型钢] <型钢>: "))
     (if (eq "板" kw)
@@ -161,7 +161,7 @@
       (getreal (strcat "翼缘宽 <100>: "))
       (getreal (strcat "翼缘厚 <10>: "))
       (getreal (strcat "腹板厚 <6>: "))))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -198,13 +198,13 @@
 
 (defun at-interior:sec-steel-frame ()
   "钢框截面：指定底边、框高、框腿厚"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-sec-steel-frame
     (getpoint "\n指定底边起点: ")
     (getpoint "\n指定底边终点: ")
     (getreal (strcat "框高 <150>: "))
     (getreal (strcat "框腿厚 <8>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )
 
@@ -264,13 +264,13 @@
 
 (defun at-interior:sec-stone-wall ()
   "石材墙剖面：指定底边、石板厚、间隙、C型钢间距"
-  (startundo)
+  (command "_.UNDO" "Begin")
   (at-interior:ai-sec-stone-wall
     (getpoint "\n指定底边起点: ")
     (getpoint "\n指定底边终点: ")
     (getreal (strcat "石板厚度 <20>: "))
     (getreal (strcat "C型钢与石板间隙 <20>: "))
     (getreal (strcat "C型钢间距 <1000>: ")))
-  (endundo)
+  (command "_.UNDO" "End")
   (princ)
 )

@@ -50,9 +50,9 @@ return: 创建实体 ename 列表；缺参返回 nil。
       (progn
         (setq value (getstring T "\n标高值(回车 0.000):"))
         (if (eq value "") (setq value "0.000"))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-elev pt value)
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 (defun at-arch:ai-arch-coord (pt x y / layer res)
@@ -129,9 +129,9 @@ return: 创建实体 ename 列表；缺参返回 nil。
                   (progn
                     (princ "\nY 坐标无效，按点坐标处理。")
                     (setq y nil)))))
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-arch-coord pt x y)
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))
 
 (defun at-arch:ai-break-line (p1 p2 teeth amp gap / layer len vec
@@ -223,9 +223,9 @@ return: 创建实体 ename 列表；缺参或两点重合返回 nil。
                     (if (or (vl-catch-all-error-p gap)
                             (not (numberp gap)))
                         (setq gap nil))))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (at-arch:ai-break-line p1 p2 teeth amp gap)
-              (endundo)))))
+              (command "_.UNDO" "End")))))
   (princ))
 
 (defun at-arch:ai-sec-symbol (p1 p2 num / layer perp e ang res)
@@ -299,9 +299,9 @@ return: 创建实体 ename 列表；缺参或两点重合返回 nil。
             (progn
               (setq num (getstring T "\n剖面编号(回车 1-1):"))
               (if (eq num "") (setq num "1-1"))
-              (startundo)
+              (command "_.UNDO" "Begin")
               (at-arch:ai-sec-symbol p1 p2 num)
-              (endundo)))))
+              (command "_.UNDO" "End")))))
   (princ))
 
 (defun at-arch:ai-north (pt / layer r res)
@@ -348,7 +348,7 @@ return: 创建实体 ename 列表；缺参返回 nil。
   (setq pt (getpoint "\n指定指北针中心:"))
   (if pt
       (progn
-        (startundo)
+        (command "_.UNDO" "Begin")
         (at-arch:ai-north pt)
-        (endundo)))
+        (command "_.UNDO" "End")))
   (princ))

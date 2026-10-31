@@ -53,6 +53,19 @@ iMini 复现工作产生的 `mini-*` 包已全部并入 `at-*` 包（`docs/imini
 - DIMENSION 的 11（文字位置）/ 70 组码用 `entmod` 常静默失效，改文字位置用
   `vla-put-TextPosition`；旋转标注（70=32）的 50 组码必须写在
   `AcDbAlignedDimension` 段内。
+- **部分 CAD（如 ZWCAD 24.1s）没有 `startundo` / `endundo`** —— 统一用
+  `(command "_.UNDO" "Begin")` / `(command "_.UNDO" "End")` 实现。
+- **部分 CAD（如 ZWCAD 24.1s）没有 `fboundp`**（报 `no function definition`）——
+  判断函数库是否已加载用 `(if (null <ns>:<fn>) (require 'ns:*))`，不要用 `fboundp`。
+- **`wcmatch` 参数形式跨 CAD 不一致**：ZWCAD 只认 `(wcmatch str pattern)`
+  两参形式，标准 AutoCAD 是 `(wcmatch pattern list)`。做单串匹配改用
+  `vl-string-search` 或显式 `string=` 比较，不要依赖 `wcmatch`。
+- **`vl-some` 在 ZWCAD 上返回函数结果（T/0）而非匹配元素**（Common Lisp
+  风格），不要用它取元素；需要元素用 `foreach` + 条件。
+- **TEXTSTYLE 的 VLA 字体属性可能与 DXF 组码互换**（实测 ZWCAD 24.1s LMS
+  Tech）：`(vla-put-fontfile obj X)` 实际把 X 写进组码 3（大字体槽位），
+  主/大字体写反。设置 SHX 主/大字体请用 `entmod` 直写组码 4/3（见
+  `fonts:set-fonts`），符合 DXF 标准且跨 CAD 正确。
 
 静态自查脚本（本机 `/tmp/opencode/check-lisp-pitfalls.py`，可复制进仓库复用）能扫出
 上述问题。

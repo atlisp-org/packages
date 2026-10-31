@@ -9,8 +9,8 @@
 
 ;; ==================== 依赖加载 ====================
 
-(if (not (fboundp 'entity:make-line)) (require 'entity:*))
-(if (not (fboundp 'layer:make)) (require 'layer:*))
+(if (null entity:make-line) (require 'entity:*))
+(if (null layer:make) (require 'layer:*))
 
 ;; ==================== 菜单注册 ====================
 
@@ -278,7 +278,7 @@
 
 (defun mi-light-symbol (pt blk / ents)
   "灯具符号：圆 r50+斜十字；blk 有效时 INSERT blk"
-  (if (and blk (tblobj blk))
+  (if (and blk (not (= blk "")) (tblobj blk))
     (progn
       (command "._INSERT" blk pt 1 1 0)
       (list (entlast)))

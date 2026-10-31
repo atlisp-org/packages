@@ -91,7 +91,7 @@
                (cons 'pt (cdr (assoc 10 dx)))
                (cons 'angle (if (cdr (assoc 50 dx)) (cdr (assoc 50 dx)) 0.0))
                (cons 'layer (cdr (assoc 8 dx)))
-               (cons 'type type))))))
+               (cons 'type etype))))))
   nil)
 
 (defun @text:get-text-ents (ss / res i n e info)

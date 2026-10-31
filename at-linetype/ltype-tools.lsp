@@ -120,14 +120,13 @@
         (setq lst nil)
         (foreach p pts
           (setq lst (append lst
-                       (list (list p
-                                   (if (< i (length bul)) (nth i bul) 0.0)
-                                   (if (if (< i (length w0)) (nth i w0) nil) (if (< i (length w0)) (nth i w0) nil) (if cw cw 0.0))
-                                   (if (if (< i (length w1)) (nth i w1) nil) (if (< i (length w1)) (nth i w1) nil) (if cw cw 0.0)))))
+                     (list (list p
+                                 (if (< i (length bul)) (nth i bul) 0.0)
+                                 (if (< i (length w0)) (nth i w0) (if cw cw 0.0))
+                                 (if (< i (length w1)) (nth i w1) (if cw cw 0.0))))))
           (setq i (1+ i)))
         lst)
       (progn
-        ;; POLYLINE：顶点在子实体中
         (setq lst nil)
         (setq i (entnext ent))
         (while (and i (not (= "SEQEND" (cdr (assoc 0 (entget i))))))
@@ -135,11 +134,11 @@
               (progn
                 (setq data (entget i))
                 (setq lst (append lst
-                             (list (list (cdr (assoc 10 data))
-                                         (if (cdr (assoc 42 data)) (cdr (assoc 42 data)) 0.0)
-                                         (if (cdr (assoc 40 data)) (cdr (assoc 40 data)) 0.0)
-                                         (if (cdr (assoc 41 data)) (cdr (assoc 41 data)) 0.0)))))))
-          (setq i (entnext i))))
+                           (list (list (cdr (assoc 10 data))
+                                       (if (cdr (assoc 42 data)) (cdr (assoc 42 data)) 0.0)
+                                       (if (cdr (assoc 40 data)) (cdr (assoc 40 data)) 0.0)
+                                       (if (cdr (assoc 41 data)) (cdr (assoc 41 data)) 0.0)))))))
+          (setq i (entnext i)))
         lst)))
 
 (defun at-linetype:pline-closed-p (ent / data)

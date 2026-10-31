@@ -90,7 +90,7 @@
                 (setq b 0.0)))
               (setq pt (cdr x))))
          ((= 42 (car x))
-          (setq b (cadr x))))
+          (setq b (cdr x))))
       (if pt
           (setq res (cons (cons (list (car pt) (cadr pt)) b) res)))
       (reverse res)))

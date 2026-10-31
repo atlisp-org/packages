@@ -49,19 +49,19 @@
   "迷你建筑绘图：标注与符号尺寸比例系数")
 
 ;; 常用图层名
-(defvar '*at-arch:layer-axis* "AXIS")
-(defvar '*at-arch:layer-wall* "WALL")
-(defvar '*at-arch:layer-column* "COLUMN")
-(defvar '*at-arch:layer-beam* "BEAM")
-(defvar '*at-arch:layer-door* "DOOR")
-(defvar '*at-arch:layer-window* "WINDOW")
-(defvar '*at-arch:layer-elev* "ELEV")
-(defvar '*at-arch:layer-coord* "COORD")
-(defvar '*at-arch:layer-stair* "STAIR")
-(defvar '*at-arch:layer-elevator* "ELEVATOR")
-(defvar '*at-arch:layer-symbol* "SYMBOL")
-(defvar '*at-arch:layer-hatch* "HATCH")
-(defvar '*at-arch:layer-cover* "COVER")
+(defvar '*at-arch:layer-axis* "AXIS" "")
+(defvar '*at-arch:layer-wall* "WALL" "")
+(defvar '*at-arch:layer-column* "COLUMN" "")
+(defvar '*at-arch:layer-beam* "BEAM" "")
+(defvar '*at-arch:layer-door* "DOOR" "")
+(defvar '*at-arch:layer-window* "WINDOW" "")
+(defvar '*at-arch:layer-elev* "ELEV" "")
+(defvar '*at-arch:layer-coord* "COORD" "")
+(defvar '*at-arch:layer-stair* "STAIR" "")
+(defvar '*at-arch:layer-elevator* "ELEVATOR" "")
+(defvar '*at-arch:layer-symbol* "SYMBOL" "")
+(defvar '*at-arch:layer-hatch* "HATCH" "")
+(defvar '*at-arch:layer-cover* "COVER" "")
 
 ;; ==================== 通用辅助函数 ====================
 

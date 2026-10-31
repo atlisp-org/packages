@@ -38,9 +38,12 @@
   "t / nil"
   "示例: (@layout:rename-1 \"布局1\" \"图纸1\")"
   (if (@layout:layout-p old)
-      (progn
-        (vla-put-name (vla-item *layouts* old) new)
-        t)
+      (if (vl-catch-all-error-p
+           (vl-catch-all-apply
+            'vla-put-name
+            (list (vla-item *layouts* old) new)))
+          nil
+          t)
       nil))
 
 (defun @layout:ai-tab-rename (pattern start / names i pairs ok tmp j)
@@ -72,7 +75,7 @@
         (if ok
             (progn
               ;; 随机临时名前缀，两阶段改名，避免中间冲突
-              (setq tmp (strcat "MLTMP" (itoa (random 100000000)))
+              (setq tmp (strcat "MLTMP" (itoa (rem (getvar "MILLISECS") 100000000)))
                     j 0)
               (foreach p pairs
                 (setq j (1+ j))

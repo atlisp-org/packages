@@ -69,8 +69,8 @@
   "t 设置成功，nil 失败"
   "(@layer:set-layer-on (std:layers) t)"
   (if (vl-catch-all-error-p
-       (vl-catch-all
-        (vla-put-layeron lay (if on :vlax-true :vlax-false))))
+       (vl-catch-all-apply 'vla-put-layeron
+                           (list lay (if on :vlax-true :vlax-false))))
       nil
       t))
 
@@ -383,7 +383,7 @@
   "移除单个实体的 LAYERLOCK 标记"
   "t 或 nil"
   "(@layer:unlock-one (car (entsel)))"
-  (setq ed (entget en)
+  (setq ed (entget en (list "LAYERLOCK"))
         xd (assoc -3 ed))
   (if (null xd)
       nil

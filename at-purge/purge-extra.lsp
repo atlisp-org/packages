@@ -217,7 +217,7 @@
                   (@purge:table-names "linetype")))
   (cond
     ((null what)
-     (command "purge" "a" "*" "N"))
+     (command "_.-PURGE" "_A" "*" "_N"))
     ((= what "LAYER")
      (@purge:purge-tbl "layer" (@purge:used-attrs)
                        '(lambda (nm)

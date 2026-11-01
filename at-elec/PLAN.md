@@ -3,6 +3,15 @@
 > @lisp建筑电气。建筑电气设计工具：回路编号、电缆标注、负荷统计、设备统计、设备图块插入、说明/样例图。v0.1.0，自研，依赖 base + at-pm。
 > 注：pkg.lsp 显示名已为正常 UTF-8（"@lisp建筑电气"），无需乱码修复。
 
+## 0. 2026-11-01 更新（Agent 适配）
+
+- 新增 `ai.lsp`：`@elec:ai-load-stat`、`@elec:ai-equip-stat`、`@elec:ai-circut-numbering`、`@elec:ai-cable-label`，均无交互。
+- 修复 **I1**：`@::*prefix*` → `@:*prefix*`（draw-readme / draw-plan-example）。
+- 修复 **I6**：负荷需要系数配置化 `@elec:demand-factor`（默认 0.7）。
+- 完成 **R2 部分**：统计逻辑提取为 `@elec:stat-load` / `@elec:stat-equip`，交互命令与 AI 入口共用。
+- `@elec:block-watt` 支持动态属性“功率”与普通属性“功率”/`POWER`，普通块也能统计。
+- 版本 0.1.1，已发布 stable。
+
 ## 1. 概览
 - 版本 0.1.0 / 分类 电气 / 依赖 at-pm（下载 dwg 用）/ 自研
 - 规模：at-elec.lsp 200 行 8 个函数 + 资源 readme-elec.dwg / example-elec.dwg

@@ -25,6 +25,20 @@
 | `at-structure:menu-draw-stirrup` | 交互式绘制箍筋 |
 | `at-structure:menu-draw-columns` | 从文字矩阵读取钢筋表并绘制柱截面 |
 
+## AI 调用（无交互）
+
+| 函数 | 说明 |
+|------|------|
+| `at-structure:ai-steel-area str` | 解析钢筋文字返回面积（mm²），失败 nil |
+| `at-structure:ai-steel-area-text ent` | 解析单行文字中 `;` 分隔的多组钢筋，返回 `((文字 . 面积) ...)` |
+| `at-structure:ai-stat-beam-size sel` | 统计梁截面尺寸，返回去重排序列表；`sel` 为 nil 时扫描梁图层文字 |
+
+```lisp
+(at-structure:ai-steel-area "%%1328@100")
+(at-structure:ai-steel-area-text (car (entsel)))
+(at-structure:ai-stat-beam-size nil)
+```
+
 ## 混凝土参数函数 (concrete.lsp)
 
 | 函数 | 说明 |
@@ -70,6 +84,6 @@
 ## 作者
 
 - **VitalGG** - vitalgg@gmail.com
-- 版本: 0.0.20
+- 版本: 0.0.21
 - 分类: 结构
 - 网站: http://atlisp.cn

@@ -8,7 +8,7 @@
 |------|------|
 | 包名 | `at-hvac` |
 | 全称 | @lisp 暖通 |
-| 版本 | 0.0.31 |
+| 版本 | 0.0.32 |
 | 作者 | VitalGG |
 | 邮箱 | vitalgg@gmail.com |
 | 分类 | 暖通 |
@@ -33,6 +33,25 @@
 | 批量标地暖管 | `@hvac:batch-dim-pipe` | 批量标注地暖管，未成功标注的管道变红色 |
 | 分集水器平衡分析 | `@hvac:equip-balance` | 分析采暖分集水器各回路长度平衡 |
 | 绘制设备表 | `@hvac:make-equip-bom` | 生成分集水器主要设备表 |
+
+## AI 调用（无交互）
+
+| 函数 | 说明 |
+|------|------|
+| `@hvac:ai-fengji-stat sel` | 统计风机型号数量，返回 `((型号 . 数量) ...)`；`sel` 为 nil 时统计全图“方壁式轴流风机” |
+| `@hvac:ai-fengji-list` | 返回内置风机盘管型号参数列表 |
+| `@hvac:ai-fengji-info model` | 按型号返回冷量/热量/功率/风量 |
+| `@hvac:ai-equip-balance sel` | 分集水器平衡分析，返回每个分集水器的回路数/总长/最长/最短/差值/超限 |
+| `@hvac:ai-equip-bom sel` | 分集水器设备 BOM，返回 `((型号 . 数量) ...)` |
+
+```lisp
+;; 全图风机统计
+(@hvac:ai-fengji-stat nil)
+;; 查询 FP85 参数
+(@hvac:ai-fengji-info "FP85")
+;; 分集水器平衡分析
+(@hvac:ai-equip-balance nil)
+```
 
 ## 公开函数一览
 

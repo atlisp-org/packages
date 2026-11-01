@@ -83,6 +83,7 @@
 
 ## 跨包主题（B10 收尾时统一复核）
 - [x] agent 适配：at-xdata AI 入口（0.0.6 stable）、qrencode `ai-make`（0.0.9 release，exe 缺失时返回 nil）
+- [x] agent 适配：领域包批量统计入口 — at-elec 0.1.1 / at-hvac 0.0.32 / at-structure 0.0.21 / at-planning 0.1.2（stable，已发布）
 - [x] 论坛计划执行：2026-11-01 `at-stat` Excel/CSV→CAD 表格（0.0.7，已发布 stable，xlsx COM 按用户要求跳过实测）
 - [x] CAD 实测与发布：2026-11-01 `docs/cad-test-publish-20261101.md`
       （at-landscape 0.1.1 / at-hatch 0.1.2 / at-library 0.1.4 / at-stat 0.0.6 /

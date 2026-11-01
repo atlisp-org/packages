@@ -25,22 +25,18 @@
 卧式暗装风机盘管FP-85,冷量=4520W,热量=7670W,N=84W,风量=850m3/h
 卧式暗装风机盘管FP-102,冷量=5420W,热量=8850W,N=118W,风量=1020m3/h
 卧式暗装风机盘管FP-136,冷量=7200W,热量=10800W,N=156W,风量=1360m3/h"))
-(defun @hvac:stat-fengji (/ fengjis)
+(defun @hvac:stat-fengji (/ fengjis statres)
   (@::help "统一所选风机，形成材料表")
   (setq fengjis (block:ssget nil "方壁式轴流风机" nil))
-  (setq statres
-	(mapcar '(lambda(x)
-		   (block:get-dynprop x "型号"))
-		(pickset:to-list fengjis)))
+  (setq statres (@hvac:ai-fengji-stat (pickset:to-list fengjis)))
   ;; (princ statres)
-  (setq statres (stat:stat  statres))
   (if (assoc "未知型号" statres)
       (progn
 	(alert "发现未知型号的风机，已定位，请修改！")
 	(setq fengjis
 	      (vl-remove-if-not
 	       '(lambda(x)
-		  (= "未知型号" (block:get-dynprop x "型号")))
+		  (= "未知型号" (@hvac:block-model x)))
 	       (pickset:to-list
 		(block:ssget "x" "方壁式轴流风机" nil))))
 	(sssetfirst nil (pickset:from-list fengjis))
@@ -61,7 +57,7 @@
 		     "冷量="  (itoa (nth 2  data))"W "
 		     "热量="  (itoa (nth 3  data))"W "
 		     "N="  (itoa (nth 4  data))"W "
-		     "风量="  (itoa (nth 3  data))"m³/h")
+		     "风量="  (itoa (nth 5  data))"m³/h")
 		    "台"
 		    (cdr x)
 		    ))

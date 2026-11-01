@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp Block")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "1.1.12")
+        (:VERSION . "1.1.13")
         (:LOCALE . "CHS")
         (:CATEGORY . "图块相关")
         (:REQUIRED . "base")
@@ -11,6 +11,7 @@
         (:DESCRIPTION . "块替换(不支持动态块)。块编号，定义好块名和用于编号的属性名。就可以从上而下，从左而右编号了。")
         (:URL . "http://atlisp.cn")
         (:FILES "at-block"
+            "embed"
             "xref"
             "insert-all"
             "numbering-by-route"

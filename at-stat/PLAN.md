@@ -52,7 +52,8 @@
   （8 条线 + 9 个文字），`2,2` 保持为单个单元格。
 - `at-stat:excel-draw` 合并单元格：`((0 0 1 2))` → 合并区只出现一次标题，
   16 个图元（8 线 + 8 文字）。
-- 测试机无 Excel COM，xlsx 实际读取未验证；同名 `.csv` 回退路径实测：
+- 测试机无 Excel COM；按用户要求跳过 Excel 真机测试（xlsx COM 路径未验证）。
+  同名 `.csv` 回退路径实测：
   `fallback.xlsx` + 同名 `fallback.csv` → 读取 CSV，生成 4 线 + 1 文字。
 - 顺带修复 `at-stat:ext`：原实现遇到无扩展名/单点路径返回 nil，改用
   `vl-filename-extension`。

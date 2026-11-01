@@ -64,3 +64,9 @@
   `(setq @::*machineid* (getenv "COMPUTERNAME"))`
 - 发布过程中 CAD 曾丢失文档（`No open document`），`at-layer` 首次发布失败；
   新建文档后重试成功。批量发布建议每包一次调用，失败单独重试。
+
+## 5. 追加发布：at-stat 0.0.7（2026-11-01 15:24）
+
+- 新增 Excel/CSV → CAD 表格导入（CSV、合并单元格、同名 CSV 回退已实测）。
+- 按用户要求跳过真实 `.xlsx` 的 Excel COM 真机测试。
+- 已发布 stable，主站 / s1 / s3 的 `packages-list` 均显示 `at-stat 0.0.7`。

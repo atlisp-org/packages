@@ -82,7 +82,7 @@
 | 75 | youyun-plot | 2/1 | ⬜ | | |
 
 ## 跨包主题（B10 收尾时统一复核）
-- [x] 论坛计划执行：2026-11-01 `at-stat` Excel/CSV→CAD 表格（0.0.7，本地已实测，待发布）
+- [x] 论坛计划执行：2026-11-01 `at-stat` Excel/CSV→CAD 表格（0.0.7，已发布 stable，xlsx COM 按用户要求跳过实测）
 - [x] CAD 实测与发布：2026-11-01 `docs/cad-test-publish-20261101.md`
       （at-landscape 0.1.1 / at-hatch 0.1.2 / at-library 0.1.4 / at-stat 0.0.6 /
       at-layer 1.2.15 / at-session 0.1.9 / at-plot 0.0.13，stable 已上线）

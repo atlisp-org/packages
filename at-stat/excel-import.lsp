@@ -79,36 +79,48 @@
         (close fp)
         (if res (reverse res) (progn (princ "at-stat: CSV 无数据。") nil)))))
 
-(defun at-stat:excel-merges (ur / mrg areas res area r c nr nc)
-  "读取已用区域的合并单元格：((行 列 行数 列数) ...)，0 基索引。"
+(defun at-stat:excel-merges (ur / cells rows cols res r c cell ma)
+  "读取已用区域的合并单元格：((行 列 行数 列数) ...)，0 基索引。
+  遍历单元格的 MergeCells/MergeArea；合并检测失败时返回 nil（不影响表格导入）。"
   "列表；无合并返回 nil"
   "(at-stat:excel-merges usedrange)"
-  (setq mrg (vl-catch-all-apply 'vlax-invoke (list ur 'SpecialCells 51)))
-  (if (or (null mrg) (vl-catch-all-error-p mrg))
+  (if (or (null ur) (vl-catch-all-error-p ur))
       nil
       (progn
-        (setq areas (vl-catch-all-apply 'vlax-get-property
-                                        (list mrg 'Areas)))
-        (if (or (null areas) (vl-catch-all-error-p areas))
-            nil
-            (progn
-              (setq res nil)
+        (setq res
               (vl-catch-all-apply
                (function
                  (lambda ()
-                   (vlax-for area areas
-                     (setq r (1- (vlax-get-property area 'Row))
-                           c (1- (vlax-get-property area 'Column))
-                           nr (vlax-get-property
-                               (vlax-get-property area 'Rows) 'Count)
-                           nc (vlax-get-property
-                               (vlax-get-property area 'Columns) 'Count))
-                     (if (and (numberp r) (numberp c)
-                              (numberp nr) (numberp nc)
-                              (> nr 0) (> nc 0))
-                         (setq res (cons (list r c nr nc) res))))))
-               nil)
-              (reverse res))))))
+                   (setq rows (vlax-get-property
+                               (vlax-get-property ur 'Rows) 'Count)
+                         cols (vlax-get-property
+                               (vlax-get-property ur 'Columns) 'Count)
+                         cells (vlax-get-property ur 'Cells))
+                   (setq r 1)
+                   (while (<= r rows)
+                     (setq c 1)
+                     (while (<= c cols)
+                       (setq cell (vlax-invoke cells 'Item r c))
+                       (if (vlax-get-property cell 'MergeCells)
+                           (progn
+                             (setq ma (vlax-get-property cell 'MergeArea))
+                             ;; 只记录合并区左上角，避免重复
+                             (if (and (= r (vlax-get-property ma 'Row))
+                                      (= c (vlax-get-property ma 'Column)))
+                                 (setq res
+                                       (cons
+                                        (list
+                                         (1- r) (1- c)
+                                         (vlax-get-property
+                                          (vlax-get-property ma 'Rows) 'Count)
+                                         (vlax-get-property
+                                          (vlax-get-property ma 'Columns) 'Count))
+                                        res)))))
+                       (setq c (1+ c)))
+                     (setq r (1+ r)))
+                   (reverse res)))
+               nil))
+        (if (vl-catch-all-error-p res) nil res))))
 
 (defun at-stat:excel2table-data (file sheet /
                                  ext xl ur vals matrix merges base csv)

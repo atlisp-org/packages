@@ -9,6 +9,16 @@
 | 扩展数据管理 → 查询扩展数据 | `(at-xdata:browser)` | 依次浏览图元的扩展数据 |
 | 扩展数据管理 → 配置过滤器 | `(at-xdata:set-filter)` | 设置扩展数据 APPID 过滤器 |
 
+## AI 调用（无交互）
+
+| 函数 | 说明 |
+|---|---|
+| `at-xdata:ai-get ent` | 读取全部扩展数据，返回 `((APPID . ((码 . 值) ...)) ...)` |
+| `at-xdata:ai-set ent appid values` | 写入/追加扩展数据，返回写入后的结果 |
+| `at-xdata:ai-remove ent appid` | 删除指定 APPID，返回剩余数据 |
+| `at-xdata:ai-remove-all ent` | 删除全部扩展数据，返回 T |
+| `at-xdata:ai-appids ent` | 返回 APPID 字符串列表 |
+
 ## 配置项
 
 | 配置项 | 默认值 | 说明 |

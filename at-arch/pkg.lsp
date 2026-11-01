@@ -10,6 +10,14 @@
         (:DESCRIPTION . "建筑设计工具：房间定位、窗地比检查、车位编号、门窗统计、面积汇总等。")
         (:URL . "http://atlisp.cn")
         (:FILES "at-arch"
+            "arch-draw"
+            "axis"
+            "beam"
+            "column"
+            "wall"
+            "win"
+            "stair"
+            "symbol"
             "lib"
             "车位.dwg"
             "窗地比.org"

@@ -19,4 +19,5 @@
             "mark-in-zone"
             "unit-number"
             "cal"
+            "cale-txt"
             "menu")))

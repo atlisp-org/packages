@@ -13,6 +13,11 @@
 | 线域选择 | 选择一个单环闭合多段线，选中曲线内的图元 |
 | 填充选择 | 选择一个或多填充图形，再选择在填充图形内需要选中的图形 |
 | 绘线指引 | 绘制指向选择集的线 |
+| 链式选择 | 从一条线出发，沿首尾相接递归选出整条链 |
+| 快速选择 | 按过滤表达式（图层=墙,块=门*,颜色=1）快速选择 |
+| 获得选择集 | 按过滤表达式获得选择集，另支持 类型=LINE |
+| 触碰选择 | 选中实体，自动选中与其相交或端点相接的所有实体（递归） |
+| 曲线对齐 | 曲线对齐 |
 | ss1 | 记录当前已选择的图形为ss1。如果没有选择且高亮的图形，则高亮ss1 |
 | ss2 | 记录当前已选择的图形为ss2 |
 | ss3 | 记录当前已选择的图形为ss3 |
@@ -59,6 +64,24 @@
 | `at-select:select-similar` | 选择相似曲线 |
 | `at-select:select-samelens-lines` | 选择定长线，即给定的固定长度的线 |
 | `at-select:cluster-box` | 将所选图形进行分堆，并为每个堆群加包围矩形框 |
+| `c:quick-sel` | 快速选择：按过滤表达式（图层=墙,块=门*,颜色=1，AND，通配符）选择匹配图元 |
+| `c:getsel` | 获得选择集：同快速选择，另支持 类型=LINE,ARC 等 |
+| `c:touch-sel` | 触碰选择：选中实体，自动选中与其相交或端点相接的所有实体（递归扩展） |
+| `at-select:ai-quick` | AI 入口：按过滤表达式快速选择，返回 ename 列表 |
+| `at-select:ai-getsel` | AI 入口：按表达式获得选择集（支持 类型=），返回 ename 列表 |
+| `at-select:ai-chain` | AI 入口：从给定曲线出发沿首尾相接的链选出整条链 |
+| `at-select:ai-touch` | AI 入口：选中与给定实体相交或端点相接的所有实体（递归） |
+
+## AI 调用
+
+> 无交互入口，全部参数走形参；成功返回 ename 列表，失败返回 nil（提示用 princ 输出）。
+
+| 函数 | 参数 | 返回值 | 示例 |
+|------|------|--------|------|
+| `at-select:ai-quick` | filter：过滤表达式（图层=/块=/颜色=，多条件 AND，通配符；颜色支持 bylayer/随层），nil=全图 | ename 列表，失败 nil | `(at-select:ai-quick "图层=墙,颜色=1")` |
+| `at-select:ai-getsel` | filter：同 quick 语法，另支持 类型=LINE,ARC（值可含多个逗号分隔类型） | ename 列表，失败 nil | `(at-select:ai-getsel "类型=LINE,图层=墙")` |
+| `at-select:ai-chain` | start-ent：起始曲线实体；tol：端点容差（nil 用 1e-6） | 链上 ename 列表（含起始实体），失败 nil | `(at-select:ai-chain (car (entsel)) 0.001)` |
+| `at-select:ai-touch` | ent：曲线实体；tol：容差（nil 用 0.001） | ename 列表（含 ent），失败 nil | `(at-select:ai-touch (car (entsel)) 0.001)` |
 
 ## 配置
 | 配置项 | 默认值 | 说明 |
@@ -89,6 +112,9 @@
 | `at-select.lsp` | 核心选择功能：填充选块、线域选块、线域选择、填充选择、选择集记录(ss1-ss5)、绘线指引 |
 | `select.lsp` | 属性选择功能：同类型、同层、同色、同线型、闭合线、未闭合线、短线、定长线、相似线 |
 | `cluster-box.lsp` | 分堆加框功能：将所选图形进行分堆并加包围矩形框 |
+| `chain-sel.lsp` | 链式选择 |
+| `object-align.lsp` | 曲线对齐 |
+| `quick-sel.lsp` | 快速选择/获得选择集/触碰选择：过滤引擎（图层=/块=/颜色=/类型=）、链式选择、触碰选择 |
 | `menus.lsp` | 菜单注册：选择菜单和选择1菜单 |
 
 ## 作者

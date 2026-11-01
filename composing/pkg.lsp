@@ -11,4 +11,5 @@
         (:DESCRIPTION . "各种排版")
         (:URL . "http://atlisp.cn")
         (:FILES "composing"
-            "cluster-composing")))
+            "cluster-composing"
+            "nest-composing")))

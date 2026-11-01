@@ -194,3 +194,45 @@
 | `explode.lsp` | 剪裁块分解 |
 | `clip-to-blk.lsp` | 剪裁图形生成块 |
 | `rotate-blk-by-line.lsp` | 按块内直线旋转块 |
+
+| `blk-manage.lsp` | 块管理：重命名/改基点/替换增强/沿路径布块/多块缩放/比例调整/图库统计 |
+| `xref-tools.lsp` | 翻转与外部参照：批量翻转块/自由翻转实体/参照改相对路径/Xref 转块/批量条件图 |
+
+## iMini 复现命令（新增）
+
+### 块管理（blk-manage.lsp）
+
+| 交互 | AI 入口 | 说明 |
+|---|---|---|
+| `@block:blk-rename` | `@block:ai-blk-rename old new` | 块定义重命名（所有引用同步更新） |
+| `@block:blk-rename-batch` | `@block:ai-blk-rename-pattern pattern new-pattern` | 通配符批量重命名 |
+| `@block:blk-insertion` | `@block:ai-blk-insertion blk-name new-basept ref` | 修改块插入基点 |
+| `@block:blk-replace` | `@block:ai-blk-replace src dst map-attrs ss` | 块替换增强（属性按名映射） |
+| `@block:blk-along-line` | `@block:ai-blk-along-line pline-ent blk-name dist rotate endp` | 沿路径等距布块 |
+| `@block:multi-scale` | `@block:ai-multi-scale blks factor` | 多块以各自插入点缩放 |
+| `@block:dtbl` | `@block:ai-dtbl blks op factor` | 批量调整线型/块/填充比例（op=ltype/blk/hatch） |
+| `@block:block-see` | `@block:ai-block-see out-file top-n` | 图块统计：`(块名 实体数 使用次数 宽 高)` |
+
+### 翻转与外部参照（xref-tools.lsp）
+
+| 交互 | AI 入口 | 说明 |
+|---|---|---|
+| `@block:block-flipm` | `@block:ai-block-flipm blks axis strategy` | 批量翻转块；strategy=auto 时含文字块改用旋转 180° |
+| `@block:block-flips` | `@block:ai-block-flips ents p1 p2 keep-src` | 实体自由翻转，文字保持可读 |
+| — | `@block:ai-block-flipm-line blks p1 p2 strategy` | 按任意镜像线批量翻转块 |
+| `@block:xref-repath` | `@block:ai-xref-repath xrefs base-dir` | 外部参照改相对路径 |
+| `@block:xref2blk` | `@block:ai-xref2blk xref blk-name` | Xref 复制为块 |
+| `@block:batch-xref` | `@block:ai-batch-xref filter out-dir prefix` | 按条件批量做 Xref 条件图 |
+
+示例：
+
+```lisp
+;; 统计图中所有块（前 5 名）
+(@block:ai-block-see nil 5)
+
+;; 把门块沿路径布置，间距 600
+(@block:ai-blk-along-line (car (entsel)) "门" 600 T T)
+
+;; 批量翻转（上下方向）
+(@block:ai-block-flipm (pickset:to-list (ssget '((0 . "INSERT")))) "x" "auto")
+```

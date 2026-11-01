@@ -76,3 +76,27 @@
 | F4/F5 | P2 | 各 2h | — |
 | I5/I6 | P2 | 1h | — |
 | R2 | P2 | 1h | — |
+
+## 8. iMini 建筑命令复现（arch-draw / axis / beam / column / wall / win / stair / symbol）
+
+| iMini 命令 | 本包函数 | 状态 |
+|---|---|---|
+| mini_axis_line / axis_arc / axis_text / axis_out / axis_update | `ai-axis-line` / `ai-axis-text` / `ai-axis-update` | ✅（圆弧轴网未做） |
+| mini_wall / wall_width / line_to_wall / wall_cover / erase_wall | `ai-wall` / `ai-wall-width` / `ai-line2wall` / `ai-wall-cover` / `ai-erase-wall` | ✅ |
+| mini_c_column / l_column / t_column / O_column / r_column / pline_to_column | `ai-column`（shape=r/o/c/l/t）/ `ai-pline2column` | ✅ |
+| mini_beam / line_to_beam / beam_width | `ai-beam` / `ai-line2beam` / `ai-beam-width` | ✅ |
+| mini_door / win / hole_door / win_text / win_list | `ai-door` / `ai-win` / `ai-hole-door` / `ai-win-text` / `ai-win-list` | ✅ |
+| mini_Fix_Wall / fix_beam / modify_win / match_win / coner_win | — | ⬜ P1 |
+| mini_win_direction1/2（内外/左右翻转） | — | ⬜ P1 |
+| mini_stair_plan / elevator | `ai-stair-plan` / `ai-elevator`（stair.lsp） | ✅（arc_stair / auto_stair / stair_section / analyzeview 未做） |
+| mini_bg / zb（标高坐标） | `ai-elev` / `ai-arch-coord`（symbol.lsp） | ✅（ztbg / gcbg / 3dzb 未做） |
+| mini_break_line / index_sec* / index_north | `ai-break-line` / `ai-sec-symbol` / `ai-north`（symbol.lsp） | ✅（dot_line / arrow_line* / indexnum* / index_mirror 未做） |
+| mini_dline / line_to_dline / middle_line / ygpx | — | ⬜ P2 |
+| mini_winelev / elev_arcwin / winelev2 / kqx / mqblpm / door_elev / win_text_elev（门窗立面） | — | ⬜ P2 |
+| mini_tamped_soil / nature_soil / air_brick / face_brick / batting_fill / cement_mortarsec / Reinforced_Consec / cement_Consec | — | ⬜ P2 |
+| mini_hip_roof / build_high / build_shadow | — | ⬜ P2 |
+
+### 已知限制
+- 门窗为简化符号（门框+门扇+弧 / 三线窗），未做参数化门窗库。
+- 墙体配对按「同顶点数 + 逐点距离近似相等」，异形墙可能配不上。
+- 本轮仅静态 lint 通过，未在 CAD 实测（at-edit/at-landscape 已实测）。

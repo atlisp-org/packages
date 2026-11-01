@@ -9,4 +9,5 @@
         (:OPENSOURCE . 0)
         (:DESCRIPTION . "给图形编号，如矩形，圆，以及其它相同的图形，图块等。")
         (:URL . "http://atlisp.cn")
-        (:FILES "at-number")))
+        (:FILES "at-number"
+                "xuhao")))

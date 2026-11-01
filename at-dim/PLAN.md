@@ -88,3 +88,54 @@
 | R3/R4 + I8-I14 | P2 | 4h | — |
 
 合计 ≈32h
+
+## 8. 标注增强并入（v0.0.28，原 mini-dim 包）
+
+原 `mini-dim`（迷你标注索引）包已并入本包：`mini-dim.lsp` → `dim-core.lsp`（公共工具 + 菜单），
+命令层新增 `dim-tools-ext.lsp`。命名空间统一为 `at-dim:`，菜单组名由「迷你标注」改为「标注增强」。
+`mini-dim/` 目录已删除。
+
+### 8.1 iMini 命令映射表
+
+| iMini 命令 | 状态 | 本包实现 | 说明 |
+|---|---|---|---|
+| dim_move | ✅ | `at-dim:dim-move` / `at-dim:ai-dim-move` | 文字移动（可投影到尺寸线） |
+| dim_home | ✅ | `at-dim:dim-home` / `at-dim:ai-dim-home` | 文字归位（尺寸线中点） |
+| dim_align | ✅ | `at-dim:dim-align` / `at-dim:ai-dim-align` | 文字沿基线对齐 |
+| dim_merge | ✅ | `at-dim:dim-merge` / `at-dim:ai-dim-merge` | 共线标注合并为总标注（`merge-dim.lsp` 的 `@dim:merge-dim` 为旧实现，仍有 I6 缺陷） |
+| dim_total | ✅ | `at-dim:dim-total` / `at-dim:ai-dim-total` | 包围盒总尺寸 |
+| dim_check | ✅ | `at-dim:dim-check` / `at-dim:ai-dim-check` | 文字值与实测比对 |
+| dimreassoc / dim_update | ✅ | `at-dim:dim-reassoc` / `at-dim:ai-dim-reassoc` | 按两点真实距离重建文字值 |
+| dim_devide | ✅ | `at-dim:dim-devide` / `at-dim:ai-dim-devide` | 点表沿 X/Y 逐段 + 总标 |
+| dim_line | ✅ | `at-dim:dim-line` / `at-dim:ai-dim-line` | 沿直线/多段线逐段标注 |
+| dim_room | ✅ | `at-dim:dim-room` / `at-dim:ai-dim-room` | 房间周长 + 面积两行文字 |
+| mleader_align | ✅ | `at-dim:mleader-align` / `at-dim:ai-mleader-align` | 多重引线文字对齐（走 10 组码，本 CAD 无 `TextLocation` 属性） |
+| leader_2_mleader | ✅ | `at-dim:leader2mleader` / `at-dim:ai-leader2mleader` | 普通引线转多重引线 |
+| bzmc | ✅ | `at-dim:bzmc` / `at-dim:ai-bzmc` | 块名/填充图案名标注 |
+| index_name | ✅ | `at-dim:index-name` / `at-dim:ai-index-name` | 图名标注（框/下划线） |
+| dim_fix_text | ⬜ **backlog** | — | 修正文字内容与格式（前缀/后缀/公差样式） |
+| dim_flip | ⬜ **backlog** | — | 标注文字/箭头翻转（翻转尺寸线方向） |
+| dim_trim | ⬜ **backlog** | — | 按边界修剪标注延伸线 |
+| dim_win | ⬜ **backlog** | — | 门窗洞口尺寸批量标注 |
+| dimpoly | ⬜ **backlog** | — | 多段线逐段标注（与 dim_devide/dim_line 重叠，需按 iMini 行为对齐） |
+| dim_axis | ⬜ **backlog** | — | 轴网标注（轴线编号 + 尺寸链，需与 at-arch 轴网联动） |
+| dim_wall | ⬜ **backlog** | — | 墙体厚度/墙段标注 |
+| qnsy | ⬜ **backlog** | — | 墙身索引（引线 + 索引符号联动） |
+| match_MLeader / mleader_mirror / mleader_list | ⬜ **backlog** | — | 引线格式刷 / 镜像 / 统计（统计可先做：按样式/字数汇总） |
+| sbpdx | ⬜ **backlog** | — | 索引符号（详图索引圆） |
+| indexer* / index_elev | ⬜ **backlog** | — | 剖切索引、索引文本、索引椭圆、标高索引 |
+
+### 8.2 实现要点（供后续维护）
+
+- **标注文字位置只能用 ActiveX**：本 CAD（AutoCAD 24.1 LMS Tech）对 DIMENSION 的 11/70 组码 `entmod`
+  无效（静默失败），必须 `(vla-put-TextPosition obj (vlax-3d-point pt))`；封装见
+  `at-dim:set-dim-text-pt` / `at-dim:dim-text-pt`。
+- **旋转标注的 50 组码必须写在 `AcDbAlignedDimension` 段内**（在 `AcDbRotatedDimension` 标记之前），
+  否则被忽略为 0（曾导致竖直标注实测值为 0）。
+- **`and`/`or` 只返回 T/nil**（AutoLISP 语义），不能用于取值；需要取值用 `if`，
+  位运算缺省值用 `at-dim:dxf0`。
+- **`ssget "_C"`/"_W"` 只对当前视图内图元生效**，跨屏幕坐标取不到 → 用 `"_X"` + 距离过滤
+  （见 `at-dim:leader-text`）。
+- **MULTILEADER 无 `TextLocation` 属性**：文字位置改 10 组码 + `entmod` + `entupd`。
+- `at-dim:dim-dir`：仅当实体含 `AcDbRotatedDimension` 时才用 50，否则用 13→14 方向
+  （aligned 标注也带 50=0，误用会把竖直标注算成 0）。

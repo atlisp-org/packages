@@ -9,4 +9,4 @@
         (:OPENSOURCE . 0)
         (:DESCRIPTION . "图面清理-DGN，分解多重块，炸多重块")
         (:URL . "http://atlisp.cn")
-        (:FILES "at-purge" "overkill")))
+        (:FILES "at-purge" "overkill" "purge-extra")))

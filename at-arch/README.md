@@ -125,6 +125,14 @@ AI 调用入口：
 | `at-arch.lsp` | 主程序（菜单注册、全部功能实现） |
 | `lib.lsp` | 辅助函数（图块插入通用逻辑） |
 | `窗地比.lsp` | 窗地比最小限值数据定义 |
+| `arch-draw.lsp` | 建筑绘图公共辅助（几何/图层/表格）与菜单 |
+| `axis.lsp` | 轴网/轴线编号（iMini 复现） |
+| `beam.lsp` | 梁（iMini 复现） |
+| `column.lsp` | 柱（iMini 复现） |
+| `wall.lsp` | 墙（iMini 复现） |
+| `win.lsp` | 门窗（iMini 复现） |
+| `stair.lsp` | 楼梯/电梯（iMini 复现） |
+| `symbol.lsp` | 标高/坐标/折断线/剖面符号/指北针（iMini 复现） |
 
 ## 安装
 
@@ -138,4 +146,58 @@ AI 调用入口：
 
 ```
 (@:package-install "at-arch")
+```
+
+## 建筑绘图补充（iMini 复现，2026-10）
+
+菜单「建筑绘图」，共 25 个 AI 入口。交互入口同名去掉 `ai-` 前缀。
+
+| 命令 | AI 入口 | 说明 |
+|---|---|---|
+| 直线轴网 | `at-arch:ai-axis-line origin x-spacings y-spacings` | 生成正交轴线 + 轴号圈 + 编号 |
+| 轴线编号 | `at-arch:ai-axis-text axis-ents` | 对已有轴线重编轴号 |
+| 修改轴线编号 | `at-arch:ai-axis-update axis-texts [start]` | 轴号重排 |
+| 画墙 | `at-arch:ai-wall pts thickness` | 多段线路径生成双线墙 |
+| 单线变墙 | `at-arch:ai-line2wall ents thickness [both] [del]` | 折线两侧偏移成墙 |
+| 批量改墙宽 | `at-arch:ai-wall-width ents tnew` | 按新墙厚重画墙双线 |
+| 墙体完成面 | `at-arch:ai-wall-cover ents d` | 向外偏移完成面线 |
+| 删除墙柱门窗 | `at-arch:ai-erase-wall ents types` | 按图层关键字批量删除 |
+| 画柱 | `at-arch:ai-column pt shape w h [label]` | r/o/c/l/t 五种柱形 |
+| 多段线变柱 | `at-arch:ai-pline2column ents [hatch]` | 矩形/圆→柱 |
+| 画梁 | `at-arch:ai-beam p1 p2 width` | 中心线 + 梁宽双线 |
+| 单线变梁 | `at-arch:ai-line2beam ents width [del]` | 折线生成梁 |
+| 批量改梁宽 | `at-arch:ai-beam-width ents w` |  |
+| 两点画门 | `at-arch:ai-door p1 p2 thickness side leaves` | 门框 + 门扇 + 开启弧 |
+| 两点画窗 | `at-arch:ai-win p1 p2 thickness` | 三线窗符号 |
+| 墙上开门 | `at-arch:ai-hole-door ents pt width th side leaves` | 墙体断开 + 门 |
+| 门窗编号 | `at-arch:ai-win-text ents label` | 中心编号文字 |
+| 门窗表 | `at-arch:ai-win-list ents` | 返回门窗统计表数据 |
+| 普通楼梯平面 | `at-arch:ai-stair-plan p1 p2 [treads] [width]` | 梯段双线轮廓 + 踏步分格 + 上行箭头 |
+| 电梯轿厢平面 | `at-arch:ai-elevator p1 p2 [label]` | 轿厢轮廓 + 对角 X + 门线 + 编号 |
+| 建筑标高 | `at-arch:ai-elev pt [value]` | 倒三角标高符号 + 标高值文字 |
+| 建筑坐标 | `at-arch:ai-arch-coord pt [x] [y]` | 十字坐标符号 + X=/Y= 文字 |
+| 折断线 | `at-arch:ai-break-line p1 p2 [teeth] [amp] [gap]` | 双平行锯齿折断线 |
+| 剖面符号 | `at-arch:ai-sec-symbol p1 p2 [num]` | 粗剖切线 + 视线箭头 + 编号 |
+| 指北针 | `at-arch:ai-north pt` | 圆框 + 指北针 + N 字 |
+
+> 注：`[]` 表示该实参可显式传 `nil` 取默认值。运行环境不会补全缺省实参
+> （少传会报「参数太少」），所以必须显式写 `nil`。
+
+示例：
+
+```lisp
+;; 3.6m+3.6m 开间、4.2m+4.5m 进深的轴网
+(at-arch:ai-axis-line '(0 0 0) '(3600 3600) '(4200 4500))
+
+;; 300x600 方柱
+(at-arch:ai-column '(0 0 0) "r" 300 600 "KZ1")
+
+;; 沿墙线生成 240 厚墙
+(at-arch:ai-line2wall (list (car (entsel))) 240 T nil)
+
+;; 10 步、宽 1000 的楼梯平面
+(at-arch:ai-stair-plan '(0 0) '(6000 0) 10 1000)
+
+;; ±0.000 标高符号
+(at-arch:ai-elev '(0 0) "±0.000")
 ```

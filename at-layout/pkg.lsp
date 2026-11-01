@@ -17,4 +17,8 @@
             "stat-vp"
             "add-mapsheet"
             "lock-vp"
-            "purge")))
+            "purge"
+            "layout-draw"
+            "layout"
+            "vport"
+            "plot")))

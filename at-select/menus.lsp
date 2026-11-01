@@ -1,4 +1,4 @@
-(@:add-menus 
+(@:add-menus
   '("@lisp选择"
     ("选择设置" "(@select:setup)")
     ("填充选块" "(at-select:select-blk-by-hatch)")
@@ -7,6 +7,9 @@
     ("填充选择" "(at-select:select-by-hatch)")
     ("绘线指引" "(@select:line-to-ss)")
     ("链式选择" "(c:chain-sel)")
+    ("快速选择" "(c:quick-sel)")
+    ("获得选择集" "(c:getsel)")
+    ("触碰选择" "(c:touch-sel)")
     ("曲线对齐" "(c:obj-align)")
     ("ss1" "(c:ss1)")
     ("ss2" "(c:ss2)")
@@ -15,7 +18,7 @@
     ("ss5" "(c:ss5)")
     ("分堆加框" "(at-select:cluster-box)")
     ))
-(@:add-menus 
+(@:add-menus
   '("@lisp选择1"
     ("选择同类型" (at-select:select-sametype))
     ("选择同层" (at-select:select-samelayer))

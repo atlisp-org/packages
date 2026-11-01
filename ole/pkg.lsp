@@ -2,7 +2,7 @@
         (:FULL-NAME . "ole图像")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.8")
+        (:VERSION . "0.2.0")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
@@ -10,4 +10,5 @@
         (:DESCRIPTION . "将图像文件以OLE方式插入到dwg中")
         (:URL . "http://atlisp.cn")
         (:FILES "ole"
+            "image2ole"
             "install.ps1")))

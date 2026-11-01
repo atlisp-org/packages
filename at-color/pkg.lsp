@@ -9,4 +9,4 @@
         (:FREE . T)
         (:DESCRIPTION . "modify color of entity or layer, remove true color")
         (:URL . "http://atlisp.cn")
-        (:FILES "at-color")))
+        (:FILES "at-color" "color-change")))

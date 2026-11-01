@@ -2,7 +2,7 @@
         (:FULL-NAME . "@打印输出-测试版")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.11")
+        (:VERSION . "0.0.13")
         (:LOCALE . "CHS")
         (:CATEGORY . "打印输出")
         (:REQUIRED . "base")
@@ -13,4 +13,6 @@
             "frame-recognition"
             "mark-frame"
             "export"
-            "train")))
+            "train"
+            "screenshot"
+            "split-layout")))

@@ -8,7 +8,7 @@
 |------|----|
 | 标识名 | `at-dim` |
 | 显示名 | @lisp标注 |
-| 版本 | 0.0.26 |
+| 版本 | 0.0.28 |
 | 分类 | 标注 |
 | 语言 | CHS |
 | 作者 | VitalGG |
@@ -32,6 +32,61 @@
 | 标注面积 | `at-dim:area` | 选择闭合多段线，标注面积值（m²） |
 | 尺寸偏差 | `at-dim:make-deviation` | 对选中尺寸统一增减指定偏差值 |
 | 尺寸原值 | `at-dim:true-value` | 清除尺寸文字覆盖，显示标注的实际测量值 |
+| 修复Z坐标 | `@dim:fixdims` | 全图标注/引线/直线的 Z 坐标压平到 0 |
+| 切换延伸线 | `@dim:dimext` | 批量开关标注延伸线（1st/2nd/Both/None） |
+
+## 菜单：标注增强（`dim-core.lsp` / `dim-tools-ext.lsp`）
+
+在 @lisp 面板的"标注增强"菜单下注册以下功能（原 mini-dim 包并入）：
+
+| 菜单项 | 交互函数 | 说明 |
+|--------|----------|------|
+| 标注移动 | `at-dim:dim-move` | 选标注后指定基准点与目标点，文字整体平移 |
+| 文字归位 | `at-dim:dim-home` | 标注文字复位到尺寸线中点的默认位置 |
+| 标注对齐 | `at-dim:dim-align` | 取两点定基线，所选标注文字垂直投影对齐到基线 |
+| 合并标注 | `at-dim:dim-merge` | 同一直线上连续的多个标注合并为一个总标注 |
+| 总标注 | `at-dim:dim-total` | 选一组标注取其测量点包围盒，生成总尺寸 |
+| 检查标注 | `at-dim:dim-check` | 列出文字值与真实距离不符的标注（句柄/文字/实测） |
+| 恢复原值 | `at-dim:dim-reassoc` | 按 13/14 点真实距离重建标注文字值 |
+| 分段标注 | `at-dim:dim-devide` | 连续取点后按 X/Y 方向逐段标注（可选总标注） |
+| 沿线标注 | `at-dim:dim-line` | 沿直线/多段线逐段对齐标注（可选总长） |
+| 房间标注 | `at-dim:dim-room` | 房间内点一点，标注周长 + 面积（两行文字） |
+| 引线对齐 | `at-dim:mleader-align` | 多个多重引线文字沿基线垂直投影对齐 |
+| 引线转多引线 | `at-dim:leader2mleader` | 普通 LEADER（含标注文字）转为多重引线 |
+| 块填充名 | `at-dim:bzmc` | 在块参照/填充中心标注块名或图案名 |
+| 图名标注 | `at-dim:index-name` | 生成图名文字，可选矩形框或下划线 |
+
+## AI 调用
+
+Agent / MCP 可直接调用下列**无交互**入口（全部走形参，失败返回 nil，不弹模态框）。
+带可选开关的函数位参数必须显式传入，不需要时传 `nil`。
+
+| AI 入口 | 参数 | 返回 | 说明 |
+|---|---|---|---|
+| `at-dim:ai-dim-move` | `dims newpt align` | 成功个数 | 文字移到 newpt；`align` 非 nil 时投影到各自尺寸线 |
+| `at-dim:ai-dim-move-by` | `dims delta` | 成功个数 | 文字整体平移 delta |
+| `at-dim:ai-dim-home` | `dims` | 成功个数 | 文字复位到尺寸线中点 |
+| `at-dim:ai-dim-align` | `dims p1 p2` | 成功个数 | 文字垂直投影对齐到 p1→p2 基线 |
+| `at-dim:ai-dim-merge` | `dims` | 新标注 ename 列表 | 合并共线标注为一个总标注 |
+| `at-dim:ai-dim-total` | `pts basept` | ename | 点表包围盒沿较长方向出总标注，`basept` 定位置 |
+| `at-dim:ai-dim-check` | `dims` | `((ename 文字 实测) ...)` | 文字值与实测不符的标注 |
+| `at-dim:ai-dim-reassoc` | `dims` | 成功个数 | 按真实距离重建文字值 |
+| `at-dim:ai-dim-devide` | `pts dir total` | 标注 ename 列表 | `dir` 为 `"x"`/`"y"`，`total` 非 nil 补总标 |
+| `at-dim:ai-dim-line` | `pline-ent total` | 标注 ename 列表 | 沿直线/多段线逐段标注，`total` 补总长 |
+| `at-dim:ai-dim-room` | `pt area-only` | MTEXT ename | 点所在闭合多段线的周长/面积，`area-only` 只标面积 |
+| `at-dim:ai-mleader-align` | `mleaders p1 p2` | 成功个数 | 多重引线文字对齐到基线 |
+| `at-dim:ai-leader2mleader` | `leaders` | 多重引线 ename 列表 | 转换并删除原引线 |
+| `at-dim:ai-bzmc` | `ents` | TEXT ename 列表 | 块名/图案名标注 |
+| `at-dim:ai-index-name` | `str pt box` | `(文字 ename)` | 图名文字，`box` 非 nil 加矩形框否则下划线 |
+
+```lisp
+;; 示例：合并选区内的标注，并对不符的标注恢复原值
+(setq dims (pickset:to-list (ssget '((0 . "DIMENSION")))))
+(at-dim:ai-dim-merge dims)
+(setq bad (at-dim:ai-dim-check dims))
+(at-dim:ai-dim-reassoc (mapcar 'car bad))
+```
+
 
 ## 配置项
 
@@ -143,6 +198,8 @@
 | `sum-dim.lsp` | 14 | 标注求和：选择标注计算值之和 |
 | `deviation.lsp` | 19 | 尺寸偏差与原值：增减偏差或恢复实际测量值 |
 | `merge-dim.lsp` | 71 | 标注合并（未注册菜单）：合并连续标注，内部辅助用 |
+| `dim-core.lsp` | 529 | 标注增强核心：菜单注册 + 公共工具（dxf 读写、标注数据读取、建标注、几何运算、多段线取点、文字处理、撤销标记） |
+| `dim-tools-ext.lsp` | 719 | 标注增强命令：14 个交互入口 `at-dim:xxx` + 14 个 AI 入口 `at-dim:ai-xxx` |
 
 ## 使用示例
 

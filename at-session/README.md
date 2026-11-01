@@ -11,6 +11,7 @@
 | 会话管理 → 历史会话 | `(at-session:history)` | 从历史会话列表中选择并恢复 |
 | 会话管理 → 保存会话 | `(at-session:save-current)` | 保存当前打开的所有 DWG 为一个会话 |
 | 会话管理 → 关闭会话 | `(at-session:close)` | 关闭最近一次会话记录的所有 DWG |
+| 会话管理 → 备份当前图纸 | `(at-session:backup-current)` | 复制当前 DWG 到「备份」目录，按份数清理旧备份 |
 | 会话管理 → 下班 | `(at-session:knock-off)` | 保存当前会话为"下班"并关闭所有 DWG，退出 CAD |
 | 会话管理 → 关所有dwg | `(at-session:save-and-close-all)` | 保存并关闭所有已打开的 DWG |
 | 会话管理 → 打开目录 | `(at-session:open-directory-dwgs)` | 打开选定文件夹下的所有 DWG 文件 |
@@ -29,6 +30,8 @@
 | `at-session:save-and-close-all` | 保存并关闭所有 DWG |
 | `at-session:knock-off` | 保存"下班"会话并退出 CAD |
 | `at-session:open-directory-dwgs` | 批量打开文件夹内所有 DWG |
+| `at-session:backup-current` | 交互备份当前图纸（默认保留 10 份） |
+| `at-session:ai-backup-current` | AI 入口：`(dest keep)`，返回备份路径，无交互 |
 
 ## 典型工作流
 
@@ -64,6 +67,6 @@
 ## 作者
 
 - **VitalGG** - vitalgg@gmail.com
-- 版本: 0.1.8
+- 版本: 0.1.9
 - 分类: Efficiency tools
 - 网站: http://atlisp.cn

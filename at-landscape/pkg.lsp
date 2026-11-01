@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp景观")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.0")
+        (:VERSION . "0.1.1")
         (:LOCALE . "chs")
         (:CATEGORY . "园林")
         (:REQUIRED . "base")
@@ -13,5 +13,6 @@
             "plant"
             "area"
             "path"
+            "survey"
             "shrub-names.txt"
             "tree-names.txt")))

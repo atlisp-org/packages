@@ -13,6 +13,7 @@
     ("面积标注" "(at-stat:area-text)")
     ("点选标面积" "(at-stat:point-area)")
     ("面积分层统计表" "(at-stat:by-layer-area)")
+    ("填充面积统计表" "(at-stat:hatch-area)")
     ("房间墙面面积统计" "(at-stat:wall-area)")
     ("长度分层统计表" "(at-stat:total-length)")
     ("标注线段长度" "(at-stat:text-length)")
@@ -418,17 +419,13 @@
               (princ (strcat "\nat-stat: 已写入 " file))
               file)))))
 
-(defun at-stat:ext (file / i pos)
+(defun at-stat:ext (file / ext)
   "取文件扩展名（大写，不含点）。"
   "字符串；无扩展名返回 nil"
   "示例: (at-stat:ext \"a/b.CSV\") => \"CSV\""
-  (if (and (stringp file) (> (strlen file) 1))
-      (progn
-        (setq i 0 pos -1)
-        (while (and (< i (strlen file))
-                    (setq pos (vl-string-search "." file i)))
-          (setq i (1+ pos)))
-        (if (>= pos 0) (strcase (substr file (+ pos 1))) nil))
+  (setq ext (if (stringp file) (vl-filename-extension file) nil))
+  (if (and ext (> (strlen ext) 1))
+      (strcase (substr ext 2))
       nil))
 
 (defun at-stat:excel-col (i)

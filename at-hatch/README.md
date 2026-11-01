@@ -5,7 +5,7 @@
 复现 iMini 填充类命令。
 
 - 包名：`at-hatch`（菜单组「填充工具」，分类：通用，依赖 `base`）
-- 版本：0.1.0
+- 版本：0.1.2
 
 ## 安装
 
@@ -15,7 +15,7 @@ CAD 命令行：`@I at-hatch`，或
 (@:package-install "at-hatch")
 ```
 
-菜单：`填充工具`（12 项，与下表命令一一对应）。
+菜单：`填充工具`（12 项）+ `图案预览`（3 项），与下表命令一一对应。
 
 ## 命令
 
@@ -33,6 +33,9 @@ CAD 命令行：`@I at-hatch`，或
 | 填充图案提取输出 | `at-hatch:hatch-out` | 扫描图中填充的图案名，把图案定义写成 `.pat` |
 | 自定义填充 | `at-hatch:custom-pattern` | 输入图案名与定义行，生成 `.pat` 并可直接用于填充 |
 | 修复填充显示 | `at-hatch:fix-pattern` | 修复图案未载入、比例为零、图案名为空导致的不显示 |
+| 图案预览表 | `at-hatch:pattern-table` | 把内置/标准图案各画一个样块并标名称，直接在当前图预览 |
+| PAT 文件预览 | `at-hatch:pat-preview` | 选任意 `.pat` → 选图案 → 两角点/比例/角度，按真实尺寸画到当前视口 |
+| 清除预览 | `at-hatch:pat-erase` | 删除 `PAT-PREVIEW` 图层上的全部预览图元（含预览表与 PAT 预览） |
 
 ## 内置图案
 
@@ -72,9 +75,12 @@ CAD 命令行：`@I at-hatch`，或
 | `at-hatch:ai-hatch-out` | `out-file` | 扫描图中填充图案名，写出 `.pat`，返回文件全路径。`(at-hatch:ai-hatch-out "C:/tmp/patterns.pat")` |
 | `at-hatch:ai-custom-pattern` | `name lines / pat-file` | 生成并载入自定义图案 `.pat`；`lines` 为定义行字符串表或数值表。`(at-hatch:ai-custom-pattern "斜线" '("0,0,0,0,10,1,-1" "90,0,0,0,10,1,-1") nil)` |
 | `at-hatch:ai-fix-pattern` | `hatch-ent / min-scale` | 修复不显示的填充（补图案定义行/改比例/改实体），返回修复后的填充表。`(at-hatch:ai-fix-pattern (car (entsel)) 1.0)` |
+| `at-hatch:ai-pattern-table` | `names pt cell-w cell-h cols scale` | 图案样块表（边框 + 填充 + 名称），不弹 DCL。`names` 为 nil 时画全部内置 + 标准图案。`(at-hatch:ai-pattern-table nil '(0 0) 90 60 6 20)` |
+| `at-hatch:ai-pat-preview` | `file pattern p1 p2 scale angle` | 任意 `.pat` 中的图案按真实尺寸画到两角点矩形内，图层固定 `PAT-PREVIEW`、颜色随层，图案定义随填充写入（不依赖支持路径）。`pattern` 为 nil 取文件第一个图案。`(at-hatch:ai-pat-preview "/tmp/t.pat" "P1" '(0 0) '(100 100) 1.0 0.0)` |
 
 常用底层函数（可复用）：`at-hatch:make-hatch`（entmake 建填充）、
 `at-hatch:hatch-recs`（读填充边界环，保留凸度）、`at-hatch:pattern-defs`（读 `.pat` 定义行）、
+`at-hatch:parse-pat`（读 `.pat` 第一个图案）、`at-hatch:parse-pat-all`（读 `.pat` 全部图案段）、
 `at-hatch:triangulate`（耳切三角化）、`at-hatch:boundary->loops`（各种边界输入归一）。
 
 ## 实现要点
@@ -95,4 +101,5 @@ CAD 命令行：`@I at-hatch`，或
 | `create.lsp` | 快捷填充、超级填充、SOLID 变填充、SOLID 满铺多段线 |
 | `edit.lsp` | 改填充参数、填充移动、生成边界、批量分离、裁切、修复显示 |
 | `pattern.lsp` | 图案提取输出、自定义图案 |
+| `preview.lsp` | 图案预览表、任意 `.pat` 实尺预览与清除 |
 | `*.pat` | 内置图案资源 |

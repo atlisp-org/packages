@@ -16,7 +16,7 @@
     ("苗木统计表" "(at-landscape:mm-list)")
     ("封闭多段线搭桥" "(at-landscape:add-path)")
     ("封闭多段线挖路" "(at-landscape:remove-path)")
-    ("路线里程标注" "(at-landscape:milestone)")
+    ("路线里程标注" "(at-landscape:mileage)")
     ("界址点编号" "(at-landscape:jzd)")
     ("变线为树" "(at-landscape:tree-line)"))))
 

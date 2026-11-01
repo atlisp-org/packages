@@ -82,6 +82,16 @@
 | 75 | youyun-plot | 2/1 | ⬜ | | |
 
 ## 跨包主题（B10 收尾时统一复核）
+- [x] 论坛计划执行：2026-11-01 `at-stat` Excel/CSV→CAD 表格（0.0.7，本地已实测，待发布）
+- [x] CAD 实测与发布：2026-11-01 `docs/cad-test-publish-20261101.md`
+      （at-landscape 0.1.1 / at-hatch 0.1.2 / at-library 0.1.4 / at-stat 0.0.6 /
+      at-layer 1.2.15 / at-session 0.1.9 / at-plot 0.0.13，stable 已上线）
+- [x] 全站扫描：2026-11-01 `docs/forum-scan-20261101.md`
+      （33 版块 / 1222 主题；已落地 at-stat 填充面积统计、at-layer TXT/文字建层）
+- [x] 社区需求：2026-10-31 明经论坛分析 → `docs/forum-requirements-2026-10-31.md`
+      （已落地：at-landscape 随机高程点/断面线/高程分层设色、at-hatch 图案样块表、
+      at-library 本地文件夹图库（多根目录/多选插入）、atlispcc project 批量编译；
+      共线点集/批量打印仍为 backlog）
 - [ ] lib 协同：各包 PLAN 第 6 节候选函数汇总 → `lib/src/<ns>/<fn>.lsp`
 - [ ] 跨包重叠：at-stat / list-rec-wxh / at-math(统计) / at-block(numbering) 等
 - [ ] 编码治理：at-layout / at-elec / prefabricated-building 的 pkg.lsp 乱码

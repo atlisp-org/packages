@@ -10,7 +10,7 @@
 |---|---|
 | 包名 | `at-layer` |
 | 全名 | @lisp图层 |
-| 版本 | 1.2.14 |
+| 版本 | 1.2.15 |
 | 作者 | VitalGG |
 | 邮箱 | vitalgg@gmail.com |
 | 分类 | 通用 |
@@ -27,6 +27,7 @@
 |---|---|
 | `at-layer.lsp` | 主源码，菜单注册与原有函数实现 |
 | `layers-ext.lsp` | 图层扩展函数（iMini 图层增强命令复现） |
+| `layer-create.lsp` | 由 TXT / 文字内容批量建层 + AI 入口 |
 
 ## 安装
 
@@ -44,7 +45,7 @@
 
 ## 菜单
 
-注册在「图层」菜单下，共 27 个菜单项：
+注册在「图层」菜单下，共 29 个菜单项：
 
 | 菜单文字 | 命令/函数 | 说明 |
 |---|---|---|
@@ -75,6 +76,15 @@
 | 按颜色分层 | `(@layer:by-color)` | 选中实体按颜色拆层 |
 | 图层调整顺序 | `(@layer:ldorder)` | 按图层调整绘图顺序 |
 | 图层提取器 | `(@layer:extract)` | 导出图层信息为 CSV |
+| 由TXT建层 | `(@layer:layers-from-file)` | 选 TXT，逐行读图层名并建层 |
+| 文字建层 | `(@layer:layer-from-text)` | 选文字，以其内容为图层名建层 |
+
+## AI 调用
+
+| 函数 | 说明 |
+|---|---|
+| `(@layer:ai-layers-from-file file prefix)` | 从 TXT 建层，返回图层名列表 |
+| `(@layer:ai-layer-from-text ents prefix)` | 按文字内容建层，返回图层名列表 |
 
 ## 函数（原有）
 

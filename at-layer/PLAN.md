@@ -36,6 +36,19 @@
 
 辅助：ents-ify（实体参数规范化）、layers-by-ents、join、set-layer-on（容错开关层）、replace-str、csv-quote。
 
+## 3.1 本轮新增（layer-create.lsp，论坛需求 87384 / 42764）
+
+| 函数 | 说明 |
+|---|---|
+| `@layer:ai-layers-from-file file prefix` | 从 TXT 逐行读图层名建层，跳过空行/`#`/`;` |
+| `@layer:ai-layer-from-text ents prefix` | 以 TEXT/MTEXT 内容为图层名建层 |
+| `@layer:layers-from-file` / `@layer:layer-from-text` | 交互入口 |
+
+图层名清洗：非法字符 `< > / \ " : ; ? * | , =` 逐位替换为 `_`；长度截到 250。
+
+CAD 实测：TXT 含 `WALL`、`A/B`、`COLUMN` → `X-WALL`、`X-A_B`、`X-COLUMN`；
+文字 `MEETING` → 图层 `MEETING`。
+
 ## 4. 未实现
 
 | 项 | 优先级 | 说明 |

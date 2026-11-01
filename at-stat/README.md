@@ -15,12 +15,14 @@
 | 统计表格 → 面积标注 | `(at-stat:area-text)` | 每个封闭实体中心标注面积 |
 | 统计表格 → 点选标面积 | `(at-stat:point-area)` | 点区域内一点，自动找边界并标面积 |
 | 统计表格 → 面积分层统计表 | `(at-stat:by-layer-area)` | 按图层汇总封闭实体面积（×换算系数） |
+| 统计表格 → 填充面积统计表 | `(at-stat:hatch-area)` | 按填充图案名称汇总面积与数量 |
 | 统计表格 → 房间墙面面积统计 | `(at-stat:wall-area)` | 周长×层高，可扣门窗洞口 |
 | 统计表格 → 长度分层统计表 | `(at-stat:total-length)` | 按图层汇总线型实体长度 |
 | 统计表格 → 标注线段长度 | `(at-stat:text-length)` | 每条线段中点标注长度文字 |
 | 统计表格 → 同形状统计 | `(at-stat:shape-list)` | 按类型+尺寸（长度/面积）分组计数 |
 | 统计表格 → 标准层面积分摊表 | `(at-stat:area-analyze)` | 各区域面积 + 按比例分摊总面积 |
 | 统计表格 → 文字输出Excel | `(at-stat:text2excel)` | 文字按行列排布导出 CSV/XLSX |
+| Excel表格 → 导入CAD表格 | `(at-stat:excel2table)` | 读 Excel/CSV 已用区域绘制表格（线+文字，支持合并单元格） |
 | 统计表格 → 文字计算 | `(at-stat:cale-txt)` | 求文字中数值表达式的和/积 |
 | 统计表格 → 苗木统计表 | `(at-stat:mmtj)` | 苗木名称/规格/数量统计表 |
 
@@ -49,6 +51,7 @@
 | `at-stat:text2excel-data` / `at-stat:text2excel` | 文字矩阵提取 / 输出 CSV-XLSX |
 | `at-stat:eval-txt-num` / `at-stat:cale-txt` | 文字表达式安全求值 / 批量文字计算 |
 | `at-stat:mmtj-data` / `at-stat:mmtj` | 苗木统计数据 / 苗木统计表 |
+| `at-stat:excel2table-data` / `at-stat:excel-draw` / `at-stat:excel2table` | Excel/CSV 数据读取 / 表格绘制 / 交互导入 |
 
 ## AI 调用
 
@@ -69,6 +72,9 @@
 | `at-stat:ai-text2excel` | `(ents out-file rows cols)` 文字 / 输出文件 / 行列数 | 二维矩阵 |
 | `at-stat:ai-cale-txt` | `(ents op result-pt)` 文字 / `"sum"`/`"prod"` / 结果放置点 | 数值 |
 | `at-stat:ai-mmtj` | `(blk-names area-ent)` 苗木块名列表（nil=全部）/ 面积边界（nil=不追加） | `((名称 数量) ...)` |
+| `at-stat:ai-hatch-area` | `(ents factor)` 填充表 / 换算系数（nil=1e-6） | `((图案 面积 数量) ...)` |
+| `at-stat:ai-hatch-area-table` | `(ents pt factor)` 填充表 / 表格插入点 / 换算系数 | 表格 ename |
+| `at-stat:ai-excel2table` | `(file pt sheet col-widths row-height text-height layer)` Excel/CSV 文件 / 插入点(左上角) / 工作表名（nil=第一张）/ 列宽表（nil=自动）/ 行高（nil=2×字高）/ 字高（nil=`@::scale 3.5`）/ 图层（nil=当前） | 表格图元 ename 表（线+文字）；失败 nil |
 
 示例：
 
@@ -76,6 +82,7 @@
 (at-stat:ai-block-list (ssget "x" '((0 . "INSERT"))) 10 "d:/blk.csv")
 (at-stat:ai-by-layer-area nil 0.0001 nil)
 (at-stat:ai-point-area (list (getvar "viewctr")) 0.0001 "STAT")
+(at-stat:ai-excel2table "d:/t.xlsx" '(100 50) nil nil nil nil "TABLE")
 ```
 
 ## 使用说明
@@ -112,10 +119,12 @@
 | `count.lsp` | 计数统计（块/文字/同形状/长度分层/面积分层）+ AI 入口 |
 | `area.lsp` | 面积统计（面积标注/点选标面积/墙面面积/面积分摊/苗木统计）+ AI 入口 |
 | `misc.lsp` | 杂项（标注线段长度/文字输出 Excel/文字计算）+ AI 入口 |
+| `hatch-area.lsp` | 填充面积统计（按图案汇总面积/数量 + 表格）+ AI 入口 |
+| `excel-import.lsp` | Excel→CAD 表格导入（读已用区域/合并单元格 + 绘制表格 + CSV 回退）+ AI 入口 |
 
 ## 作者
 
 - **VitalGG** - vitalgg@gmail.com
-- 版本: 0.0.5
+- 版本: 0.0.7
 - 分类: Common
 - 网站: http://atlisp.cn

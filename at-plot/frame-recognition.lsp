@@ -62,9 +62,57 @@
 		 "。\n"))
   (princ)
   )
-(defun @plot:get-frame-type (w h)
-  "识别图框大小"
-  )
+(defun @plot:get-frame-type (w h / long short sizes scales best best-err
+                             best-scale pref sz s lw sh err)
+  "按图框实际宽高（图纸单位）识别标准图幅与横竖。
+匹配 A0~A4 标准图幅 × @plot:scale-of-frame 中的比例，相对容差 0.5%；
+多个候选时取尺寸最接近的一个（避免大图幅小比例与小图幅大比例的歧义）。
+w/h 为图框实际宽高；返回点对 (图幅名 . 方向)，方向 L=横 P=竖；识别失败返回 nil。
+示例: (@plot:get-frame-type 42000.0 29700.0) => (\"A3\" . \"L\")"
+  "点对 - 如 (\"A3\" . \"L\")；识别失败返回 nil"
+  "(@plot:get-frame-type 42000.0 29700.0) => (\"A3\" . \"L\")
+(@plot:get-frame-type 29700.0 42000.0) => (\"A3\" . \"P\")
+(@plot:get-frame-type 59400.0 42000.0) => (\"A2\" . \"L\")"
+  (@plot:ensure-tables)
+  (setq best nil
+        best-err nil)
+  (if (and (numberp w) (numberp h) (> (min w h) 0))
+      (progn
+        (setq long (float (max w h))
+              short (float (min w h)))
+        ;; 标准图幅（长边 × 短边，单位 mm）
+        (setq sizes '(("A0" 1189.0 841.0)
+                      ("A1" 841.0 594.0)
+                      ("A2" 594.0 420.0)
+                      ("A3" 420.0 297.0)
+                      ("A4" 297.0 210.0)))
+        (setq scales (vl-remove-if-not
+                      '(lambda (x) (and (numberp x) (> x 0)))
+                      @plot:scale-of-frame))
+        ;; 配置缺失时退回 lib 的默认比例表，保证独立调用也能识别
+        (if (null scales) (setq scales (frame:scales)))
+        ;; 比例歧义时优先靠拢配置里第一个比例（默认 100，即 1:100）
+        (setq pref (car scales))
+        (foreach sz sizes
+          (foreach s scales
+            (setq lw (* (cadr sz) s)
+                  sh (* (caddr sz) s))
+            ;; 相对误差：长边、短边取较大者。A1@1:50 与 A3@1:100 只差 0.12%，
+            ;; 若「取第一个命中」会误判成大图幅，必须比较误差取最接近的。
+            (setq err (max (/ (abs (- long lw)) lw)
+                           (/ (abs (- short sh)) sh)))
+            ;; 误差更小优先；误差完全相同时（如 29700×21000 既可能是
+            ;; A4@1:100 也可能是 A2@1:200）取比例更接近配置首个比例（1:100）的候选。
+            (if (and (<= err 0.005)
+                     (or (null best-err)
+                         (< err (- best-err 1e-9))
+                         (and (equal err best-err 1e-6)
+                              (< (abs (- s pref))
+                                 (abs (- best-scale pref))))))
+                (setq best (cons (car sz) (if (>= w h) "L" "P"))
+                      best-err err
+                      best-scale s))))))
+  best)
 (@:add-menu "通用打印" "识别PL图框" "(@plot:frame-recognition-by-polyline)")
 ;; 
 (defun @:get-rec-points (en0 / ddlist dd1 tmplist )

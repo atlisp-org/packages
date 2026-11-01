@@ -2,7 +2,7 @@
         (:FULL-NAME . "统计表格")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.5")
+        (:VERSION . "0.0.7")
         (:LOCALE . "chs")
         (:CATEGORY . "Common")
         (:REQUIRED . "base")
@@ -13,4 +13,6 @@
             "stat-tools"
             "count"
             "area"
-            "misc")))
+            "misc"
+            "hatch-area"
+            "excel-import")))

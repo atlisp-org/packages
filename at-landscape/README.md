@@ -26,6 +26,9 @@ CAD 命令行：`@I at-landscape` 或 `(@:package-install "at-landscape")`。
 | `at-landscape:remove-path` | 封闭多段线挖路（双线边界 + 铺装填充） |
 | `at-landscape:mileage` | 路线里程标注（K0+000 格式） |
 | `at-landscape:jzd` | 界址点编号（JZ1、JZ2…） |
+| `at-landscape:random-elevation` | 闭合范围内随机高程点（点 + 高程文字） |
+| `at-landscape:section-lines` | 沿路线按间隔画断面线并标注桩号 |
+| `at-landscape:elev-color` | 高程点/高程文字按高程分层设色 |
 
 ## AI 调用
 
@@ -43,6 +46,9 @@ CAD 命令行：`@I at-landscape` 或 `(@:package-install "at-landscape")`。
 | `at-landscape:ai-remove-path` | pline-ent [width] [pattern] | 挖路，pattern 缺省 `ANSI31`（找不到图案只画边界） |
 | `at-landscape:ai-mileage` | pline-ent [dist] [start] | 里程标注，dist 缺省 20000，start 起始里程 |
 | `at-landscape:ai-jzd` | pline-ent [prefix] | 界址点编号，prefix 缺省 `JZ` |
+| `at-landscape:ai-random-elevation` | bounds [n] [lo] [hi] [prec] | 闭合范围内随机高程点；n 缺省 20，高程缺省 0~10，prec 缺省 2 |
+| `at-landscape:ai-section-lines` | pline-ent [dist] [half-len] [start] | 断面线 + 桩号；dist 缺省 20000，half-len 缺省 10000 |
+| `at-landscape:ai-elev-color` | ents [bands] | 按高程区间改色；bands 缺省按实际高程均分 5 段 |
 
 示例：
 
@@ -55,6 +61,15 @@ CAD 命令行：`@I at-landscape` 或 `(@:package-install "at-landscape")`。
 
 ;; 沿多段线布树，间距 5000，冠径 1200
 (at-landscape:ai-tree-line (car (entsel)) 5000 1200)
+
+;; 闭合范围内随机生成 30 个高程点，高程 5~15，保留 2 位小数
+(at-landscape:ai-random-elevation (car (entsel)) 30 5.0 15.0 2)
+
+;; 沿路线每 20 米画断面线（半长 10 米）并标桩号
+(at-landscape:ai-section-lines (car (entsel)) 20000 10000 0)
+
+;; 按实际高程均分 5 段给高程点改色
+(at-landscape:ai-elev-color (ssget) nil)
 ```
 
 ## 资源

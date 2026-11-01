@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp填充")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.0")
+        (:VERSION . "0.1.2")
         (:LOCALE . "chs")
         (:CATEGORY . "通用")
         (:REQUIRED . "base")
@@ -13,6 +13,7 @@
             "create"
             "edit"
             "pattern"
+            "preview"
             "marble1.pat"
             "stone2.pat"
             "woodfloor1.pat"

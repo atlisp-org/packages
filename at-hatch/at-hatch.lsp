@@ -238,6 +238,50 @@
       (if (or name defs) (list name defs)))
     nil))
 
+(defun at-hatch:parse-pat-all (file / f line defs name res pos nm d)
+  "读取 .pat 文件的全部图案段，返回 ((图案名 . 定义行表) ...)
+跳过 ; 注释与空行；一个文件可含多个 *图案名 段"
+  "点对表；文件不可读或无图案定义返回 nil"
+  "(at-hatch:parse-pat-all \"/tmp/t.pat\")"
+  (setq f (open file "r") res nil name nil defs nil)
+  (if f
+    (progn
+      (while (setq line (read-line f))
+        (setq line (vl-string-trim " \t\r" line))
+        (cond
+          ((= (strlen line) 0) nil)
+          ((= (substr line 1 1) ";") nil)
+          ((= (substr line 1 1) "*")
+           (if (and name (/= name ""))
+             (setq res (append res (list (cons name (reverse defs))))))
+           (setq nm (substr line 2))
+           (setq pos (vl-string-search "," nm))
+           (if pos (setq nm (substr nm 1 pos)))
+           (setq name (vl-string-trim " \t" nm) defs nil))
+          (t
+           (setq d (at-hatch:parse-pat-line line))
+           (if d (setq defs (cons d defs))))))
+      (close f)
+      (if (and name (/= name ""))
+        (setq res (append res (list (cons name (reverse defs))))))
+      res)
+    nil))
+
+(defun at-hatch:pat-all-defs (entries pattern / res e)
+  "从 at-hatch:parse-pat-all 结果中取指定图案的定义行（不区分大小写）
+pattern 为 nil 时取第一个图案"
+  "定义行表或 nil"
+  "(at-hatch:pat-all-defs (at-hatch:parse-pat-all \"/tmp/t.pat\") \"P1\")"
+  (if entries
+    (progn
+      (if (null pattern)
+        (setq res (cdr (car entries)))
+        (foreach e entries
+          (if (and (null res) (= (strcase (car e) t) (strcase pattern t)))
+            (setq res (cdr e)))))
+      res)
+    nil))
+
 (defun at-hatch:pattern-file (name / res f files)
   "按图案名查找内置 .pat 文件，找不到返回 nil"
   "文件全路径或 nil"

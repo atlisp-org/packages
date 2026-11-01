@@ -13,6 +13,7 @@
     ("历史会话" (at-session:history))
     ("保存会话" (at-session:save-current))
     ("关闭会话" (at-session:close))
+    ("备份当前图纸" (at-session:backup-current))
     ("下班" (at-session:knock-off))
     ("--" "--")
     ("关所有dwg" (at-session:save-and-close-all))
@@ -45,6 +46,95 @@
   (write-line (vl-prin1-to-string sessions) fp)
   (close fp)
   t)
+
+;; ------------------------------------------------------------
+;; 图纸备份（提取自明经论坛「图纸自动备份」需求，见 thread-101521）
+;; ------------------------------------------------------------
+(defun at-session:backup-dir (dir / d)
+  "内部：确定备份目录并创建，返回以 / 结尾的路径；失败返回 nil。"
+  "目录字符串或 nil"
+  "(at-session:backup-dir nil)"
+  (setq d (if (and dir (/= dir ""))
+              dir
+              (strcat (getvar "DWGPREFIX") "备份")))
+  (if (not (vl-string-search (substr d (strlen d)) "/\\"))
+      (setq d (strcat d "/")))
+  (if (not (vl-file-directory-p d))
+      (vl-mkdir d))
+  (if (vl-file-directory-p d) d nil))
+
+(defun at-session:backup-stamp (/ s)
+  "内部：当前时间戳 YYYYMMDD-HHMMSS。"
+  "字符串"
+  "(at-session:backup-stamp)"
+  (setq s (rtos (getvar "CDATE") 2 6))
+  (vl-string-translate "." "-" s))
+
+(defun at-session:backup-prune (dir base keep / files n del)
+  "内部：只保留最新的 keep 份备份，返回删除份数。"
+  "删除的份数"
+  "(at-session:backup-prune \"D:/bak/\" \"plan\" 10)"
+  (setq keep (max 1 (fix (if (numberp keep) keep 10))))
+  (setq files (vl-directory-files dir (strcat base "-*.dwg") 1))
+  (setq files (vl-sort files
+                       '(lambda (a b)
+                          (> (strcase a) (strcase b)))))
+  (setq n 0 del 0)
+  (foreach f files
+    (setq n (1+ n))
+    (if (> n keep)
+        (if (vl-file-delete (strcat dir f))
+            (setq del (1+ del)))))
+  del)
+
+(defun at-session:ai-backup-current (dest keep / prefix name base dir
+                                     stamp file n)
+  "AI 调用入口：把当前已保存的 DWG 复制到备份目录（不修改当前图形）。
+  dest: 备份目录，nil = 图纸目录下的「备份」；keep: 保留份数，缺省 10。
+  返回备份文件全路径，失败返回 nil。
+  示例: (at-session:ai-backup-current nil 10)"
+  "备份文件路径或 nil"
+  "(at-session:ai-backup-current \"D:/bak\" 10)"
+  (if (/= 1 (getvar "DWGTITLED"))
+      (progn
+        (princ "at-session:ai-backup-current 当前图纸尚未保存，无法备份")
+        nil)
+      (progn
+        (setq prefix (getvar "DWGPREFIX"))
+        (setq name (getvar "DWGNAME"))
+        (setq base (vl-filename-base name))
+        (setq dir (at-session:backup-dir dest))
+        (if (null dir)
+            (progn
+              (princ "at-session:ai-backup-current 无法创建备份目录")
+              nil)
+            (progn
+              (setq stamp (at-session:backup-stamp))
+              (setq file (strcat dir base "-" stamp ".dwg"))
+              (setq n 1)
+              (while (and (findfile file) (< n 100))
+                (setq file (strcat dir base "-" stamp "-" (itoa n) ".dwg"))
+                (setq n (1+ n)))
+              (if (vl-file-copy (strcat prefix name) file)
+                  (progn
+                    (at-session:backup-prune dir base keep)
+                    file)
+                  (progn
+                    (princ (strcat "at-session:ai-backup-current 备份失败: "
+                                   file))
+                    nil)))))))
+
+(defun at-session:backup-current (/ keep res)
+  "备份当前图纸：复制到「备份」目录，按份数清理旧备份。"
+  "备份文件路径或 nil"
+  "(at-session:backup-current)"
+  (setq keep (getint "\n保留备份份数 <10>: "))
+  (if (null keep) (setq keep 10))
+  (setq res (at-session:ai-backup-current nil keep))
+  (if res
+      (princ (strcat "\n已备份: " res))
+      (princ "\n备份失败。"))
+  (princ))
 
 (defun at-session:goto-work (/ fp session docs) 
   (@:help '("打开最近保存的名称为 ‘下班’ 的会话。"))

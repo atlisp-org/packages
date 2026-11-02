@@ -8,14 +8,14 @@
 
 ;; ===================== 1. 编辑视口比例 vp-scale =====================
 
-(defun @layout:ai-vp-scale (vports scale / lst cs e ok)
+(defun @layout:ai-vp-scale (vp-list scale / lst cs e ok)
   "AI 调用入口：给一组视口设置比例（N 表示 1:N；0<N<1 按 customscale 处理如 2:1）。
-vports 为视口 ename 列表（或选择集），scale 为比例 N。
+vp-list 为视口 ename 列表（或选择集），scale 为比例 N。
 成功返回已修改视口 ename 列表，失败返回 nil。
 示例: (@layout:ai-vp-scale (@layout:vports) 100)"
   "已修改视口 ename 列表 / nil"
   "示例: (@layout:ai-vp-scale (@layout:vports) 100)"
-  (setq lst (@layout:entlist vports)
+  (setq lst (@layout:entlist vp-list)
         cs 0.0)
   (if (or (null lst) (not (and (numberp scale) (> scale 0.0))))
       (progn (princ "\n错误: 参数无效(视口列表或比例N)") nil)
@@ -52,7 +52,7 @@ vports 为视口 ename 列表（或选择集），scale 为比例 N。
 
 ;; ===================== 2. 同步对齐视口 vp-sync =====================
 
-(defun @layout:ai-vp-sync (vports rows cols gap / lst n r c i maxw maxh
+(defun @layout:ai-vp-sync (vp-list rows cols gap / lst n r c i maxw maxh
                                e vw moved)
   "AI 调用入口：把一组视口按网格(rows × cols, 间距 gap)对齐排布。
 按列表顺序从原点开始放置，保持各视口自身尺寸与模型视图。
@@ -61,7 +61,7 @@ rows/cols 为 0 或 nil 表示自动(cols=上取整 sqrt(n))，gap 缺省 500。
 示例: (@layout:ai-vp-sync (@layout:vports) 2 3 500)"
   "已移动视口 ename 列表 / nil"
   "示例: (@layout:ai-vp-sync (@layout:vports) 0 0 500)"
-  (setq lst (@layout:entlist vports))
+  (setq lst (@layout:entlist vp-list))
   (if (null lst)
       (progn (princ "\n错误: 没有视口") nil)
       (progn
@@ -200,14 +200,14 @@ layout 为 nil 时取当前布局，layer 为 nil 时用 \"ML_OUTLINE\"。
 
 ;; ===================== 4. 视口锁定或解锁 vport-lock =====================
 
-(defun @layout:ai-vport-lock (vports lock / lst e dat ok)
+(defun @layout:ai-vport-lock (vp-list lock / lst e dat ok)
   "AI 调用入口：锁定(lock=t)或解锁(lock=nil)一组视口(DXF 70 bit 16)。
-vports 为视口 ename 列表（或选择集）。
+vp-list 为视口 ename 列表（或选择集）。
 成功返回已修改视口 ename 列表，失败返回 nil。
 示例: (@layout:ai-vport-lock (@layout:vports) t)"
   "已修改视口 ename 列表 / nil"
   "示例: (@layout:ai-vport-lock (@layout:vports) t)"
-  (setq lst (@layout:entlist vports))
+  (setq lst (@layout:entlist vp-list))
   (if (null lst)
       (progn (princ "\n错误: 没有视口") nil)
       (progn

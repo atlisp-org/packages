@@ -408,7 +408,7 @@ pattern 为 nil 时取第一个图案"
   "(at-hatch:pat-head-dxf \"ANSI31\" nil)"
   (list (cons 2 (if name name "ANSI31")) (cons 70 (if solid 1 0))))
 
-(defun at-hatch:pat-tail-dxf (scale angle pdefs solid)
+(defun at-hatch:pat-tail-dxf (scale ang pdefs solid)
   "填充图案尾部组码（类型/角度/比例/定义行）
 实体填充只写图案类型，写比例/角度会被 CAD 判为非法"
   "组码对表"
@@ -417,7 +417,7 @@ pattern 为 nil 时取第一个图案"
     (list '(76 . 1))
     (append
       (list (cons 76 (if pdefs 2 1))
-            (cons 52 (at-hatch:d2r angle))
+            (cons 52 (at-hatch:d2r ang))
             (cons 41 (if (and (numberp scale) (> scale 0.0)) scale 1.0))
             '(77 . 0)
             (cons 78 (length pdefs)))
@@ -455,10 +455,10 @@ pattern 为 nil 时取第一个图案"
       (list (/ (+ mnx mxx) 2.0) (/ (+ mny mxy) 2.0) 0.0))
     nil))
 
-(defun at-hatch:make-hatch (loops pattern scale angle layer color pdefs /
+(defun at-hatch:make-hatch (loops pattern scale ang layer color pdefs /
                             dxf ldxf lp n seed nm solid lay)
   "由环记录表创建填充（entmake，不产生临时边界图元）
-参数: loops 环记录表，pattern 图案名，scale 比例，angle 角度(度)，layer/color 可 nil"
+参数: loops 环记录表，pattern 图案名，scale 比例，ang 角度(度)，layer/color 可 nil"
   "填充图元名或 nil"
   "(at-hatch:make-hatch (list (list 1 '((0 0) (10 0) (10 10)) nil)) \"ANSI31\" 1.0 0.0)"
   (setq ldxf nil n 0)
@@ -482,13 +482,13 @@ pattern 为 nil 时取第一个图案"
                   (list '(71 . 0) (cons 91 n))
                   ldxf
                   (list '(75 . 0))
-                  (at-hatch:pat-tail-dxf scale angle pdefs solid)
+                  (at-hatch:pat-tail-dxf scale ang pdefs solid)
                   (list '(98 . 1) (cons 10 seed))))
       (if (entmake (vl-remove nil dxf))
         (entlast)
         nil))))
 
-(defun at-hatch:hatch-from-loops (recs pattern scale angle layer color /
+(defun at-hatch:hatch-from-loops (recs pattern scale ang layer color /
                                   defs nm)
   "由环记录表创建填充（为包内 .pat 图案嵌入定义行；未知图案退回 ANSI31）"
   "填充图元名或 nil"
@@ -502,7 +502,7 @@ pattern 为 nil 时取第一个图案"
         (progn
           (princ (strcat "\n图案 " nm " 缺少 .pat 定义，已改用 ANSI31。"))
           (setq nm "ANSI31")))))
-  (at-hatch:make-hatch recs nm scale angle layer color defs))
+  (at-hatch:make-hatch recs nm scale ang layer color defs))
 
 ;; ---------------------------------------------------------------------------
 ;; 填充 DXF 读取（边界环、图案定义）
@@ -1028,7 +1028,7 @@ pattern 为 nil 时取第一个图案"
   "(at-hatch:loop->pl (car (at-hatch:hatch-recs (car (entsel)))) nil)"
   (at-hatch:make-pl (cadr rec) (caddr rec) layer 1))
 
-(defun at-hatch:rebuild-hatch (ent pattern scale angle color / recs en lay col)
+(defun at-hatch:rebuild-hatch (ent pattern scale ang color / recs en lay col)
   "按新图案重建填充（可嵌入 .pat 定义行，图案未载入也能显示）"
   "新填充图元名或 nil"
   "(at-hatch:rebuild-hatch (car (entsel)) \"PARQUET\" 10.0 0.0 nil)"
@@ -1037,13 +1037,13 @@ pattern 为 nil 时取第一个图案"
     (progn
       (setq lay (cdr (assoc 8 (entget ent)))
             col (if (numberp color) color (cdr (assoc 62 (entget ent)))))
-      (setq en (at-hatch:hatch-from-loops recs pattern scale angle lay col))
+      (setq en (at-hatch:hatch-from-loops recs pattern scale ang lay col))
       (if en
         (progn (at-hatch:del-ent ent) en)
         nil))
     nil))
 
-(defun at-hatch:set-hatch-pattern (ent pattern scale angle color /
+(defun at-hatch:set-hatch-pattern (ent pattern scale ang color /
                                    obj res defs)
   "设置填充的图案/比例/角度/颜色，返回结果填充图元名（图案未载入时重建填充）"
   "图元名或 nil"
@@ -1057,24 +1057,24 @@ pattern 为 nil 时取第一个图案"
           ((= (strcase pattern) "SOLID")
            (if (vl-catch-all-error-p
                  (vl-catch-all-apply 'vla-setpattern (list obj 1 "SOLID")))
-             (setq res (at-hatch:rebuild-hatch ent pattern scale angle color))))
+             (setq res (at-hatch:rebuild-hatch ent pattern scale ang color))))
           ((at-hatch:std-pattern-p pattern)
            (if (vl-catch-all-error-p
                  (vl-catch-all-apply 'vla-setpattern (list obj 1 pattern)))
-             (setq res (at-hatch:rebuild-hatch ent pattern scale angle color))))
+             (setq res (at-hatch:rebuild-hatch ent pattern scale ang color))))
           ((setq defs (at-hatch:pattern-defs pattern))
-           (setq res (at-hatch:rebuild-hatch ent pattern scale angle color)))
+           (setq res (at-hatch:rebuild-hatch ent pattern scale ang color)))
           (t
            (if (vl-catch-all-error-p
                  (vl-catch-all-apply 'vla-setpattern (list obj 2 pattern)))
-             (setq res (at-hatch:rebuild-hatch ent pattern scale angle color))))))
+             (setq res (at-hatch:rebuild-hatch ent pattern scale ang color))))))
       (if (and res (at-hatch:valid-ent res))
         (progn
           (setq obj (vlax-ename->vla-object res))
           (if (and (numberp scale) (> scale 0.0))
             (vl-catch-all-apply 'vla-put-patternscale (list obj scale)))
-          (if (numberp angle)
-            (vl-catch-all-apply 'vla-put-patternangle (list obj (at-hatch:d2r angle))))
+          (if (numberp ang)
+            (vl-catch-all-apply 'vla-put-patternangle (list obj (at-hatch:d2r ang))))
           (if (numberp color) (at-hatch:set-color res color))
           (vl-catch-all-apply 'vla-update (list obj))
           (entupd res)

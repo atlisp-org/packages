@@ -231,7 +231,7 @@
   pts
 )
 
-(defun mi-curve-pts (ent dist / o l n rem i pts p)
+(defun mi-curve-pts (ent dist / o l n remainder i pts p)
   "曲线按等距 dist 采样点表（非曲线实体返回 nil）"
   (if (vl-catch-all-error-p
       (vl-catch-all-apply 'vlax-curve-getendparam
@@ -243,14 +243,14 @@
       (if (and (> dist 0.0) (>= l dist))
         (progn
           (setq n (fix (/ l dist))
-                rem (- l (* n dist))
+                remainder (- l (* n dist))
                 i   0
                 pts '())
           (while (<= i n)
             (setq p (vlax-curve-getpointatdist o (* i dist)))
             (setq pts (append pts (list (list (car p) (cadr p))))
               i (1+ i)))
-          (if (> rem (/ dist 2.0))
+          (if (> remainder (/ dist 2.0))
             (progn
               (setq p (vlax-curve-getpointatdist o l))
               (setq pts (append pts (list (list (car p) (cadr p)))))))

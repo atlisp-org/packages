@@ -173,7 +173,7 @@
 ;; ------------------------------------------------------------
 ;; 3. 苗木标注
 ;; ------------------------------------------------------------
-(defun at-landscape:do-plant-text (ents mode type / res pts c e area)
+(defun at-landscape:do-plant-text (ents mode typ / res pts c e area)
   "核心：标注苗木数量（N 株）或灌木丛面积（X m²）。"
   "生成的文字 ename 列表"
   "(at-landscape:do-plant-text (list (entlast)) \"count\" nil)"
@@ -212,8 +212,8 @@
                 (setq res (cons
                            (at-landscape:text
                             (strcat
-                             (if (and type (/= "" type))
-                                 (strcat type " ") "")
+                             (if (and typ (/= "" typ))
+                                 (strcat typ " ") "")
                              (rtos area 2 2) " m²")
                             c
                             (at-landscape:text-size) "MM")
@@ -246,10 +246,10 @@
       (princ "\n请选择苗木块/圆或封闭边界。"))
   (princ))
 
-(defun at-landscape:ai-plant-text (ents mode type / res)
+(defun at-landscape:ai-plant-text (ents mode typ / res)
   "AI 调用入口：标注苗木数量或灌木丛面积。
   ents: ename 列表或选择集；mode: \"count\" 标数量（N 株）/ \"area\" 标面积（X m²）。
-  type: 灌木种类（仅 area 模式，可缺省）。"
+  typ: 灌木种类（仅 area 模式，可缺省）。"
   "文字 ename 列表，失败返回 nil"
   "(at-landscape:ai-plant-text (ssget) \"count\")
    (at-landscape:ai-plant-text (list (entlast)) \"area\" \"海桐\")"
@@ -259,7 +259,7 @@
             (setq ents (pickset:to-list ents)))
         (if (listp ents)
             (setq res (at-landscape:do-plant-text
-                       ents (strcase mode) type))
+                       ents (strcase mode) typ))
             (princ "at-landscape:ai-plant-text ents 须为 ename 列表或选择集")))
       (princ "at-landscape:ai-plant-text ents 与 mode 不能为空"))
   res)

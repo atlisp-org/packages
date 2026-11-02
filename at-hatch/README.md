@@ -63,9 +63,9 @@ CAD 命令行：`@I at-hatch`，或
 
 | 函数 | 参数 | 说明 / 示例 |
 |---|---|---|
-| `at-hatch:ai-hatch` | `boundary pattern scale angle / layer color` | 由边界创建填充。`boundary` 可为闭合图元、图元表、选择集、点表、点表列表或区域内部点。`(at-hatch:ai-hatch (car (entsel)) "ANSI31" 2.0 45.0 nil 7)` |
+| `at-hatch:ai-hatch` | `boundary pattern scale ang / layer color` | 由边界创建填充。`boundary` 可为闭合图元、图元表、选择集、点表、点表列表或区域内部点。`(at-hatch:ai-hatch (car (entsel)) "ANSI31" 2.0 45.0 nil 7)` |
 | `at-hatch:ai-superhatch` | `boundary pattern scale` | 每个封闭区域各一个填充，孔洞自动作内边界，返回填充表。`(at-hatch:ai-superhatch (pickset:to-list (ssget)) "ANSI31" 2.0)` |
-| `at-hatch:ai-hatch-select` | `hatch-ent pattern scale angle` | 改已有填充的图案/比例/角度（`nil` 保持原值），返回结果填充表。`(at-hatch:ai-hatch-select (car (entsel)) "ANSI37" 4.0 15.0)` |
+| `at-hatch:ai-hatch-select` | `hatch-ent pattern scale ang` | 改已有填充的图案/比例/角度（`nil` 保持原值），返回结果填充表。`(at-hatch:ai-hatch-select (car (entsel)) "ANSI37" 4.0 15.0)` |
 | `at-hatch:ai-hatch-move` | `hatch-ent op param` | `op` 为 `"move"`（位移 `(dx dy)` 或两点）/`"rotate"`（角度或 `(基点 角度)`）/`"scale"`（比例或 `(基点 比例)`）。`(at-hatch:ai-hatch-move h "rotate" '((0 0) 45.0))` |
 | `at-hatch:ai-hatch-boundary` | `hatch-ent / layer` | 由填充生成闭合多段线，返回多段线表（弧段保留凸度）。`(at-hatch:ai-hatch-boundary (car (entsel)) nil)` |
 | `at-hatch:ai-hatch-isolate` | `hatch-ent` | 多环填充拆成每环一个独立填充（原填充删除）。`(at-hatch:ai-hatch-isolate (car (entsel)))` |
@@ -76,7 +76,7 @@ CAD 命令行：`@I at-hatch`，或
 | `at-hatch:ai-custom-pattern` | `name lines / pat-file` | 生成并载入自定义图案 `.pat`；`lines` 为定义行字符串表或数值表。`(at-hatch:ai-custom-pattern "斜线" '("0,0,0,0,10,1,-1" "90,0,0,0,10,1,-1") nil)` |
 | `at-hatch:ai-fix-pattern` | `hatch-ent / min-scale` | 修复不显示的填充（补图案定义行/改比例/改实体），返回修复后的填充表。`(at-hatch:ai-fix-pattern (car (entsel)) 1.0)` |
 | `at-hatch:ai-pattern-table` | `names pt cell-w cell-h cols scale` | 图案样块表（边框 + 填充 + 名称），不弹 DCL。`names` 为 nil 时画全部内置 + 标准图案。`(at-hatch:ai-pattern-table nil '(0 0) 90 60 6 20)` |
-| `at-hatch:ai-pat-preview` | `file pattern p1 p2 scale angle` | 任意 `.pat` 中的图案按真实尺寸画到两角点矩形内，图层固定 `PAT-PREVIEW`、颜色随层，图案定义随填充写入（不依赖支持路径）。`pattern` 为 nil 取文件第一个图案。`(at-hatch:ai-pat-preview "/tmp/t.pat" "P1" '(0 0) '(100 100) 1.0 0.0)` |
+| `at-hatch:ai-pat-preview` | `file pattern p1 p2 scale ang` | 任意 `.pat` 中的图案按真实尺寸画到两角点矩形内，图层固定 `PAT-PREVIEW`、颜色随层，图案定义随填充写入（不依赖支持路径）。`pattern` 为 nil 取文件第一个图案。`(at-hatch:ai-pat-preview "/tmp/t.pat" "P1" '(0 0) '(100 100) 1.0 0.0)` |
 
 常用底层函数（可复用）：`at-hatch:make-hatch`（entmake 建填充）、
 `at-hatch:hatch-recs`（读填充边界环，保留凸度）、`at-hatch:pattern-defs`（读 `.pat` 定义行）、

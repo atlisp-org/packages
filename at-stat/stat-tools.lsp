@@ -506,7 +506,7 @@
   "示例: (at-stat:ss-ents (ssget '((0 . \"*\"))))"
   (if ss (pickset:to-list ss) nil))
 
-(defun at-stat:pick-ents (prompt filter / ss)
+(defun at-stat:pick-ents (msg filter / ss)
   "交互选择图元（ssget），返回 ename 列表，取消返回 nil。"
   "图元列表"
   "示例: (at-stat:pick-ents \"选择图元: \" '((0 . \"*\")))"

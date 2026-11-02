@@ -790,13 +790,13 @@
 ;; 7. 批量中心旋转
 ;; ------------------------------------------------------------
 
-(defun at-edit:ai-rotate-center (ents angle / lst res e box cen o)
+(defun at-edit:ai-rotate-center (ents ang / lst res e box cen o)
   "AI 入口：各图元绕自身包围盒中心旋转，返回图元列表，失败 nil
-   ents: 图元 angle: 旋转角度（度，逆时针为正）"
+   ents: 图元 ang: 旋转角度（度，逆时针为正）"
   "图元名列表或 nil"
   "(at-edit:ai-rotate-center (ssget) 45)"
   (setq lst (at-edit:norm-ents ents))
-  (if (and lst (numberp angle))
+  (if (and lst (numberp ang))
     (progn
       (at-edit:undo-start)
       (setq res '())
@@ -813,7 +813,7 @@
                            (vl-catch-all-apply
                             'vla-rotate
                             (list o (vlax-3d-point cen)
-                                  (* pi (/ angle 180.0)))))))
+                                  (* pi (/ ang 180.0)))))))
               (setq res (append res (list e)))))))
       (at-edit:undo-end)
       res)

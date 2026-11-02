@@ -38,7 +38,7 @@ CAD 命令行：`@I at-landscape` 或 `(@:package-install "at-landscape")`。
 |---|---|---|
 | `at-landscape:ai-shrub-edge` | pline-ent [dist] [amp] | 灌木边缘线，dist 偏距缺省 300，amp 波幅缺省 30 |
 | `at-landscape:ai-grass` | p1 p2 [n] [h] | 立面草，n 草叶数缺省 15，h 高度缺省 300 |
-| `at-landscape:ai-plant-text` | ents mode [type] | mode = `count` 标数量 / `area` 标面积 |
+| `at-landscape:ai-plant-text` | ents mode [typ] | mode = `count` 标数量 / `area` 标面积 |
 | `at-landscape:ai-mm-list` | [blk-names] [out-file] | 苗木统计表，返回数据列表 |
 | `at-landscape:ai-tree-line` | pline-ent [dist] [r] | 沿线布树，dist 间距、r 冠径 |
 | `at-landscape:ai-area` | bounds [factor] [colors] | 面积标注 + 随机色填充；factor 缺省 1e-6（mm²→m²） |

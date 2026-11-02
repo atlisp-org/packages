@@ -18,12 +18,12 @@
   (setq v (getvar "ACADVER"))
   (atof v))
 
-(defun at-library:--dbx-open (file / ver dbx)
+(defun at-library:--dbx-open (file / vernum dbx)
   "用 ObjectDBX 打开 dwg（不显示窗口）。失败返回 nil。"
-  (setq ver (fix (at-library:--acadver)))
+  (setq vernum (fix (at-library:--acadver)))
   (setq dbx (vl-catch-all-apply
 	     'vla-getinterfaceobject
-	     (list *ACAD* (strcat "ObjectDBX.AxDbDocument." (itoa ver)))))
+	     (list *ACAD* (strcat "ObjectDBX.AxDbDocument." (itoa vernum)))))
   (if (or (null dbx) (vl-catch-all-error-p dbx))
       nil
     (if (vl-catch-all-error-p (vl-catch-all-apply 'vla-open (list dbx (findfile file))))

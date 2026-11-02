@@ -40,18 +40,18 @@
   (setq res (cons (at-library:local-trim s) res))
   (vl-remove "" (reverse res)))
 
-(defun at-library:local-base (dir / s pos last)
+(defun at-library:local-base (dir / s pos last-pos)
   "内部：取目录名的最后一段，用作多根库的显示别名。"
   "目录名（不含路径）"
   "(at-library:local-base \"D:/lib/门窗\") => \"门窗\""
   (setq s (vl-string-translate "\\" "/" (at-library:local-norm dir)))
   (setq s (vl-string-right-trim "/" s))
-  (setq last nil)
+  (setq last-pos nil)
   (setq pos 0)
   (while (setq pos (vl-string-search "/" s pos))
-    (setq last pos)
+    (setq last-pos pos)
     (setq pos (1+ pos)))
-  (if last (substr s (+ last 2)) s))
+  (if last-pos (substr s (+ last-pos 2)) s))
 
 (defun at-library:local-norm-roots (roots / raw lst out dir)
   "内部：把 roots（nil / 字符串 / 字符串表）规范成以 / 结尾的目录表。

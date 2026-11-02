@@ -5,9 +5,9 @@
 
 ;; ---------- 1. 炸线型为块 ----------
 
-(defun at-linetype:place-shape (pt angle scale blk / en en2)
+(defun at-linetype:place-shape (pt ang scale blk / en en2)
   "放置一个形元素：插入指定块，或画默认树（圆+点）。
-  参数: pt:放置点; angle:旋转角（弧度）; scale:缩放系数; blk:块名（nil=默认树）"
+  参数: pt:放置点; ang:旋转角（弧度）; scale:缩放系数; blk:块名（nil=默认树）"
   "创建的 ename 列表"
   "(at-linetype:place-shape '(0 0 0) 0.0 1.0 nil)"
   (if (and blk (tblsearch "BLOCK" blk))
@@ -19,7 +19,7 @@
                                  (cons 10 pt)
                                  (cons 41 scale)
                                  (cons 42 scale)
-                                 (cons 50 (/ (* 180.0 angle) pi)))))
+                                 (cons 50 (/ (* 180.0 ang) pi)))))
         (if en (list en)))
       (progn
         (setq en (entity:make-circle pt (* 10.0 scale)))
@@ -28,7 +28,7 @@
             (list en en2)
             (list en)))))
 
-(defun at-linetype:shp2blk-core (ent blk / rec elems total shape-offs s period obj L scale k off pos pt pt2 angle lst rr)
+(defun at-linetype:shp2blk-core (ent blk / rec elems total shape-offs s period obj L scale k off pos pt pt2 ang lst rr)
   "把实体线型中的形元素替换为块/树，并将线型改为 CONTINUOUS。
   参数: ent:实体; blk:块名（nil=默认树，圆半径=10×缩放）"
   "创建的 ename 列表；线型无形元素时 nil"
@@ -73,10 +73,10 @@
                                     (setq pt2 (vlax-curve-getpointatdistance
                                                      obj (max (- pos 1.0) 0.0)))
                                     (if (equal pt pt2 1e-9)
-                                        (setq angle 0.0)
-                                        (setq angle (angle pt pt2))))
-                                  (setq angle (angle pt pt2)))
-                              (if (setq rr (at-linetype:place-shape pt angle scale blk))
+                                        (setq ang 0.0)
+                                        (setq ang (angle pt pt2))))
+                                  (setq ang (angle pt pt2)))
+                              (if (setq rr (at-linetype:place-shape pt ang scale blk))
                                   (setq lst (append lst rr))))))
                       (setq k (1+ k)))
                     (at-linetype:set-ltype ent "CONTINUOUS")

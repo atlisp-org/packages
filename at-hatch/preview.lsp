@@ -28,11 +28,11 @@
       (entity:putdxf ename (list 8 62) (list lyr color)))
   ename)
 
-(defun at-hatch:ai-pat-preview (file pattern p1 p2 scale angle /
+(defun at-hatch:ai-pat-preview (file pattern p1 p2 scale ang /
                                 entries defs pts recs lyr hatch f)
   "AI 调用入口：把任意 .pat 中的图案按真实尺寸画到两点矩形内。
 file: .pat 文件；pattern: 图案名（不区分大小写），nil 取文件中第一个图案；
-p1/p2: 矩形两角点；scale/angle: 填充比例/角度，缺省 1.0/0.0。
+p1/p2: 矩形两角点；scale/ang: 填充比例/角度，缺省 1.0/0.0。
 图层固定 PAT-PREVIEW，颜色随层；图案定义直接写入填充，不依赖支持路径。
 返回填充 ename，失败返回 nil。"
   "HATCH 图元名或 nil"
@@ -63,14 +63,14 @@ p1/p2: 矩形两角点；scale/angle: 填充比例/角度，缺省 1.0/0.0。
                   (setq recs (list (list 1 pts nil)))
                   (setq lyr (at-hatch:preview-layer))
                   (setq scale (if (and (numberp scale) (> scale 0.0)) scale 1.0))
-                  (setq angle (if (numberp angle) angle 0.0))
+                  (setq ang (if (numberp ang) ang 0.0))
                   (setq hatch (at-hatch:make-hatch
-                               recs pattern scale angle lyr nil defs))
+                               recs pattern scale ang lyr nil defs))
                   (if hatch
                     hatch
                     (progn (princ "\n创建预览填充失败。") nil)))))))))))
 
-(defun at-hatch:pat-preview (/ file entries n i e idx name p1 p2 scale angle
+(defun at-hatch:pat-preview (/ file entries n i e idx name p1 p2 scale ang
                              hatch)
   "PAT 文件预览：选 .pat → 列出全部图案并选序号 → 两角点/比例/角度 → 按真实尺寸绘制。"
   "填充图元名或 nil"
@@ -101,17 +101,17 @@ p1/p2: 矩形两角点；scale/angle: 填充比例/角度，缺省 1.0/0.0。
                 (progn
                   (setq scale (getreal "\n填充比例 <1.0>: "))
                   (if (or (null scale) (<= scale 0.0)) (setq scale 1.0))
-                  (setq angle (getreal "\n填充角度 <0>: "))
-                  (if (null angle) (setq angle 0.0))
+                  (setq ang (getreal "\n填充角度 <0>: "))
+                  (if (null ang) (setq ang 0.0))
                   (at-hatch:undo-start)
                   (setq hatch
-                        (at-hatch:ai-pat-preview file name p1 p2 scale angle))
+                        (at-hatch:ai-pat-preview file name p1 p2 scale ang))
                   (at-hatch:undo-end)
                   (if hatch
                     (progn
                       (princ (strcat "\n已绘制图案 " name "（比例 "
                                      (rtos scale 2 2) "，角度 "
-                                     (rtos angle 2 2) "）。"))
+                                     (rtos ang 2 2) "）。"))
                       hatch)
                     (progn (princ "\n绘制失败。") nil)))))))))))
 

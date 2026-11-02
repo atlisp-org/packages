@@ -92,7 +92,7 @@
 |---|---|---|
 | `@plot:plot-all` | `@plot:ai-plot-all out-dir merge-p` | 无交互批打 `temp-frames` 图层上的图框，返回 PDF 路径表；merge-p=T 时按图框左上角排序后用 pdftk 合并，返回合并文件路径 |
 | `@plot:screenshot` | `@plot:ai-screenshot out-file [region]` | 当前视图或指定窗口截图存图；region 为 `(左下点 右上点)` 模型坐标 |
-| `@plot:split-layout` | `@plot:ai-split-by-layout out-dir [print]` | 按布局把当前图拆成多个 dwg；print=T 时同时整幅打印 PDF |
+| `@plot:split-layout` | `@plot:ai-split-by-layout out-dir [to-pdf]` | 按布局把当前图拆成多个 dwg；to-pdf=T 时同时整幅打印 PDF |
 
 示例：
 

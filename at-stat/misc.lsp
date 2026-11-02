@@ -79,7 +79,7 @@
           (setq i (1+ i)))
         (reverse res))))
 
-(defun at-stat:text2excel-data (ents rows cols / list res ent content)
+(defun at-stat:text2excel-data (ents rows cols / lst res ent content)
   "文字输出Excel数据：提取 TEXT/MTEXT 内容，按 Y 降序 → X 升序排列。
   ents: 文字图元列表；cols: 列数（rows 为 nil 时按每行 cols 个分行）；
   rows: 行数（cols 为 nil 时按列填充，列数 = ceil(n/rows)）；
@@ -88,28 +88,28 @@
   "二维矩阵"
   "示例: (at-stat:text2excel-data (at-stat:pick-ents \"选: \" '((0 . \"TEXT\"))) nil 5)"
   (if (null text:get-mtext) (require 'text:*))
-  (setq list nil)
+  (setq lst nil)
   (foreach ent ents
     (cond
      ((null ent) nil)
      ((= "TEXT" (entity:getdxf ent 0))
       (setq content (at-stat:clean-text (entity:getdxf ent 1)))
       (if content
-          (setq list (cons (cons (entity:getdxf ent 10) content) list))))
+          (setq lst (cons (cons (entity:getdxf ent 10) content) lst))))
      ((= "MTEXT" (entity:getdxf ent 0))
       (setq content (at-stat:clean-text (text:get-mtext ent)))
       (if content
-          (setq list (cons (cons (entity:getdxf ent 10) content) list))))
+          (setq lst (cons (cons (entity:getdxf ent 10) content) lst))))
      (t nil)))
-  (if list
+  (if lst
       (progn
-        (setq list
-             (sort list
+        (setq lst
+             (sort lst
                    (function (lambda (a b)
                                (if (/= (cadr (car a)) (cadr (car b)))
                                    (> (cadr (car a)) (cadr (car b)))
                                    (< (car (car a)) (car (car b))))))))
-        (setq res (mapcar 'cdr list))
+        (setq res (mapcar 'cdr lst))
         (cond
          ((and (numberp cols) (> cols 0) (null rows))
           (at-stat:chunk res cols))
@@ -118,11 +118,11 @@
          (t (list res))))
       nil))
 
-(defun at-stat:pick-file (prompt / file)
+(defun at-stat:pick-file (msg / file)
   "交互选择保存文件（csv/xlsx），返回路径；取消返回 nil。"
   "字符串"
   "示例: (at-stat:pick-file \"另存为:\")"
-  (setq file (getfiled prompt (strcat (getvar "dwgprefix") "stat.")
+  (setq file (getfiled msg (strcat (getvar "dwgprefix") "stat.")
                        "CSV 文件 (*.csv)|*.csv|Excel 文件 (*.xlsx)|*.xlsx|所有文件 (*.*)|*.*||"))
   (if file file nil))
 

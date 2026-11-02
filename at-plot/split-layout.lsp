@@ -77,10 +77,10 @@
       t)))
 
 (defun @plot:ai-split-by-layout
-  (out-dir print / names i acad doc src name copy doc2 out pdf lst)
+  (out-dir to-pdf / names i acad doc src name copy doc2 out pdf lst)
   "AI 调用入口：按布局把当前图形拆分为独立 dwg，返回生成的文件列表，失败返回 nil。
 out-dir: 输出目录（不存在则创建）
-print: T 时同时把每个布局整幅打印为 PDF（尽力而为）
+to-pdf: T 时同时把每个布局整幅打印为 PDF（尽力而为）
 示例: (@plot:ai-split-by-layout \"D:/Layouts\" nil)"
   (if (null out-dir)
       (progn (princ "\n[at-plot] 请指定输出目录。") nil))
@@ -113,7 +113,7 @@ print: T 时同时把每个布局整幅打印为 PDF（尽力而为）
                 (if (findfile out) (vl-file-delete out))
                 (vla-SaveAs doc2 out)
                 (vl-catch-all-apply 'vla-Close (list doc2 :vlax-true))
-                (if print
+                (if to-pdf
                     (progn
                       (setq pdf (strcat out-dir (@plot:safe-name name) ".pdf"))
                       (vl-catch-all-apply
@@ -125,15 +125,15 @@ print: T 时同时把每个布局整幅打印为 PDF（尽力而为）
   (princ (strcat "\n[at-plot] 拆分完成，共生成 " (itoa (length lst)) " 个文件。"))
   (if lst (reverse lst)))
 
-(defun @plot:split-layout (/ out-dir print)
+(defun @plot:split-layout (/ out-dir to-pdf)
   "交互：按布局拆分当前图形为独立 dwg。"
   (@:help "为每个布局生成一个独立 dwg 文件，可选同时打印为 PDF。")
   (setq out-dir (system:get-folder "选择拆分输出目录"))
   (if out-dir
       (progn
         (initget 0 1)
-        (setq print (getint "\n是否同时打印为 PDF (0/1)<0>: "))
-        (if (null print)
-            (setq print 0))
-        (@plot:ai-split-by-layout out-dir (= print 1))))
+        (setq to-pdf (getint "\n是否同时打印为 PDF (0/1)<0>: "))
+        (if (null to-pdf)
+            (setq to-pdf 0))
+        (@plot:ai-split-by-layout out-dir (= to-pdf 1))))
   (princ))

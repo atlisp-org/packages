@@ -17,22 +17,22 @@
 ;; 3. 选现有填充改参数
 ;; ---------------------------------------------------------------------------
 
-(defun at-hatch:ai-hatch-select (hatch-ents pattern scale angle / ents e en res)
+(defun at-hatch:ai-hatch-select (hatch-ents pattern scale ang / ents e en res)
   "AI 入口：修改已有填充的图案/比例/角度，返回成功修改的填充表。
-pattern/scale/angle 为 nil 表示保持原值"
+pattern/scale/ang 为 nil 表示保持原值"
   "填充图元名表或 nil"
   "(at-hatch:ai-hatch-select (car (entsel)) \"ANSI31\" 2.0 45.0)"
   (setq ents (at-hatch:norm-ents hatch-ents) res nil)
   (foreach e ents
     (if (= (cdr (assoc 0 (entget e))) "HATCH")
-      (setq en (at-hatch:set-hatch-pattern e pattern scale angle nil))
+      (setq en (at-hatch:set-hatch-pattern e pattern scale ang nil))
       (setq en nil))
     (if en (setq res (append res (list en)))))
   (if res
     res
     (progn (princ "\n未修改任何填充（图案名可能无法识别）。") nil)))
 
-(defun at-hatch:hatch-select (/ ss ents e info pattern scale angle res ans)
+(defun at-hatch:hatch-select (/ ss ents e info pattern scale ang res ans)
   "选现有填充改参数：选填充后重新指定图案/比例/角度"
   "填充图元名表或 nil"
   "(at-hatch:hatch-select)"
@@ -49,11 +49,11 @@ pattern/scale/angle 为 nil 表示保持原值"
                                    (if (numberp (caddr info))
                                      (at-hatch:num->str (caddr info)) "保持")
                                    ">: ")))
-      (setq angle (getreal (strcat "\n角度 <"
+      (setq ang (getreal (strcat "\n角度 <"
                                    (if (numberp (nth 3 info))
                                      (at-hatch:num->str (nth 3 info)) "保持")
                                    ">: ")))
-      (setq res (at-hatch:ai-hatch-select ents pattern scale angle))))
+      (setq res (at-hatch:ai-hatch-select ents pattern scale ang))))
   (at-hatch:undo-end)
   (if res
     (progn (princ (strcat "\n已修改 " (itoa (length res)) " 个填充。")) res)
@@ -277,7 +277,7 @@ layer 为 nil 时用当前图层"
     (vl-catch-all-apply 'vla-delete (list o)))
   t)
 
-(defun at-hatch:hatch-from-region (reg pattern scale angle layer color /
+(defun at-hatch:hatch-from-region (reg pattern scale ang layer color /
                                    vh ap ent)
   "由面域创建填充（面域轮廓直接作填充边界，支持任意布尔结果形状）"
   "填充图元名或 nil"
@@ -303,9 +303,9 @@ layer 为 nil 时用当前图层"
               (setq ent (vlax-vla-object->ename vh))
               (if (and (numberp scale) (> scale 0.0))
                 (vl-catch-all-apply 'vla-put-patternscale (list vh scale)))
-              (if (numberp angle)
+              (if (numberp ang)
                 (vl-catch-all-apply 'vla-put-patternangle
-                                    (list vh (at-hatch:d2r angle))))
+                                    (list vh (at-hatch:d2r ang))))
               (if (and layer (tblsearch "LAYER" layer))
                 (vl-catch-all-apply 'vla-put-layer (list vh layer)))
               (if (and (numberp color) (> color 0) (< color 256))

@@ -77,10 +77,10 @@
 ;; 1. 快捷填充
 ;; ---------------------------------------------------------------------------
 
-(defun at-hatch:ai-hatch (boundary pattern scale angle layer color / recs)
+(defun at-hatch:ai-hatch (boundary pattern scale ang layer color / recs)
   "AI 入口：由边界创建填充，返回填充图元名。
 boundary: 闭合图元/图元表/选择集/点表/点表列表/区域内部点；pattern 图案名；
-scale/angle 可 nil；layer/color 可 nil（随当前图层/随层）"
+scale/ang 可 nil；layer/color 可 nil（随当前图层/随层）"
   "填充图元名或 nil"
   "(at-hatch:ai-hatch (car (entsel)) \"ANSI31\" 1.0 45.0 nil 7)"
   (setq recs (at-hatch:classify (at-hatch:boundary->loops boundary)))
@@ -89,11 +89,11 @@ scale/angle 可 nil；layer/color 可 nil（随当前图层/随层）"
       recs
       (if pattern pattern "ANSI31")
       (if (numberp scale) scale 1.0)
-      (if (numberp angle) angle 0.0)
+      (if (numberp ang) ang 0.0)
       layer color)
     (progn (princ "\n未能取得有效闭合边界。") nil)))
 
-(defun at-hatch:quick-hatch (/ ss ents pt be pattern scale angle res)
+(defun at-hatch:quick-hatch (/ ss ents pt be pattern scale ang res)
   "快捷填充：选边界（实体或内部点）后指定图案/比例/角度生成填充"
   "填充图元名或 nil"
   "(at-hatch:quick-hatch)"
@@ -115,8 +115,8 @@ scale/angle 可 nil；layer/color 可 nil（随当前图层/随层）"
       (progn
         (setq pattern (at-hatch:get-pattern "ANSI31"))
         (setq scale (at-hatch:get-scale 1.0))
-        (setq angle (at-hatch:get-angle 0.0))
-        (setq res (at-hatch:ai-hatch ents pattern scale angle nil nil)))
+        (setq ang (at-hatch:get-angle 0.0))
+        (setq res (at-hatch:ai-hatch ents pattern scale ang nil nil)))
       (setq res nil)))
   (at-hatch:undo-end)
   (if res

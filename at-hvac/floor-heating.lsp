@@ -67,7 +67,7 @@
     (setq i 0))
   (princ (strcat "\n共处理 " (itoa total) " 个区域")))
 
-(defun hvac:floor-heating-auto (spacing / ss ent box width height cx cy radius step-angle angle d pts dxf-list i)
+(defun hvac:floor-heating-auto (spacing / ss ent box width height cx cy radius step-angle ang d pts dxf-list i)
   "自动在图中所有闭合矩形内绘制螺旋形地暖盘管
 参数:
   spacing: 管间距（默认150）
@@ -94,12 +94,12 @@
                 cy (+ (cadr (car box)) (/ height 2.0))
                 radius (/ (min width height) 2.0)
                 step-angle (/ (* 360.0 spacing) (* 2.0 3.14159 radius))
-                angle 0.0
+                ang 0.0
                 d spacing
                 pts nil)
           (while (> radius d)
-            (setq pts (cons (list (+ cx (* radius (cos angle))) (+ cy (* radius (sin angle)))) pts)
-                  angle (+ angle step-angle)
+            (setq pts (cons (list (+ cx (* radius (cos ang))) (+ cy (* radius (sin ang)))) pts)
+                  ang (+ ang step-angle)
                   radius (- radius (/ spacing 10.0))))
           (setq pts (reverse pts))
           (if (> (length pts) 1)
@@ -190,7 +190,7 @@
     (setq dxf-list (append dxf-list (list (cons 10 p) (cons 40 0) (cons 41 0) (cons 42 0)))))
   (entmakex dxf-list))
 
-(defun hvac:floor-heating-spiral (boundary spacing / box pts width height cx cy radius step-angle angle d)
+(defun hvac:floor-heating-spiral (boundary spacing / box pts width height cx cy radius step-angle ang d)
   "在闭合多段线内绘制螺旋形地暖盘管
 参数:
   boundary: 闭合多段线
@@ -214,12 +214,12 @@
         cy (+ (cadr (car box)) (/ height 2.0))
         radius (/ (min width height) 2.0)
         step-angle (/ (* 360.0 spacing) (* 2.0 3.14159 radius))
-        angle 0.0
+        ang 0.0
         d spacing)
   (setq pts nil)
   (while (> radius d)
-    (setq pts (cons (list (+ cx (* radius (cos angle))) (+ cy (* radius (sin angle)))) pts)
-          angle (+ angle step-angle)
+    (setq pts (cons (list (+ cx (* radius (cos ang))) (+ cy (* radius (sin ang)))) pts)
+          ang (+ ang step-angle)
           radius (- radius (/ spacing 10.0))))
 (setq pts (reverse pts))
   (if (> (length pts) 1)

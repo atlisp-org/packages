@@ -17,6 +17,20 @@
 | 规划 > 数据输入 | `(at-planning:input)` | 输入建筑面积数据 |
 | 规划 > 经济指标 | `(at-planning:make-index)` | 生成经济指标表 |
 
+## AI 调用（无交互）
+
+| 函数 | 说明 |
+|------|------|
+| `@planning:ai-calc pt1 pt2` | 统计范围内用地/绿地/建筑基底面积、绿地率、车位数量 |
+| `@planning:ai-index pt1 pt2 overground underground plot parking-underground` | 计算主要技术经济指标（密度、容积率、绿地率、车位、限值对比） |
+
+```lisp
+;; 只算面积
+(@planning:ai-calc '(0 0) '(100000 80000))
+;; 算经济指标；后四个参数可为 nil
+(@planning:ai-index '(0 0) '(100000 80000) 30000 5000 nil 120)
+```
+
 ## 配置项
 
 | 配置名 | 默认值 | 说明 |

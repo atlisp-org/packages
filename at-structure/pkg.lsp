@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp结构工具")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.0.20")
+        (:VERSION . "0.0.21")
         (:LOCALE . "CHS")
         (:CATEGORY . "结构")
         (:REQUIRED . "base")
@@ -10,6 +10,7 @@
         (:DESCRIPTION . "结构绘图工具，查钢筋面积等。")
         (:URL . "http://atlisp.cn")
         (:FILES "at-structure"
+            "ai"
             "concrete"
             "seismic"
             "stat"

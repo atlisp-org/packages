@@ -6,7 +6,7 @@
 |------|-----|
 | 包名 | `at-block` |
 | 全名 | @lisp Block |
-| 版本 | 1.1.11 |
+| 版本 | 1.1.13 |
 | 作者 | VitalGG |
 | 邮箱 | vitalgg@gmail.com |
 | 分类 | 图块相关 |
@@ -137,6 +137,24 @@
 - 编号格式与“块自动编号”一致：支持前缀/后缀，`@block:overlay-index` 非 0 时按原属性值的 `-` 分段替换。
 - 沿路线未找到块时给出提示，不再弹出模态框、也不会误触发“块编号配置”。
 
+### 块定义转 Lisp 源码
+
+选择块参照后，把块定义里的图元 DXF 数据生成为 `(entmake '(...))` 源码，便于把符号库
+打包进 Lisp 程序。支持 LINE/LWPOLYLINE/CIRCLE/ARC/TEXT/MTEXT/INSERT/ATTDEF/HATCH/
+SPLINE 等常见图元，嵌套块会按依赖顺序一并生成；不支持的图元会跳过并在结果中列出。
+
+```lisp
+;; AI 入口：返回文件路径/块数/跳过类型；outfile 为 nil 时返回源码字符串
+(@block:ai-block->lisp "MYBLOCK" "C:/tmp/myblock.lsp")
+(@block:ai-block->lisp (car (entsel)) nil)
+
+;; 交互入口：选择块参照并保存
+(@block:block->lisp)
+```
+
+生成的文件可独立加载，用 `(at-block:embed-block "MYBLOCK")` 重建块定义。注意：目标
+图纸需已存在块内使用的图层、线型、文字样式；动态块/剪裁块/复杂标注可能丢失特性。
+
 ### 嵌套块统计
 递归统计指定块名的总参照个数，支持多级嵌套。例如块B内嵌2个A、块C内嵌3个A，可正确计算总数。
 
@@ -174,6 +192,7 @@
 | `@block:ai-number-by-snake` | 按蛇形顺序给属性块连续编号（可全图或限定选择集），无交互、返回按编号顺序的块列表；全图时第 4 参数传 `nil`；没有属性的块会被跳过并提示（`princ` + 写入 `@block:last-hint`） | `(@block:ai-number-by-snake "车位" "NUMBER" 1 nil)`<br>`(@block:ai-number-by-snake "车位,车位-无障碍" "NUMBER" 101 ss)` |
 | `@block:has-attribute-p` | 判断块是否含指定属性（标签不区分大小写） | `(@block:has-attribute-p blkref "NUMBER")` |
 | `@block:missing-attribute-hint` | 对缺少属性的块打印提示并写入 `@block:last-hint`，返回跳过数量 | `(@block:missing-attribute-hint blks "NUMBER")` |
+| `@block:ai-block->lisp` | 把块定义生成可重建的 Lisp 源码，支持嵌套块；返回文件路径/块数/跳过类型 | `(@block:ai-block->lisp "MYBLOCK" "C:/tmp/myblock.lsp")` |
 
 ## 源文件
 
@@ -181,6 +200,7 @@
 |------|------|
 | `pkg.lsp` | 包清单文件 |
 | `at-block.lsp` | 核心功能：配置、块替换、编号、基点操作、分解、嵌套统计等 |
+| `embed.lsp` | 块定义转 Lisp 源码（clean-room，支持嵌套块） |
 | `xref.lsp` | 外部参照管理（重载/卸载/拆离/绑定） |
 | `insert-all.lsp` | 插入所有块 |
 | `numbering-by-route.lsp` | 按曲线路线编号 |

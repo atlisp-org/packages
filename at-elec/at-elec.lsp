@@ -7,6 +7,7 @@
 (@:define-config '@elec:circut-start 1 "回路起始编号")
 (@:define-config '@elec:cable-layer "ELEC-CABLE" "电缆标注图层")
 (@:define-config '@elec:panel-blkname "配电箱" "配电箱图块名")
+(@:define-config '@elec:demand-factor 0.7 "负荷计算需要系数 Kd")
 
 (@:add-menus
  '("@电气"
@@ -30,106 +31,69 @@
 ;;; ============================================================
 ;;; 回路编号
 ;;; ============================================================
-(defun @elec:circut-numbering (/ prefix start num ss pt)
-  "对选中的配电箱块进行回路编号"
-  (@:help '("选择配电箱块，按顺序为每个回路编号。"
+(defun @elec:circut-numbering (/ prefix start ss)
+  "对选中的回路线进行编号"
+  (@:help '("选择回路线，按顺序为每个回路编号。"
             "编号格式: 前缀-序号, 如 WL-01, WL-02"))
   (setq prefix (@:get-config '@elec:circut-prefix))
   (setq start (@:get-config '@elec:circut-start))
   (@:prompt "请选择需要编号的回路线:")
   (setq ss (ssget '((0 . "*line"))))
   (if ss
-      (progn
-        (setq num start)
-        (foreach ent (pickset:to-list ss)
-          (setq pt (curve:midpoint ent))
-          (entity:make-text
-           (strcat prefix "-" 
-                   (string:number-format (itoa num) 2 0 "0"))
-           (polar pt (* 0.5 pi) 200)
-           (* (@:get-config '@::draw-scale) 2.5)
-           0 0.72 0 "mm")
-          (setq num (1+ num)))
-        (@:set-config '@elec:circut-start num)
-        (princ (strcat "\n已编号 " (itoa (- num start)) " 个回路。")))
+      (princ (strcat "\n已编号 "
+                     (itoa (@elec:ai-circut-numbering ss prefix start))
+                     " 个回路。"))
     (@:prompt "未选中任何线。"))
   (princ))
 
 ;;; ============================================================
 ;;; 电缆标注
 ;;; ============================================================
-(defun @elec:cable-label (/ ent pt cable-type)
+(defun @elec:cable-label (/ ent cable-type)
   "标注电缆型号和规格"
   (@:help '("选择一条线，标注其电缆型号。"
             "如: YJV-3x2.5+1x1.5, NH-BV-4x4"))
-  (if (null (tblsearch "layer" (@:get-config '@elec:cable-layer)))
-      (layer:make (@:get-config '@elec:cable-layer) 3 nil nil))
   (setq ent (car (entsel "请选择要标注的电缆线:")))
   (if (and ent
-           (setq pt (curve:midpoint ent))
            (setq cable-type (getstring "\n请输入电缆型号 (如 YJV-3x2.5+1x1.5): ")))
-      (progn
-        (entity:putdxf
-         (entity:make-text
-          cable-type
-          (polar pt (angle (car (curve:get-points ent))
-                           (cadr (curve:get-points ent)))
-                 (* 0.3 (distance (car (curve:get-points ent))
-                                  (cadr (curve:get-points ent)))))
-          (* (@:get-config '@::draw-scale) 2.0)
-          (angle (car (curve:get-points ent))
-                 (cadr (curve:get-points ent)))
-          0.72 0 "mm")
-         8 (@:get-config '@elec:cable-layer))
-        (@:prompt (strcat "已标注: " cable-type)))
+      (if (@elec:ai-cable-label ent cable-type)
+          (@:prompt (strcat "已标注: " cable-type))
+        (@:prompt "标注失败，请检查图元或文字样式。"))
     (@:prompt "未选中有效图元或未输入型号。"))
   (princ))
 
 ;;; ============================================================
 ;;; 负荷统计
 ;;; ============================================================
-(defun @elec:load-stat (/ ss total-watt count watt-str watt)
+(defun @elec:load-stat (/ ss res)
   "统计选中设备块的总负荷功率"
   (@:help '("选择设备块，统计其总安装功率。"
-            "块的动态属性中需包含'功率'属性。"))
+            "块属性中需包含“功率”属性。"))
   (@:prompt "请选择需要统计的设备块:")
   (setq ss (ssget '((0 . "INSERT"))))
   (if ss
       (progn
-        (setq total-watt 0 count 0)
-        (foreach blk (pickset:to-list ss)
-          (setq watt-str (block:get-dynprop blk "功率"))
-          (if (and watt-str (setq watt (atof watt-str)))
-              (progn
-                (setq total-watt (+ total-watt watt))
-                (setq count (1+ count)))))
-        (princ (strcat "\n共 " (itoa count) " 个设备"))
-        (princ (strcat "\n总安装功率: " (rtos total-watt 2 1) " W"))
-        (princ (strcat "\n计算负荷: " (rtos (* total-watt 0.7) 2 1) " W (Kd=0.7)")))
+        (setq res (@elec:stat-load (pickset:to-list ss)))
+        (princ (strcat "\n共 " (itoa (cdr (assoc "count" res))) " 个设备"))
+        (princ (strcat "\n总安装功率: "
+                       (rtos (cdr (assoc "total" res)) 2 1) " W"))
+        (princ (strcat "\n计算负荷: "
+                       (rtos (cdr (assoc "demand" res)) 2 1) " W (Kd="
+                       (rtos (cdr (assoc "factor" res)) 2 2) ")")))
     (@:prompt "未选中任何块。"))
   (princ))
 
 ;;; ============================================================
 ;;; 设备统计
 ;;; ============================================================
-(defun @elec:equip-stat (/ ss stats i bname)
+(defun @elec:equip-stat (/ ss stats i)
   "统计所选设备块的型号和数量"
   (@:help '("选择设备块，按型号分类统计数量。"))
   (@:prompt "请选择需要统计的设备块:")
   (setq ss (ssget '((0 . "INSERT"))))
   (if ss
       (progn
-        (setq stats nil)
-        (foreach blk (pickset:to-list ss)
-          (setq bname (block:get-effectivename blk))
-          (if bname
-              (if (assoc bname stats)
-                  (setq stats (subst (cons bname (1+ (cdr (assoc bname stats))))
-                                     (assoc bname stats)
-                                     stats))
-                (setq stats (cons (cons bname 1) stats)))))
-        ;; 排序并输出
-        (setq stats (vl-sort stats '(lambda (a b) (< (car a) (car b)))))
+        (setq stats (@elec:stat-equip (pickset:to-list ss)))
         (princ "\n=== 设备统计 ===")
         (setq i 0)
         (foreach s stats
@@ -173,12 +137,12 @@
 ;;; ============================================================
 (defun @elec:draw-readme (/ readme-elec)
   (@:help '("插入电气设计说明。"))
-  (if (findfile (strcat @::*prefix* "packages/at-elec/readme-elec.dwg"))
+  (if (findfile (strcat @:*prefix* "packages/at-elec/readme-elec.dwg"))
       (progn
         (setq readme-elec
               (block:insert
                "readme-elec"
-               (strcat @::*prefix* "packages/at-elec/")
+               (strcat @:*prefix* "packages/at-elec/")
                (getpoint "请点击插入位置:")
                0 1))
         (if (string-equal "insert" (entity:getdxf readme-elec 0))
@@ -189,12 +153,12 @@
 
 (defun @elec:draw-plan-example (/ example-plan-elec)
   (@:help '("插入电气平面图样例。"))
-  (if (findfile (strcat @::*prefix* "packages/at-elec/example-elec.dwg"))
+  (if (findfile (strcat @:*prefix* "packages/at-elec/example-elec.dwg"))
       (progn
         (setq example-plan-elec
               (block:insert
                "example-plan-elec"
-               (strcat @::*prefix* "packages/at-elec/")
+               (strcat @:*prefix* "packages/at-elec/")
                (getpoint "请点击插入位置:")
                0 1)))
     (@:prompt "未找到样例文件 example-elec.dwg")))

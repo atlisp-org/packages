@@ -2,7 +2,7 @@
         (:FULL-NAME . "@lisp全能编辑")
         (:AUTHOR . "VitalGG")
         (:EMAIL . "vitalgg@gmail.com")
-        (:VERSION . "0.1.0")
+        (:VERSION . "0.1.1")
         (:LOCALE . "chs")
         (:CATEGORY . "通用")
         (:REQUIRED . "base")
@@ -11,4 +11,5 @@
         (:URL . "http://atlisp.cn")
         (:FILES "at-edit"
             "transform"
-            "pline")))
+            "pline"
+            "zoom-detail")))

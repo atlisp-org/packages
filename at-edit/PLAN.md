@@ -45,6 +45,22 @@
 | mini_wipeout | `at-edit:wipeout` / `at-edit:ai-wipeout` | ✅ |
 | mini_erase_wipeout | `at-edit:erase-wipeout` / `at-edit:ai-erase-wipeout` | ✅ |
 
+### 局部放大（zoom-detail.lsp，2 命令）
+
+来源：bbs.mjtd.com 论坛「局部放大」需求（thread 106891，clean-room 实现，
+不复用其 gxl-* 私有函数）。
+
+| 功能 | 本包函数 | 状态 |
+|---|---|---|
+| 局部放大（详图） | `at-edit:zoom-detail` / `at-edit:ai-zoom-detail` | 🔄 静态验证通过，CAD 实机验证中 |
+
+实现要点：框选源区域 → 纯 DXF 几何变换（`pt' = ip + (pt-base)*factor`）+
+`entmakex` 复制放大（不依赖 VLA 缩放/`command`，MCP 可直调）→ 绘制边界
+（圆/矩形，lib `entity:make-circle`/`make-rectangle`）、引线（源窗口最近角 →
+边界上对应点）、比例标注（lib `entity:make-text`）。支持
+LINE/POINT/SOLID/3DFACE/CIRCLE/ARC/TEXT/MTEXT/LWPOLYLINE/POLYLINE/
+INSERT/ELLIPSE/SPLINE，其余类型跳过并计入 `skipped`。
+
 ## 未实现（backlog）
 
 | 优先级 | iMini 命令 | 说明 | 建议实现 |
